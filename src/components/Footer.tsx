@@ -116,6 +116,22 @@ export default function Footer() {
                   Projetos & Resultados (Cases Reais)
                 </a>
               </li>
+              <li>
+                <a
+                  href="/conteudos"
+                  className="hover:text-solar-400 transition-colors block text-solar-300"
+                >
+                  Conteúdos & Blog Técnico
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/sobre"
+                  className="hover:text-solar-400 transition-colors block text-solar-300"
+                >
+                  Sobre a Delfos Solar (Erechim/RS)
+                </a>
+              </li>
             </ul>
 
             <h4 className="text-xs font-bold text-white uppercase tracking-wider pt-3 mb-2">

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home -->
+  <url>
+    <loc>https://delfosengenharia.com.br/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- As 4 Páginas de Solução -->
+  <url>
+    <loc>https://delfosengenharia.com.br/solucoes/energia-solar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/solucoes/bess</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/solucoes/om</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/solucoes/carregadores</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Projetos e Resultados (Cases Reais) -->
+  <url>
+    <loc>https://delfosengenharia.com.br/projetos</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- As 7 Portas de Entrada / Páginas de Segmento -->
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/residencias</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/comercio-servicos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/industria</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/agronegocio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/condominios</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/investidores</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/segmentos/frotas-eletropostos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Fase 5: Sobre e Diferenciação de Marca -->
+  <url>
+    <loc>https://delfosengenharia.com.br/sobre</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Fase 5: Conteúdos (Blog) e Artigos de Captura Orgânica -->
+  <url>
+    <loc>https://delfosengenharia.com.br/conteudos</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/conteudos/energia-solar-erechim-guia-completo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/conteudos/bess-industrial-armazenamento-baterias-guia-viabilidade</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/conteudos/manutencao-usina-solar-om-monitoramento-dicas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://delfosengenharia.com.br/conteudos/carregador-veicular-condominio-dlm-instalacao-guia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

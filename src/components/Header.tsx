@@ -343,27 +343,37 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               Projetos e Resultados
             </Link>
 
-            <a
-              href="/#faq"
-              onClick={(e) => {
-                e.preventDefault()
-                handleNavClick('#faq')
+            <Link
+              to="/conteudos"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                setSolucoesDropdownOpen(false)
+                setSegmentosDropdownOpen(false)
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                location.pathname.startsWith('/conteudos')
+                  ? 'text-solar-400 font-semibold'
+                  : 'text-slate-200 hover:text-solar-400'
+              }`}
             >
               Conteúdos
-            </a>
+            </Link>
 
-            <a
-              href="/#sobre-delfos"
-              onClick={(e) => {
-                e.preventDefault()
-                handleNavClick('#sobre-delfos')
+            <Link
+              to="/sobre"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                setSolucoesDropdownOpen(false)
+                setSegmentosDropdownOpen(false)
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                location.pathname === '/sobre'
+                  ? 'text-solar-400 font-semibold'
+                  : 'text-slate-200 hover:text-solar-400'
+              }`}
             >
               Sobre a Delfos
-            </a>
+            </Link>
 
             <a
               href="#contato"
@@ -529,26 +539,28 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 >
                   Projetos e Resultados
                 </Link>
-                <a
-                  href="/#faq"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleNavClick('#faq')
-                  }}
-                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                <Link
+                  to="/conteudos"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                    location.pathname.startsWith('/conteudos')
+                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
+                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
+                  }`}
                 >
-                  Conteúdos
-                </a>
-                <a
-                  href="/#sobre-delfos"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleNavClick('#sobre-delfos')
-                  }}
-                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                  Conteúdos (Blog)
+                </Link>
+                <Link
+                  to="/sobre"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                    location.pathname === '/sobre'
+                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
+                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
+                  }`}
                 >
                   Sobre a Delfos
-                </a>
+                </Link>
                 <a
                   href="#contato"
                   onClick={(e) => {

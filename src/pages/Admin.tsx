@@ -280,6 +280,24 @@ export default function Admin() {
                   Cases
                 </Button>
               </Link>
+              <Link to="/conteudos">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  Blog
+                </Button>
+              </Link>
+              <Link to="/sobre">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  Sobre
+                </Button>
+              </Link>
             </div>
 
             <Link to="/">

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Desallow admin & login private routes
+Disallow: /admin
+Disallow: /login
+
+# Sitemap location
+Sitemap: https://delfosengenharia.com.br/sitemap.xml

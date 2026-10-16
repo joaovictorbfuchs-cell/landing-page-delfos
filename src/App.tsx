@@ -14,6 +14,9 @@ import SolucaoBess from './pages/SolucaoBess'
 import SolucaoOm from './pages/SolucaoOm'
 import SolucaoCarregadores from './pages/SolucaoCarregadores'
 import ProjetosResultados from './pages/ProjetosResultados'
+import Sobre from './pages/Sobre'
+import Conteudos from './pages/Conteudos'
+import ConteudoPost from './pages/ConteudoPost'
 import SegmentoResidencias from './pages/segmentos/SegmentoResidencias'
 import SegmentoComercio from './pages/segmentos/SegmentoComercio'
 import SegmentoIndustria from './pages/segmentos/SegmentoIndustria'
@@ -39,6 +42,11 @@ const App = () => (
 
           {/* Fase 3: Projetos e Resultados */}
           <Route path="/projetos" element={<ProjetosResultados />} />
+
+          {/* Fase 5: Sobre e Conteúdos / Blog */}
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/conteudos" element={<Conteudos />} />
+          <Route path="/conteudos/:slug" element={<ConteudoPost />} />
 
           {/* Fase 4: As 7 Páginas de Segmento ("Portas de Entrada") */}
           <Route path="/segmentos/residencias" element={<SegmentoResidencias />} />
