@@ -72,15 +72,26 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
               Conheça as outras soluções do ciclo energético
             </h2>
           </div>
-          <Link
-            to="/#solucoes"
-            className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
-              dark ? 'text-slate-300 hover:text-solar-400' : 'text-slate-600 hover:text-solar-600'
-            }`}
-          >
-            <span>Ver os 4 pilares na home</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/projetos"
+              className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
+                dark ? 'text-solar-300 hover:text-solar-200' : 'text-solar-700 hover:text-solar-900'
+              }`}
+            >
+              <span>Ver cases reais de resultados</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              to="/#solucoes"
+              className={`text-xs font-bold flex items-center gap-1.5 transition-colors ${
+                dark ? 'text-slate-300 hover:text-solar-400' : 'text-slate-600 hover:text-solar-600'
+              }`}
+            >
+              <span>Ver os 4 pilares</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

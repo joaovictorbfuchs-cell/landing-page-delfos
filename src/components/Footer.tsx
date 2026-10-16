@@ -117,12 +117,12 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick('#projetos-resultados')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
+                <a
+                  href="/projetos"
+                  className="hover:text-solar-400 transition-colors block font-medium text-solar-300"
                 >
-                  Cases & Resultados Reais
-                </button>
+                  Projetos & Resultados (Cases Reais)
+                </a>
               </li>
             </ul>
           </div>

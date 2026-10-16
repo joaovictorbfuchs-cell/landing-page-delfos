@@ -228,16 +228,20 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               Segmentos
             </a>
 
-            <a
-              href="/#projetos-resultados"
-              onClick={(e) => {
-                e.preventDefault()
-                handleNavClick('#projetos-resultados')
+            <Link
+              to="/projetos"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                setSolucoesDropdownOpen(false)
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                location.pathname === '/projetos'
+                  ? 'text-solar-400 font-semibold'
+                  : 'text-slate-200 hover:text-solar-400'
+              }`}
             >
               Projetos e Resultados
-            </a>
+            </Link>
 
             <a
               href="/#faq"
@@ -387,16 +391,17 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 >
                   Segmentos
                 </a>
-                <a
-                  href="/#projetos-resultados"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    handleNavClick('#projetos-resultados')
-                  }}
-                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                <Link
+                  to="/projetos"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                    location.pathname === '/projetos'
+                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
+                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
+                  }`}
                 >
                   Projetos e Resultados
-                </a>
+                </Link>
                 <a
                   href="/#faq"
                   onClick={(e) => {

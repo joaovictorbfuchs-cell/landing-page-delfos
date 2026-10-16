@@ -1,4 +1,5 @@
-import { Calendar, MapPin, Zap, CheckCircle, TrendingDown, Award } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Calendar, MapPin, Zap, CheckCircle, TrendingDown, Award, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface CaseDestaqueProps {
@@ -21,6 +22,15 @@ export default function CaseDestaque({ onSolicitarProjeto }: CaseDestaqueProps) 
             Metodologia transparente com dados auditáveis: cada case documenta o desafio inicial, o
             escopo técnico de engenharia e os resultados medidos pós-comissionamento.
           </p>
+          <div className="mt-4">
+            <Link
+              to="/projetos"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-solar-700 hover:text-solar-900 underline"
+            >
+              <span>Explorar todos os cases no grid com filtro por segmento</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
         {/* Featured Case Card with exact structure from specification */}
@@ -156,12 +166,17 @@ export default function CaseDestaque({ onSolicitarProjeto }: CaseDestaqueProps) 
 
               {/* Bottom Action */}
               <div className="pt-6 mt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <span className="text-xs text-slate-500">
-                  Quer dimensionar um caso idêntico para a sua operação?
-                </span>
+                <Link
+                  to="/projetos"
+                  className="text-xs font-bold text-solar-700 hover:text-solar-900 flex items-center gap-1"
+                >
+                  <span>Ver todos os cases com filtros por segmento</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+
                 <Button
                   onClick={onSolicitarProjeto}
-                  className="w-full sm:w-auto bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-2.5 rounded-xl shadow-md text-sm"
+                  className="w-full sm:w-auto bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-2.5 rounded-xl shadow-md text-sm cursor-pointer"
                 >
                   Solicitar estudo similar
                 </Button>

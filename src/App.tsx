@@ -13,6 +13,7 @@ import SolucaoSolar from './pages/SolucaoSolar'
 import SolucaoBess from './pages/SolucaoBess'
 import SolucaoOm from './pages/SolucaoOm'
 import SolucaoCarregadores from './pages/SolucaoCarregadores'
+import ProjetosResultados from './pages/ProjetosResultados'
 
 const App = () => (
   <BrowserRouter>
@@ -28,6 +29,9 @@ const App = () => (
           <Route path="/solucoes/bess" element={<SolucaoBess />} />
           <Route path="/solucoes/om" element={<SolucaoOm />} />
           <Route path="/solucoes/carregadores" element={<SolucaoCarregadores />} />
+
+          {/* Fase 3: Projetos e Resultados */}
+          <Route path="/projetos" element={<ProjetosResultados />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
