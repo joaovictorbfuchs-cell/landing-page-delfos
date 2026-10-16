@@ -234,13 +234,52 @@ export default function Admin() {
           </div>
 
           <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
+              <Link to="/solucoes/energia-solar">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  Solar EPC
+                </Button>
+              </Link>
+              <Link to="/solucoes/bess">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  BESS
+                </Button>
+              </Link>
+              <Link to="/solucoes/om">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  O&M
+                </Button>
+              </Link>
+              <Link to="/solucoes/carregadores">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  Carregadores
+                </Button>
+              </Link>
+            </div>
+
             <Link to="/">
               <Button
                 variant="ghost"
                 size="sm"
                 className="text-slate-300 hover:text-white hover:bg-white/10 text-xs flex items-center gap-1.5"
               >
-                <span>Ver Nova Home</span>
+                <span>Ver Site</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             </Link>

@@ -22,6 +22,10 @@ interface ContatoFormProps {
   initialOrigem?: string
   initialValorConta?: number
   initialConcessionaria?: string
+  tituloSecao?: string
+  subtituloSecao?: string
+  textoBotaoFinal?: string
+  destaqueDark?: boolean
 }
 
 export default function ContatoForm({
@@ -29,6 +33,10 @@ export default function ContatoForm({
   initialOrigem = 'home-formulario',
   initialValorConta,
   initialConcessionaria = 'RGE (CPFL Energia)',
+  tituloSecao = 'Solicite uma avaliação técnica de engenharia',
+  subtituloSecao = 'Dimensionamento preciso e estudo preliminar sem custos. Em 2 etapas rápidas, roteamos seu projeto diretamente para o engenheiro especialista do seu setor.',
+  textoBotaoFinal = 'Finalizar e Solicitar Avaliação',
+  destaqueDark = false,
 }: ContatoFormProps) {
   const { toast } = useToast()
 
@@ -227,21 +235,41 @@ export default function ContatoForm({
     : 'https://wa.me/5554991292121'
 
   return (
-    <section id="contato" className="py-24 bg-white relative">
+    <section
+      id="contato"
+      className={`py-24 relative ${
+        destaqueDark
+          ? 'bg-[#09111D] text-white border-t border-white/10'
+          : 'bg-white text-slate-900'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Contextual reassurance */}
           <div className="lg:col-span-5 space-y-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-100 text-solar-800 text-xs font-bold uppercase tracking-wider mb-3">
-                Máquina de Conversão Qualificada
+              <div
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 ${
+                  destaqueDark
+                    ? 'bg-solar-500/20 text-solar-300 border border-solar-500/30'
+                    : 'bg-solar-100 text-solar-800'
+                }`}
+              >
+                Engenharia de Conversão Direta
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                Solicite uma avaliação técnica de engenharia
+              <h2
+                className={`text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight ${
+                  destaqueDark ? 'text-white' : 'text-slate-900'
+                }`}
+              >
+                {tituloSecao}
               </h2>
-              <p className="text-base text-slate-600 mt-3 leading-relaxed">
-                Dimensionamento preciso e estudo preliminar sem custos. Em 2 etapas rápidas,
-                roteamos seu projeto diretamente para o engenheiro especialista do seu setor.
+              <p
+                className={`text-base mt-3 leading-relaxed ${
+                  destaqueDark ? 'text-slate-300' : 'text-slate-600'
+                }`}
+              >
+                {subtituloSecao}
               </p>
             </div>
 
@@ -771,13 +799,13 @@ export default function ContatoForm({
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold h-14 text-base rounded-xl shadow-lg shadow-solar-500/20 flex items-center justify-center gap-2"
+                      className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold h-14 text-base rounded-xl shadow-lg shadow-solar-500/20 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <span>Enviando dados ao engenheiro...</span>
                       ) : (
                         <>
-                          <span>Finalizar e Solicitar Avaliação</span>
+                          <span>{textoBotaoFinal}</span>
                           <Send className="w-4 h-4 ml-1" />
                         </>
                       )}

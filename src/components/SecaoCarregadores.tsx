@@ -43,7 +43,7 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
             </p>
           </div>
 
-          <div className="lg:col-span-4 flex lg:justify-end">
+          <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col lg:items-end gap-3">
             <Button
               onClick={onSolicitarVistoria}
               className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-7 py-6 text-base rounded-xl shadow-lg shadow-solar-500/20 flex items-center gap-2"
@@ -51,6 +51,13 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
               <span>Solicitar vistoria técnica</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
+            <a
+              href="/solucoes/carregadores"
+              className="text-xs font-bold text-solar-400 hover:text-solar-300 flex items-center gap-1.5 transition-colors"
+            >
+              <span>Acessar página completa de Carregadores & DLM</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
 

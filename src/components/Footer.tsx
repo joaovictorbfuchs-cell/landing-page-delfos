@@ -83,36 +83,30 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <button
-                  onClick={() => handleNavClick('#solucoes')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
+                <a
+                  href="/solucoes/energia-solar"
+                  className="hover:text-solar-400 transition-colors block"
                 >
                   Energia Solar Fotovoltaica (EPC)
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick('#secao-bess')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
-                >
+                <a href="/solucoes/bess" className="hover:text-solar-400 transition-colors block">
                   Sistemas de Armazenamento BESS
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick('#solucoes')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
-                >
+                <a href="/solucoes/om" className="hover:text-solar-400 transition-colors block">
                   Manutenção O&M e Monitoramento
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick('#secao-carregadores')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
+                <a
+                  href="/solucoes/carregadores"
+                  className="hover:text-solar-400 transition-colors block"
                 >
                   Carregadores Veiculares & DLM
-                </button>
+                </a>
               </li>
               <li>
                 <button

@@ -1,5 +1,17 @@
-import { useState, useEffect } from 'react'
-import { Sun, Zap, Menu, X, PhoneCall, ArrowRight } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import {
+  Sun,
+  Zap,
+  Menu,
+  X,
+  PhoneCall,
+  ArrowRight,
+  ChevronDown,
+  BatteryCharging,
+  Wrench,
+  Car,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface HeaderProps {
@@ -9,6 +21,10 @@ interface HeaderProps {
 export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [solucoesDropdownOpen, setSolucoesDropdownOpen] = useState(false)
+  const [mobileSolucoesOpen, setMobileSolucoesOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,28 +34,67 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Novo Menu conforme especificação:
-  // Início | Soluções | Segmentos | Projetos e Resultados | Conteúdos | Sobre a Delfos | Contato
-  const navLinks = [
-    { label: 'Início', href: '#inicio' },
-    { label: 'Soluções', href: '#solucoes' },
-    { label: 'Segmentos', href: '#segmentos' },
-    { label: 'Projetos e Resultados', href: '#projetos-resultados' },
-    { label: 'Conteúdos', href: '#faq' }, // FAQ didático e conceitos nesta fase
-    { label: 'Sobre a Delfos', href: '#sobre-delfos' },
-    { label: 'Contato', href: '#contato' },
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setSolucoesDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const solucoesList = [
+    {
+      title: 'Energia Solar Fotovoltaica (EPC)',
+      desc: 'On-grid e híbrido, telhado e solo, redução de até 95%',
+      href: '/solucoes/energia-solar',
+      icon: Sun,
+      color: 'text-solar-400',
+    },
+    {
+      title: 'Sistemas de Armazenamento BESS',
+      desc: 'Peak shaving, arbitragem tarifária e backup ininterrupto C&I',
+      href: '/solucoes/bess',
+      icon: BatteryCharging,
+      color: 'text-emerald-400',
+    },
+    {
+      title: 'Manutenção O&M e Monitoramento',
+      desc: 'Termografia por drone, limpeza técnica e planos com SLA',
+      href: '/solucoes/om',
+      icon: Wrench,
+      color: 'text-blue-400',
+    },
+    {
+      title: 'Carregadores Veiculares & DLM',
+      desc: 'Wallbox inteligente, medição individual em condomínios e frotas',
+      href: '/solucoes/carregadores',
+      icon: Car,
+      color: 'text-indigo-400',
+    },
   ]
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false)
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    setSolucoesDropdownOpen(false)
+
+    if (href.startsWith('#')) {
+      if (location.pathname !== '/') {
+        window.location.href = `/${href}`
+        return
+      }
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
   const handleCtaClick = () => {
     setMobileMenuOpen(false)
+    setSolucoesDropdownOpen(false)
     onSolicitarAvaliacao()
   }
 
@@ -54,11 +109,12 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo Delfos mantido e valorizado */}
-          <a
-            href="#inicio"
-            onClick={(e) => {
-              e.preventDefault()
-              handleNavClick('#inicio')
+          <Link
+            to="/"
+            onClick={() => {
+              if (location.pathname === '/') {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
             }}
             className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
           >
@@ -74,23 +130,147 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 Engenharia Solar
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleNavClick(link.href)
-                }}
-                className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
+            <Link
+              to="/"
+              onClick={() => {
+                if (location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Início
+            </Link>
+
+            {/* Soluções com Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setSolucoesDropdownOpen(!solucoesDropdownOpen)}
+                onMouseEnter={() => setSolucoesDropdownOpen(true)}
+                className={`text-xs xl:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
+                  location.pathname.startsWith('/solucoes')
+                    ? 'text-solar-400 font-semibold'
+                    : 'text-slate-200 hover:text-solar-400'
+                }`}
+                aria-expanded={solucoesDropdownOpen}
               >
-                {link.label}
-              </a>
-            ))}
+                <span>Soluções</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform ${
+                    solucoesDropdownOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              {solucoesDropdownOpen && (
+                <div
+                  onMouseLeave={() => setSolucoesDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-3 w-80 bg-[#061526] border border-white/15 rounded-2xl shadow-2xl p-2.5 backdrop-blur-xl animate-fade-in z-50 space-y-1"
+                >
+                  <div className="px-3 py-1.5 border-b border-white/10 mb-1 flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
+                      As 4 Soluções Delfos
+                    </span>
+                    <Link
+                      to="/#solucoes"
+                      onClick={() => setSolucoesDropdownOpen(false)}
+                      className="text-[10px] text-slate-400 hover:text-white"
+                    >
+                      Ver na home
+                    </Link>
+                  </div>
+                  {solucoesList.map((sol) => {
+                    const Icon = sol.icon
+                    const isCurrent = location.pathname === sol.href
+                    return (
+                      <Link
+                        key={sol.href}
+                        to={sol.href}
+                        onClick={() => setSolucoesDropdownOpen(false)}
+                        className={`flex items-start gap-3 p-2.5 rounded-xl transition-all ${
+                          isCurrent
+                            ? 'bg-solar-500/15 border border-solar-500/30'
+                            : 'hover:bg-white/5 border border-transparent'
+                        }`}
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                          <Icon className={`w-4 h-4 ${sol.color}`} />
+                        </div>
+                        <div>
+                          <span className="text-xs font-bold text-white block leading-snug">
+                            {sol.title}
+                          </span>
+                          <span className="text-[11px] text-slate-400 block leading-tight mt-0.5">
+                            {sol.desc}
+                          </span>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
+            <a
+              href="/#segmentos"
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavClick('#segmentos')
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Segmentos
+            </a>
+
+            <a
+              href="/#projetos-resultados"
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavClick('#projetos-resultados')
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Projetos e Resultados
+            </a>
+
+            <a
+              href="/#faq"
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavClick('#faq')
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Conteúdos
+            </a>
+
+            <a
+              href="/#sobre-delfos"
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavClick('#sobre-delfos')
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Sobre a Delfos
+            </a>
+
+            <a
+              href="#contato"
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavClick('#contato')
+              }}
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+            >
+              Contato
+            </a>
           </nav>
 
           {/* Fixed Global Desktop CTA: "Solicitar avaliação" */}
@@ -158,19 +338,95 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               </div>
 
               <nav className="flex flex-col gap-1 mt-6">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleNavClick(link.href)
-                    }}
-                    className="px-3 py-3 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                <Link
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Início
+                </Link>
+
+                {/* Submenu mobile Soluções */}
+                <div className="rounded-xl bg-white/5 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setMobileSolucoesOpen(!mobileSolucoesOpen)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-200 hover:text-solar-400 transition-colors"
                   >
-                    {link.label}
-                  </a>
-                ))}
+                    <span className="font-semibold text-solar-300">Soluções (4 Pilares)</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        mobileSolucoesOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  {mobileSolucoesOpen && (
+                    <div className="px-2 pb-2 space-y-1">
+                      {solucoesList.map((sol) => (
+                        <Link
+                          key={sol.href}
+                          to={sol.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-slate-200 hover:bg-white/10 hover:text-white"
+                        >
+                          <sol.icon className={`w-3.5 h-3.5 ${sol.color} shrink-0`} />
+                          <span className="truncate">{sol.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <a
+                  href="/#segmentos"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick('#segmentos')
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Segmentos
+                </a>
+                <a
+                  href="/#projetos-resultados"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick('#projetos-resultados')
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Projetos e Resultados
+                </a>
+                <a
+                  href="/#faq"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick('#faq')
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Conteúdos
+                </a>
+                <a
+                  href="/#sobre-delfos"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick('#sobre-delfos')
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Sobre a Delfos
+                </a>
+                <a
+                  href="#contato"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleNavClick('#contato')
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-white/5 hover:text-solar-400 transition-colors text-sm"
+                >
+                  Contato
+                </a>
               </nav>
             </div>
 

@@ -43,7 +43,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
             </p>
           </div>
 
-          <div className="lg:col-span-4 flex lg:justify-end">
+          <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col lg:items-end gap-3">
             <Button
               onClick={onSolicitarViabilidade}
               className="bg-emerald-500 hover:bg-emerald-400 text-midnight-950 font-bold px-7 py-6 text-base rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-2"
@@ -51,6 +51,13 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
               <span>Pedir estudo de viabilidade BESS</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
+            <a
+              href="/solucoes/bess"
+              className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors"
+            >
+              <span>Acessar página completa da Solução BESS</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
 

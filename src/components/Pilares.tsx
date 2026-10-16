@@ -25,6 +25,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       ],
       ctaText: 'Simular projeto',
       origem: 'pilar-solar',
+      paginaUrl: '/solucoes/energia-solar',
       anchorDark: false,
     },
     {
@@ -45,6 +46,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       ],
       ctaText: 'Pedir estudo de viabilidade',
       origem: 'pilar-bess',
+      paginaUrl: '/solucoes/bess',
       anchorDark: true,
       darkLink: '#secao-bess',
     },
@@ -66,6 +68,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       ],
       ctaText: 'Solicitar diagnóstico da usina',
       origem: 'pilar-oem',
+      paginaUrl: '/solucoes/om',
       anchorDark: false,
     },
     {
@@ -86,6 +89,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       ],
       ctaText: 'Solicitar vistoria',
       origem: 'pilar-carregadores',
+      paginaUrl: '/solucoes/carregadores',
       anchorDark: true,
       darkLink: '#secao-carregadores',
     },
@@ -173,21 +177,20 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
                 {/* Footer Actions */}
                 <div className="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                   <Button
-                    onClick={() => onSelectPilar(p.titulo, p.origem)}
-                    className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-2.5 rounded-xl text-sm shadow-md flex items-center justify-center gap-2 group/btn"
+                    onClick={() => onSelectPilar(p.titulo, `home-${p.origem}`)}
+                    className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 group/btn"
                   >
                     <span>{p.ctaText}</span>
                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
 
-                  {p.darkLink && (
-                    <a
-                      href={p.darkLink}
-                      className="text-xs font-semibold text-slate-500 hover:text-midnight-900 text-center sm:text-right hover:underline"
-                    >
-                      Ver detalhes técnicos (seção dark) ↓
-                    </a>
-                  )}
+                  <a
+                    href={p.paginaUrl}
+                    className="text-xs font-bold text-slate-700 hover:text-solar-600 text-center sm:text-right flex items-center justify-center sm:justify-end gap-1 group/link"
+                  >
+                    <span>Conhecer página da solução</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </a>
                 </div>
               </div>
             )
