@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T16:45:23.251Z",
+  "generatedAt": "2026-10-16T17:21:49.410Z",
   "collections": [
     {
       "name": "users",
@@ -76,7 +76,7 @@
         {
           "name": "tipo_imovel",
           "type": "select",
-          "required": true,
+          "required": false,
           "system": false,
           "selectValues": ["Residencia", "Empresa", "Outro"]
         },
@@ -105,6 +105,54 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "cidade",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "necessidade",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tipo_ligacao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "valor_conta",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "posse_area",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ja_possui_solar",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "origem",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "concessionaria",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [

@@ -17,13 +17,18 @@ import {
   Home,
   CheckCircle,
   ExternalLink,
+  MapPin,
+  Tag,
+  BatteryCharging,
+  Layers,
+  Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { isAuthenticated, logout, getCurrentUser } from '@/services/auth'
 import { listLeads, deleteLead } from '@/services/leads'
-import type { Lead, TipoImovel } from '@/types/leads'
+import type { Lead } from '@/types/leads'
 
 export default function Admin() {
   const navigate = useNavigate()
@@ -32,8 +37,10 @@ export default function Admin() {
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [filterTipo, setFilterTipo] = useState<string>('todos')
+  const [filterNecessidade, setFilterNecessidade] = useState<string>('todos')
+  const [filterOrigem, setFilterOrigem] = useState<string>('todos')
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [selectedLeadModal, setSelectedLeadModal] = useState<Lead | null>(null)
 
   const currentUser = getCurrentUser()
 
@@ -84,6 +91,9 @@ export default function Admin() {
         title: 'Lead excluído',
         description: 'Registro removido com sucesso.',
       })
+      if (selectedLeadModal?.id === id) {
+        setSelectedLeadModal(null)
+      }
     } catch (err) {
       console.error('Erro ao excluir:', err)
       toast({
@@ -95,6 +105,40 @@ export default function Admin() {
       setDeletingId(null)
     }
   }
+
+  // Origens únicas para o filtro
+  const origensDisponiveis = useMemo(() => {
+    const set = new Set<string>()
+    leads.forEach((l) => {
+      if (l.origem) set.add(l.origem)
+    })
+    return Array.from(set)
+  }, [leads])
+
+  // Filtragem
+  const filteredLeads = useMemo(() => {
+    return leads.filter((item) => {
+      const term = search.toLowerCase()
+      const matchSearch =
+        item.nome.toLowerCase().includes(term) ||
+        item.email.toLowerCase().includes(term) ||
+        item.telefone.toLowerCase().includes(term) ||
+        (item.cidade && item.cidade.toLowerCase().includes(term)) ||
+        (item.necessidade && item.necessidade.toLowerCase().includes(term)) ||
+        (item.origem && item.origem.toLowerCase().includes(term)) ||
+        (item.mensagem && item.mensagem.toLowerCase().includes(term))
+
+      const matchNecessidade =
+        filterNecessidade === 'todos' ||
+        (item.necessidade &&
+          item.necessidade.toLowerCase().includes(filterNecessidade.toLowerCase())) ||
+        (item.tipo_imovel && item.tipo_imovel === filterNecessidade)
+
+      const matchOrigem = filterOrigem === 'todos' || item.origem === filterOrigem
+
+      return matchSearch && matchNecessidade && matchOrigem
+    })
+  }, [leads, search, filterNecessidade, filterOrigem])
 
   const exportCSV = () => {
     if (filteredLeads.length === 0) {
@@ -111,18 +155,31 @@ export default function Admin() {
       'Nome',
       'Telefone',
       'E-mail',
-      'Tipo de Imóvel',
-      'Consumo Mensal (R$)',
-      'Mensagem',
+      'Cidade',
+      'Necessidade / Pilar',
+      'Tipo de Ligação',
+      'Valor da Conta (R$)',
+      'Concessionária',
+      'Posse da Área',
+      'Já Possui Solar',
+      'Origem / Campanha',
+      'Mensagem / Obs',
     ]
+
     const rows = filteredLeads.map((l) => [
       l.id,
       new Date(l.created).toLocaleString('pt-BR'),
       `"${l.nome.replace(/"/g, '""')}"`,
       `"${l.telefone}"`,
       `"${l.email}"`,
-      `"${l.tipo_imovel}"`,
-      l.consumo_mensal ? l.consumo_mensal : '',
+      `"${(l.cidade || '').replace(/"/g, '""')}"`,
+      `"${(l.necessidade || l.tipo_imovel || '').replace(/"/g, '""')}"`,
+      `"${l.tipo_ligacao || ''}"`,
+      l.valor_conta ? l.valor_conta : l.consumo_mensal ? l.consumo_mensal : '',
+      `"${l.concessionaria || ''}"`,
+      `"${l.posse_area || ''}"`,
+      `"${l.ja_possui_solar || ''}"`,
+      `"${l.origem || 'direto'}"`,
       `"${(l.mensagem || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
     ])
 
@@ -132,7 +189,7 @@ export default function Admin() {
     const encodedUri = encodeURI(csvContent)
     const link = document.createElement('a')
     link.setAttribute('href', encodedUri)
-    link.setAttribute('download', `delfos_leads_${new Date().toISOString().slice(0, 10)}.csv`)
+    link.setAttribute('download', `delfos_leads_fase1_${new Date().toISOString().slice(0, 10)}.csv`)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -143,30 +200,16 @@ export default function Admin() {
     })
   }
 
-  const filteredLeads = useMemo(() => {
-    return leads.filter((item) => {
-      const matchSearch =
-        item.nome.toLowerCase().includes(search.toLowerCase()) ||
-        item.email.toLowerCase().includes(search.toLowerCase()) ||
-        item.telefone.toLowerCase().includes(search.toLowerCase()) ||
-        (item.mensagem && item.mensagem.toLowerCase().includes(search.toLowerCase()))
-
-      const matchTipo = filterTipo === 'todos' || item.tipo_imovel === filterTipo
-
-      return matchSearch && matchTipo
-    })
-  }, [leads, search, filterTipo])
-
   // Stats calculation
   const totalLeads = leads.length
-  const residenciaLeads = leads.filter((l) => l.tipo_imovel === 'Residencia').length
-  const empresaLeads = leads.filter((l) => l.tipo_imovel === 'Empresa').length
-  const consumoEstimadoMedio = useMemo(() => {
-    const comConsumo = leads.filter((l) => l.consumo_mensal && l.consumo_mensal > 0)
-    if (comConsumo.length === 0) return 0
-    const sum = comConsumo.reduce((acc, curr) => acc + (curr.consumo_mensal || 0), 0)
-    return Math.round(sum / comConsumo.length)
-  }, [leads])
+  const solarLeads = leads.filter(
+    (l) => (l.necessidade && l.necessidade.includes('Solar')) || l.tipo_imovel === 'Residencia',
+  ).length
+  const bessLeads = leads.filter((l) => l.necessidade && l.necessidade.includes('BESS')).length
+  const outrosPilaresLeads = leads.filter(
+    (l) =>
+      l.necessidade && (l.necessidade.includes('Carregadores') || l.necessidade.includes('O&M')),
+  ).length
 
   return (
     <div className="min-h-screen bg-frost flex flex-col text-slate-800">
@@ -179,9 +222,9 @@ export default function Admin() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-base leading-tight">DELFOS</span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase">
-                  Painel de Leads
+                <span className="font-extrabold text-base leading-tight">DELFOS</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase">
+                  Painel de Leads • Fase 1
                 </span>
               </div>
               <span className="text-xs text-slate-400 block leading-none">
@@ -197,7 +240,7 @@ export default function Admin() {
                 size="sm"
                 className="text-slate-300 hover:text-white hover:bg-white/10 text-xs flex items-center gap-1.5"
               >
-                <span>Ver Landing Page</span>
+                <span>Ver Nova Home</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             </Link>
@@ -232,73 +275,89 @@ export default function Admin() {
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-              <Home className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <Sun className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Residencial
+                Fotovoltaico EPC
               </span>
-              <p className="text-2xl font-bold text-slate-900">{residenciaLeads}</p>
+              <p className="text-2xl font-bold text-slate-900">{solarLeads}</p>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Building className="w-6 h-6" />
+              <BatteryCharging className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Empresas
+                BESS (Baterias)
               </span>
-              <p className="text-2xl font-bold text-slate-900">{empresaLeads}</p>
+              <p className="text-2xl font-bold text-slate-900">{bessLeads}</p>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <DollarSign className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <Layers className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Consumo Médio
+                O&M / Carregadores
               </span>
-              <p className="text-2xl font-bold text-slate-900">
-                {consumoEstimadoMedio > 0 ? `R$ ${consumoEstimadoMedio}` : 'N/A'}
-              </p>
+              <p className="text-2xl font-bold text-slate-900">{outrosPilaresLeads}</p>
             </div>
           </div>
         </div>
 
-        {/* Filter and Actions Bar */}
+        {/* Filters and Actions */}
         <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {/* Search Input */}
+            {/* Search */}
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar por nome, telefone, e-mail..."
+                placeholder="Buscar por nome, WhatsApp, cidade, origem..."
                 className="pl-9 h-10 rounded-xl bg-frost border-slate-200 text-sm"
               />
             </div>
 
-            {/* Filter by Property Type */}
+            {/* Filter by Pilar / Necessidade */}
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-slate-400 hidden sm:block" />
               <select
-                value={filterTipo}
-                onChange={(e) => setFilterTipo(e.target.value)}
-                aria-label="Filtrar por tipo de imóvel"
-                className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                value={filterNecessidade}
+                onChange={(e) => setFilterNecessidade(e.target.value)}
+                aria-label="Filtrar por necessidade ou pilar"
+                className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
               >
-                <option value="todos">Todos os tipos</option>
-                <option value="Residencia">Residencial</option>
-                <option value="Empresa">Empresarial</option>
-                <option value="Outro">Outro</option>
+                <option value="todos">Todos os pilares</option>
+                <option value="Solar">Energia Solar (EPC)</option>
+                <option value="BESS">BESS (Armazenamento)</option>
+                <option value="O&M">O&M / Monitoramento</option>
+                <option value="Carregadores">Carregadores Veiculares</option>
               </select>
             </div>
+
+            {/* Filter by Origem */}
+            {origensDisponiveis.length > 0 && (
+              <select
+                value={filterOrigem}
+                onChange={(e) => setFilterOrigem(e.target.value)}
+                aria-label="Filtrar por origem do lead"
+                className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
+              >
+                <option value="todos">Todas as origens</option>
+                {origensDisponiveis.map((orig) => (
+                  <option key={orig} value={orig}>
+                    Origem: {orig}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="flex items-center gap-2 justify-end">
@@ -330,13 +389,13 @@ export default function Admin() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="py-4 px-6">Data</th>
-                  <th className="py-4 px-6">Cliente</th>
-                  <th className="py-4 px-6">Contato</th>
-                  <th className="py-4 px-6">Tipo</th>
-                  <th className="py-4 px-6">Conta Atual</th>
-                  <th className="py-4 px-6">Mensagem</th>
-                  <th className="py-4 px-6 text-right">Ações</th>
+                  <th className="py-4 px-5">Data</th>
+                  <th className="py-4 px-5">Cliente</th>
+                  <th className="py-4 px-5">Contato & Cidade</th>
+                  <th className="py-4 px-5">Pilar / Necessidade</th>
+                  <th className="py-4 px-5">Qualificação Técnica</th>
+                  <th className="py-4 px-5">Origem</th>
+                  <th className="py-4 px-5 text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
@@ -366,12 +425,14 @@ export default function Admin() {
                     const cleanPhone = lead.telefone.replace(/\D/g, '')
                     const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
                       lead.nome,
-                    )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20Solar%20de%20Erechim!`
+                    )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+
+                    const valorFinal = lead.valor_conta || lead.consumo_mensal
 
                     return (
                       <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
                         {/* Data */}
-                        <td className="py-4 px-6 text-xs text-slate-500 whitespace-nowrap">
+                        <td className="py-4 px-5 text-xs text-slate-500 whitespace-nowrap">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5 text-slate-400" />
                             <span>{dateFormatted}</span>
@@ -379,76 +440,88 @@ export default function Admin() {
                         </td>
 
                         {/* Nome */}
-                        <td className="py-4 px-6 font-semibold text-slate-900">{lead.nome}</td>
+                        <td className="py-4 px-5">
+                          <button
+                            onClick={() => setSelectedLeadModal(lead)}
+                            className="font-bold text-slate-900 hover:text-solar-600 text-left block"
+                          >
+                            {lead.nome}
+                          </button>
+                        </td>
 
-                        {/* Contatos */}
-                        <td className="py-4 px-6 whitespace-nowrap">
+                        {/* Contatos & Cidade */}
+                        <td className="py-4 px-5 whitespace-nowrap">
                           <div className="space-y-1">
                             <a
                               href={whatsappLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-xs text-leaf-dark hover:underline font-semibold"
+                              className="flex items-center gap-1.5 text-xs text-emerald-700 hover:underline font-semibold"
                             >
-                              <Phone className="w-3.5 h-3.5 text-leaf" />
+                              <Phone className="w-3.5 h-3.5 text-emerald-600" />
                               <span>{lead.telefone}</span>
                             </a>
                             <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                              <Mail className="w-3.5 h-3.5 text-slate-400" />
-                              <a href={`mailto:${lead.email}`} className="hover:underline">
-                                {lead.email}
-                              </a>
+                              <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                              <span>{lead.cidade || 'Não informada'}</span>
                             </div>
                           </div>
                         </td>
 
-                        {/* Tipo de Imóvel */}
-                        <td className="py-4 px-6 whitespace-nowrap">
+                        {/* Pilar / Necessidade */}
+                        <td className="py-4 px-5 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-                              lead.tipo_imovel === 'Residencia'
-                                ? 'bg-solar-100 text-solar-800'
-                                : lead.tipo_imovel === 'Empresa'
-                                  ? 'bg-blue-100 text-blue-800'
-                                  : 'bg-slate-100 text-slate-800'
+                              (lead.necessidade || '').includes('BESS')
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : (lead.necessidade || '').includes('Carregadores')
+                                  ? 'bg-indigo-100 text-indigo-800'
+                                  : (lead.necessidade || '').includes('O&M')
+                                    ? 'bg-blue-100 text-blue-800'
+                                    : 'bg-solar-100 text-solar-800'
                             }`}
                           >
-                            {lead.tipo_imovel === 'Residencia'
-                              ? 'Residencial'
-                              : lead.tipo_imovel === 'Empresa'
-                                ? 'Empresa'
-                                : 'Outro'}
+                            {lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
                           </span>
                         </td>
 
-                        {/* Consumo Mensal */}
-                        <td className="py-4 px-6 whitespace-nowrap font-medium text-slate-900">
-                          {lead.consumo_mensal ? (
-                            <span className="text-leaf-dark font-bold">
-                              R${' '}
-                              {lead.consumo_mensal.toLocaleString('pt-BR', {
-                                minimumFractionDigits: 2,
-                              })}
-                            </span>
-                          ) : (
-                            <span className="text-slate-400 text-xs">Não informado</span>
-                          )}
+                        {/* Qualificação Técnica */}
+                        <td className="py-4 px-5 text-xs text-slate-700 whitespace-nowrap">
+                          <div>
+                            {valorFinal ? (
+                              <span className="font-bold text-emerald-800">
+                                R$ {valorFinal.toLocaleString('pt-BR')}
+                                <span className="text-[10px] text-slate-400 font-normal">/mês</span>
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 italic">Conta não inf.</span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-500">
+                            {lead.tipo_ligacao ? `Ligação: ${lead.tipo_ligacao}` : ''}
+                            {lead.concessionaria ? ` • ${lead.concessionaria}` : ''}
+                          </div>
                         </td>
 
-                        {/* Mensagem */}
-                        <td className="py-4 px-6 max-w-xs text-xs text-slate-600">
-                          {lead.mensagem ? (
-                            <span className="line-clamp-2" title={lead.mensagem}>
-                              {lead.mensagem}
-                            </span>
-                          ) : (
-                            <span className="text-slate-400 italic">Sem observações</span>
-                          )}
+                        {/* Origem */}
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                            <Tag className="w-3 h-3 text-slate-400" />
+                            {lead.origem || 'direto'}
+                          </span>
                         </td>
 
                         {/* Ações */}
-                        <td className="py-4 px-6 text-right whitespace-nowrap">
+                        <td className="py-4 px-5 text-right whitespace-nowrap">
                           <div className="flex items-center justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedLeadModal(lead)}
+                              className="text-xs text-slate-600 hover:text-slate-900"
+                            >
+                              Ver ficha
+                            </Button>
                             <a
                               href={whatsappLink}
                               target="_blank"
@@ -479,6 +552,111 @@ export default function Admin() {
           </div>
         </div>
       </div>
+
+      {/* Modal Ficha Completa do Lead */}
+      {selectedLeadModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative space-y-5 animate-fade-in-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600 block">
+                  Ficha Técnica do Lead
+                </span>
+                <h3 className="text-xl font-extrabold text-slate-900">{selectedLeadModal.nome}</h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedLeadModal(null)}
+                className="text-slate-400 hover:text-slate-900"
+              >
+                ✕
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-xs">
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">WhatsApp</span>
+                <strong className="text-slate-900">{selectedLeadModal.telefone}</strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">E-mail</span>
+                <strong className="text-slate-900 truncate block">{selectedLeadModal.email}</strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Cidade</span>
+                <strong className="text-slate-900">
+                  {selectedLeadModal.cidade || 'Não informada'}
+                </strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Necessidade</span>
+                <strong className="text-slate-900">
+                  {selectedLeadModal.necessidade || selectedLeadModal.tipo_imovel}
+                </strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Conta Média</span>
+                <strong className="text-emerald-700">
+                  {selectedLeadModal.valor_conta || selectedLeadModal.consumo_mensal
+                    ? `R$ ${(selectedLeadModal.valor_conta || selectedLeadModal.consumo_mensal)?.toLocaleString('pt-BR')}`
+                    : 'Não informado'}
+                </strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Tipo Ligação</span>
+                <strong className="text-slate-900">
+                  {selectedLeadModal.tipo_ligacao || 'Não informado'}
+                </strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Posse Imóvel</span>
+                <strong className="text-slate-900">
+                  {selectedLeadModal.posse_area || 'Próprio'}
+                </strong>
+              </div>
+              <div className="bg-frost p-3 rounded-xl">
+                <span className="text-slate-400 block font-semibold">Origem do Lead</span>
+                <strong className="text-slate-900 font-mono">
+                  {selectedLeadModal.origem || 'direto'}
+                </strong>
+              </div>
+            </div>
+
+            {selectedLeadModal.mensagem && (
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                <span className="text-slate-400 font-semibold block mb-1">
+                  Observações do Cliente:
+                </span>
+                <p className="text-slate-700 leading-relaxed">{selectedLeadModal.mensagem}</p>
+              </div>
+            )}
+
+            <div className="pt-2 flex items-center justify-between gap-3">
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => handleDelete(selectedLeadModal.id, selectedLeadModal.nome)}
+                className="text-xs"
+              >
+                Excluir Lead
+              </Button>
+
+              <a
+                href={`https://wa.me/55${selectedLeadModal.telefone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(
+                  selectedLeadModal.nome,
+                )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia!`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md"
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span>Iniciar no WhatsApp</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
