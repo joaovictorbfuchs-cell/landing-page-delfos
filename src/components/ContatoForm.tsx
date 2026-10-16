@@ -26,6 +26,10 @@ interface ContatoFormProps {
   subtituloSecao?: string
   textoBotaoFinal?: string
   destaqueDark?: boolean
+  // Qualificação inicial específica por segmento (conforme seção 6 da especificação)
+  qualificacaoEspecificaLabel?: string
+  qualificacaoEspecificaPlaceholder?: string
+  qualificacaoEspecificaObrigatoria?: boolean
 }
 
 export default function ContatoForm({
@@ -37,6 +41,9 @@ export default function ContatoForm({
   subtituloSecao = 'Dimensionamento preciso e estudo preliminar sem custos. Em 2 etapas rápidas, roteamos seu projeto diretamente para o engenheiro especialista do seu setor.',
   textoBotaoFinal = 'Finalizar e Solicitar Avaliação',
   destaqueDark = false,
+  qualificacaoEspecificaLabel,
+  qualificacaoEspecificaPlaceholder,
+  qualificacaoEspecificaObrigatoria = false,
 }: ContatoFormProps) {
   const { toast } = useToast()
 
@@ -58,6 +65,7 @@ export default function ContatoForm({
   const [posseArea, setPosseArea] = useState<PosseArea>('Proprio')
   const [jaPossuiSolar, setJaPossuiSolar] = useState<JaPossuiSolar>('Nao')
   const [concessionaria, setConcessionaria] = useState(initialConcessionaria)
+  const [qualificacaoEspecificaValor, setQualificacaoEspecificaValor] = useState('')
   const [mensagem, setMensagem] = useState('')
   const [aceitouTermos, setAceitouTermos] = useState(false)
 
@@ -84,6 +92,7 @@ export default function ContatoForm({
   const [errorsEtapa2, setErrorsEtapa2] = useState<{
     valorConta?: string
     termos?: string
+    qualificacaoEspecifica?: string
   }>({})
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -148,6 +157,15 @@ export default function ContatoForm({
       }
     }
 
+    if (
+      qualificacaoEspecificaLabel &&
+      qualificacaoEspecificaObrigatoria &&
+      !qualificacaoEspecificaValor.trim()
+    ) {
+      errs.qualificacaoEspecifica =
+        'Por favor, informe este dado de qualificação para o cálculo prévio'
+    }
+
     if (!aceitouTermos) {
       errs.termos = 'Você precisa autorizar o contato técnico para receber a avaliação'
     }
@@ -188,7 +206,10 @@ export default function ContatoForm({
         posse_area: posseArea,
         ja_possui_solar: jaPossuiSolar,
         concessionaria,
-        mensagem: mensagem || undefined,
+        mensagem:
+          qualificacaoEspecificaLabel && qualificacaoEspecificaValor.trim()
+            ? `[${qualificacaoEspecificaLabel}: ${qualificacaoEspecificaValor.trim()}]${mensagem ? ` | Obs: ${mensagem}` : ''}`
+            : mensagem || undefined,
         origem: initialOrigem || 'home-formulario-2etapas',
       })
 
@@ -731,6 +752,53 @@ export default function ContatoForm({
                       </select>
                     </div>
                   </div>
+
+                  {/* Campo de Qualificação Inicial Específico do Segmento (se aplicável) */}
+                  {qualificacaoEspecificaLabel && (
+                    <div className="p-3.5 rounded-2xl bg-solar-50/70 border border-solar-200/70 space-y-1.5">
+                      <label
+                        htmlFor="lead-qualificacao-especifica"
+                        className="block text-xs font-extrabold uppercase tracking-wider text-solar-900"
+                      >
+                        {qualificacaoEspecificaLabel}{' '}
+                        {qualificacaoEspecificaObrigatoria ? (
+                          <span className="text-red-500">*</span>
+                        ) : (
+                          <span className="text-slate-400 font-normal lowercase">
+                            (recomendado)
+                          </span>
+                        )}
+                      </label>
+                      <Input
+                        id="lead-qualificacao-especifica"
+                        value={qualificacaoEspecificaValor}
+                        onChange={(e) => {
+                          setQualificacaoEspecificaValor(e.target.value)
+                          if (errorsEtapa2.qualificacaoEspecifica) {
+                            setErrorsEtapa2((prev) => ({
+                              ...prev,
+                              qualificacaoEspecifica: undefined,
+                            }))
+                          }
+                        }}
+                        placeholder={
+                          qualificacaoEspecificaPlaceholder ||
+                          'Informe os parâmetros do seu segmento...'
+                        }
+                        className={`bg-white h-12 rounded-xl text-sm ${
+                          errorsEtapa2.qualificacaoEspecifica
+                            ? 'border-red-500 focus-visible:ring-red-400'
+                            : 'border-slate-200'
+                        }`}
+                      />
+                      {errorsEtapa2.qualificacaoEspecifica && (
+                        <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3.5 h-3.5" />
+                          {errorsEtapa2.qualificacaoEspecifica}
+                        </p>
+                      )}
+                    </div>
+                  )}
 
                   {/* Já possui sistema solar? */}
                   <div>

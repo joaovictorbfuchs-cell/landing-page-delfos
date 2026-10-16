@@ -1,0 +1,719 @@
+import {
+  Home,
+  Store,
+  Factory,
+  Tractor,
+  Building2,
+  TrendingUp,
+  Truck,
+  Sun,
+  BatteryCharging,
+  Wrench,
+  Car,
+  type LucideIcon,
+} from 'lucide-react'
+import type { SegmentoCase } from './cases'
+
+export interface SolucaoCrossLink {
+  titulo: string
+  subtitulo: string
+  href: string
+  badge: string
+  icone: LucideIcon
+}
+
+export interface SegmentoInfo {
+  id: string
+  slug: string // ex: "residencias", "comercio-servicos", "industria", ...
+  path: string // ex: "/segmentos/residencias"
+  nome: string // Nome de exibição
+  caseSegmentoKey: SegmentoCase // Para filtrar em CASES_DATA
+  perguntaPrincipal: string // Pergunta exata da tabela da seção 6
+  headlineComplemento: string // Resposta e posicionamento técnico da Delfos
+  descricaoHero: string
+  ctaRecomendado: string // CTA exato da seção 6
+  dadoQualificacao: string // Dado exato da tabela da seção 6
+  qualificacaoCampoLabel: string
+  qualificacaoCampoPlaceholder: string
+  necessidadePadrao: string
+  icone: LucideIcon
+  corTema: {
+    bgBadge: string
+    textBadge: string
+    borderBadge: string
+    destaque: string
+  }
+  isDarkMode?: boolean // Seções escuras quando BESS / Carregadores dominam
+  solucoesRelevantes: SolucaoCrossLink[]
+  doresERespostas: {
+    dor: string
+    resposta: string
+    comoResolvemos: string
+  }[]
+  faq: {
+    pergunta: string
+    resposta: string
+  }[]
+  seo: {
+    title: string
+    description: string
+  }
+}
+
+export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
+  residencias: {
+    id: 'residencias',
+    slug: 'residencias',
+    path: '/segmentos/residencias',
+    nome: 'Residências',
+    caseSegmentoKey: 'Residências',
+    perguntaPrincipal: 'Quanto posso economizar e há opção de backup?',
+    headlineComplemento:
+      'Economia de até 95% na conta de energia e proteção com baterias contra apagões na rede gaúcha.',
+    descricaoHero:
+      'Soluções solares residenciais de engenharia de campo em telhados cerâmicos, metálicos e fibrocimento no RS. Projetos fotovoltaicos com microinversores, estética limpa e opção de BESS para backup contínuo.',
+    ctaRecomendado: 'Simular projeto',
+    dadoQualificacao: 'Cidade, concessionária e valor da conta',
+    qualificacaoCampoLabel: 'Concessionária e detalhe da residência',
+    qualificacaoCampoPlaceholder: 'Ex: RGE, telhado cerâmico, 3 pessoas na casa...',
+    necessidadePadrao: 'Energia Solar Fotovoltaica',
+    icone: Home,
+    corTema: {
+      bgBadge: 'bg-solar-500/15',
+      textBadge: 'text-solar-400',
+      borderBadge: 'border-solar-400/30',
+      destaque: 'text-solar-500',
+    },
+    isDarkMode: false,
+    solucoesRelevantes: [
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Redução de até 95% na conta com módulos Tier 1 e 25 anos de garantia.',
+        href: '/solucoes/energia-solar',
+        badge: 'Solução Principal',
+        icone: Sun,
+      },
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo:
+          'Backup ininterrupto (< 20ms) para manter geladeira, internet e luz em temporais.',
+        href: '/solucoes/bess',
+        badge: 'Backup Residencial',
+        icone: BatteryCharging,
+      },
+      {
+        titulo: 'Carregadores Veiculares (Wallbox)',
+        subtitulo: 'Recarga segura e inteligente para carros elétricos e híbridos na garagem.',
+        href: '/solucoes/carregadores',
+        badge: 'Eletromobilidade',
+        icone: Car,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Contas de luz cada vez mais caras com bandeiras tarifárias frequentes.',
+        resposta: 'Gere sua própria energia limpa na cobertura da sua casa.',
+        comoResolvemos:
+          'Dimensionamento preciso baseado no histórico de 12 meses de consumo. Você passa a pagar apenas a taxa básica de disponibilidade da concessionária (RGE / CEEE).',
+      },
+      {
+        dor: 'Quedas constantes de energia durante temporais no verão gaúcho.',
+        resposta: 'Baterias residenciais de lítio com reversão automática.',
+        comoResolvemos:
+          'Sistemas híbridos fotovoltaicos com BESS: quando a concessionária cai, a casa continua funcionando sem piscar a luz e sem o barulho nem fumaça de geradores a diesel.',
+      },
+      {
+        dor: 'Medo de danificar o telhado cerâmico ou estética feia na fachada.',
+        resposta: 'Engenharia com ART, microinversores e fixadores certificados.',
+        comoResolvemos:
+          'Laudo estrutural do telhado, ganchos em inox sem quebra de telhas e fiação 100% embutida em eletrodutos protegidos.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'Quanto tempo dura o sistema e qual o retorno do investimento residencial?',
+        resposta:
+          'Os módulos fotovoltaicos possuem garantia de desempenho de 25 anos. No Rio Grande do Sul, o payback médio tem ficado entre 3 e 4 anos, proporcionando mais de duas décadas de energia praticamente gratuita.',
+      },
+      {
+        pergunta: 'Se acabar a luz da concessionária, o sistema solar continua funcionando?',
+        resposta:
+          'Sistemas solares on-grid tradicionais desligam por norma de segurança (anti-ilhamento). Caso você queira continuar com energia durante apagões, a Delfos instala o sistema híbrido com baterias BESS de lítio, que assume as cargas críticas em menos de 20 milissegundos.',
+      },
+      {
+        pergunta: 'A Delfos cuida de toda a papelada e aprovação com a RGE ou CEEE?',
+        resposta:
+          'Sim, cuidamos de 100% do processo EPC: estudo solarimétrico, projeto elétrico, emissão de ART no CREA-RS, homologação junto à concessionária e acompanhamento da troca do medidor bidirecional.',
+      },
+    ],
+    seo: {
+      title: 'Energia Solar e BESS Residencial no RS | Delfos Engenharia',
+      description:
+        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 95% de redução, opção de backup contra blecautes e homologação CREA-RS.',
+    },
+  },
+
+  'comercio-servicos': {
+    id: 'comercio-servicos',
+    slug: 'comercio-servicos',
+    path: '/segmentos/comercio-servicos',
+    nome: 'Comércio e Serviços',
+    caseSegmentoKey: 'Comércio e Serviços',
+    perguntaPrincipal: 'Como reduzir custo sem interromper a operação?',
+    headlineComplemento:
+      'Engenharia sem paradas operacionais: corte custos fixos de eletricidade e blinde seu atendimento comercial.',
+    descricaoHero:
+      'Soluções para supermercados, padarias, clínicas, academias, centros de distribuição e varejo. Montagem sem impacto no fluxo de clientes, eficiência tarifária, O&M contínuo e backup contra falhas na rede.',
+    ctaRecomendado: 'Pedir estudo de viabilidade',
+    dadoQualificacao: 'Conta, horário de consumo, necessidade de continuidade',
+    qualificacaoCampoLabel: 'Horário de consumo e necessidade de continuidade',
+    qualificacaoCampoPlaceholder:
+      'Ex: Consumo diurno e noturno (câmaras frias), não pode parar por 30min...',
+    necessidadePadrao: 'Energia Solar Fotovoltaica',
+    icone: Store,
+    corTema: {
+      bgBadge: 'bg-blue-500/15',
+      textBadge: 'text-blue-400',
+      borderBadge: 'border-blue-400/30',
+      destaque: 'text-blue-600',
+    },
+    isDarkMode: false,
+    solucoesRelevantes: [
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Redução expressiva no custo operacional em telhados metálicos ou lajes.',
+        href: '/solucoes/energia-solar',
+        badge: 'Geração no Horário Comercial',
+        icone: Sun,
+      },
+      {
+        titulo: 'Manutenção O&M e Monitoramento',
+        subtitulo: 'Termografia por drone e limpeza técnica sem deixar a geração cair.',
+        href: '/solucoes/om',
+        badge: 'Proteção do Lucro',
+        icone: Wrench,
+      },
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo: 'Continuidade para câmaras frias, servidores e caixas sem perda de estoque.',
+        href: '/solucoes/bess',
+        badge: 'Zero Parada Operacional',
+        icone: BatteryCharging,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Risco de perda de clientes ou mercadorias refrigeradas por queda de energia.',
+        resposta: 'Armazenamento BESS ou sistemas fotovoltaicos híbridos com no-break integrado.',
+        comoResolvemos:
+          'Protegemos sistemas essenciais (PDVs, servidores, iluminação e compressores) para que o cliente nem perceba oscilações da rede elétrica externa.',
+      },
+      {
+        dor: 'Obras que atrapalham o atendimento diário e fluxo na loja.',
+        resposta: 'Cronograma executivo com montagem fora do horário comercial.',
+        comoResolvemos:
+          'Nossa equipe planeja o içamento de módulos e interligações elétricas nos períodos de menor movimento ou fins de semana, garantindo faturamento normal do estabelecimento.',
+      },
+      {
+        dor: 'Usina já instalada por outra empresa que está gerando menos a cada mês.',
+        resposta: 'Auditoria técnica de O&M com drone e lavagem especializada.',
+        comoResolvemos:
+          'Diagnosticamos hotspots e falhas em inversores, recuperando até +25% de geração sem necessidade de trocar placas.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'A instalação solar atrapalha o atendimento aos clientes na loja?',
+        resposta:
+          'Não. O cronograma executivo da Delfos prevê etapas ruidosas e içamento de materiais fora dos horários de pico comercial, com isolamento total de segurança e sem interrupção de vendas.',
+      },
+      {
+        pergunta: 'Comércios que consomem muito ar-condicionado e refrigeração têm bom retorno?',
+        resposta:
+          'Excelente retorno, pois o pico de demanda de climatização coincide perfeitamente com a curva máxima de irradiação solar (meio-dia e tardes quentes), permitindo autoconsumo instantâneo e alívio tarifário imediato.',
+      },
+      {
+        pergunta: 'Vocês realizam manutenção em usinas instaladas por outras integradoras?',
+        resposta:
+          'Sim! O pilar de O&M da Delfos atende usinas comerciais e industriais de qualquer fabricante, com contratos preventivos com SLA e laudos periódicos com ART no CREA-RS.',
+      },
+    ],
+    seo: {
+      title: 'Energia Solar e BESS para Comércio e Serviços | Delfos Solar RS',
+      description:
+        'Reduza despesas operacionais no comércio sem parar a operação. Projetos fotovoltaicos, O&M com drone e backup de energia para empresas em Erechim e no Sul.',
+    },
+  },
+
+  industria: {
+    id: 'industria',
+    slug: 'industria',
+    path: '/segmentos/industria',
+    nome: 'Indústria',
+    caseSegmentoKey: 'Indústria',
+    perguntaPrincipal: 'Como dimensionar geração, BESS e demanda contratada?',
+    headlineComplemento:
+      'Engenharia de alta tensão: solar EPC de grande porte, BESS para peak shaving e otimização de demanda no Grupo A.',
+    descricaoHero:
+      'Projetos industriais com análise de curva de carga, medição harmônica e integração com subestações abrigadas. Elimine multas por ultrapassagem de demanda, reduza custo no horário de ponta e garanta zero paradas de linha.',
+    ctaRecomendado: 'Falar com engenharia',
+    dadoQualificacao: 'Perfil de carga e demanda contratada',
+    qualificacaoCampoLabel: 'Perfil de carga, demanda contratada (kW) e tensão',
+    qualificacaoCampoPlaceholder: 'Ex: Demanda 250 kW, tarifa Verde, CNCs e motores pesados...',
+    necessidadePadrao: 'BESS (Armazenamento)',
+    icone: Factory,
+    corTema: {
+      bgBadge: 'bg-emerald-500/15',
+      textBadge: 'text-emerald-400',
+      borderBadge: 'border-emerald-500/30',
+      destaque: 'text-emerald-400',
+    },
+    isDarkMode: true,
+    solucoesRelevantes: [
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo: 'Peak shaving automático e continuidade ininterrupta para linhas fabris CNC.',
+        href: '/solucoes/bess',
+        badge: 'C&I de Alta Potência',
+        icone: BatteryCharging,
+      },
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Usinas em telhado trapezoidal metálico e solo com conexão em média tensão.',
+        href: '/solucoes/energia-solar',
+        badge: 'Redução Estrutural',
+        icone: Sun,
+      },
+      {
+        titulo: 'Manutenção O&M e Monitoramento',
+        subtitulo: 'Planos com SLA de até 4h, termografia radiométrica e revisão de subestação.',
+        href: '/solucoes/om',
+        badge: 'SLA Industrial',
+        icone: Wrench,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Microinterrupções de rede que desconfiguram fornos, robôs e centros de usinagem.',
+        resposta: 'BESS industrial LiFePO4 com comutação ininterrupta em menos de 20ms.',
+        comoResolvemos:
+          'Eliminamos perdas de lotes inteiros de matéria-prima e paradas de fábrica com bancos de lítio de alta resposta e EMS dedicado.',
+      },
+      {
+        dor: 'Multas frequentes por ultrapassagem de demanda contratada em horários de pico.',
+        resposta: 'Algoritmo de Peak Shaving com injeção automática de baterias.',
+        comoResolvemos:
+          'O BESS descarrega instantaneamente nos minutos em que a carga atinge o teto contratado, mantendo a curva de faturamento sempre dentro do limite do contrato com a concessionária.',
+      },
+      {
+        dor: 'Tarifa abusiva durante o horário de ponta (18h às 21h) no Grupo A.',
+        resposta: 'Arbitragem tarifária: carregamento fora da ponta e despacho na ponta.',
+        comoResolvemos:
+          'Carregamos as baterias com solar ou energia de baixo custo na madrugada e despachamos na fábrica no momento em que o kWh custa 4x a 5x mais caro.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'Como o BESS se integra à usina solar já existente na fábrica?',
+        resposta:
+          'O BESS é acoplado em corrente alternada (AC Coupling) ou contínua (DC Coupling) através de inversores bidirecionais híbridos, coordenados por um EMS (Energy Management System) que lê o fluxo da subestação em tempo real.',
+      },
+      {
+        pergunta: 'Qual a durabilidade e segurança das baterias industriais em galpões?',
+        resposta:
+          'Trabalhamos exclusivamente com química de Lítio Ferro Fosfato (LiFePO4) em gabinetes IP55 climatizados, com controle térmico ativo e sistema automático de supressão de incêndio, certificados para mais de 6.000 ciclos.',
+      },
+      {
+        pergunta:
+          'A Delfos faz o estudo da fatura de energia e renegociação de demanda contratada?',
+        resposta:
+          'Sim. Nossa equipe de engenharia analisa 12 a 24 meses de faturas de alta tensão (Grupo A Verde/Azul) e histórico de medição de telemetria para sugerir o re-enquadramento tarifário ideal em conjunto com o BESS.',
+      },
+    ],
+    seo: {
+      title: 'Energia Solar, BESS e Demanda Contratada para Indústrias | Delfos RS',
+      description:
+        'Engenharia industrial de ciclo completo no RS: peak shaving, BESS para continuidade, solar de grande porte e O&M com SLA para indústrias em Erechim e no Sul.',
+    },
+  },
+
+  agronegocio: {
+    id: 'agronegocio',
+    slug: 'agronegocio',
+    path: '/segmentos/agronegocio',
+    nome: 'Agronegócio',
+    caseSegmentoKey: 'Agronegócio',
+    perguntaPrincipal: 'Como garantir energia para a operação rural?',
+    headlineComplemento:
+      'Segurança energética para o campo: usinas de solo e telhado com baterias contra oscilações da rede rural.',
+    descricaoHero:
+      'Proteção contra estresse térmico em aviários, perda de leite em tanques resfriadores, ordenhas e irrigação. Sistemas solares de alta robustez com linhas de financiamento Pronaf e Pronamp, homologados para a realidade do Sul.',
+    ctaRecomendado: 'Avaliar unidade',
+    dadoQualificacao: 'Local, atividade e qualidade da rede rural',
+    qualificacaoCampoLabel: 'Local da propriedade, atividade e qualidade da rede rural',
+    qualificacaoCampoPlaceholder:
+      'Ex: Zona rural de Erechim, aviário 40k aves, rede monofásica instável...',
+    necessidadePadrao: 'Energia Solar Fotovoltaica',
+    icone: Tractor,
+    corTema: {
+      bgBadge: 'bg-emerald-500/15',
+      textBadge: 'text-emerald-400',
+      borderBadge: 'border-emerald-500/30',
+      destaque: 'text-emerald-600',
+    },
+    isDarkMode: false,
+    solucoesRelevantes: [
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Usinas de solo em estrutura galvanizada ou sobre galpões rurais.',
+        href: '/solucoes/energia-solar',
+        badge: 'Geração Rural',
+        icone: Sun,
+      },
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo: 'Backup rural automático sem os custos e falhas de gerador a diesel.',
+        href: '/solucoes/bess',
+        badge: 'Zero Perda de Lote',
+        icone: BatteryCharging,
+      },
+      {
+        titulo: 'Manutenção O&M e Monitoramento',
+        subtitulo: 'Lavagem técnica anti-fuligem agrícola e termografia por drone.',
+        href: '/solucoes/om',
+        badge: 'Safra Protegida',
+        icone: Wrench,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Queda de energia no verão com risco de morte em massa de aves e suínos.',
+        resposta: 'BESS de lítio com reversão automática em milissegundos.',
+        comoResolvemos:
+          'Os exaustores e climatizadores continuam operando sem interrupção mesmo em caso de temporal com rompimento de cabos da concessionária na zona rural.',
+      },
+      {
+        dor: 'Rede rural monofásica com oscilação extrema de tensão que queima motores.',
+        resposta: 'Inversores híbridos com estabilização ativa de tensão e filtros DPS.',
+        comoResolvemos:
+          'O sistema condiciona a onda de eletricidade rural, protegendo motores de ordenha, bombas de poço artesiano e resfriadores de leite.',
+      },
+      {
+        dor: 'Acúmulo intenso de poeira e fuligem de secadores de grãos sobre os painéis.',
+        resposta: 'Plano de O&M rural com lavagem programada na entressafra.',
+        comoResolvemos:
+          'Equipe de campo com equipamentos de água deionizada restaura 100% da capacidade de geração antes do período crítico de consumo.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'É possível financiar o sistema solar e BESS pelo Pronaf ou Pronamp?',
+        resposta:
+          'Sim. A Delfos apoia o produtor em toda a documentação de engenharia exigida pelos agentes financeiros (Banco do Brasil, Sicredi, Cresol, Banrisul) para linhas de crédito rural com taxas subsidiadas.',
+      },
+      {
+        pergunta: 'Usina de solo ocupa espaço que poderia ser produtivo?',
+        resposta:
+          'Dimensionamos as usinas de solo em áreas de declive, bordas de propriedade ou áreas não cultiváveis, com estruturas elevadas que permitem roçada fácil e proteção contra animais.',
+      },
+      {
+        pergunta: 'O sistema com baterias substitui o gerador a diesel?',
+        resposta:
+          'Sim, ou pode atuar de forma híbrida: a bateria assume instantaneamente eliminando a transição com perda de ar nos galpões, e o gerador só entra em caso de eventos climáticos de múltiplos dias seguidos.',
+      },
+    ],
+    seo: {
+      title: 'Energia Solar e BESS para o Agronegócio no RS | Delfos Solar',
+      description:
+        'Segurança energética rural para avicultura, suinocultura, leite e grãos no Sul do Brasil. Usinas de solo, backup com baterias e financiamento Pronaf/Pronamp.',
+    },
+  },
+
+  condominios: {
+    id: 'condominios',
+    slug: 'condominios',
+    path: '/segmentos/condominios',
+    nome: 'Condomínios',
+    caseSegmentoKey: 'Condomínios',
+    perguntaPrincipal: 'Como instalar recarga e dividir o consumo?',
+    headlineComplemento:
+      'Infraestrutura inteligente de recarga veicular com gestão dinâmica de carga (DLM) e rateio individual por vaga.',
+    descricaoHero:
+      'Acabe com os impasses em assembleia de condomínio: instalação coletiva segura conforme NBR 17019, sem necessidade de trocar o transformador da concessionária e com cobrança individual por RFID ou app.',
+    ctaRecomendado: 'Solicitar vistoria',
+    dadoQualificacao: 'Número de vagas e infraestrutura existente',
+    qualificacaoCampoLabel: 'Número de vagas, transformador e infraestrutura existente',
+    qualificacaoCampoPlaceholder:
+      'Ex: Prédio com 36 vagas, transformador 75 kVA, 4 moradores já têm EV...',
+    necessidadePadrao: 'Carregadores Veiculares',
+    icone: Building2,
+    corTema: {
+      bgBadge: 'bg-indigo-500/15',
+      textBadge: 'text-indigo-300',
+      borderBadge: 'border-indigo-500/30',
+      destaque: 'text-indigo-400',
+    },
+    isDarkMode: true,
+    solucoesRelevantes: [
+      {
+        titulo: 'Carregadores Veiculares & Smart DLM',
+        subtitulo:
+          'Wallbox com modulação dinâmica de carga para não sobrecarregar o transformador.',
+        href: '/solucoes/carregadores',
+        badge: 'Solução Central',
+        icone: Car,
+      },
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Zere a conta do condomínio (elevadores, bombas e áreas comuns).',
+        href: '/solucoes/energia-solar',
+        badge: 'Áreas Comuns',
+        icone: Sun,
+      },
+      {
+        titulo: 'Manutenção O&M e Monitoramento',
+        subtitulo: 'Inspeção preventiva semestral em quadros elétricos e estações de recarga.',
+        href: '/solucoes/om',
+        badge: 'Segurança Predial',
+        icone: Wrench,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'O condomínio não tem capacidade no transformador para vários carros elétricos.',
+        resposta: 'Sistema Smart DLM (Dynamic Load Management) de gestão dinâmica.',
+        comoResolvemos:
+          'O DLM monitora o consumo dos apartamentos em tempo real e entrega a sobra para as vagas. De madrugada, todos carregam na potência máxima sem aumentar 1 kVA de demanda na concessionária.',
+      },
+      {
+        dor: 'Moradores sem carro elétrico não aceitam ratear o custo da energia da garagem.',
+        resposta: 'Medição individualizada por morador com cartão RFID ou aplicativo.',
+        comoResolvemos:
+          'A recarga só é liberada com autenticação. O consumo de cada morador é medido e faturado diretamente para ele, com relatório transparente para a administradora.',
+      },
+      {
+        dor: 'Risco de incêndio ou choque com tomadas improvisadas na garagem.',
+        resposta: 'Engenharia completa sob a norma NBR 17019 com disjuntores DR Tipo B.',
+        comoResolvemos:
+          'Barramento blindado em eletrocalha suspensa, com proteção dedicada contra fuga de corrente contínua e laudo de conformidade com ART no CREA-RS.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'É preciso aprovar em assembleia de condomínio?',
+        resposta:
+          'Sim. A equipe de engenharia da Delfos elabora um laudo técnico preliminar e pode participar da assembleia para apresentar aos condôminos como a infraestrutura valoriza o patrimônio e não onera quem não tem carro elétrico.',
+      },
+      {
+        pergunta: 'Quanto custa a adequação e quem paga a energia?',
+        resposta:
+          'A infraestrutura base de barramento é rateada ou financiada pelo condomínio, enquanto a estação Wallbox e 100% da eletricidade consumida são pagas exclusivamente pelo proprietário do veículo.',
+      },
+      {
+        pergunta: 'O condomínio precisará fazer obras civis pesadas?',
+        resposta:
+          'Geralmente não. Utilizamos eletrocalhas metálicas aparentes e barramentos blindados pelo teto da garagem, sem quebra de piso ou demolições.',
+      },
+    ],
+    seo: {
+      title: 'Carregadores para Condomínios e Sistema DLM | Delfos Engenharia RS',
+      description:
+        'Infraestrutura de recarga veicular para condomínios no RS com gestão dinâmica de carga (DLM) sem sobrecarregar o transformador predial e rateio individual.',
+    },
+  },
+
+  investidores: {
+    id: 'investidores',
+    slug: 'investidores',
+    path: '/segmentos/investidores',
+    nome: 'Investidores e Usinas',
+    caseSegmentoKey: 'Investidores e Usinas',
+    perguntaPrincipal: 'Como implantar ou recuperar desempenho?',
+    headlineComplemento:
+      'Geração Distribuída e Usinas de Solo: engenharia EPC com conexão em média tensão e O&M para recuperar usinas com perdas.',
+    descricaoHero:
+      'Modelagem regulatória da Lei 14.300/2022, usinas de solo compartilhadas, locação de créditos de energia e auditoria de usinas em operação com termografia por drone e recuperação de geração.',
+    ctaRecomendado: 'Solicitar diagnóstico',
+    dadoQualificacao: 'Potência, local e etapa do projeto',
+    qualificacaoCampoLabel: 'Potência prevista/instalada (kWp/MWp), local e etapa',
+    qualificacaoCampoPlaceholder:
+      'Ex: Usina de 300 kWp em solo, terreno próprio no RS, fase de viabilidade...',
+    necessidadePadrao: 'Energia Solar Fotovoltaica',
+    icone: TrendingUp,
+    corTema: {
+      bgBadge: 'bg-purple-500/15',
+      textBadge: 'text-purple-400',
+      borderBadge: 'border-purple-500/30',
+      destaque: 'text-purple-600',
+    },
+    isDarkMode: false,
+    solucoesRelevantes: [
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Engenharia de usinas de solo com subestação, SPDA e conexão em média tensão.',
+        href: '/solucoes/energia-solar',
+        badge: 'Usinas de Solo',
+        icone: Sun,
+      },
+      {
+        titulo: 'Manutenção O&M e Monitoramento',
+        subtitulo: 'Recuperação de usinas com baixo PR, drone termográfico e SLA de investidor.',
+        href: '/solucoes/om',
+        badge: 'Proteção da TIR',
+        icone: Wrench,
+      },
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo: 'Hibridização de usinas para arbitragem tarifária e estabilidade de injeção.',
+        href: '/solucoes/bess',
+        badge: 'Armazenamento em Escala',
+        icone: BatteryCharging,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Insegurança regulatória sobre regras da Lei 14.300/2022 e tarifação da GD.',
+        resposta: 'Modelagem técnico-financeira detalhada com TIR, VPL e LCOE auditados.',
+        comoResolvemos:
+          'Apresentamos simulação fiscal e tarifária transparente com fluxo de caixa projetado, assegurando retorno de investimento sólido para fundos e investidores privados.',
+      },
+      {
+        dor: 'Usina existente gerando abaixo do previsto sem explicação clara do instalador.',
+        resposta: 'Auditoria pericial O&M com drone e análise radiométrica de células.',
+        comoResolvemos:
+          'Identificamos strings inoperantes, diodos em curto, hotspots e erros de parametrização de inversores, emitindo laudo formal com ART e executando as correções.',
+      },
+      {
+        dor: 'Complexidade de homologação de subestações de média tensão junto à concessionária.',
+        resposta: 'Engenharia completa com homologação direta na RGE, CEEE ou cooperativas.',
+        comoResolvemos:
+          'Cuidamos desde o parecer de acesso e estudo de fluxo de carga até o comissionamento de proteção e energização oficial.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'Ainda vale a pena investir em usinas solares após a Lei 14.300/2022?',
+        resposta:
+          'Sim! Com os custos de equipamentos fotovoltaicos nos menores patamares históricos e a alta contínua das tarifas de energia, a Taxa Interna de Retorno (TIR) de usinas de solo bem dimensionadas segue bastante atrativa (frequentemente superando 18% a 24% a.a.).',
+      },
+      {
+        pergunta: 'A Delfos constrói usinas no modelo Turnkey (chave na mão)?',
+        resposta:
+          'Sim. Cobrimos o ciclo completo: estudo de solo, terraplanagem, engenharia civil e elétrica, fornecimento de módulos e inversores Tier 1, subestação abrigada, cabeamento MT, homologação e O&M com SLA.',
+      },
+      {
+        pergunta: 'Como funciona o diagnóstico para usinas de solo que estão com baixa geração?',
+        resposta:
+          'Enviamos equipe especializada com drone termográfico e analisador de curvas I-V. Em 48 a 72 horas entregamos um laudo detalhado apontando exatamente onde o ativo está perdendo dinheiro e a estimativa de ganho após o reparo.',
+      },
+    ],
+    seo: {
+      title: 'Usinas de Solo e O&M para Investidores no RS | Delfos Engenharia',
+      description:
+        'Engenharia EPC para investidores em geração distribuída e usinas solares de solo no RS. Implantação completa, conexão em média tensão e auditoria O&M com drone.',
+    },
+  },
+
+  'frotas-eletropostos': {
+    id: 'frotas-eletropostos',
+    slug: 'frotas-eletropostos',
+    path: '/segmentos/frotas-eletropostos',
+    nome: 'Frotas e Eletropostos',
+    caseSegmentoKey: 'Frotas e Eletropostos',
+    perguntaPrincipal: 'Qual infraestrutura de recarga atende à frota?',
+    headlineComplemento:
+      'Eletromobilidade corporativa: eletropostos rápidos DC, recarga programada para frotas e integração com energia solar.',
+    descricaoHero:
+      'Projetos elétricos para furgões de entrega, ônibus elétricos, frotas corporativas e eletropostos comerciais abertos ao público. Carregadores DC Fast Charger de até 150+ kW com telemetria e subestação dedicada.',
+    ctaRecomendado: 'Pedir estudo elétrico',
+    dadoQualificacao: 'Número de veículos, local e padrão de uso',
+    qualificacaoCampoLabel: 'Número de veículos elétricos, local e janela de recarga',
+    qualificacaoCampoPlaceholder:
+      'Ex: 10 furgões elétricos, recarga noturna das 22h às 06h na garagem...',
+    necessidadePadrao: 'Carregadores Veiculares',
+    icone: Truck,
+    corTema: {
+      bgBadge: 'bg-cyan-500/15',
+      textBadge: 'text-cyan-300',
+      borderBadge: 'border-cyan-500/30',
+      destaque: 'text-cyan-400',
+    },
+    isDarkMode: true,
+    solucoesRelevantes: [
+      {
+        titulo: 'Carregadores Veiculares & Eletropostos',
+        subtitulo: 'DC Fast Chargers de alta potência e Wallboxes AC com gestão OCPP.',
+        href: '/solucoes/carregadores',
+        badge: 'Alta Potência DC',
+        icone: Car,
+      },
+      {
+        titulo: 'Sistemas de Armazenamento BESS',
+        subtitulo: 'Mitigação de picos de recarga rápida sem estourar a demanda da transportadora.',
+        href: '/solucoes/bess',
+        badge: 'Armazenamento de Apoio',
+        icone: BatteryCharging,
+      },
+      {
+        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        subtitulo: 'Gere o próprio combustível elétrico da frota a custo próximo de zero por km.',
+        href: '/solucoes/energia-solar',
+        badge: 'Combustível Solar',
+        icone: Sun,
+      },
+    ],
+    doresERespostas: [
+      {
+        dor: 'Carregar múltiplos frotistas ao mesmo tempo pode derrubar o disjuntor da empresa.',
+        resposta: 'Dimensionamento de subestação dedicada e agendamento inteligente por rota.',
+        comoResolvemos:
+          'Projetamos o equilíbrio de carga com priorização por veículo, garantindo que os veículos com saída mais cedo recebam recarga prioritária durante a janela noturna.',
+      },
+      {
+        dor: 'Custo abusivo de diesel na frota logística pesada e urbana.',
+        resposta:
+          'Transição para eletromobilidade com custo de energia solar equivalente a R$ 0,18/km.',
+        comoResolvemos:
+          'A combinação de usina solar própria com eletroposto corporativo reduz em até 75% o custo de abastecimento por km rodado da transportadora.',
+      },
+      {
+        dor: 'Necessidade de monetizar carregadores comerciais em postos ou shopping centers.',
+        resposta: 'Plataforma OCPP em nuvem com split de pagamento via cartão e PIX.',
+        comoResolvemos:
+          'Implantamos eletropostos comerciais com aplicativo próprio ou totem de autoatendimento onde o motorista paga por kWh ou tempo de uso.',
+      },
+    ],
+    faq: [
+      {
+        pergunta: 'Qual a diferença entre recarga AC (Wallbox) e recarga rápida DC?',
+        resposta:
+          'Wallboxes AC (7 kW a 22 kW) utilizam o conversor interno do veículo e levam de 4 a 8 horas para carregar (ideais para pernoite na garagem). Carregadores rápidos DC (30 kW a 150+ kW) alimentam a bateria diretamente em corrente contínua, recuperando 80% da carga em 20 a 40 minutos.',
+      },
+      {
+        pergunta: 'É viável instalar um eletroposto comercial aberto em rodovias ou postos?',
+        resposta:
+          'Muito viável. O fluxo de veículos elétricos e híbridos plug-in no RS e em Santa Catarina cresce a taxas de 3 dígitos ao ano. A Delfos cuida do estudo de viabilidade, da subestação e da integração do sistema de pagamento.',
+      },
+      {
+        pergunta: 'Como o BESS ajuda um eletroposto de alta potência?',
+        resposta:
+          'Carregadores rápidos de 150 kW exigem picos instantâneos elevados. Um BESS local funciona como um reservatório: carrega devagar da rede ou dos painéis solares e entrega a potência máxima no momento em que os carros conectam, evitando aumentos onerosos de demanda contratada.',
+      },
+    ],
+    seo: {
+      title: 'Infraestrutura de Recarga para Frotas e Eletropostos | Delfos RS',
+      description:
+        'Projetos elétricos para frotas corporativas e eletropostos rápidos DC no RS. Estações de recarga de até 150 kW, gestão de carga e integração com energia solar.',
+    },
+  },
+}
+
+export const LISTA_SEGMENTOS_ORDEM = [
+  SEGMENTOS_CONFIG['residencias'],
+  SEGMENTOS_CONFIG['comercio-servicos'],
+  SEGMENTOS_CONFIG['industria'],
+  SEGMENTOS_CONFIG['agronegocio'],
+  SEGMENTOS_CONFIG['condominios'],
+  SEGMENTOS_CONFIG['investidores'],
+  SEGMENTOS_CONFIG['frotas-eletropostos'],
+]

@@ -271,6 +271,15 @@ export default function Admin() {
                   Carregadores
                 </Button>
               </Link>
+              <Link to="/projetos">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
+                >
+                  Cases
+                </Button>
+              </Link>
             </div>
 
             <Link to="/">

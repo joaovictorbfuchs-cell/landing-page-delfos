@@ -79,9 +79,9 @@ export default function Footer() {
           {/* Quick Links & Soluções */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
-              Arquitetura de Soluções
+              Soluções & Projetos
             </h4>
-            <ul className="space-y-2.5 text-xs sm:text-sm">
+            <ul className="space-y-2 text-xs sm:text-sm">
               <li>
                 <a
                   href="/solucoes/energia-solar"
@@ -109,19 +109,61 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick('#segmentos')}
-                  className="hover:text-solar-400 transition-colors cursor-pointer text-left"
-                >
-                  Segmentos Atendidos
-                </button>
-              </li>
-              <li>
                 <a
                   href="/projetos"
                   className="hover:text-solar-400 transition-colors block font-medium text-solar-300"
                 >
                   Projetos & Resultados (Cases Reais)
+                </a>
+              </li>
+            </ul>
+
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider pt-3 mb-2">
+              Segmentos (Portas de Entrada)
+            </h4>
+            <ul className="grid grid-cols-1 gap-1.5 text-xs text-slate-400">
+              <li>
+                <a href="/segmentos/residencias" className="hover:text-solar-400 transition-colors">
+                  • Residências
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/segmentos/comercio-servicos"
+                  className="hover:text-solar-400 transition-colors"
+                >
+                  • Comércio e Serviços
+                </a>
+              </li>
+              <li>
+                <a href="/segmentos/industria" className="hover:text-solar-400 transition-colors">
+                  • Indústria
+                </a>
+              </li>
+              <li>
+                <a href="/segmentos/agronegocio" className="hover:text-solar-400 transition-colors">
+                  • Agronegócio
+                </a>
+              </li>
+              <li>
+                <a href="/segmentos/condominios" className="hover:text-solar-400 transition-colors">
+                  • Condomínios
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/segmentos/investidores"
+                  className="hover:text-solar-400 transition-colors"
+                >
+                  • Investidores e Usinas
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/segmentos/frotas-eletropostos"
+                  className="hover:text-solar-400 transition-colors"
+                >
+                  • Frotas e Eletropostos
                 </a>
               </li>
             </ul>

@@ -14,6 +14,13 @@ import SolucaoBess from './pages/SolucaoBess'
 import SolucaoOm from './pages/SolucaoOm'
 import SolucaoCarregadores from './pages/SolucaoCarregadores'
 import ProjetosResultados from './pages/ProjetosResultados'
+import SegmentoResidencias from './pages/segmentos/SegmentoResidencias'
+import SegmentoComercio from './pages/segmentos/SegmentoComercio'
+import SegmentoIndustria from './pages/segmentos/SegmentoIndustria'
+import SegmentoAgronegocio from './pages/segmentos/SegmentoAgronegocio'
+import SegmentoCondominios from './pages/segmentos/SegmentoCondominios'
+import SegmentoInvestidores from './pages/segmentos/SegmentoInvestidores'
+import SegmentoFrotasEletropostos from './pages/segmentos/SegmentoFrotasEletropostos'
 
 const App = () => (
   <BrowserRouter>
@@ -32,6 +39,15 @@ const App = () => (
 
           {/* Fase 3: Projetos e Resultados */}
           <Route path="/projetos" element={<ProjetosResultados />} />
+
+          {/* Fase 4: As 7 Páginas de Segmento ("Portas de Entrada") */}
+          <Route path="/segmentos/residencias" element={<SegmentoResidencias />} />
+          <Route path="/segmentos/comercio-servicos" element={<SegmentoComercio />} />
+          <Route path="/segmentos/industria" element={<SegmentoIndustria />} />
+          <Route path="/segmentos/agronegocio" element={<SegmentoAgronegocio />} />
+          <Route path="/segmentos/condominios" element={<SegmentoCondominios />} />
+          <Route path="/segmentos/investidores" element={<SegmentoInvestidores />} />
+          <Route path="/segmentos/frotas-eletropostos" element={<SegmentoFrotasEletropostos />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
