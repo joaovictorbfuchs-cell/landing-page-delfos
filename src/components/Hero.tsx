@@ -52,6 +52,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
     const taxaResidual = Math.min(65, valorConta * 0.1)
     const economiaMensal = Math.max(0, Math.round(valorConta - taxaResidual))
     const economiaAnual = Math.round(economiaMensal * 12)
+    const economia5Anos = Math.round(economiaAnual * 5)
     const economia25Anos = Math.round(economiaAnual * 25)
     // Potência do sistema recomendada estimada (RS: irradiância média ~4.2 kWh/m²/dia, PR ~75%)
     const potenciaEstimadaKwp = (consumoKwh / (4.2 * 30 * 0.78)).toFixed(1)
@@ -60,6 +61,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
       consumoKwh,
       economiaMensal,
       economiaAnual,
+      economia5Anos,
       economia25Anos,
       potenciaEstimadaKwp,
       taxaResidual: Math.round(taxaResidual),
@@ -262,21 +264,35 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 {/* Resultado Dinâmico */}
                 {estimativa && (
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                      <div>
-                        <span className="text-[11px] text-slate-400 uppercase font-medium block">
-                          Economia Estimada
+                    {/* 3 Quadros de Economia: Mensal, 5 anos e 25 anos */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pb-2 border-b border-white/10">
+                      <div className="bg-[#081B30]/70 border border-emerald-500/20 rounded-xl p-2.5">
+                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
+                          Economia Mensal
                         </span>
-                        <div className="text-2xl font-black text-emerald-400">
+                        <div className="text-lg sm:text-xl font-black text-emerald-400 leading-tight mt-0.5">
                           R$ {estimativa.economiaMensal.toLocaleString('pt-BR')}
-                          <span className="text-xs font-normal text-slate-300"> / mês</span>
+                          <span className="text-[10px] sm:text-xs font-normal text-slate-300">
+                            {' '}
+                            /mês
+                          </span>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-[11px] text-slate-400 uppercase font-medium block">
+
+                      <div className="bg-[#081B30]/70 border border-white/10 rounded-xl p-2.5">
+                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
+                          Em 5 anos
+                        </span>
+                        <div className="text-lg sm:text-xl font-bold text-solar-300 leading-tight mt-0.5">
+                          R$ {estimativa.economia5Anos.toLocaleString('pt-BR')}
+                        </div>
+                      </div>
+
+                      <div className="bg-[#081B30]/70 border border-white/10 rounded-xl p-2.5">
+                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
                           Em 25 anos
                         </span>
-                        <div className="text-sm font-bold text-solar-300">
+                        <div className="text-lg sm:text-xl font-bold text-solar-300 leading-tight mt-0.5">
                           R$ {estimativa.economia25Anos.toLocaleString('pt-BR')}
                         </div>
                       </div>
@@ -297,13 +313,18 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                       </div>
                     </div>
 
-                    <p className="text-[10px] text-slate-400 italic leading-snug">
-                      * Estimativa paramétrica orientativa para o RS, sujeita a projeto detalhado,
-                      sombreamento e tipo de ligação.
-                    </p>
+                    <div className="space-y-1">
+                      <p className="text-[10px] text-slate-400 italic leading-snug">
+                        * Estimativa paramétrica orientativa para o RS, sujeita a projeto detalhado,
+                        sombreamento e tipo de ligação.
+                      </p>
+                      <p className="text-[10px] text-slate-300/80 leading-snug">
+                        Estimativa preliminar com base em tarifas médias do RS. O valor exato do seu
+                        projeto sai no estudo de viabilidade gratuito.
+                      </p>
+                    </div>
                   </div>
                 )}
-
                 <Button
                   type="submit"
                   className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold h-12 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2"
