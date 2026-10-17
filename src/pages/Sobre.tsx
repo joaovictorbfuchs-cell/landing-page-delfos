@@ -5,12 +5,10 @@ import {
   Zap,
   ShieldCheck,
   Award,
-  CheckCircle2,
   Users,
   MapPin,
   Clock,
   ArrowRight,
-  AlertCircle,
   FileCheck2,
   Activity,
   Plane,
@@ -72,7 +70,7 @@ export default function Sobre() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Sobre a Delfos Solar | Engenharia de Campo em Erechim e no Sul"
-        description="Conheça a história de 12 anos da Delfos Solar: mais de 3.000 projetos entregues no Sul do Brasil, equipe própria com ART/CREA-RS, monitoramento remoto e diferenciação da marca."
+        description="Conheça a história de 12 anos da Delfos Solar: mais de 3.000 projetos entregues no Sul do Brasil, equipe própria com ART/CREA-RS e monitoramento remoto."
         canonicalPath="/sobre"
         schemaJsonLd={localBusinessSchema}
       />
@@ -151,63 +149,6 @@ export default function Sobre() {
                   <span className="text-[11px] text-slate-300 uppercase tracking-wider font-semibold">
                     Registrada CREA-RS
                   </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SEÇÃO OBRIGATÓRIA: DIFERENCIAÇÃO DA MARCA (Seção 11 da especificação) */}
-        <section className="py-12 bg-amber-500/10 border-b-2 border-amber-500/30">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#081B30] text-white border border-amber-400/40 shadow-xl space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0 border border-amber-400/30">
-                  <AlertCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-300 block">
-                    Esclarecimento Obrigatório • Seção 11 da Especificação Técnica
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Diferenciação de Marca: Quem é a Delfos Solar?
-                  </h2>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 text-sm leading-relaxed">
-                <div className="p-5 rounded-2xl bg-white/5 border border-emerald-400/30 space-y-2">
-                  <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Nossa Atuação (Delfos Solar — Brasil)</span>
-                  </div>
-                  <h3 className="text-base font-bold text-white">
-                    Delfos Engenharia Solar (Erechim/RS)
-                  </h3>
-                  <p className="text-slate-300 text-xs sm:text-sm">
-                    Somos uma <strong>empresa integradora de engenharia de campo</strong>, com
-                    equipe própria no Rio Grande do Sul, Santa Catarina e Paraná. Atuamos com
-                    instalação física, homologação junto a concessionárias (RGE, CEEE, etc.),
-                    montagem de estruturas, sistemas BESS, serviços de O&M com drone e
-                    infraestrutura de recarga veicular.
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2 opacity-90">
-                  <div className="flex items-center gap-2 text-slate-400 font-bold text-xs uppercase tracking-wider">
-                    <AlertCircle className="w-4 h-4 text-solar-400" />
-                    <span>Distinção de Identidade no Mercado Global</span>
-                  </div>
-                  <h3 className="text-base font-bold text-white">
-                    Diferente da "Delfos Energy" (Espanha)
-                  </h3>
-                  <p className="text-slate-300 text-xs sm:text-sm">
-                    A <strong>Delfos Solar</strong> não possui qualquer vínculo, filiação, controle
-                    ou associação societária com a <em>"Delfos Energy"</em> (empresa espanhola de
-                    software SaaS e inteligência artificial voltada ao monitoramento preditivo de
-                    parques eólicos e grandes usinas internacionais). Evitamos confusões em buscas e
-                    reforçamos nossa identidade como engenharia física brasileira.
-                  </p>
                 </div>
               </div>
             </div>
