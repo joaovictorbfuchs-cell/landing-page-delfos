@@ -68,15 +68,15 @@ export default function Metricas() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-slate-100">
           <div>
             <span className="text-xs font-bold text-solar-600 uppercase tracking-wider block mb-1">
-              Solidez & Trajetória Comprovada
+              Solidez & Experiência
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Métricas institucionais verificáveis
+              Nossos números
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 max-w-md">
-            Dados auditados de atuação contínua no ecossistema de engenharia energética do Rio
-            Grande do Sul e Sul do Brasil.
+            Resultados construídos com dedicação e engenharia de ponta no Rio Grande do Sul e em
+            todo o Sul do Brasil.
           </p>
         </div>
 
