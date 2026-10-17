@@ -97,7 +97,6 @@ function getPctFioB(ano: number): number {
 
 export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
   const [concessionariaId, setConcessionariaId] = useState('rge')
-  const [tipoLigacaoId, setTipoLigacaoId] = useState('bifasica')
   const [valorContaInput, setValorContaInput] = useState('650')
 
   // Parse numeric bill
@@ -108,11 +107,12 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
   }, [valorContaInput])
 
   // Modelo GD II corrigido (Lei 14.300/2021 + ANEEL REN 1000/2021)
+  // Padrão bifásico fixado internamente (50 kWh de custo de disponibilidade)
   const estimativa = useMemo(() => {
     if (valorConta <= 0) return null
 
     const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId) || CONCESSIONARIAS[0]
-    const ligacao = TIPOS_LIGACAO.find((l) => l.id === tipoLigacaoId) || TIPOS_LIGACAO[1]
+    const ligacao = TIPOS_LIGACAO.find((l) => l.id === 'bifasica') || TIPOS_LIGACAO[1]
     const anoBase = new Date().getFullYear() // 2026
 
     // Estimativa de consumo mensal em kWh a partir do valor da conta e da tarifa cheia
@@ -157,12 +157,12 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
       economiaMensal: Math.round(economiaMensal),
       economia5Anos: Math.round(economia5Anos),
     }
-  }, [valorConta, concessionariaId, tipoLigacaoId])
+  }, [valorConta, concessionariaId])
 
   const handleSimularSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId)?.nome || 'RGE Sul'
-    const lig = TIPOS_LIGACAO.find((l) => l.id === tipoLigacaoId)?.nome || 'Bifásica'
+    const lig = 'Bifásica'
     onSolicitarAvaliacao({
       origem: 'calculadora-hero',
       valorConta: valorConta || undefined,
@@ -322,33 +322,11 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                     id="sim-conc"
                     value={concessionariaId}
                     onChange={(e) => setConcessionariaId(e.target.value)}
-                    className="w-full bg-[#081B30] text-white border border-white/20 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
+                    className="w-full bg-[#081B30] text-white border border-white/20 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400 cursor-pointer"
                   >
-                    {CONCESSIONARIAS.map((c) => (
+                    {CONCESSIONARIAS.filter((c) => c.id !== 'outra').map((c) => (
                       <option key={c.id} value={c.id} className="bg-midnight-950 text-white">
                         {c.nome}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Tipo de ligação */}
-                <div>
-                  <label
-                    htmlFor="sim-ligacao"
-                    className="block text-xs font-semibold text-slate-300 mb-1.5"
-                  >
-                    Tipo de Ligação
-                  </label>
-                  <select
-                    id="sim-ligacao"
-                    value={tipoLigacaoId}
-                    onChange={(e) => setTipoLigacaoId(e.target.value)}
-                    className="w-full bg-[#081B30] text-white border border-white/20 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
-                  >
-                    {TIPOS_LIGACAO.map((l) => (
-                      <option key={l.id} value={l.id} className="bg-midnight-950 text-white">
-                        {l.nome}
                       </option>
                     ))}
                   </select>
@@ -406,11 +384,9 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                       Se paga em menos de 5 anos — e continua gerando economia por mais de 25.
                     </p>
 
-                    {/* Disclaimer atualizado para refletir o novo modelo */}
-                    <p className="text-[10px] text-slate-400 leading-snug pt-1 border-t border-white/5">
-                      Estimativa preliminar (GD II, Lei 14.300): considera taxa mínima da ligação,
-                      Fio B progressivo (60% em 2026) e reajuste de 9% a.a. O valor exato do seu
-                      projeto sai no estudo de viabilidade gratuito.
+                    {/* Disclaimer curto */}
+                    <p className="text-[11px] text-slate-400 leading-snug pt-1 border-t border-white/5">
+                      Estimativa preliminar — valor exato na proposta.
                     </p>
                   </div>
                 )}
