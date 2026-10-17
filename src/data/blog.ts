@@ -46,7 +46,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
   {
     slug: 'energia-solar-erechim-guia-completo',
     titulo:
-      'Energia Solar em Erechim e Alto Uruguai: Como Funciona, Viabilidade e Economia de até 95%',
+      'Energia Solar em Erechim e Alto Uruguai: Como Funciona, Viabilidade e Economia de até 90%',
     subtitulo:
       'Entenda os parâmetros de irradiação solar no norte do RS, regras da RGE e o retorno real do investimento fotovoltaico.',
     resumo:
@@ -66,7 +66,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       'economia energia solar RS',
     ],
     metaDescription:
-      'Guia completo de energia solar em Erechim/RS e Alto Uruguai. Entenda irradiação regional, homologação na RGE, economia de até 95% e como dimensionar com a Delfos.',
+      'Guia completo de energia solar em Erechim/RS e Alto Uruguai. Entenda irradiação regional, homologação na RGE, economia de até 90% e como dimensionar com a Delfos.',
     origemLead: 'blog-energia-solar-erechim',
     solucaoRelacionada: {
       nome: 'Energia Solar Fotovoltaica (EPC)',
@@ -87,7 +87,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         tituloH2: 'Como a Tarifa da RGE Impacta a Decisão de Gerar a Própria Energia',
         conteudo: [
           'Em Erechim e na maior parte da região norte do estado, a distribuição de energia é atendida pela RGE (Grupo CPFL). As revisões tarifárias periódicas, somadas às bandeiras tarifárias e aos encargos setoriais, tornam o custo da energia comprada da rede uma das despesas mais pesadas para comércios, indústrias e residências.',
-          'Ao instalar um sistema fotovoltaico conectado à rede (on-grid), a unidade consumidora passa a gerar sua própria eletricidade durante as horas de sol, reduzindo a conta de luz em até 95%. O valor remanescente corresponde apenas à taxa mínima de disponibilidade da rede e à contribuição de iluminação pública (CIP).',
+          'Ao instalar um sistema fotovoltaico conectado à rede (on-grid), a unidade consumidora passa a gerar sua própria eletricidade durante as horas de sol, reduzindo a conta de luz em até 90%. O valor remanescente corresponde apenas à taxa mínima de disponibilidade da rede e à contribuição de iluminação pública (CIP).',
         ],
         subsecoes: [
           {
@@ -110,7 +110,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       texto:
         'Investir em energia solar em Erechim e no Alto Uruguai é uma decisão comprovada por mais de 3.000 famílias e empresas atendidas pela Delfos Solar ao longo de 12 anos.',
       destaque:
-        'Economia imediata de até 95% na conta, blindagem contra reajustes da distribuidora e valorização patrimonial imediata.',
+        'Economia imediata de até 90% na conta, blindagem contra reajustes da distribuidora e valorização patrimonial imediata.',
     },
     faqs: [
       {

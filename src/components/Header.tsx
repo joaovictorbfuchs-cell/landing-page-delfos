@@ -55,7 +55,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const solucoesList = [
     {
       title: 'Energia Solar Fotovoltaica (EPC)',
-      desc: 'On-grid e híbrido, telhado e solo, redução de até 95%',
+      desc: 'On-grid e híbrido, telhado e solo, redução de até 90%',
       href: '/solucoes/energia-solar',
       icon: Sun,
       color: 'text-solar-400',

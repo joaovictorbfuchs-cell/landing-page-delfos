@@ -305,7 +305,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                   </div>
                 </div>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  Até -95%
+                  Até -90%
                 </span>
               </div>
 

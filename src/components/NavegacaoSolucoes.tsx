@@ -11,7 +11,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     {
       id: 'solar',
       titulo: 'Energia Solar Fotovoltaica (EPC)',
-      descricao: 'On-grid e híbrido, telhado e solo, redução de até 95% na conta de luz.',
+      descricao: 'On-grid e híbrido, telhado e solo, redução de até 90% na conta de luz.',
       href: '/solucoes/energia-solar',
       icone: Sun,
       corBadge: 'bg-solar-500/15 text-solar-400 border-solar-500/30',

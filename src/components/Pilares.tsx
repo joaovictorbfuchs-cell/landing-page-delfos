@@ -16,7 +16,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       corIcone: 'bg-solar-100 text-solar-700 border-solar-200',
       tagCor: 'bg-solar-50 text-solar-800 border-solar-200',
       problemaResolvido:
-        'Redução imediata da conta de luz em até 95%, previsibilidade de custos contra reajustes e valorização do patrimônio físico.',
+        'Redução imediata da conta de luz em até 90%, previsibilidade de custos contra reajustes e valorização do patrimônio físico.',
       subOfertas: [
         'Projetos on-grid e híbridos em telhado e solo',
         'Dimensionamento residencial, comercial, industrial e rural',

@@ -61,7 +61,7 @@ export default function SolucaoSolar() {
   // Provas obrigatórias da especificação
   const provas = [
     {
-      metrica: 'Até 95%',
+      metrica: 'Até 90%',
       label: 'Economia na Fatura de Energia',
       detalhe: 'Redução drástica do valor pago à concessionária (RGE / CEEE / Cooperativas)',
       destaque: true,
@@ -121,7 +121,7 @@ export default function SolucaoSolar() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Energia Solar Fotovoltaica (EPC) em Erechim e Sul do Brasil"
-        description="Reduza até 95% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos on-grid, híbridos, telhado e solo no RS."
+        description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos on-grid, híbridos, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
       />
 
@@ -163,7 +163,7 @@ export default function SolucaoSolar() {
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-amber-300 to-solar-400">
                     engenharia de ponta a ponta
                   </span>{' '}
-                  para zerar até 95% da sua conta.
+                  para zerar até 90% da sua conta.
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
@@ -255,7 +255,7 @@ export default function SolucaoSolar() {
                       Simulação Estimada
                     </span>
                     <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                      Até 95% de economia
+                      Até 90% de economia
                     </span>
                   </div>
 

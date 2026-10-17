@@ -12,7 +12,7 @@ export default function Faq() {
       id: 'kwh',
       pergunta: 'O que é kWh e como ele define o tamanho do meu sistema solar?',
       resposta:
-        'O quilowatt-hora (kWh) é a unidade de medida da energia consumida ao longo do tempo. Na sua conta de luz, você é cobrado pela quantidade de kWh consumida no mês. Nossos engenheiros calculam a média anual do seu consumo em kWh e cruzam com os índices de radiação solar de Erechim e região para determinar exatamente quantos painéis e qual a potência (kWp) necessária para zerar até 95% do seu custo.',
+        'O quilowatt-hora (kWh) é a unidade de medida da energia consumida ao longo do tempo. Na sua conta de luz, você é cobrado pela quantidade de kWh consumida no mês. Nossos engenheiros calculam a média anual do seu consumo em kWh e cruzam com os índices de radiação solar de Erechim e região para determinar exatamente quantos painéis e qual a potência (kWp) necessária para zerar até 90% do seu custo.',
     },
     {
       id: 'inversor',

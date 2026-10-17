@@ -69,7 +69,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     caseSegmentoKey: 'Residências',
     perguntaPrincipal: 'Quanto posso economizar e há opção de backup?',
     headlineComplemento:
-      'Economia de até 95% na conta de energia e proteção com baterias contra apagões na rede gaúcha.',
+      'Economia de até 90% na conta de energia e proteção com baterias contra apagões na rede gaúcha.',
     descricaoHero:
       'Soluções solares residenciais de engenharia de campo em telhados cerâmicos, metálicos e fibrocimento no RS. Projetos fotovoltaicos com microinversores, estética limpa e opção de BESS para backup contínuo.',
     ctaRecomendado: 'Simular projeto',
@@ -88,7 +88,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     solucoesRelevantes: [
       {
         titulo: 'Energia Solar Fotovoltaica (EPC)',
-        subtitulo: 'Redução de até 95% na conta com módulos Tier 1 e 25 anos de garantia.',
+        subtitulo: 'Redução de até 90% na conta com módulos Tier 1 e 25 anos de garantia.',
         href: '/solucoes/energia-solar',
         badge: 'Solução Principal',
         icone: Sun,
@@ -149,7 +149,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Energia Solar e BESS Residencial no RS | Delfos Engenharia',
       description:
-        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 95% de redução, opção de backup contra blecautes e homologação CREA-RS.',
+        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 90% de redução, opção de backup contra blecautes e homologação CREA-RS.',
     },
   },
 

@@ -4,7 +4,7 @@ export default function Vantagens() {
   const cards = [
     {
       icon: TrendingDown,
-      title: 'Economia de até 95%',
+      title: 'Economia de até 90%',
       description:
         'Redução drástica e imediata na fatura de energia elétrica, com retorno total do investimento estimado em 3 a 5 anos.',
       gradient: 'from-amber-400 to-solar-500',

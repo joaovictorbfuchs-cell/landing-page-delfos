@@ -18,7 +18,7 @@ export default function FinalCta() {
         </div>
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-5 max-w-3xl mx-auto leading-tight">
-          Pronto para reduzir sua conta de luz em <span className="text-solar-400">até 95%</span>?
+          Pronto para reduzir sua conta de luz em <span className="text-solar-400">até 90%</span>?
         </h2>
 
         <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
