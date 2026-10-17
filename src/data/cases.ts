@@ -56,7 +56,7 @@ export const SEGMENTOS_FILTRO: { id: string; label: string; count?: number }[] =
 export const SOLUCOES_FILTRO: { id: string; label: string }[] = [
   { id: 'todas', label: 'Todas as Soluções' },
   { id: 'Energia Solar (EPC)', label: 'Solar Fotovoltaica' },
-  { id: 'BESS (Armazenamento)', label: 'BESS (Baterias)' },
+  { id: 'BESS (Armazenamento)', label: 'Armazenamento e Baterias (BESS)' },
   { id: 'O&M e Monitoramento', label: 'O&M & Monitoramento' },
   { id: 'Carregadores Veiculares', label: 'Carregadores Veiculares' },
 ]
@@ -72,7 +72,7 @@ export const CASES_DATA: CaseStudy[] = [
     local: 'Erechim / RS (Autorizado para divulgação)',
     desafioInicial:
       'Alto consumo energético contínuo com computadores, estações de trabalho de engenharia e climatização de precisão. O cliente enfrentava volatilidade tarifária de bandeiras e risco orçamentário para expansão fabril.',
-    escopo: '9,75 kWp Solar EPC em telhado metálico',
+    escopo: '9,75 kWp Projeto e Instalação Solar em telhado metálico',
     solucaoTecnica:
       'Modelagem 3D de sombreamento, dimensionamento de inversores de alta frequência com tecnologia MPPT dupla, fixadores estruturais certificados em alumínio anodizado e homologação expressa junto à concessionária RGE sem parada nas operações.',
     resultadoMedido: {
@@ -101,9 +101,9 @@ export const CASES_DATA: CaseStudy[] = [
     local: 'Polo Industrial de Erechim / RS',
     desafioInicial:
       'Microinterrupções e quedas de rede de 10 a 20 minutos desconfiguravam centros de usinagem CNC e fornos industriais, gerando até R$ 80.000 em perdas de lotes de matéria-prima por evento, além de multas frequentes por ultrapassagem de demanda contratada.',
-    escopo: '450 kWp Solar EPC + BESS C&I 250 kWh / 100 kW',
+    escopo: '450 kWp Solar + Armazenamento em Baterias (BESS C&I) 250 kWh / 100 kW',
     solucaoTecnica:
-      'Instalação de gabinete climatizado BESS C&I com química de Lítio Ferro Fosfato (LiFePO4), EMS (Energy Management System) com comutação ininterrupta (< 20ms) e algoritmo automático de peak shaving nas horas de partida de motores pesados.',
+      'Instalação de gabinete climatizado de baterias (BESS C&I) com química de Lítio Ferro Fosfato (LiFePO4), EMS com comutação ininterrupta (< 20ms), bloqueio do horário de ponta e algoritmo de redução de cobrança de demanda (peak shaving) nas partidas de motores pesados.',
     resultadoMedido: {
       destaqueValor: 'Zero',
       destaqueLabel: 'Paradas não planejadas de produção',
@@ -188,7 +188,7 @@ export const CASES_DATA: CaseStudy[] = [
     local: 'Bairro Fátima, Erechim / RS',
     desafioInicial:
       'Consumo elevado com piso aquecido, climatização multizone e piscina aquecida. O proprietário exigia acabamento estético rigoroso sem quebra de telhas cerâmicas e integração com monitoramento mobile.',
-    escopo: '12,5 kWp Solar EPC em telhado cerâmico com microinversores',
+    escopo: '12,5 kWp Projeto e Instalação Solar em telhado cerâmico com microinversores',
     solucaoTecnica:
       'Instalação com microinversores de alta eficiência por painel, reduzindo perdas por sombras parciais de árvores vizinhas, com cabeamento embutido e quadro de proteção em invólucro premium.',
     resultadoMedido: {
@@ -337,7 +337,7 @@ export const CASES_DATA: CaseStudy[] = [
       'Demanda contínua para abastecer silos de grãos e fábricas de ração com alta sazonalidade na safra.',
     escopo: '1,2 MWp Usina de Solo Monoposte com Conexão em Média Tensão 13,8 kV',
     solucaoTecnica:
-      'Engenharia completa EPC de solo: 2.100 módulos monocristalinos 580W, subestação de 1.500 kVA e seccionamento telecomandado.',
+      'Engenharia completa de solo (projeto e instalação): 2.100 módulos monocristalinos 580W, subestação de 1.500 kVA e seccionamento telecomandado.',
     resultadoMedido: {
       destaqueValor: 'A confirmar',
       destaqueLabel: 'Auditoria oficial do primeiro ciclo anual',

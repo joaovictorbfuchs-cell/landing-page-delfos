@@ -602,10 +602,10 @@ export default function ContatoForm({
                         className="w-full bg-white h-12 rounded-xl border border-slate-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
                       >
                         <option value="Energia Solar Fotovoltaica">
-                          01. Energia Solar Fotovoltaica (EPC)
+                          01. Energia Solar Fotovoltaica (Projeto e Instalação)
                         </option>
                         <option value="BESS (Armazenamento)">
-                          02. BESS (Armazenamento e Baterias)
+                          02. Armazenamento e Baterias (BESS)
                         </option>
                         <option value="O&M e Monitoramento">
                           03. O&M e Monitoramento de Usinas
@@ -815,7 +815,7 @@ export default function ContatoForm({
                       className="w-full bg-white h-12 rounded-xl border border-slate-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
                     >
                       <option value="Nao">Não, pretendo instalar do zero</option>
-                      <option value="Sim">Sim, preciso de ampliação, O&M ou BESS</option>
+                      <option value="Sim">Sim, preciso de ampliação, O&M ou baterias (BESS)</option>
                     </select>
                   </div>
 

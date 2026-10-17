@@ -120,7 +120,7 @@ export default function SolucaoSolar() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Energia Solar Fotovoltaica (EPC) em Erechim e Sul do Brasil"
+        title="Energia Solar Fotovoltaica (Projeto e Instalação) em Erechim e Sul do Brasil"
         description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos on-grid, híbridos, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
       />
@@ -140,7 +140,9 @@ export default function SolucaoSolar() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-slate-900 font-semibold">Energia Solar Fotovoltaica (EPC)</span>
+            <span className="text-slate-900 font-semibold">
+              Energia Solar Fotovoltaica (Projeto e Instalação)
+            </span>
           </div>
         </div>
 
@@ -155,7 +157,7 @@ export default function SolucaoSolar() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-400/15 border border-solar-400/30 text-solar-300 text-xs font-bold uppercase tracking-wider">
                   <Sun className="w-3.5 h-3.5 text-solar-400" />
-                  Solução 01 • Engenharia EPC Integrada
+                  Solução 01 • Engenharia Completa (Projeto e Instalação)
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
@@ -387,12 +389,11 @@ export default function SolucaoSolar() {
                 Sub-Ofertas Especializadas
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Engenharia EPC completa para cada modalidade de usina
+                Projeto e instalação completos para cada modalidade de usina
               </h2>
               <p className="text-base text-slate-600 mt-3 leading-relaxed">
-                EPC (Engineering, Procurement and Construction): cuidamos de 100% das etapas — do
-                estudo preliminar e compra de equipamentos Tier 1 até a montagem, laudos e ativação
-                definitiva na rede.
+                Projeto e instalação completos: cuidamos de 100% das etapas — do estudo preliminar e
+                compra de equipamentos Tier 1 até a montagem, laudos e ativação definitiva na rede.
               </p>
             </div>
 
@@ -474,7 +475,7 @@ export default function SolucaoSolar() {
           </div>
         </section>
 
-        {/* COMO FUNCIONA O PROJETO EPC DA DELFOS */}
+        {/* COMO FUNCIONA O PROJETO SOLAR DA DELFOS */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto mb-14">

@@ -46,7 +46,8 @@ export default function Footer() {
             <p className="text-sm text-slate-300 leading-relaxed max-w-md">
               Da geração à operação da sua energia. Integradora de engenharia gaúcha com 12 anos de
               mercado, mais de 3.000 projetos entregues e atuação no ecossistema de geração
-              fotovoltaica, BESS industrial, O&M com SLA e recarga de veículos elétricos.
+              fotovoltaica, baterias e armazenamento (BESS), O&M com SLA e recarga de veículos
+              elétricos.
             </p>
 
             <div className="flex items-center gap-2 pt-1 text-xs text-emerald-400 font-semibold">
@@ -87,12 +88,12 @@ export default function Footer() {
                   href="/solucoes/energia-solar"
                   className="hover:text-solar-400 transition-colors block"
                 >
-                  Energia Solar Fotovoltaica (EPC)
+                  Energia Solar Fotovoltaica (Projeto e Instalação)
                 </a>
               </li>
               <li>
                 <a href="/solucoes/bess" className="hover:text-solar-400 transition-colors block">
-                  Sistemas de Armazenamento BESS
+                  Sistema de armazenamento de energia (BESS)
                 </a>
               </li>
               <li>

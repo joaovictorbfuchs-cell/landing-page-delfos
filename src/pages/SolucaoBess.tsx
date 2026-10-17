@@ -29,8 +29,8 @@ import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
 
 export default function SolucaoBess() {
-  const [activeTabDidatica, setActiveTabDidatica] = useState<'shaving' | 'arbitragem' | 'backup'>(
-    'shaving',
+  const [activeTabDidatica, setActiveTabDidatica] = useState<'arbitragem' | 'backup' | 'shaving'>(
+    'arbitragem',
   )
 
   const scrollToContato = () => {
@@ -41,28 +41,28 @@ export default function SolucaoBess() {
   // Sub-ofertas conforme item 5.2 da especificação
   const subOfertas = [
     {
-      titulo: 'BESS Industrial e Comercial (C&I)',
-      desc: 'Sistemas em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais. Armazenamento de 30 kWh a 2+ MWh com células de Lítio Ferro Fosfato (LiFePO4) de alta densidade e segurança contra incêndio.',
-      badge: 'C&I de Alta Potência',
-      icone: Factory,
+      titulo: 'Bloqueio do Horário de Ponta e Integração Solar',
+      desc: 'Carregamento nos horários de tarifa barata na madrugada e uso à noite quando fica caro. E se a empresa já tem energia solar, carrega as baterias de graça durante o dia para despachar no horário de ponta.',
+      badge: 'Economia no Horário Caro',
+      icone: Cpu,
     },
     {
-      titulo: 'Backup Residencial e Rural Crítico',
-      desc: 'Transição ultrarrápida (menos de 20 milissegundos) para proteger ordenhadeiras, aviários mecanizados, câmaras frias, servidores e residências de alto padrão contra quedas na rede rural ou urbana.',
+      titulo: 'Backup e Energia de Reserva Crítica',
+      desc: 'Transição ultrarrápida (menos de 20 milissegundos) para proteger ordenhadeiras, aviários mecanizados, câmaras frias, servidores e indústrias contra quedas e oscilações na rede rural ou urbana.',
       badge: 'Continuidade Operacional',
       icone: Tractor,
     },
     {
-      titulo: 'Peak Shaving (Corte de Picos de Demanda)',
-      desc: 'Modulação automática que descarrega as baterias exatamente nos momentos de partida de motores ou picos fabris, evitando que a empresa ultrapasse a demanda contratada em kW e pague penalidades tarifárias.',
+      titulo: 'Redução da Cobrança de Demanda na Fatura (Peak Shaving)',
+      desc: 'Modulação automática que descarrega as baterias exatamente nos momentos de partida de motores ou picos fabris, evitando que a empresa ultrapasse a demanda contratada em kW e pague penalidades tarifárias (peak shaving).',
       badge: 'Eficiência Tarifária',
       icone: TrendingDown,
     },
     {
-      titulo: 'Arbitragem Tarifária e Integração Solar Híbrida',
-      desc: 'Carregamento nos horários em que a energia é abundante e barata (durante o pico de geração solar ou na madrugada fora de ponta) e injeção controlada durante as 3 horas mais caras do horário de ponta.',
-      badge: 'Inteligência Híbrida',
-      icone: Cpu,
+      titulo: 'Baterias e Armazenamento Industrial e Comercial (BESS C&I)',
+      desc: 'Sistemas em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais. Armazenamento de 30 kWh a 2+ MWh com células de Lítio Ferro Fosfato (LiFePO4) de alta densidade e segurança contra incêndio.',
+      badge: 'C&I de Alta Potência',
+      icone: Factory,
     },
   ]
 
@@ -72,7 +72,8 @@ export default function SolucaoBess() {
       segmento: 'Indústria Metalmecânica & Alimentos',
       desafio:
         'Quedas de energia de 15 minutos desconfiguravam centros de usinagem e fornos, causando até R$ 80.000 em matéria-prima perdida.',
-      solucao: 'Gabinete BESS 250 kWh com EMS dedicado integrado à usina solar fotovoltaica.',
+      solucao:
+        'Gabinete de baterias (BESS) 250 kWh com EMS dedicado integrado à usina solar fotovoltaica.',
       resultado:
         'Zero tempo de parada produtiva durante o ano todo e R$ 14.500/mês economizados em corte de picos de demanda.',
     },
@@ -80,7 +81,8 @@ export default function SolucaoBess() {
       segmento: 'Avicultura & Suinocultura Rural (RS)',
       desafio:
         'Rede rural sujeita a temporais, oscilações constantes de tensão e risco de morte de lotes por asfixia em galpões climatizados.',
-      solucao: 'Sistema BESS modular 80 kWh com reversão automática silenciosa sem oscilação.',
+      solucao:
+        'Sistema de armazenamento em baterias (BESS) modular 80 kWh com reversão automática silenciosa sem oscilação.',
       resultado:
         '100% de confiabilidade operacional sem a necessidade de combustível e manutenção pesada de geradores a diesel.',
     },
@@ -89,17 +91,17 @@ export default function SolucaoBess() {
       desafio:
         'Equipamentos de ressonância e tomografia não toleram microinterrupções nem ruídos harmônicos de rede.',
       solucao:
-        'BESS C&I de onda senoidal pura com filtragem ativa de harmônicos e no-break dinâmico.',
+        'Sistema de baterias (BESS C&I) de onda senoidal pura com filtragem ativa de harmônicos e no-break dinâmico.',
       resultado:
-        'Continuidade ininterrupta de exames críticos e redução drástica da fatura no horário das 18h às 21h.',
+        'Continuidade ininterrupta de exames críticos e redução drástica da fatura no horário das 18h às 21h com bloqueio do horário de ponta.',
     },
   ]
 
   return (
     <div className="min-h-screen flex flex-col bg-[#050A10] text-slate-100 antialiased selection:bg-emerald-500 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Sistemas de Armazenamento BESS | Baterias Industriais e Backup"
-        description="BESS é uma oferta própria: peak shaving, arbitragem tarifária e backup ininterrupto para indústrias, agro e comércios no Sul do Brasil. Engenharia Delfos Solar."
+        title="Sistema de armazenamento de energia (BESS) | Baterias Industriais e Backup"
+        description="Sistema de armazenamento de energia em baterias (BESS): economia no horário de ponta, backup ininterrupto e redução de demanda (peak shaving) no Sul do Brasil. Delfos Engenharia."
         canonicalPath="/solucoes/bess"
       />
 
@@ -118,7 +120,9 @@ export default function SolucaoBess() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-white font-semibold">Sistemas de Armazenamento BESS</span>
+            <span className="text-white font-semibold">
+              Sistema de armazenamento de energia (BESS)
+            </span>
           </div>
         </div>
 
@@ -137,29 +141,29 @@ export default function SolucaoBess() {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Sistemas BESS:{' '}
+                  Armazenamento e Baterias (BESS):{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
                     estratégia própria de energia
                   </span>{' '}
-                  para zerar riscos de blecaute e picos tarifários.
+                  para economizar no horário de ponta e zerar riscos de blecaute.
                 </h1>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  BESS (Battery Energy Storage System){' '}
-                  <strong>não é um simples acessório do painel solar</strong>: é o cérebro que
-                  garante autonomia ininterrupta para a sua indústria, estabiliza a rede e executa
-                  arbitragem inteligente entre horários tarifários.
+                  O sistema de armazenamento de energia em baterias (BESS — Battery Energy Storage
+                  System) <strong>não é um simples acessório do painel solar</strong>: é o cérebro
+                  que garante economia no horário de ponta, autonomia ininterrupta para a sua
+                  indústria e redução da cobrança de demanda contratada na fatura (peak shaving).
                 </p>
 
                 {/* Bloco do problema resolvido */}
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">
-                    Problema que o BESS resolve:
+                    Problema que as baterias (BESS) resolvem:
                   </span>
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Vulnerabilidade a blecautes e oscilações na rede da concessionária (gerando
-                    paradas de produção que custam caro), tarifas abusivas no horário de ponta (18h
-                    às 21h) e multas por ultrapassagem de demanda contratada.
+                    Tarifas abusivas no horário de ponta (18h às 21h), vulnerabilidade a blecautes e
+                    oscilações na rede da concessionária (gerando paradas de produção que custam
+                    caro) e multas por ultrapassagem de demanda contratada.
                   </p>
                 </div>
 
@@ -270,7 +274,7 @@ export default function SolucaoBess() {
           </div>
         </section>
 
-        {/* EXPLICAÇÃO DIDÁTICA: Peak Shaving e Arbitragem Tarifária (Item 5.2) */}
+        {/* EXPLICAÇÃO DIDÁTICA: Benefícios das Baterias e Armazenamento (Item 5.2) */}
         <section className="py-20 bg-[#060D17] border-t border-b border-white/10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-14">
@@ -286,20 +290,8 @@ export default function SolucaoBess() {
               </p>
             </div>
 
-            {/* Interactive Tab Selector */}
-            <div className="flex justify-center gap-3 mb-10">
-              <button
-                type="button"
-                onClick={() => setActiveTabDidatica('shaving')}
-                className={`px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                  activeTabDidatica === 'shaving'
-                    ? 'bg-emerald-500 text-midnight-950 shadow-lg shadow-emerald-500/20'
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
-                }`}
-              >
-                1. Peak Shaving (Corte de Picos)
-              </button>
-
+            {/* Interactive Tab Selector - Reordenado conforme regra 3: 1º Ponta, 2º Backup, 3º Pico/demanda */}
+            <div className="flex justify-center gap-3 mb-10 flex-wrap">
               <button
                 type="button"
                 onClick={() => setActiveTabDidatica('arbitragem')}
@@ -309,7 +301,7 @@ export default function SolucaoBess() {
                     : 'bg-white/5 text-slate-300 hover:bg-white/10'
                 }`}
               >
-                2. Arbitragem Tarifária
+                1. Economia no Horário de Ponta
               </button>
 
               <button
@@ -321,7 +313,19 @@ export default function SolucaoBess() {
                     : 'bg-white/5 text-slate-300 hover:bg-white/10'
                 }`}
               >
-                3. Backup Crítico Ininterrupto
+                2. Backup e Energia de Reserva
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTabDidatica('shaving')}
+                className={`px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  activeTabDidatica === 'shaving'
+                    ? 'bg-emerald-500 text-midnight-950 shadow-lg shadow-emerald-500/20'
+                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                }`}
+              >
+                3. Redução da Cobrança de Demanda na Fatura
               </button>
             </div>
 
@@ -334,7 +338,7 @@ export default function SolucaoBess() {
                       Redução de Demanda Contratada (kW)
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      Peak Shaving: elimine as multas por ultrapassagem de demanda
+                      Redução da cobrança de demanda na fatura (peak shaving)
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed">
                       Em indústrias e grandes comércios, a ligação de máquinas pesadas gera picos de
@@ -343,18 +347,18 @@ export default function SolucaoBess() {
                       ultrapassagem.
                     </p>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      O sistema BESS monitora a curva de carga em microssegundos. Ao detectar que o
-                      consumo está se aproximando do limite contratado,{' '}
+                      O sistema de baterias monitora a curva de carga em microssegundos. Ao detectar
+                      que o consumo está se aproximando do limite contratado,{' '}
                       <strong className="text-emerald-400">
                         a bateria injeta energia instantaneamente na fábrica
                       </strong>
-                      , "cortando a ponta" do gráfico e mantendo a fatura da concessionária sempre
-                      plana.
+                      , aplainando a curva e eliminando a cobrança de multas de demanda na fatura
+                      (peak shaving).
                     </p>
 
                     <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-900/60 text-xs text-emerald-300 font-mono">
                       ✓ Resultado: Redução direta na demanda faturada mês a mês, permitindo enxugar
-                      o contrato de alta tensão sem risco de multa.
+                      o contrato de alta tensão sem risco de multa (peak shaving).
                     </div>
                   </div>
 
@@ -389,10 +393,10 @@ export default function SolucaoBess() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-fade-in">
                   <div className="lg:col-span-7 space-y-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">
-                      Despacho Horário Programado
+                      Bloqueio do Horário de Ponta
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      Arbitragem Tarifária: compre energia barata e consuma no horário caro
+                      Bloqueio do horário de ponta: carrega de madrugada e usa à noite
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed">
                       Na tarifa horossazonal (Verde ou Azul), o kilowatt-hora consumido durante o{' '}
@@ -400,18 +404,18 @@ export default function SolucaoBess() {
                       mais caro do que fora da ponta.
                     </p>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      Com BESS, você carrega os módulos de lítio com o excesso de geração solar
-                      durante a tarde (custo zero) ou durante a madrugada via rede elétrica. Das 18h
-                      às 21h, a bateria assume o suprimento da sua operação,{' '}
-                      <strong className="text-cyan-400">
-                        zerando o consumo da rede no horário mais oneroso
-                      </strong>
-                      .
+                      Com o sistema de baterias (BESS), a empresa carrega de madrugada, quando a
+                      energia é barata, e usa de noite, quando fica caro.{' '}
+                      <strong className="text-cyan-300">
+                        E se a empresa já tem energia solar, carrega as baterias de graça durante o
+                        dia
+                      </strong>{' '}
+                      para consumir no horário de ponta sem pagar nada à distribuidora.
                     </p>
 
                     <div className="p-4 rounded-xl bg-cyan-950/40 border border-cyan-900/60 text-xs text-cyan-300 font-mono">
-                      ✓ Resultado: Multiplicação do retorno financeiro do ativo em relação à energia
-                      solar pura.
+                      ✓ Resultado: Bloqueio do consumo na ponta e máxima multiplicação do retorno
+                      financeiro.
                     </div>
                   </div>
 
@@ -628,9 +632,9 @@ export default function SolucaoBess() {
           initialNecessidade="BESS (Armazenamento)"
           initialOrigem="solucao-bess"
           destaqueDark={true}
-          tituloSecao="Peça o estudo de viabilidade técnica e financeira BESS"
+          tituloSecao="Peça o estudo de viabilidade técnica e financeira de baterias (BESS)"
           subtituloSecao="Nossos engenheiros analisam a fatura de alta tensão, o perfil de carga e o histórico de oscilações para dimensionar a capacidade exata em kWh/kW."
-          textoBotaoFinal="Pedir estudo de viabilidade BESS"
+          textoBotaoFinal="Pedir estudo de viabilidade de baterias (BESS)"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

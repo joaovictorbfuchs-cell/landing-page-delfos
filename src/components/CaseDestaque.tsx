@@ -105,7 +105,7 @@ export default function CaseDestaque({ onSolicitarProjeto }: CaseDestaqueProps) 
                     <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px]">
                       Escopo
                     </span>
-                    <strong className="text-slate-800">9,75 kWp Solar EPC</strong>
+                    <strong className="text-slate-800">9,75 kWp Projeto e Instalação Solar</strong>
                   </div>
                   <div>
                     <span className="font-bold text-slate-400 uppercase tracking-wider block text-[10px]">

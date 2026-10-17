@@ -54,15 +54,15 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
 
   const solucoesList = [
     {
-      title: 'Energia Solar Fotovoltaica (EPC)',
+      title: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
       desc: 'On-grid e híbrido, telhado e solo, redução de até 90%',
       href: '/solucoes/energia-solar',
       icon: Sun,
       color: 'text-solar-400',
     },
     {
-      title: 'Sistemas de Armazenamento BESS',
-      desc: 'Peak shaving, arbitragem tarifária e backup ininterrupto C&I',
+      title: 'Sistema de armazenamento de energia (BESS)',
+      desc: 'Bloqueio do horário de ponta, backup ininterrupto e redução da demanda (peak shaving)',
       href: '/solucoes/bess',
       icon: BatteryCharging,
       color: 'text-emerald-400',
@@ -92,7 +92,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     },
     {
       title: 'Indústria',
-      desc: 'Dimensionamento, BESS e demanda contratada',
+      desc: 'Dimensionamento, baterias (BESS) e demanda contratada',
       href: '/segmentos/industria',
     },
     {

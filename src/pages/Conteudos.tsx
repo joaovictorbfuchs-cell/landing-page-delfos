@@ -37,8 +37,12 @@ export default function Conteudos() {
 
   const categorias = [
     { label: 'Todos os Conteúdos', value: 'todas', icon: BookOpen },
-    { label: 'Energia Solar (EPC)', value: 'Energia Solar', icon: Sun },
-    { label: 'Armazenamento BESS', value: 'Armazenamento BESS', icon: BatteryCharging },
+    { label: 'Energia Solar Fotovoltaica', value: 'Energia Solar', icon: Sun },
+    {
+      label: 'Armazenamento e Baterias (BESS)',
+      value: 'Armazenamento BESS',
+      icon: BatteryCharging,
+    },
     { label: 'Operação & Manutenção', value: 'Operação & Manutenção', icon: Wrench },
     { label: 'Mobilidade Elétrica', value: 'Mobilidade Elétrica', icon: Car },
   ]

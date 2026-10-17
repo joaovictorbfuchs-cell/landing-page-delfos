@@ -20,7 +20,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
         <div className="flex items-center gap-2 mb-4">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
             <BatteryCharging className="w-3.5 h-3.5" />
-            Pilar 02 • BESS Industrial e Comercial
+            Pilar 02 • Armazenamento em Baterias (BESS)
           </span>
           <span className="text-[11px] text-slate-400 uppercase tracking-widest font-mono">
             Tesla-Grade Engineering
@@ -31,15 +31,15 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14">
           <div className="lg:col-span-8">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              Sistemas de Armazenamento BESS:{' '}
+              Sistema de armazenamento de energia (BESS):{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                energia ininterrupta e inteligência tarifária.
+                economia no horário de ponta, backup e proteção.
               </span>
             </h2>
             <p className="text-slate-300 text-base sm:text-lg mt-4 max-w-2xl leading-relaxed">
-              BESS (Battery Energy Storage System) não é um acessório de painel: é uma oferta
-              estratégica própria. Proteja sua operação contra quedas de energia na rede gaúcha e
-              economize no horário de ponta com arbitragem programada.
+              Sistema de armazenamento de energia em baterias (BESS) não é um acessório de painel: é
+              uma oferta estratégica própria. Proteja sua operação contra quedas de energia na rede
+              gaúcha e economize no horário de ponta com bloqueio programado.
             </p>
           </div>
 
@@ -48,14 +48,14 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
               onClick={onSolicitarViabilidade}
               className="bg-emerald-500 hover:bg-emerald-400 text-midnight-950 font-bold px-7 py-6 text-base rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-2"
             >
-              <span>Pedir estudo de viabilidade BESS</span>
+              <span>Pedir estudo de viabilidade de baterias (BESS)</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
             <a
               href="/solucoes/bess"
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors"
             >
-              <span>Acessar página completa da Solução BESS</span>
+              <span>Acessar página completa da Solução de Armazenamento (BESS)</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -63,48 +63,53 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
 
         {/* 3 Pillars of BESS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {/* Card 1 */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/50 transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">Peak Shaving (Corte de Picos)</h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-              Aplaina os picos de demanda instantânea da sua indústria, evitando ultrapassagens
-              contratuais caras e multas tarifárias na fatura de alta tensão.
-            </p>
-            <div className="text-[11px] font-mono text-emerald-400 bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-900/60">
-              Economia direta em demanda contratada (kW)
-            </div>
-          </div>
-
-          {/* Card 2 */}
+          {/* Card 1: 1º Economia no horário de ponta / Bloqueio do horário de ponta */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/50 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4">
               <Cpu className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Arbitragem Tarifária</h3>
+            <h3 className="text-xl font-bold text-white mb-2">
+              Economia e Bloqueio do Horário de Ponta
+            </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-              Carregue os bancos de lítio nos horários de tarifa baixa (ou com o excesso solar
-              diurno) e descarregue no horário de ponta (onde o kWh custa até 4x a 5x mais).
+              Carrega de madrugada, quando a energia é barata, e usa de noite, quando fica caro
+              (onde o kWh custa até 4x a 5x mais). E se a empresa já tem energia solar, carrega as
+              baterias de graça durante o dia.
             </p>
             <div className="text-[11px] font-mono text-cyan-400 bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-900/60">
-              Despacho automático via EMS inteligente
+              Despacho inteligente no horário mais caro
             </div>
           </div>
 
-          {/* Card 3 */}
+          {/* Card 2: 2º Backup e energia de reserva */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/50 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4">
               <ShieldAlert className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Backup Crítico / Sem Oscilações</h3>
+            <h3 className="text-xl font-bold text-white mb-2">Backup e Energia de Reserva</h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
               Comutação em milissegundos sem queda de servidores, compressores, câmaras frias
-              industriais ou equipamentos médicos essenciais durante blecautes.
+              industriais ou equipamentos essenciais durante blecautes e oscilações da rede.
             </p>
             <div className="text-[11px] font-mono text-amber-400 bg-amber-950/40 p-2.5 rounded-lg border border-amber-900/60">
               Zero tempo de parada e sem ruído de gerador fóssil
+            </div>
+          </div>
+
+          {/* Card 3: 3º Pico de demanda (redução da cobrança de demanda na fatura / peak shaving) */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/50 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
+              <Zap className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">
+              Redução da Cobrança de Demanda na Fatura
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+              Injeta energia instantaneamente nas partidas pesadas para aplainar picos e eliminar
+              multas por ultrapassagem contratual (peak shaving).
+            </p>
+            <div className="text-[11px] font-mono text-emerald-400 bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-900/60">
+              Economia direta em demanda contratada (kW)
             </div>
           </div>
         </div>
@@ -120,7 +125,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
                 Foto real / Estudo técnico — aguardando
               </span>
               <h4 className="text-sm font-bold text-white">
-                Gabinete BESS C&I e Módulos de Lítio (LiFePO4)
+                Gabinete de Baterias (BESS) e Módulos de Lítio (LiFePO4)
               </h4>
               <p className="text-xs text-slate-400 mt-0.5">
                 Dimensionamentos modulares de 30 kWh até 1+ MWh sob projeto de engenharia de campo
@@ -139,7 +144,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
               variant="outline"
               className="border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500 hover:text-midnight-950 text-emerald-300 text-xs font-bold"
             >
-              Pedir Dimensionamento BESS
+              Pedir Dimensionamento de Baterias (BESS)
             </Button>
           </div>
         </div>

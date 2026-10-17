@@ -28,9 +28,10 @@ export default function Faq() {
     },
     {
       id: 'bess',
-      pergunta: 'O que é BESS e por que ele é diferente de um gerador a diesel?',
+      pergunta:
+        'O que é o sistema de armazenamento de energia em baterias (BESS) e por que ele é diferente de um gerador a diesel?',
       resposta:
-        'BESS (Battery Energy Storage System) é um sistema inteligente de armazenamento de energia em baterias industriais de lítio (LiFePO4). Ao contrário de geradores barulhentos e poluentes a diesel, o BESS atua silenciosamente em milissegundos, não exige combustível fóssil, recarrega com a própria energia solar e realiza "peak shaving" (corte de picos de demanda cara no horário de ponta).',
+        'O sistema de armazenamento de energia em baterias (BESS - Battery Energy Storage System) utiliza baterias industriais inteligentes de lítio (LiFePO4). Ao contrário de geradores barulhentos e poluentes a diesel, o sistema atua silenciosamente em milissegundos, não exige combustível fóssil, bloqueia o consumo no horário de ponta (carregando de madrugada quando é barato, ou de graça durante o dia se a empresa tiver energia solar) e reduz a cobrança de demanda na fatura (peak shaving).',
     },
     {
       id: 'recarga-condominio',
@@ -43,7 +44,7 @@ export default function Faq() {
       id: 'diferenca-marca',
       pergunta: 'Qual a diferença entre a Delfos Engenharia Solar e a Delfos Energy?',
       resposta:
-        'A Delfos Engenharia Solar (com sede em Erechim/RS) é uma integradora gaúcha de engenharia de campo com 12 anos de mercado, responsável técnica pela instalação, comissionamento e manutenção de usinas solares, BESS e carregadores veiculares no Sul do Brasil. Não temos relação com a "Delfos Energy", que é uma energytech de software com sede na Espanha para gestão preditiva de parques eólicos remotos.',
+        'A Delfos Engenharia Solar (com sede em Erechim/RS) é uma integradora gaúcha de engenharia de campo com 12 anos de mercado, responsável técnica pela instalação, comissionamento e manutenção de usinas solares, sistemas de baterias (BESS) e carregadores veiculares no Sul do Brasil. Não temos relação com a "Delfos Energy", que é uma energytech de software com sede na Espanha para gestão preditiva de parques eólicos remotos.',
     },
   ]
 
@@ -60,7 +61,7 @@ export default function Faq() {
             Perguntas Frequentes & Didática Técnica
           </h2>
           <p className="text-base text-slate-600 leading-relaxed">
-            Entenda os conceitos fundamentais sobre geração solar, inversores, baterias BESS e
+            Entenda os conceitos fundamentais sobre geração solar, inversores, baterias (BESS) e
             eletromobilidade de forma clara e orientada a resultados.
           </p>
         </div>

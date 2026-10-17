@@ -10,7 +10,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
   const solucoes = [
     {
       id: 'solar',
-      titulo: 'Energia Solar Fotovoltaica (EPC)',
+      titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
       descricao: 'On-grid e híbrido, telhado e solo, redução de até 90% na conta de luz.',
       href: '/solucoes/energia-solar',
       icone: Sun,
@@ -19,8 +19,9 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     },
     {
       id: 'bess',
-      titulo: 'Sistemas de Armazenamento BESS',
-      descricao: 'Peak shaving, arbitragem tarifária e backup ininterrupto C&I e rural.',
+      titulo: 'Sistema de armazenamento de energia (BESS)',
+      descricao:
+        'Bloqueio do horário de ponta, backup ininterrupto e redução da cobrança de demanda (peak shaving).',
       href: '/solucoes/bess',
       icone: BatteryCharging,
       corBadge: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',

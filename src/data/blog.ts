@@ -69,7 +69,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       'Guia completo de energia solar em Erechim/RS e Alto Uruguai. Entenda irradiação regional, homologação na RGE, economia de até 90% e como dimensionar com a Delfos.',
     origemLead: 'blog-energia-solar-erechim',
     solucaoRelacionada: {
-      nome: 'Energia Solar Fotovoltaica (EPC)',
+      nome: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
       url: '/solucoes/energia-solar',
       ctaTexto: 'Simular projeto fotovoltaico para Erechim e região',
       necessidadeForm: 'Energia Solar Fotovoltaica',
@@ -128,11 +128,11 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
   {
     slug: 'bess-industrial-armazenamento-baterias-guia-viabilidade',
     titulo:
-      'BESS Industrial: Sistemas de Armazenamento com Baterias para Proteção contra Blecautes e Redução do Horário de Ponta',
+      'Sistema de Armazenamento com Baterias (BESS): Economia no Horário de Ponta, Backup e Redução da Cobrança de Demanda',
     subtitulo:
-      'Como indústrias e grandes comércios do Sul utilizam baterias de lítio para peak shaving, arbitragem e segurança energética contínua.',
+      'Como indústrias e grandes comércios do Sul utilizam baterias de lítio para bloqueio do horário de ponta, segurança energética contínua e redução da cobrança de demanda (peak shaving).',
     resumo:
-      'Entenda como o armazenamento de energia em baterias (BESS C&I) protege linhas fabris contra paradas bruscas, elimina o custo exorbitante da energia no horário de ponta e viabiliza a independência da rede elétrica.',
+      'Entenda como o armazenamento de energia em baterias (BESS C&I) protege linhas fabris contra paradas bruscas, elimina o custo exorbitante da energia no horário de ponta (carregando de madrugada ou de graça com solar durante o dia) e viabiliza a independência da rede elétrica.',
     categoria: 'Armazenamento BESS',
     tempoLeitura: '8 min de leitura',
     dataPublicacao: '18 de Outubro de 2026',
@@ -148,12 +148,12 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       'backup ininterrupto fábrica RS',
     ],
     metaDescription:
-      'Descubra como o BESS industrial opera com peak shaving, arbitragem e backup imediato contra quedas de rede em indústrias do RS. Estudo de viabilidade com a Delfos.',
+      'Descubra como o sistema de armazenamento em baterias (BESS industrial) opera com economia no horário de ponta, backup imediato e redução da cobrança de demanda (peak shaving) em indústrias do RS.',
     origemLead: 'blog-bess',
     solucaoRelacionada: {
-      nome: 'Sistemas de Armazenamento BESS',
+      nome: 'Sistema de armazenamento de energia (BESS)',
       url: '/solucoes/bess',
-      ctaTexto: 'Pedir estudo de viabilidade para BESS industrial',
+      ctaTexto: 'Pedir estudo de viabilidade para baterias e armazenamento (BESS)',
       necessidadeForm: 'BESS (Armazenamento)',
     },
     secoes: [
@@ -166,27 +166,27 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         ],
       },
       {
-        tituloH2: 'As Três Aplicações Centrais do BESS Industrial',
+        tituloH2: 'As Três Aplicações Centrais do Sistema de Baterias (BESS)',
         conteudo: [
-          'Um sistema BESS industrial não é um simples "no-break de grande porte". Trata-se de uma central eletroquímica modular com inversor bidirecional inteligente e software EMS (Energy Management System).',
+          'Um sistema de armazenamento de energia em baterias (BESS) não é um simples "no-break de grande porte". Trata-se de uma central eletroquímica modular com inversor bidirecional inteligente e software EMS (Energy Management System).',
         ],
         subsecoes: [
           {
-            tituloH3: '1. Peak Shaving (Achatamento de Picos de Demanda)',
+            tituloH3: '1. Economia e Bloqueio do Horário de Ponta (18h às 21h)',
             conteudo: [
-              'Em fábricas com picos transitórios de partida de máquinas pesadas, o BESS descarrega potência de forma ultrarrápida, impedindo que a demanda medida ultrapasse a demanda contratada com a concessionária e evitando multas severas de ultrapassagem.',
+              'Na estrutura tarifária horossazonal (tarifa verde ou azul), o kWh consumido no horário de ponta (geralmente entre 18h e 21h nos dias úteis) custa de 4 a 6 vezes mais do que fora de ponta. O sistema carrega de madrugada, quando a energia é barata, e usa de noite, quando fica caro. E se a empresa já tem energia solar, carrega as baterias de graça durante o dia, gerando economia expressiva sem pagar tarifas abusivas à concessionária.',
             ],
           },
           {
-            tituloH3: '2. Arbitragem Tarifária (Horário de Ponta vs. Fora de Ponta)',
-            conteudo: [
-              'Na estrutura tarifária horossazonal (tarifa verde ou azul), o kWh consumido no horário de ponta (geralmente entre 18h e 21h nos dias úteis) custa de 4 a 6 vezes mais do que fora de ponta. O BESS armazena energia solar excedente durante a tarde ou compra energia barata da rede de madrugada para descarregar na fábrica no horário de ponta, gerando economia expressiva.',
-            ],
-          },
-          {
-            tituloH3: '3. Backup Instantâneo de Resposta em Milissegundos',
+            tituloH3: '2. Backup Instantâneo de Resposta em Milissegundos',
             conteudo: [
               'Em caso de queda total da rede de distribuição, o sistema comuta em menos de 15 a 20 milissegundos para o modo ilha (off-grid grid-forming), garantindo que os quadros essenciais da indústria continuem energizados sem oscilação percebida pelas máquinas.',
+            ],
+          },
+          {
+            tituloH3: '3. Redução da Cobrança de Demanda na Fatura (Peak Shaving)',
+            conteudo: [
+              'Em fábricas com picos transitórios de partida de máquinas pesadas, as baterias descarregam potência de forma ultrarrápida, impedindo que a demanda medida ultrapasse a demanda contratada com a concessionária e eliminando multas severas de ultrapassagem na fatura (peak shaving).',
             ],
           },
         ],
@@ -194,16 +194,16 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       {
         tituloH2: 'Arquitetura e Segurança de Células de Lítio LFP',
         conteudo: [
-          'A Delfos Engenharia projeta soluções BESS empregando a química LiFePO4 (Fosfato de Ferro e Lítio), reconhecida globalmente por sua estabilidade térmica extrema, resistência ao thermal runaway e ciclo de vida superior a 6.000 a 8.000 ciclos com garantia estendida.',
+          'A Delfos Engenharia projeta soluções de baterias (BESS) empregando a química LiFePO4 (Fosfato de Ferro e Lítio), reconhecida globalmente por sua estabilidade térmica extrema, resistência ao thermal runaway e ciclo de vida superior a 6.000 a 8.000 ciclos com garantia estendida.',
           'Os contêineres e gabinetes industriais contam com climatização de precisão (HVAC ou arrefecimento líquido), sistema automatizado de supressão de incêndio por gás limpo e monitoramento de telemetria célula a célula 24/7.',
         ],
       },
     ],
     conclusao: {
       texto:
-        'O BESS industrial transforma energia de custo variável e rede instável em um ativo confiável, programável e estratégico para o fluxo produtivo.',
+        'O sistema de armazenamento de energia em baterias (BESS) transforma energia de custo variável e rede instável em um ativo confiável, programável e estratégico para o fluxo produtivo.',
       destaque:
-        'Blindagem total contra blecautes, fim das multas de ultrapassagem de demanda e substituição inteligente de diesel por energia limpa.',
+        'Economia expressiva no horário de ponta, blindagem total contra blecautes, fim das multas de ultrapassagem de demanda (peak shaving) e substituição inteligente de diesel por energia limpa.',
     },
     faqs: [
       {

@@ -10,7 +10,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
     {
       id: 'solar',
       numero: '01',
-      titulo: 'Energia Solar Fotovoltaica (EPC)',
+      titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
       subtitulo: 'Geração própria e independência tarifária',
       icone: Sun,
       corIcone: 'bg-solar-100 text-solar-700 border-solar-200',
@@ -20,7 +20,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       subOfertas: [
         'Projetos on-grid e híbridos em telhado e solo',
         'Dimensionamento residencial, comercial, industrial e rural',
-        'Modelagem para geração distribuída (GD)',
+        'Modelagem para geração própria e distribuída (GD)',
         'Homologação completa junto à concessionária',
       ],
       ctaText: 'Simular projeto',
@@ -31,17 +31,17 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
     {
       id: 'bess',
       numero: '02',
-      titulo: 'Sistemas de Armazenamento BESS',
+      titulo: 'Sistema de armazenamento de energia (BESS)',
       subtitulo: 'Baterias industriais e backup inteligente',
       icone: BatteryCharging,
       corIcone: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       tagCor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
       problemaResolvido:
-        'Vulnerabilidade a blecautes e oscilações da rede, alto custo de energia no horário de ponta e parada produtiva de indústrias e comércios.',
+        'Alto custo de energia no horário de ponta, vulnerabilidade a blecautes e oscilações da rede, e parada produtiva de indústrias e comércios.',
       subOfertas: [
-        'Peak shaving (corte de picos de demanda)',
-        'Arbitragem tarifária ponta vs. fora de ponta',
-        'Backup ininterrupto C&I e rural crítico',
+        'Economia e bloqueio do horário de ponta (carrega barato ou solar de graça e usa no horário caro)',
+        'Backup ininterrupto e energia de reserva para C&I e rural crítico',
+        'Redução da cobrança de demanda na fatura (peak shaving)',
         'Integração híbrida modular solar + banco de lítio',
       ],
       ctaText: 'Pedir estudo de viabilidade',

@@ -44,7 +44,7 @@ export default function Segmentos({ onSelectSegmento }: SegmentosProps) {
       slug: 'industria',
       href: '/segmentos/industria',
       titulo: 'Indústria',
-      pergunta: '“Como dimensionar geração, BESS e demanda contratada?”',
+      pergunta: '“Como dimensionar geração, baterias (BESS) e demanda contratada?”',
       dadoQualificacao: 'Perfil de carga e demanda contratada',
       cta: 'Falar com engenharia',
       icone: Factory,

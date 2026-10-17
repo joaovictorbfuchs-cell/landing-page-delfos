@@ -283,9 +283,9 @@ export default function SegmentoPageLayout({
                   isDark ? 'text-slate-300' : 'text-slate-600'
                 }`}
               >
-                Integramos o ecossistema completo — da geração fotovoltaica ao armazenamento BESS,
-                manutenção O&M com drone e recarga veicular — sob medida para as necessidades deste
-                setor.
+                Integramos o ecossistema completo — da geração fotovoltaica ao armazenamento em
+                baterias (BESS), manutenção O&M com drone e recarga veicular — sob medida para as
+                necessidades deste setor.
               </p>
             </div>
 

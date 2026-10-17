@@ -201,7 +201,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
           </span>
           <span className="hidden sm:inline-block text-xs text-slate-400">•</span>
           <span className="text-xs text-slate-300 hidden sm:inline-block">
-            Solar Fotovoltaico • BESS • O&M • Eletromobilidade
+            Solar Fotovoltaico • Armazenamento e Baterias (BESS) • O&M • Eletromobilidade
           </span>
         </div>
 
@@ -218,8 +218,8 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
 
               <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl">
                 A <strong>Delfos Engenharia</strong> projeta, constrói e opera sistemas solares de
-                alta performance, armazenamento inteligente em baterias (BESS), planos com SLA de
-                monitoramento contínuo e infraestrutura de recarga veicular no Sul do Brasil.
+                alta performance, sistema de armazenamento de energia em baterias (BESS), planos com
+                SLA de monitoramento contínuo e infraestrutura de recarga veicular no Sul do Brasil.
               </p>
             </div>
 
@@ -229,13 +229,13 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 <span className="block text-[11px] font-bold text-solar-300 uppercase tracking-wider">
                   01. Solar
                 </span>
-                <span className="text-xs text-slate-200 font-medium">EPC Geração Própria</span>
+                <span className="text-xs text-slate-200 font-medium">Projeto e Instalação</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
                 <span className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">
-                  02. BESS
+                  02. Baterias (BESS)
                 </span>
-                <span className="text-xs text-slate-200 font-medium">Baterias & Backup</span>
+                <span className="text-xs text-slate-200 font-medium">Armazenamento & Backup</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
                 <span className="block text-[11px] font-bold text-cyan-300 uppercase tracking-wider">

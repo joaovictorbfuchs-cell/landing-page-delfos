@@ -87,14 +87,14 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: false,
     solucoesRelevantes: [
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Redução de até 90% na conta com módulos Tier 1 e 25 anos de garantia.',
         href: '/solucoes/energia-solar',
         badge: 'Solução Principal',
         icone: Sun,
       },
       {
-        titulo: 'Sistemas de Armazenamento BESS',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
         subtitulo:
           'Backup ininterrupto (< 20ms) para manter geladeira, internet e luz em temporais.',
         href: '/solucoes/bess',
@@ -131,19 +131,19 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ],
     faq: [
       {
-        pergunta: 'Quanto tempo dura o sistema e qual o retorno do investimento residencial?',
+        pergunta: 'Como as baterias (BESS) protegem a linha fabril contra microinterrupções?',
         resposta:
-          'Os módulos fotovoltaicos possuem garantia de desempenho de 25 anos. No Rio Grande do Sul, o payback médio tem ficado entre 3 e 4 anos, proporcionando mais de duas décadas de energia praticamente gratuita.',
+          'O sistema comuta para modo de sustentação autônoma em menos de 20 milissegundos, tempo imperceptível para CLPs, inversores de frequência e computadores industriais. Enquanto geradores a diesel levam de 10 a 30 segundos para partir, o sistema de baterias atua instantaneamente, evitando paradas de máquina e perda de lotes.',
       },
       {
-        pergunta: 'Se acabar a luz da concessionária, o sistema solar continua funcionando?',
+        pergunta: 'O que é o bloqueio do horário de ponta e a redução de demanda (peak shaving)?',
         resposta:
-          'Sistemas solares on-grid tradicionais desligam por norma de segurança (anti-ilhamento). Caso você queira continuar com energia durante apagões, a Delfos instala o sistema híbrido com baterias BESS de lítio, que assume as cargas críticas em menos de 20 milissegundos.',
+          'O bloqueio do horário de ponta descarrega as baterias quando a energia fica cara (onde o kWh custa até 5 vezes mais). A empresa carrega de madrugada, quando a tarifa é barata, e se já tem energia solar, carrega de graça durante o dia. Já a redução da cobrança de demanda (peak shaving) é o corte instantâneo dos picos de potência nas partidas pesadas, evitando multas e enxugando o contrato da fatura.',
       },
       {
         pergunta: 'A Delfos cuida de toda a papelada e aprovação com a RGE ou CEEE?',
         resposta:
-          'Sim, cuidamos de 100% do processo EPC: estudo solarimétrico, projeto elétrico, emissão de ART no CREA-RS, homologação junto à concessionária e acompanhamento da troca do medidor bidirecional.',
+          'Sim, cuidamos de 100% do processo completo de projeto e instalação: estudo solarimétrico, projeto elétrico, emissão de ART no CREA-RS, homologação junto à concessionária e acompanhamento da troca do medidor bidirecional.',
       },
     ],
     seo: {
@@ -180,7 +180,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: false,
     solucoesRelevantes: [
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Redução expressiva no custo operacional em telhados metálicos ou lajes.',
         href: '/solucoes/energia-solar',
         badge: 'Geração no Horário Comercial',
@@ -194,7 +194,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
         icone: Wrench,
       },
       {
-        titulo: 'Sistemas de Armazenamento BESS',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
         subtitulo: 'Continuidade para câmaras frias, servidores e caixas sem perda de estoque.',
         href: '/solucoes/bess',
         badge: 'Zero Parada Operacional',
@@ -251,9 +251,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     path: '/segmentos/industria',
     nome: 'Indústria',
     caseSegmentoKey: 'Indústria',
-    perguntaPrincipal: 'Como dimensionar geração, BESS e demanda contratada?',
+    perguntaPrincipal: 'Como dimensionar geração, baterias (BESS) e demanda contratada?',
     headlineComplemento:
-      'Engenharia de alta tensão: solar EPC de grande porte, BESS para peak shaving e otimização de demanda no Grupo A.',
+      'Engenharia de alta tensão: solar de grande porte, baterias (BESS) para redução de demanda e otimização de faturas no Grupo A.',
     descricaoHero:
       'Projetos industriais com análise de curva de carga, medição harmônica e integração com subestações abrigadas. Elimine multas por ultrapassagem de demanda, reduza custo no horário de ponta e garanta zero paradas de linha.',
     ctaRecomendado: 'Falar com engenharia',
@@ -271,14 +271,15 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: true,
     solucoesRelevantes: [
       {
-        titulo: 'Sistemas de Armazenamento BESS',
-        subtitulo: 'Peak shaving automático e continuidade ininterrupta para linhas fabris CNC.',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
+        subtitulo:
+          'Bloqueio do horário de ponta, backup e redução da cobrança de demanda (peak shaving).',
         href: '/solucoes/bess',
         badge: 'C&I de Alta Potência',
         icone: BatteryCharging,
       },
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Usinas em telhado trapezoidal metálico e solo com conexão em média tensão.',
         href: '/solucoes/energia-solar',
         badge: 'Redução Estrutural',
@@ -301,15 +302,15 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
       {
         dor: 'Multas frequentes por ultrapassagem de demanda contratada em horários de pico.',
-        resposta: 'Algoritmo de Peak Shaving com injeção automática de baterias.',
+        resposta: 'Redução automática da cobrança de demanda na fatura (peak shaving).',
         comoResolvemos:
-          'O BESS descarrega instantaneamente nos minutos em que a carga atinge o teto contratado, mantendo a curva de faturamento sempre dentro do limite do contrato com a concessionária.',
+          'O sistema de baterias descarrega instantaneamente nos minutos em que a carga atinge o teto contratado, mantendo a curva de faturamento sempre dentro do limite do contrato com a concessionária (peak shaving).',
       },
       {
         dor: 'Tarifa abusiva durante o horário de ponta (18h às 21h) no Grupo A.',
-        resposta: 'Arbitragem tarifária: carregamento fora da ponta e despacho na ponta.',
+        resposta: 'Bloqueio do horário de ponta: carrega de madrugada e usa de noite.',
         comoResolvemos:
-          'Carregamos as baterias com solar ou energia de baixo custo na madrugada e despachamos na fábrica no momento em que o kWh custa 4x a 5x mais caro.',
+          'Carregamos de madrugada, quando a energia é barata, e usamos de noite, quando fica caro. E se a empresa já tem energia solar, carrega as baterias de graça durante o dia.',
       },
     ],
     faq: [
@@ -331,9 +332,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
     ],
     seo: {
-      title: 'Energia Solar, BESS e Demanda Contratada para Indústrias | Delfos RS',
+      title: 'Energia Solar, Baterias (BESS) e Demanda Contratada para Indústrias | Delfos RS',
       description:
-        'Engenharia industrial de ciclo completo no RS: peak shaving, BESS para continuidade, solar de grande porte e O&M com SLA para indústrias em Erechim e no Sul.',
+        'Engenharia industrial de ciclo completo no RS: baterias (BESS) para continuidade, bloqueio de ponta, redução de demanda (peak shaving), solar e O&M com SLA para indústrias em Erechim e no Sul.',
     },
   },
 
@@ -364,14 +365,14 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: false,
     solucoesRelevantes: [
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Usinas de solo em estrutura galvanizada ou sobre galpões rurais.',
         href: '/solucoes/energia-solar',
         badge: 'Geração Rural',
         icone: Sun,
       },
       {
-        titulo: 'Sistemas de Armazenamento BESS',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
         subtitulo: 'Backup rural automático sem os custos e falhas de gerador a diesel.',
         href: '/solucoes/bess',
         badge: 'Zero Perda de Lote',
@@ -464,7 +465,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
         icone: Car,
       },
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Zere a conta do condomínio (elevadores, bombas e áreas comuns).',
         href: '/solucoes/energia-solar',
         badge: 'Áreas Comuns',
@@ -530,7 +531,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     caseSegmentoKey: 'Investidores e Usinas',
     perguntaPrincipal: 'Como implantar ou recuperar desempenho?',
     headlineComplemento:
-      'Geração Distribuída e Usinas de Solo: engenharia EPC com conexão em média tensão e O&M para recuperar usinas com perdas.',
+      'Geração Distribuída e Usinas de Solo: engenharia completa de projeto e instalação com conexão em média tensão e O&M para recuperar usinas com perdas.',
     descricaoHero:
       'Modelagem regulatória da Lei 14.300/2022, usinas de solo compartilhadas, locação de créditos de energia e auditoria de usinas em operação com termografia por drone e recuperação de geração.',
     ctaRecomendado: 'Solicitar diagnóstico',
@@ -549,7 +550,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: false,
     solucoesRelevantes: [
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Engenharia de usinas de solo com subestação, SPDA e conexão em média tensão.',
         href: '/solucoes/energia-solar',
         badge: 'Usinas de Solo',
@@ -563,8 +564,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
         icone: Wrench,
       },
       {
-        titulo: 'Sistemas de Armazenamento BESS',
-        subtitulo: 'Hibridização de usinas para arbitragem tarifária e estabilidade de injeção.',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
+        subtitulo:
+          'Hibridização de usinas para bloqueio do horário caro e estabilidade de injeção.',
         href: '/solucoes/bess',
         badge: 'Armazenamento em Escala',
         icone: BatteryCharging,
@@ -610,7 +612,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Usinas de Solo e O&M para Investidores no RS | Delfos Engenharia',
       description:
-        'Engenharia EPC para investidores em geração distribuída e usinas solares de solo no RS. Implantação completa, conexão em média tensão e auditoria O&M com drone.',
+        'Projeto e instalação completos para investidores em geração distribuída e usinas solares de solo no RS. Implantação completa, conexão em média tensão e auditoria O&M com drone.',
     },
   },
 
@@ -648,14 +650,14 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
         icone: Car,
       },
       {
-        titulo: 'Sistemas de Armazenamento BESS',
+        titulo: 'Sistema de armazenamento de energia (BESS)',
         subtitulo: 'Mitigação de picos de recarga rápida sem estourar a demanda da transportadora.',
         href: '/solucoes/bess',
         badge: 'Armazenamento de Apoio',
         icone: BatteryCharging,
       },
       {
-        titulo: 'Energia Solar Fotovoltaica (EPC)',
+        titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
         subtitulo: 'Gere o próprio combustível elétrico da frota a custo próximo de zero por km.',
         href: '/solucoes/energia-solar',
         badge: 'Combustível Solar',
