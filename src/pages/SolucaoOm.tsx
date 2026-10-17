@@ -31,6 +31,29 @@ import { Button } from '@/components/ui/button'
 
 export default function SolucaoOm() {
   const [activePlan, setActivePlan] = useState<'essencial' | 'pro' | 'enterprise'>('pro')
+  const [formNecessidade, setFormNecessidade] = useState<string>('Manutenção')
+  const [formOrigem, setFormOrigem] = useState<string>('solucao-om-manutencao')
+
+  const handleSolicitarManutencao = (origemEspecifica = 'om-hero-manutencao') => {
+    setFormNecessidade('Manutenção')
+    setFormOrigem(origemEspecifica)
+    const el = document.querySelector('#contato')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleConhecerPlanos = (origemEspecifica = 'om-hero-planos') => {
+    setFormNecessidade('O&M e Monitoramento')
+    setFormOrigem(origemEspecifica)
+    const el = document.querySelector('#planos-om') || document.querySelector('#contato')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleContratarPlano = (nomePlano: string) => {
+    setFormNecessidade('O&M e Monitoramento')
+    setFormOrigem(`om-plano-${nomePlano.toLowerCase().replace(/\s+/g, '-')}`)
+    const el = document.querySelector('#contato')
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const scrollToContato = () => {
     const el = document.querySelector('#contato')
@@ -189,23 +212,51 @@ export default function SolucaoOm() {
                   </p>
                 </div>
 
-                {/* CTAs exclusivos */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                  <Button
-                    onClick={scrollToContato}
-                    className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-8 py-6 text-base rounded-xl shadow-xl shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <span>Solicitar diagnóstico da usina</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
+                {/* CTAs exclusivos separados: Manutenção (primário) vs Conhecer Planos (secundário) */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    {/* CTA Primário: Solicitar Manutenção */}
+                    <div className="flex-1 flex flex-col">
+                      <Button
+                        onClick={() => handleSolicitarManutencao('om-hero-manutencao')}
+                        className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-6 py-6 text-base rounded-xl shadow-xl shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Wrench className="w-5 h-5 text-midnight-950 shrink-0" />
+                        <span>Solicitar Manutenção</span>
+                        <ArrowRight className="w-4 h-4 ml-auto" />
+                      </Button>
+                      <span className="text-[11px] text-solar-300 font-semibold mt-1.5 flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-solar-400 shrink-0" />
+                        atendemos usinas de qualquer instalador
+                      </span>
+                    </div>
 
+                    {/* CTA Secundário: Conhecer Planos O&M */}
+                    <div className="flex-1 flex flex-col">
+                      <Button
+                        onClick={() => handleConhecerPlanos('om-hero-conhecer-planos')}
+                        variant="outline"
+                        className="w-full bg-white/10 hover:bg-white/15 border border-white/25 text-white font-bold px-6 py-6 text-base rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <ShieldCheck className="w-5 h-5 text-blue-300 shrink-0" />
+                        <span>Conhecer Planos O&M</span>
+                      </Button>
+                      <span className="text-[11px] text-slate-300 mt-1.5">
+                        com SLA contratual de até 4h a 48h
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Canal WhatsApp direto */}
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20diagn%C3%B3stico%20de%20O%26M%20para%20minha%20usina%20solar%20(Origem:%20solucao-om)"
+                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20manuten%C3%A7%C3%A3o%20ou%20conhecer%20os%20planos%20de%20O%26M%20da%20Delfos%20(Origem:%20solucao-om)"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-bold text-white transition-all text-center"
+                    className="inline-flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors pt-1"
                   >
-                    <span>Falar com equipe de O&M no WhatsApp</span>
+                    <span>
+                      Prefere falar agora com um técnico? Chamar no WhatsApp (54) 99129-2121 →
+                    </span>
                   </a>
                 </div>
 
@@ -287,12 +338,25 @@ export default function SolucaoOm() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={scrollToContato}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer"
-                  >
-                    Agendar diagnóstico gratuito da sua usina
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleSolicitarManutencao('om-card-diagnostico-manutencao')}
+                      className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Wrench className="w-4 h-4" />
+                      <span>Solicitar Manutenção Imediata</span>
+                    </Button>
+                    <p className="text-[10px] text-center text-slate-500">
+                      Atendemos usinas de qualquer instalador
+                    </p>
+                    <Button
+                      onClick={() => handleConhecerPlanos('om-card-diagnostico-planos')}
+                      variant="outline"
+                      className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2.5 text-xs rounded-xl cursor-pointer"
+                    >
+                      Conhecer Planos O&M com SLA
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -401,12 +465,25 @@ export default function SolucaoOm() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={scrollToContato}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 text-xs rounded-xl shadow cursor-pointer"
-                  >
-                    Solicitar diagnóstico e modelo de laudo
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleSolicitarManutencao('om-secao-termografia-manutencao')}
+                      className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black py-3 text-xs rounded-xl shadow cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Wrench className="w-4 h-4" />
+                      <span>Solicitar Manutenção & Laudo Termográfico</span>
+                    </Button>
+                    <p className="text-[10px] text-center text-slate-500">
+                      Atendemos usinas de qualquer instalador
+                    </p>
+                    <Button
+                      onClick={() => handleConhecerPlanos('om-secao-termografia-planos')}
+                      variant="outline"
+                      className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2.5 text-xs rounded-xl cursor-pointer"
+                    >
+                      Conhecer Planos O&M com Termografia
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -472,7 +549,7 @@ export default function SolucaoOm() {
         </section>
 
         {/* PLANOS COM SLA EXPLÍCITO (Item 5.3 da especificação) */}
-        <section className="py-20 bg-slate-50 border-t border-b border-slate-200/80">
+        <section id="planos-om" className="py-20 bg-slate-50 border-t border-b border-slate-200/80">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">
@@ -562,7 +639,7 @@ export default function SolucaoOm() {
                   </div>
 
                   <Button
-                    onClick={scrollToContato}
+                    onClick={() => handleContratarPlano(plano.nome)}
                     className={`w-full font-bold py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer ${
                       plano.destaque
                         ? 'bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black'
@@ -577,13 +654,13 @@ export default function SolucaoOm() {
           </div>
         </section>
 
-        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM "solucao-om" E CTA "Solicitar diagnóstico da usina" */}
+        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM RASTREADA E CLASSIFICAÇÃO MANUTENÇÃO vs PLANOS */}
         <ContatoForm
-          initialNecessidade="O&M e Monitoramento"
-          initialOrigem="solucao-om"
-          tituloSecao="Solicite o diagnóstico técnico da sua usina solar"
-          subtituloSecao="Descubra se o seu sistema está operando na capacidade máxima ou se você está perdendo dinheiro por sujidade e anomalias térmicas."
-          textoBotaoFinal="Solicitar diagnóstico da usina"
+          initialNecessidade={formNecessidade}
+          initialOrigem={formOrigem}
+          tituloSecao="Solicite manutenção ou proposta de plano O&M"
+          subtituloSecao="Atendemos usinas de qualquer instalador. Descubra se o seu sistema está operando na capacidade máxima ou restabeleça a geração com equipe técnica registrada no CREA-RS."
+          textoBotaoFinal="Solicitar atendimento técnico"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

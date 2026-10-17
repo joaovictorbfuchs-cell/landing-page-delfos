@@ -6,6 +6,7 @@ export type NecessidadePilar =
   | 'O&M e Monitoramento'
   | 'Carregadores Veiculares'
   | 'Multiplas Solucoes'
+  | 'Manutenção'
 
 export type TipoLigacao = 'Monofasico' | 'Bifasico' | 'Trifasico' | 'Nao sei'
 

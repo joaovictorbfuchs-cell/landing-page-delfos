@@ -74,6 +74,32 @@ export default function ContatoForm({
     if (initialNecessidade) setNecessidade(initialNecessidade)
   }, [initialNecessidade])
 
+  // Suporte a query params na URL (ex: ?assunto=manutencao ou ?necessidade=Manutenção)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const paramAssunto = params.get('assunto') || params.get('necessidade')
+      if (paramAssunto) {
+        const valLower = paramAssunto.toLowerCase()
+        if (valLower.includes('manuten') || valLower.includes('assist')) {
+          setNecessidade('Manutenção')
+        } else if (
+          valLower.includes('om') ||
+          valLower.includes('o&m') ||
+          valLower.includes('plano')
+        ) {
+          setNecessidade('O&M e Monitoramento')
+        } else if (valLower.includes('bess') || valLower.includes('bateria')) {
+          setNecessidade('BESS (Armazenamento)')
+        } else if (valLower.includes('carregador') || valLower.includes('veicular')) {
+          setNecessidade('Carregadores Veiculares')
+        } else if (valLower.includes('solar') || valLower.includes('fotovoltaica')) {
+          setNecessidade('Energia Solar Fotovoltaica')
+        }
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (initialValorConta) setValorContaInput(String(initialValorConta))
   }, [initialValorConta])
@@ -613,6 +639,7 @@ export default function ContatoForm({
                         <option value="Carregadores Veiculares">
                           04. Carregadores Veiculares com Gestão de Carga Inteligente
                         </option>
+                        <option value="Manutenção">Manutenção / Assistência Técnica</option>
                         <option value="Multiplas Solucoes">
                           Ecossistema Integrado (Mais de uma)
                         </option>

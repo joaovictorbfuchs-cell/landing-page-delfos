@@ -22,6 +22,7 @@ import {
   BatteryCharging,
   Layers,
   Info,
+  Wrench,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -206,9 +207,16 @@ export default function Admin() {
     (l) => (l.necessidade && l.necessidade.includes('Solar')) || l.tipo_imovel === 'Residencia',
   ).length
   const bessLeads = leads.filter((l) => l.necessidade && l.necessidade.includes('BESS')).length
+  const manutencaoLeads = leads.filter(
+    (l) =>
+      l.necessidade &&
+      (l.necessidade === 'Manutenção' || l.necessidade.toLowerCase().includes('manuten')),
+  ).length
   const outrosPilaresLeads = leads.filter(
     (l) =>
-      l.necessidade && (l.necessidade.includes('Carregadores') || l.necessidade.includes('O&M')),
+      l.necessidade &&
+      (l.necessidade.includes('Carregadores') ||
+        (l.necessidade.includes('O&M') && l.necessidade !== 'Manutenção')),
   ).length
 
   return (
@@ -327,14 +335,14 @@ export default function Admin() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8 w-full flex-1 space-y-8">
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center">
               <Zap className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Total de Leads
+                Total Leads
               </span>
               <p className="text-2xl font-bold text-slate-900">{totalLeads}</p>
             </div>
@@ -365,12 +373,24 @@ export default function Admin() {
           </div>
 
           <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+              <Wrench className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Manutenção
+              </span>
+              <p className="text-2xl font-bold text-slate-900">{manutencaoLeads}</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
               <Layers className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                O&M / Carregadores
+                O&M / Recarga
               </span>
               <p className="text-2xl font-bold text-slate-900">{outrosPilaresLeads}</p>
             </div>
@@ -403,6 +423,7 @@ export default function Admin() {
                 <option value="todos">Todos os pilares</option>
                 <option value="Solar">Energia Solar (EPC)</option>
                 <option value="BESS">BESS (Armazenamento)</option>
+                <option value="Manutenção">Manutenção / Assistência Técnica</option>
                 <option value="O&M">O&M / Monitoramento</option>
                 <option value="Carregadores">Carregadores Veiculares</option>
               </select>
@@ -538,16 +559,21 @@ export default function Admin() {
                         <td className="py-4 px-5 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-                              (lead.necessidade || '').includes('BESS')
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : (lead.necessidade || '').includes('Carregadores')
-                                  ? 'bg-indigo-100 text-indigo-800'
-                                  : (lead.necessidade || '').includes('O&M')
-                                    ? 'bg-blue-100 text-blue-800'
-                                    : 'bg-solar-100 text-solar-800'
+                              (lead.necessidade || '') === 'Manutenção' ||
+                              (lead.necessidade || '').toLowerCase().includes('manuten')
+                                ? 'bg-rose-100 text-rose-800'
+                                : (lead.necessidade || '').includes('BESS')
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : (lead.necessidade || '').includes('Carregadores')
+                                    ? 'bg-indigo-100 text-indigo-800'
+                                    : (lead.necessidade || '').includes('O&M')
+                                      ? 'bg-blue-100 text-blue-800'
+                                      : 'bg-solar-100 text-solar-800'
                             }`}
                           >
-                            {lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
+                            {(lead.necessidade || '') === 'Manutenção'
+                              ? 'Manutenção / Assistência'
+                              : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
                           </span>
                         </td>
 
