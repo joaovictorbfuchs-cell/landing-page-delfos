@@ -27,7 +27,7 @@ import WhatsAppFloating from '@/components/WhatsAppFloating'
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
-import PlantaoEmergenciaIa from '@/components/PlantaoEmergenciaIa'
+import PlantaoWidgetFlutuante from '@/components/PlantaoWidgetFlutuante'
 import { Button } from '@/components/ui/button'
 
 export default function SolucaoOm() {
@@ -352,13 +352,14 @@ export default function SolucaoOm() {
                     </p>
                     <Button
                       onClick={() => {
-                        const el = document.querySelector('#plantao-emergencia-ia')
+                        // Rola até o formulário ou abre o atendimento de plantão
+                        const el = document.querySelector('#contato')
                         if (el) el.scrollIntoView({ behavior: 'smooth' })
                       }}
                       className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 text-xs rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shadow"
                     >
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span>Acionar Plantão de IA Agora</span>
+                      <span>Acionar Atendimento de Emergência</span>
                     </Button>
                     <Button
                       onClick={() => handleConhecerPlanos('om-card-diagnostico-planos')}
@@ -371,13 +372,6 @@ export default function SolucaoOm() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* SEÇÃO PLANTÃO DE EMERGÊNCIA IA (Nativo Skip Cloud) */}
-        <section className="py-12 md:py-16 bg-[#041122]">
-          <div className="max-w-7xl mx-auto px-6">
-            <PlantaoEmergenciaIa />
           </div>
         </section>
 
@@ -688,11 +682,8 @@ export default function SolucaoOm() {
       {/* Footer com Diferenciação da Marca */}
       <Footer />
 
-      {/* WhatsApp contextual para O&M */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou na página de O&M da Delfos e gostaria de solicitar um diagnóstico técnico da minha usina solar."
-        origemSecao="solucao-om"
-      />
+      {/* Widget Flutuante de Atendimento do Plantão de IA (Exclusivo página O&M) */}
+      <PlantaoWidgetFlutuante />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />
