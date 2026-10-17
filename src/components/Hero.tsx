@@ -8,22 +8,96 @@ interface HeroProps {
     origem?: string
     valorConta?: number
     concessionaria?: string
+    tipoLigacao?: string
   }) => void
 }
 
-const CONCESSIONARIAS_RS = [
-  { id: 'rge', nome: 'RGE (CPFL Energia)', tarifaMediaKwh: 0.96 },
-  { id: 'ceee', nome: 'CEEE Equatorial', tarifaMediaKwh: 0.94 },
+/**
+ * Parâmetros tarifários B1 residencial (2026) e Fio B cheio (R$/kWh)
+ * Fontes de referência: Homologações tarifárias ANEEL / Cooperativas RS e SC
+ */
+interface ConcessionariaParam {
+  id: string
+  nome: string
+  tarifa: number // Tarifa cheia B1 (TE + TUSD) em R$/kWh
+  fioB: number // Componente Fio B em R$/kWh
+  fonte: string // Referência / vigência para documentação
+}
+
+const CONCESSIONARIAS: ConcessionariaParam[] = [
+  // RGE B1 residencial: tarifa R$ 0,945/kWh | Fio B R$ 0,30/kWh — jun/2026 ANEEL
   {
-    id: 'cooperativas',
-    nome: 'Cooperativas Regionais (Creral, Ceriluz, etc.)',
-    tarifaMediaKwh: 0.89,
+    id: 'rge',
+    nome: 'RGE Sul',
+    tarifa: 0.945,
+    fioB: 0.3,
+    fonte: 'RGE B1 0,945 / Fio B 0,30 — jun/2026 ANEEL',
   },
-  { id: 'outra', nome: 'Outra concessionária / RS', tarifaMediaKwh: 0.93 },
+  // CEEE Equatorial B1: tarifa R$ 0,822/kWh | Fio B R$ 0,26/kWh — nov/2025-2026 ANEEL
+  {
+    id: 'ceee',
+    nome: 'CEEE Equatorial',
+    tarifa: 0.822,
+    fioB: 0.26,
+    fonte: 'CEEE B1 0,822 / Fio B 0,26 — ANEEL 2026',
+  },
+  // Celesc B1: tarifa R$ 0,950/kWh | Fio B R$ 0,29/kWh — ago/2026 ANEEL
+  {
+    id: 'celesc',
+    nome: 'Celesc',
+    tarifa: 0.95,
+    fioB: 0.29,
+    fonte: 'Celesc B1 0,950 / Fio B 0,29 — ANEEL 2026',
+  },
+  // Copel B1: tarifa R$ 0,768/kWh | Fio B R$ 0,23/kWh — jun/2026 ANEEL
+  {
+    id: 'copel',
+    nome: 'Copel',
+    tarifa: 0.768,
+    fioB: 0.23,
+    fonte: 'Copel B1 0,768 / Fio B 0,23 — ANEEL 2026',
+  },
+  // Cooperativas RS/SC (média Cermissões / Certel): tarifa R$ 0,60/kWh | Fio B R$ 0,18/kWh
+  {
+    id: 'cooperativa',
+    nome: 'Cooperativa (RS/SC)',
+    tarifa: 0.6,
+    fioB: 0.18,
+    fonte: 'Cooperativas RS/SC (média Cermissões/Certel) tarifa 0,60 / Fio B 0,18',
+  },
+  // Outra no RS: tarifa R$ 0,90/kWh | Fio B R$ 0,28/kWh
+  {
+    id: 'outra',
+    nome: 'Outra no RS',
+    tarifa: 0.9,
+    fioB: 0.28,
+    fonte: 'Outra no RS tarifa 0,90 / Fio B 0,28 — média ponderada RS',
+  },
 ]
+
+interface TipoLigacaoParam {
+  id: string
+  nome: string
+  minimoKwh: number
+}
+
+const TIPOS_LIGACAO: TipoLigacaoParam[] = [
+  { id: 'monofasica', nome: 'Monofásica (mínimo 30 kWh)', minimoKwh: 30 },
+  { id: 'bifasica', nome: 'Bifásica (mínimo 50 kWh)', minimoKwh: 50 },
+  { id: 'trifasica', nome: 'Trifásica (mínimo 100 kWh)', minimoKwh: 100 },
+]
+
+// Percentual de cobrança do Fio B por ano (Lei 14.300/2021, art. 27 — GD II progressivo a partir de 2026)
+function getPctFioB(ano: number): number {
+  if (ano <= 2026) return 0.6
+  if (ano === 2027) return 0.75
+  if (ano === 2028) return 0.9
+  return 1.0
+}
 
 export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
   const [concessionariaId, setConcessionariaId] = useState('rge')
+  const [tipoLigacaoId, setTipoLigacaoId] = useState('bifasica')
   const [valorContaInput, setValorContaInput] = useState('650')
 
   // Parse numeric bill
@@ -33,32 +107,67 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
     return isNaN(parsed) || parsed <= 0 ? 0 : parsed
   }, [valorContaInput])
 
-  // Simple client-side simulation (tarifa típica RS, ~90-95% redução menos custo de disponibilidade/taxa mínima)
+  // Modelo GD II corrigido (Lei 14.300/2021 + ANEEL REN 1000/2021)
   const estimativa = useMemo(() => {
     if (valorConta <= 0) return null
-    const conc = CONCESSIONARIAS_RS.find((c) => c.id === concessionariaId) || CONCESSIONARIAS_RS[0]
-    // Consumo aprox em kWh
-    const consumoKwh = Math.round(valorConta / conc.tarifaMediaKwh)
-    // Custo de disponibilidade mínimo residual (ex: trifásico ~R$ 60-80 ou bifásico ~R$ 50)
-    const taxaResidual = Math.min(65, valorConta * 0.1)
-    const economiaMensal = Math.max(0, Math.round(valorConta - taxaResidual))
-    const economiaAnual = Math.round(economiaMensal * 12)
-    const economia5Anos = Math.round(economiaAnual * 5)
+
+    const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId) || CONCESSIONARIAS[0]
+    const ligacao = TIPOS_LIGACAO.find((l) => l.id === tipoLigacaoId) || TIPOS_LIGACAO[1]
+    const anoBase = new Date().getFullYear() // 2026
+
+    // Estimativa de consumo mensal em kWh a partir do valor da conta e da tarifa cheia
+    const consumo = valorConta / conc.tarifa
+    if (consumo <= 0) return null
+
+    // Simultaneidade fixa de 30% para residencial/geral no hero
+    const simultaneidade = 0.3
+    const autoconsumo = consumo * simultaneidade
+    const injetada = consumo - autoconsumo
+    const consumoRede = consumo - autoconsumo
+    const compensada = Math.min(injetada, consumoRede)
+    const consumoFaturado = consumoRede - compensada // = 0 quando geração = consumo
+
+    // Taxa mínima (custo de disponibilidade): só cobrada quando o consumo faturado fica ABAIXO do mínimo
+    const consumoCobrado = Math.max(consumoFaturado, ligacao.minimoKwh)
+
+    // Ano base (ano 1)
+    const pctFioBAtual = getPctFioB(anoBase)
+    const contaComSolar = consumoCobrado * conc.tarifa + injetada * conc.fioB * pctFioBAtual
+    const contaSemSolar = consumo * conc.tarifa // ~ valorConta
+    const economiaMensal = Math.max(0, contaSemSolar - contaComSolar)
+
+    // Projeção em 5 anos com reajuste tarifário de 9% a.a. e Fio B progressivo da Lei 14.300
+    const reajusteAnual = 0.09
+    let economia5Anos = 0
+
+    for (let a = 1; a <= 5; a++) {
+      const ano = anoBase + a - 1
+      const tarifaAno = conc.tarifa * Math.pow(1 + reajusteAnual, a - 1)
+      const fioBAno = conc.fioB * Math.pow(1 + reajusteAnual, a - 1)
+      const pctFioB = getPctFioB(ano)
+
+      const semSolarAno = consumo * tarifaAno * 12
+      const comSolarAno = (consumoCobrado * tarifaAno + injetada * fioBAno * pctFioB) * 12
+      const ecoAno = Math.max(0, semSolarAno - comSolarAno)
+      economia5Anos += ecoAno
+    }
 
     return {
-      consumoKwh,
-      economiaMensal,
-      economiaAnual,
-      economia5Anos,
+      consumoKwh: Math.round(consumo),
+      economiaMensal: Math.round(economiaMensal),
+      economia5Anos: Math.round(economia5Anos),
     }
-  }, [valorConta, concessionariaId])
+  }, [valorConta, concessionariaId, tipoLigacaoId])
+
   const handleSimularSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const conc = CONCESSIONARIAS_RS.find((c) => c.id === concessionariaId)?.nome || 'RGE'
+    const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId)?.nome || 'RGE Sul'
+    const lig = TIPOS_LIGACAO.find((l) => l.id === tipoLigacaoId)?.nome || 'Bifásica'
     onSolicitarAvaliacao({
       origem: 'calculadora-hero',
       valorConta: valorConta || undefined,
       concessionaria: conc,
+      tipoLigacao: lig,
     })
   }
 
@@ -215,9 +324,31 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                     onChange={(e) => setConcessionariaId(e.target.value)}
                     className="w-full bg-[#081B30] text-white border border-white/20 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
                   >
-                    {CONCESSIONARIAS_RS.map((c) => (
+                    {CONCESSIONARIAS.map((c) => (
                       <option key={c.id} value={c.id} className="bg-midnight-950 text-white">
                         {c.nome}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Tipo de ligação */}
+                <div>
+                  <label
+                    htmlFor="sim-ligacao"
+                    className="block text-xs font-semibold text-slate-300 mb-1.5"
+                  >
+                    Tipo de Ligação
+                  </label>
+                  <select
+                    id="sim-ligacao"
+                    value={tipoLigacaoId}
+                    onChange={(e) => setTipoLigacaoId(e.target.value)}
+                    className="w-full bg-[#081B30] text-white border border-white/20 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    {TIPOS_LIGACAO.map((l) => (
+                      <option key={l.id} value={l.id} className="bg-midnight-950 text-white">
+                        {l.nome}
                       </option>
                     ))}
                   </select>
@@ -275,9 +406,10 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                       Se paga em menos de 5 anos — e continua gerando economia por mais de 25.
                     </p>
 
-                    {/* Disclaimer */}
+                    {/* Disclaimer atualizado para refletir o novo modelo */}
                     <p className="text-[10px] text-slate-400 leading-snug pt-1 border-t border-white/5">
-                      Estimativa preliminar com base em tarifas médias do RS. O valor exato do seu
+                      Estimativa preliminar (GD II, Lei 14.300): considera taxa mínima da ligação,
+                      Fio B progressivo (60% em 2026) e reajuste de 9% a.a. O valor exato do seu
                       projeto sai no estudo de viabilidade gratuito.
                     </p>
                   </div>

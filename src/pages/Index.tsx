@@ -47,6 +47,7 @@ export default function Index() {
     origem?: string
     valorConta?: number
     concessionaria?: string
+    tipoLigacao?: string
   }) => {
     setFormContext((prev) => ({
       ...prev,
