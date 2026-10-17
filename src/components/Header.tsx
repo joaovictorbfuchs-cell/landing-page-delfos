@@ -287,17 +287,10 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   onMouseLeave={() => setSegmentosDropdownOpen(false)}
                   className="absolute top-full left-0 mt-3 w-88 bg-[#061526] border border-white/15 rounded-2xl shadow-2xl p-2.5 backdrop-blur-xl animate-fade-in z-50 space-y-1"
                 >
-                  <div className="px-3 py-1.5 border-b border-white/10 mb-1 flex items-center justify-between">
+                  <div className="px-3 py-1.5 border-b border-white/10 mb-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
                       As 7 Portas de Entrada
                     </span>
-                    <Link
-                      to="/#segmentos"
-                      onClick={() => setSegmentosDropdownOpen(false)}
-                      className="text-[10px] text-slate-400 hover:text-white"
-                    >
-                      Ver na home
-                    </Link>
                   </div>
                   {segmentosNavList.map((seg) => {
                     const isCurrent = location.pathname === seg.href

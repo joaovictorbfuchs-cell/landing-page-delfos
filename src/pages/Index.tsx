@@ -4,7 +4,6 @@ import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import Metricas from '@/components/Metricas'
 import Pilares from '@/components/Pilares'
-import Segmentos from '@/components/Segmentos'
 import SecaoBess from '@/components/SecaoBess'
 import SecaoCarregadores from '@/components/SecaoCarregadores'
 import CaseDestaque from '@/components/CaseDestaque'
@@ -75,24 +74,6 @@ export default function Index() {
     scrollToContato()
   }
 
-  const handleSelectSegmento = (segmento: string, origem: string) => {
-    setFormContext((prev) => ({
-      ...prev,
-      origem,
-      necessidade:
-        segmento === 'Condomínios'
-          ? 'Carregadores Veiculares'
-          : segmento === 'Indústria'
-            ? 'BESS (Armazenamento)'
-            : 'Energia Solar Fotovoltaica',
-    }))
-    setWhatsappContext({
-      message: `Olá! Sou do segmento ${segmento} e gostaria de falar com o engenheiro responsável.`,
-      origem,
-    })
-    scrollToContato()
-  }
-
   const handleSolicitarViabilidadeBess = () => {
     setFormContext((prev) => ({
       ...prev,
@@ -156,9 +137,6 @@ export default function Index() {
 
         {/* Seção 3: As 4 Soluções em Cards Dedicados */}
         <Pilares onSelectPilar={handleSelectPilar} />
-
-        {/* Seção 4: Atalhos de Segmentos (Portas de Entrada) */}
-        <Segmentos onSelectSegmento={handleSelectSegmento} />
 
         {/* Seção 8A: Seção DARK estilo Tesla para BESS */}
         <SecaoBess onSolicitarViabilidade={handleSolicitarViabilidadeBess} />

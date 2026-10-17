@@ -79,9 +79,7 @@ export default function SegmentoPageLayout({
               Início
             </Link>
             <span>/</span>
-            <Link to="/#segmentos" className="hover:text-solar-400 transition-colors">
-              Segmentos
-            </Link>
+            <span className={isDark ? 'text-slate-300' : 'text-slate-600'}>Segmentos</span>
             <span>/</span>
             <span className={isDark ? 'text-white font-semibold' : 'text-slate-900 font-semibold'}>
               {seg.nome}
@@ -617,12 +615,6 @@ export default function SegmentoPageLayout({
                   Conheça também nossas soluções para outros setores
                 </h3>
               </div>
-              <Link
-                to="/#segmentos"
-                className="text-xs font-semibold text-solar-400 hover:underline hidden sm:block"
-              >
-                Ver todos os 7
-              </Link>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
