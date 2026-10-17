@@ -1,6 +1,4 @@
 import {
-  Sun,
-  Zap,
   MapPin,
   Phone,
   Mail,
@@ -10,6 +8,7 @@ import {
   AlertCircle,
   ShieldCheck,
 } from 'lucide-react'
+import DelfosLogo from '@/components/DelfosLogo'
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -29,18 +28,7 @@ export default function Footer() {
           {/* Brand & Sobre Delfos Solar */}
           <div className="lg:col-span-5 space-y-4" id="sobre-delfos">
             <div className="flex items-center gap-2.5">
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-solar-500 to-solar-300 flex items-center justify-center shadow-md">
-                <Sun className="w-5 h-5 text-midnight-900" />
-                <Zap className="w-3.5 h-3.5 text-midnight-950 absolute bottom-1 right-1 fill-midnight-950" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl text-white tracking-tight leading-none">
-                  DELFOS
-                </span>
-                <span className="text-[11px] font-bold text-solar-400 tracking-wider uppercase">
-                  Engenharia Solar
-                </span>
-              </div>
+              <DelfosLogo height={38} variant="dark-bg" showSubtitle />
             </div>
 
             <p className="text-sm text-slate-300 leading-relaxed max-w-md">

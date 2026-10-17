@@ -28,6 +28,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import DelfosLogo from '@/components/DelfosLogo'
 import { useToast } from '@/hooks/use-toast'
 import { isAuthenticated, logout, getCurrentUser } from '@/services/auth'
 import { listLeads, deleteLead } from '@/services/leads'
@@ -230,17 +231,14 @@ export default function Admin() {
       <header className="bg-midnight-950 text-white border-b border-white/10 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-solar-400 flex items-center justify-center text-midnight-950 shadow">
-              <Sun className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base leading-tight">DELFOS</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase">
-                  Painel de Leads • Fase 1
-                </span>
-              </div>
-              <span className="text-xs text-slate-400 block leading-none">
+            <Link to="/" className="flex items-center gap-2.5">
+              <DelfosLogo height={32} variant="dark-bg" />
+            </Link>
+            <div className="border-l border-white/20 pl-3 hidden sm:block">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit">
+                Painel de Leads
+              </span>
+              <span className="text-xs text-slate-400 block leading-tight mt-0.5">
                 Erechim/RS • {currentUser?.email || 'Administrador'}
               </span>
             </div>

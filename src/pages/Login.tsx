@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { Sun, Zap, Lock, Mail, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react'
+import { Lock, Mail, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import DelfosLogo from '@/components/DelfosLogo'
 import { Input } from '@/components/ui/input'
 import { loginWithPassword, isAuthenticated } from '@/services/auth'
 import { useToast } from '@/hooks/use-toast'
@@ -66,13 +67,12 @@ export default function Login() {
         <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 sm:p-10 shadow-2xl border border-white/20 text-slate-800">
           {/* Logo Brand */}
           <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-solar-500 to-solar-300 flex items-center justify-center shadow-lg shadow-solar-500/25 mb-4">
-              <Sun className="w-7 h-7 text-midnight-950" />
-              <Zap className="w-4 h-4 text-midnight-950 absolute" />
+            <div className="mb-4">
+              <DelfosLogo height={44} variant="light-bg" />
             </div>
             <h1 className="text-2xl font-bold text-slate-900">Acesso Restrito</h1>
             <p className="text-xs text-slate-500 mt-1">
-              Painel de Gestão de Leads • Delfos Engenharia
+              Painel de Gestão de Leads • Delfos Engenharia Solar
             </p>
           </div>
 

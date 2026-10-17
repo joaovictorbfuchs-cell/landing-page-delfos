@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   Sun,
-  Zap,
   Menu,
   X,
   PhoneCall,
@@ -13,6 +12,7 @@ import {
   Car,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import DelfosLogo from '@/components/DelfosLogo'
 
 interface HeaderProps {
   onSolicitarAvaliacao: () => void
@@ -109,7 +109,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo Delfos mantido e valorizado */}
+          {/* Logo Delfos Solar oficial: compacto, leve e perfeitamente integrado */}
           <Link
             to="/"
             onClick={() => {
@@ -117,20 +117,14 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }
             }}
-            className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
+            aria-label="Delfos Solar - Início"
+            className="flex items-center gap-2 group cursor-pointer focus:outline-none py-0.5"
           >
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-solar-500 to-solar-300 flex items-center justify-center shadow-md shadow-solar-500/20 group-hover:scale-105 transition-transform">
-              <Sun className="w-5 h-5 text-midnight-950 animate-spin-slow" />
-              <Zap className="w-3.5 h-3.5 text-midnight-950 absolute bottom-1 right-1 fill-midnight-950" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight leading-none text-white">
-                DELFOS
-              </span>
-              <span className="text-[10px] font-bold tracking-wider uppercase text-solar-300">
-                Engenharia Solar
-              </span>
-            </div>
+            <DelfosLogo
+              height={36}
+              variant="dark-bg"
+              className="group-hover:opacity-90 transition-opacity"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -314,18 +308,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
           <div className="fixed top-0 right-0 bottom-0 w-[82%] max-w-sm bg-[#081B30] text-white shadow-2xl p-6 flex flex-col justify-between z-10 animate-fade-in-up border-l border-white/10">
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-white/10">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-solar-400 flex items-center justify-center text-midnight-950">
-                    <Sun className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-base text-white block leading-tight">
-                      DELFOS
-                    </span>
-                    <span className="text-[10px] text-solar-300 uppercase font-bold">
-                      Engenharia Solar
-                    </span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <DelfosLogo height={32} variant="dark-bg" />
                 </div>
 
                 <Button
