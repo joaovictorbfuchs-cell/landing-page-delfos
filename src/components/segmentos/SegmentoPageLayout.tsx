@@ -241,7 +241,7 @@ export default function SegmentoPageLayout({
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>
                         <strong>Estudo de retorno:</strong> payback estimado, redução na fatura e
-                        proposta sem compromisso.
+                        proposta técnica detalhada.
                       </span>
                     </li>
                   </ul>

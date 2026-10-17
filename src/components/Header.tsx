@@ -22,11 +22,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [solucoesDropdownOpen, setSolucoesDropdownOpen] = useState(false)
-  const [segmentosDropdownOpen, setSegmentosDropdownOpen] = useState(false)
   const [mobileSolucoesOpen, setMobileSolucoesOpen] = useState(false)
-  const [mobileSegmentosOpen, setMobileSegmentosOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const segmentosDropdownRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -43,9 +40,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
       const target = event.target as Node
       if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         setSolucoesDropdownOpen(false)
-      }
-      if (segmentosDropdownRef.current && !segmentosDropdownRef.current.contains(target)) {
-        setSegmentosDropdownOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -83,44 +77,9 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     },
   ]
 
-  const segmentosNavList = [
-    { title: 'Residências', desc: 'Economia e backup residencial', href: '/segmentos/residencias' },
-    {
-      title: 'Comércio e Serviços',
-      desc: 'Redução de custo sem parar a operação',
-      href: '/segmentos/comercio-servicos',
-    },
-    {
-      title: 'Indústria',
-      desc: 'Dimensionamento, baterias (BESS) e demanda contratada',
-      href: '/segmentos/industria',
-    },
-    {
-      title: 'Agronegócio',
-      desc: 'Energia contínua para avicultura, leite e grãos',
-      href: '/segmentos/agronegocio',
-    },
-    {
-      title: 'Condomínios',
-      desc: 'Recarga veicular com gestão inteligente e rateio individual',
-      href: '/segmentos/condominios',
-    },
-    {
-      title: 'Investidores e Usinas',
-      desc: 'Usinas de solo e diagnóstico de O&M',
-      href: '/segmentos/investidores',
-    },
-    {
-      title: 'Frotas e Eletropostos',
-      desc: 'Infraestrutura de recarga rápida DC',
-      href: '/segmentos/frotas-eletropostos',
-    },
-  ]
-
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false)
     setSolucoesDropdownOpen(false)
-    setSegmentosDropdownOpen(false)
 
     if (href.startsWith('#')) {
       if (location.pathname !== '/') {
@@ -137,7 +96,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const handleCtaClick = () => {
     setMobileMenuOpen(false)
     setSolucoesDropdownOpen(false)
-    setSegmentosDropdownOpen(false)
     onSolicitarAvaliacao()
   }
 
@@ -260,67 +218,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               )}
             </div>
 
-            {/* Segmentos com Dropdown */}
-            <div className="relative" ref={segmentosDropdownRef}>
-              <button
-                type="button"
-                onClick={() => setSegmentosDropdownOpen(!segmentosDropdownOpen)}
-                onMouseEnter={() => setSegmentosDropdownOpen(true)}
-                className={`text-xs xl:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                  location.pathname.startsWith('/segmentos')
-                    ? 'text-solar-400 font-semibold'
-                    : 'text-slate-200 hover:text-solar-400'
-                }`}
-                aria-expanded={segmentosDropdownOpen}
-              >
-                <span>Segmentos</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform ${
-                    segmentosDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </button>
-
-              {/* Dropdown Menu Segmentos */}
-              {segmentosDropdownOpen && (
-                <div
-                  onMouseLeave={() => setSegmentosDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-3 w-88 bg-[#061526] border border-white/15 rounded-2xl shadow-2xl p-2.5 backdrop-blur-xl animate-fade-in z-50 space-y-1"
-                >
-                  <div className="px-3 py-1.5 border-b border-white/10 mb-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
-                      As 7 Portas de Entrada
-                    </span>
-                  </div>
-                  {segmentosNavList.map((seg) => {
-                    const isCurrent = location.pathname === seg.href
-                    return (
-                      <Link
-                        key={seg.href}
-                        to={seg.href}
-                        onClick={() => setSegmentosDropdownOpen(false)}
-                        className={`flex items-start gap-2.5 p-2 rounded-xl transition-all ${
-                          isCurrent
-                            ? 'bg-solar-500/15 border border-solar-500/30'
-                            : 'hover:bg-white/5 border border-transparent'
-                        }`}
-                      >
-                        <div className="w-2 h-2 rounded-full bg-solar-400 mt-1.5 shrink-0" />
-                        <div>
-                          <span className="text-xs font-bold text-white block leading-snug">
-                            {seg.title}
-                          </span>
-                          <span className="text-[11px] text-slate-400 block leading-tight mt-0.5">
-                            {seg.desc}
-                          </span>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-
             <Link
               to="/projetos"
               onClick={() => {
@@ -341,7 +238,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               onClick={() => {
                 setMobileMenuOpen(false)
                 setSolucoesDropdownOpen(false)
-                setSegmentosDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname.startsWith('/conteudos')
@@ -357,7 +253,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               onClick={() => {
                 setMobileMenuOpen(false)
                 setSolucoesDropdownOpen(false)
-                setSegmentosDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname === '/sobre'
@@ -484,43 +379,6 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   )}
                 </div>
 
-                {/* Submenu mobile Segmentos */}
-                <div className="rounded-xl bg-white/5 overflow-hidden">
-                  <button
-                    type="button"
-                    onClick={() => setMobileSegmentosOpen(!mobileSegmentosOpen)}
-                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-200 hover:text-solar-400 transition-colors"
-                  >
-                    <span className="font-semibold text-solar-300">Segmentos (7 Setores)</span>
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        mobileSegmentosOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {mobileSegmentosOpen && (
-                    <div className="px-2 pb-2 space-y-1">
-                      {segmentosNavList.map((seg) => {
-                        const isCurrent = location.pathname === seg.href
-                        return (
-                          <Link
-                            key={seg.href}
-                            to={seg.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={`flex flex-col px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
-                              isCurrent
-                                ? 'bg-solar-500/20 text-solar-300 font-bold'
-                                : 'text-slate-200 hover:bg-white/10 hover:text-white'
-                            }`}
-                          >
-                            <span className="font-semibold">{seg.title}</span>
-                            <span className="text-[10px] text-slate-400">{seg.desc}</span>
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
                 <Link
                   to="/projetos"
                   onClick={() => setMobileMenuOpen(false)}

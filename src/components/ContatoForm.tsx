@@ -371,7 +371,7 @@ export default function ContatoForm({
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
                 <ShieldCheck className="w-4 h-4 text-solar-500 shrink-0" />
-                <span>Estudo preliminar e visita técnica 100% gratuitos e sem compromisso.</span>
+                <span>Estudo preliminar gratuito, elaborado por engenheiros com ART.</span>
               </div>
               <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
                 <Sun className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -858,7 +858,7 @@ export default function ContatoForm({
                       id="lead-msg-etapa2"
                       value={mensagem}
                       onChange={(e) => setMensagem(e.target.value)}
-                      placeholder="Ex: Telhado metálico, horário de pico crítico, necessidade de backup..."
+                      placeholder="Ex: Telhado metálico, estrutura do imóvel..."
                       className="bg-white h-11 rounded-xl text-sm border-slate-200"
                     />
                   </div>

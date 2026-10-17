@@ -383,7 +383,8 @@ export default function Conteudos() {
                 </h3>
                 <p className="text-sm text-slate-300 leading-relaxed">
                   Envie seus dados no formulário abaixo ou fale diretamente no WhatsApp com a equipe
-                  de engenharia de Erechim/RS. Estudo preliminar sem custo ou compromisso.
+                  de engenharia de Erechim/RS. Estudo preliminar gratuito com responsabilidade
+                  técnica.
                 </p>
               </div>
 

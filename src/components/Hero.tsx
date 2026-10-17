@@ -299,9 +299,6 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                     <h3 className="text-base font-bold text-white leading-tight">
                       Simulador de Economia
                     </h3>
-                    <p className="text-[11px] text-slate-300">
-                      Cálculo instantâneo baseado em tarifas do RS
-                    </p>
                   </div>
                 </div>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
@@ -392,9 +389,9 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 )}
                 <Button
                   type="submit"
-                  className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold h-12 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold h-12 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Solicitar proposta com este cálculo</span>
+                  <span>Solicitar proposta</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </form>
