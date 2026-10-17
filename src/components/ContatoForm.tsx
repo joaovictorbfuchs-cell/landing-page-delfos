@@ -341,7 +341,7 @@ export default function ContatoForm({
                     Etapa 1: Contato e Solução Desejada
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Nome, WhatsApp verificado, cidade e pilar de interesse.
+                    Nome, WhatsApp verificado, cidade e solução de interesse.
                   </p>
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function ContatoForm({
                 <form onSubmit={handleAvancarParaEtapa2} className="space-y-4 animate-fade-in">
                   <div>
                     <h3 className="text-xl font-extrabold text-slate-900">
-                      Identificação & Pilar Desejado
+                      Identificação & Solução Desejada
                     </h3>
                     <p className="text-xs text-slate-500 mt-1">
                       Preencha para iniciarmos o dimensionamento prévio.
@@ -619,7 +619,7 @@ export default function ContatoForm({
                         htmlFor="lead-necessidade-etapa1"
                         className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1"
                       >
-                        Necessidade Principal (Pilar) <span className="text-red-500">*</span>
+                        Necessidade Principal (Solução) <span className="text-red-500">*</span>
                       </label>
                       <select
                         id="lead-necessidade-etapa1"

@@ -236,7 +236,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       {
         pergunta: 'Vocês realizam manutenção em usinas instaladas por outras integradoras?',
         resposta:
-          'Sim! O pilar de O&M da Delfos atende usinas comerciais e industriais de qualquer fabricante, com contratos preventivos com SLA e laudos periódicos com ART no CREA-RS.',
+          'Sim! A solução de O&M da Delfos atende usinas comerciais e industriais de qualquer fabricante, com contratos preventivos com SLA e laudos periódicos com ART no CREA-RS.',
       },
     ],
     seo: {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T18:56:34.702Z",
+  "generatedAt": "2026-10-17T19:22:43.466Z",
   "collections": [
     {
       "name": "users",
@@ -151,6 +151,12 @@
         {
           "name": "concessionaria",
           "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "arquivo_conta",
+          "type": "file",
           "required": false,
           "system": false
         }

@@ -20,7 +20,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
         <div className="flex items-center gap-2 mb-4">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
             <BatteryCharging className="w-3.5 h-3.5" />
-            Pilar 02 • Armazenamento em Baterias (BESS)
+            Solução 02 • Armazenamento em Baterias (BESS)
           </span>
           <span className="text-[11px] text-slate-400 uppercase tracking-widest font-mono">
             Tesla-Grade Engineering

@@ -154,7 +154,7 @@ export default function Index() {
         {/* Seção 2: Métricas Animadas Verificáveis */}
         <Metricas />
 
-        {/* Seção 3: Os 4 Pilares em Cards Dedicados */}
+        {/* Seção 3: As 4 Soluções em Cards Dedicados */}
         <Pilares onSelectPilar={handleSelectPilar} />
 
         {/* Seção 4: Atalhos de Segmentos (Portas de Entrada) */}

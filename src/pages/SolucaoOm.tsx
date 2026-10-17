@@ -195,8 +195,8 @@ export default function SolucaoOm() {
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
                   Diferente de instaladoras que somem após a entrega da obra, a Delfos posiciona o
-                  O&M como um <strong>pilar estratégico de ciclo completo</strong>. Monitoramento em
-                  tempo real, limpeza técnica e termografia por drone para garantir que cada kWh
+                  O&M como uma <strong>solução estratégica de ciclo completo</strong>. Monitoramento
+                  em tempo real, limpeza técnica e termografia por drone para garantir que cada kWh
                   planejado vire economia no bolso.
                 </p>
 

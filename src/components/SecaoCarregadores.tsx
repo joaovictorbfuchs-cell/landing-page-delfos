@@ -20,7 +20,7 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
         <div className="flex items-center gap-2 mb-4">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider">
             <Car className="w-3.5 h-3.5" />
-            Pilar 04 • Eletromobilidade & Infraestrutura
+            Solução 04 • Eletromobilidade & Infraestrutura
           </span>
           <span className="text-[11px] text-slate-400 uppercase tracking-widest font-mono">
             Gestão Inteligente de Carga

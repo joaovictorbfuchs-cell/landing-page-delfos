@@ -60,7 +60,7 @@ export default function CaseFilters({
         <div className="flex items-center gap-2 mb-3">
           <Layers className="w-4 h-4 text-blue-500" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
-            Filtrar por Solução Técnica (4 Pilares)
+            Filtrar por Solução Técnica
           </span>
         </div>
 

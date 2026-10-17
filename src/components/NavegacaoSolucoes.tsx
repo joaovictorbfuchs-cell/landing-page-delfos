@@ -90,7 +90,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
                 dark ? 'text-slate-300 hover:text-solar-400' : 'text-slate-600 hover:text-solar-600'
               }`}
             >
-              <span>Ver os 4 pilares</span>
+              <span>Ver as soluções</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

@@ -266,7 +266,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 href="#solucoes"
                 className="inline-flex items-center justify-center px-6 py-4 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white text-sm font-semibold backdrop-blur-sm transition-colors text-center"
               >
-                Conhecer os 4 Pilares
+                Conhecer as soluções
               </a>
             </div>
 

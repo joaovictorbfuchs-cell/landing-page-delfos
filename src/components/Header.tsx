@@ -467,7 +467,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                     onClick={() => setMobileSolucoesOpen(!mobileSolucoesOpen)}
                     className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-200 hover:text-solar-400 transition-colors"
                   >
-                    <span className="font-semibold text-solar-300">Soluções (4 Pilares)</span>
+                    <span className="font-semibold text-solar-300">Soluções</span>
                     <ChevronDown
                       className={`w-4 h-4 transition-transform ${
                         mobileSolucoesOpen ? 'rotate-180' : ''

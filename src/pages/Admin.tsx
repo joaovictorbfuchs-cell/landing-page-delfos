@@ -772,6 +772,25 @@ export default function Admin() {
               </div>
             )}
 
+            {selectedLeadModal.arquivo_conta && (
+              <div className="p-3.5 bg-blue-50/80 rounded-xl border border-blue-200 text-xs flex items-center justify-between">
+                <div>
+                  <span className="text-blue-900 font-bold block">Fatura de Energia Anexada:</span>
+                  <span className="text-slate-600 truncate block max-w-[280px]">
+                    {selectedLeadModal.arquivo_conta}
+                  </span>
+                </div>
+                <a
+                  href={`${import.meta.env.VITE_POCKETBASE_URL}/api/files/leads/${selectedLeadModal.id}/${selectedLeadModal.arquivo_conta}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs"
+                >
+                  Abrir fatura
+                </a>
+              </div>
+            )}
+
             <div className="pt-2 flex items-center justify-between gap-3">
               <Button
                 variant="destructive"

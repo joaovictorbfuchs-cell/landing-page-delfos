@@ -261,7 +261,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         ],
       },
       {
-        tituloH2: 'Os Pilares de um Programa Profissional de O&M (Operação e Manutenção)',
+        tituloH2: 'A Estrutura de um Programa Profissional de O&M (Operação e Manutenção)',
         conteudo: [
           'Diferente de prestadores genéricos que apenas lavam placas com água de mangueira, a engenharia de O&M da Delfos opera com protocolos rigorosos de engenharia de campo.',
         ],

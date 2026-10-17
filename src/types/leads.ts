@@ -30,6 +30,7 @@ export interface Lead {
   ja_possui_solar?: string
   origem?: string
   concessionaria?: string
+  arquivo_conta?: string
   created: string
   updated: string
 }
@@ -49,4 +50,5 @@ export interface CreateLeadPayload {
   ja_possui_solar?: string
   origem?: string
   concessionaria?: string
+  arquivo_conta?: File
 }
