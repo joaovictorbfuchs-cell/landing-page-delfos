@@ -13,7 +13,7 @@ import Depoimentos from '@/components/Depoimentos'
 import Faq from '@/components/Faq'
 import ContatoForm from '@/components/ContatoForm'
 import Footer from '@/components/Footer'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 
 export default function Index() {
@@ -189,12 +189,6 @@ export default function Index() {
 
       {/* Rodapé Institucional com Diferenciação de Marca */}
       <Footer />
-
-      {/* Botão WhatsApp Flutuante com Mensagem Pré-preenchida Contextual */}
-      <WhatsAppFloating
-        contextMessage={whatsappContext.message}
-        origemSecao={whatsappContext.origem}
-      />
 
       {/* Barra Fixa Mobile com Botão CTA "Solicitar avaliação" */}
       <MobileCtaBar

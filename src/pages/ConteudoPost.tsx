@@ -21,7 +21,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
@@ -385,12 +385,6 @@ export default function ConteudoPost() {
 
       {/* Rodapé com Nota de Diferenciação */}
       <Footer />
-
-      {/* WhatsApp Flutuante com Mensagem Contextual do Post */}
-      <WhatsAppFloating
-        contextMessage={`Olá! Li o artigo sobre "${artigo.palavraChavePrincipal}" no site da Delfos e gostaria de tirar uma dúvida técnica.`}
-        origemSecao={artigo.origemLead}
-      />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

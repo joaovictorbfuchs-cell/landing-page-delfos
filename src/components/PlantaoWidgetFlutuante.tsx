@@ -15,6 +15,7 @@ import {
   FileText,
   AlertCircle,
   Loader2,
+  ArrowLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -59,8 +60,31 @@ const STEP_PROBLEM_OPTIONS = [
 
 const STEP_URGENCY_OPTIONS = ['Urgente agora', 'Posso esperar']
 
-export default function PlantaoWidgetFlutuante() {
-  const [isOpen, setIsOpen] = useState(false)
+interface PlantaoWidgetFlutuanteProps {
+  isOpen?: boolean
+  onClose?: () => void
+  onBackToMenu?: () => void
+  origemLead?: string
+  hideFloatingButton?: boolean
+}
+
+export default function PlantaoWidgetFlutuante({
+  isOpen: controlledIsOpen,
+  onClose,
+  onBackToMenu,
+  origemLead = 'plantao-ia',
+  hideFloatingButton = false,
+}: PlantaoWidgetFlutuanteProps = {}) {
+  const [internalIsOpen, setInternalIsOpen] = useState(false)
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen
+  const setIsOpen = (open: boolean) => {
+    if (controlledIsOpen !== undefined) {
+      if (!open && onClose) onClose()
+    } else {
+      setInternalIsOpen(open)
+    }
+  }
+
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Sub-estados da conversa:
@@ -511,8 +535,8 @@ export default function PlantaoWidgetFlutuante() {
         email: contactEmail,
         necessidade: 'Manutenção',
         ja_possui_solar: 'Sim',
-        origem: 'plantao-ia',
-        mensagem: `[CONTA DE LUZ - PLANTÃO IA] Cliente com dúvida na fatura anexou o arquivo "${file.name}". Cadastro cliente: ${isClientValidated ? 'Validado' : 'Não validado'}. Solicita parecer técnico de engenharia.`,
+        origem: origemLead,
+        mensagem: `[CONTA DE LUZ - ${origemLead === 'plantao-ia' ? 'PLANTÃO IA' : 'ATENDIMENTO IA'}] Cliente com dúvida na fatura anexou o arquivo "${file.name}". Cadastro cliente: ${isClientValidated ? 'Validado' : 'Não validado'}. Solicita parecer técnico de engenharia.`,
         arquivo_conta: file,
       })
       setFileAttachedLeadRegistered(true)
@@ -554,7 +578,8 @@ export default function PlantaoWidgetFlutuante() {
 
     const emailFound = clientData?.email || 'plantao@delfosengenharia.com.br'
 
-    const summaryMsg = `[URGENTE - PLANTÃO IA] Triagem widget O&M. Relação: ${client || 'Não informado'} | Validado: ${isClientValidated ? 'Sim' : 'Não'} | Situação: ${problem || 'Não informado'} | Urgência: ${urgencyVal || 'Alta'} | Anexo: ${fileAttached ? fileAttached.name : 'Nenhum'} | Dados digitados: "${text}"`
+    const tagOrigem = origemLead === 'plantao-ia' ? 'PLANTÃO IA' : 'ATENDIMENTO IA'
+    const summaryMsg = `[${tagOrigem}] Triagem assistente. Relação: ${client || 'Não informado'} | Validado: ${isClientValidated ? 'Sim' : 'Não'} | Situação: ${problem || 'Não informado'} | Urgência: ${urgencyVal || 'Alta'} | Anexo: ${fileAttached ? fileAttached.name : 'Nenhum'} | Dados digitados: "${text}"`
 
     try {
       await createLead({
@@ -563,7 +588,7 @@ export default function PlantaoWidgetFlutuante() {
         email: emailFound,
         cidade: text.length < 35 && !match ? text : undefined,
         necessidade: 'Manutenção',
-        origem: 'plantao-ia',
+        origem: origemLead,
         ja_possui_solar: 'Sim',
         mensagem: summaryMsg,
         arquivo_conta: fileAttached || undefined,
@@ -608,28 +633,30 @@ export default function PlantaoWidgetFlutuante() {
 
   return (
     <>
-      {/* 1. BALÃO CIRCULAR FIXO NO CANTO INFERIOR DIREITO */}
-      <div className="fixed bottom-20 md:bottom-6 right-5 sm:right-6 z-50">
-        {!isOpen ? (
-          <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            aria-label="Abrir atendimento do Plantão de IA"
-            className="group relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-midnight-950 via-slate-900 to-[#0A2744] text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-solar-400 cursor-pointer focus:outline-none focus:ring-4 focus:ring-solar-400/30"
-          >
-            <span className="absolute -inset-1 rounded-full bg-solar-400/30 animate-ping opacity-60 pointer-events-none" />
+      {/* 1. BALÃO CIRCULAR FIXO NO CANTO INFERIOR DIREITO (quando não estiver embutido no menu) */}
+      {!hideFloatingButton && (
+        <div className="fixed bottom-20 md:bottom-6 right-5 sm:right-6 z-50">
+          {!isOpen ? (
+            <button
+              type="button"
+              onClick={() => setIsOpen(true)}
+              aria-label="Abrir atendimento do Plantão de IA"
+              className="group relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-midnight-950 via-slate-900 to-[#0A2744] text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-solar-400 cursor-pointer focus:outline-none focus:ring-4 focus:ring-solar-400/30"
+            >
+              <span className="absolute -inset-1 rounded-full bg-solar-400/30 animate-ping opacity-60 pointer-events-none" />
 
-            <div className="relative flex items-center justify-center">
-              <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-solar-400 group-hover:scale-110 transition-transform" />
-              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-900" />
-            </div>
+              <div className="relative flex items-center justify-center">
+                <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-solar-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-slate-900" />
+              </div>
 
-            <span className="hidden sm:block absolute right-full mr-3 px-3 py-1.5 rounded-xl bg-slate-900/95 text-white text-xs font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg border border-white/10 pointer-events-none">
-              Plantão de Atendimento IA • O&M
-            </span>
-          </button>
-        ) : null}
-      </div>
+              <span className="hidden sm:block absolute right-full mr-3 px-3 py-1.5 rounded-xl bg-slate-900/95 text-white text-xs font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg border border-white/10 pointer-events-none">
+                Plantão de Atendimento IA • O&M
+              </span>
+            </button>
+          ) : null}
+        </div>
+      )}
 
       {/* 2. JANELA DE CHAT FLUTUANTE */}
       {isOpen && (
@@ -644,30 +671,41 @@ export default function PlantaoWidgetFlutuante() {
           {/* CABEÇALHO LIMPO E PROFISSIONAL */}
           <header className="bg-gradient-to-r from-[#071F38] via-[#0C2B4E] to-[#0A2644] text-white px-4 py-3 shrink-0 flex flex-col gap-2.5 border-b border-blue-900/40">
             {/* Linha superior: Status do Assistente + Ações da Janela */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="relative">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                {onBackToMenu && (
+                  <button
+                    type="button"
+                    onClick={onBackToMenu}
+                    title="Voltar ao menu de atendimento"
+                    className="p-1.5 -ml-1 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-1"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span className="text-[11px] font-bold hidden sm:inline">Voltar</span>
+                  </button>
+                )}
+                <div className="relative shrink-0">
                   <div className="w-8 h-8 rounded-full bg-solar-400 text-midnight-950 flex items-center justify-center font-bold shadow-sm">
                     <Bot className="w-4 h-4 text-midnight-950" />
                   </div>
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-slate-900" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h2 className="text-xs sm:text-sm font-extrabold text-white leading-tight">
+                    <h2 className="text-xs sm:text-sm font-extrabold text-white leading-tight truncate">
                       Assistente Delfos
                     </h2>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-medium">
-                      O&M
+                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-medium shrink-0">
+                      {origemLead === 'plantao-ia' ? 'O&M' : 'Triagem'}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-tight">
-                    Plantão de suporte ágil
+                  <p className="text-[11px] text-slate-300 leading-tight truncate">
+                    Atendimento virtual ágil
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 text-slate-300">
+              <div className="flex items-center gap-1 text-slate-300 shrink-0">
                 <button
                   type="button"
                   onClick={handleReset}

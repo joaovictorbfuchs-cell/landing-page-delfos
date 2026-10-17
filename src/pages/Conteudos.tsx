@@ -19,7 +19,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
@@ -413,11 +413,6 @@ export default function Conteudos() {
       <Footer />
 
       {/* WhatsApp Flutuante */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou lendo os conteúdos do blog da Delfos e gostaria de tirar uma dúvida técnica."
-        origemSecao="conteudos-geral"
-      />
-
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />
     </div>

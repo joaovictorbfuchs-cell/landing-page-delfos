@@ -20,7 +20,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
@@ -543,12 +543,6 @@ export default function SolucaoSolar() {
 
       {/* Footer com Diferenciação da Marca */}
       <Footer />
-
-      {/* WhatsApp contextual para esta página */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou na página de Energia Solar da Delfos e gostaria de simular um projeto fotovoltaico."
-        origemSecao="solucao-solar"
-      />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

@@ -23,11 +23,9 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
-import PlantaoWidgetFlutuante from '@/components/PlantaoWidgetFlutuante'
 import { Button } from '@/components/ui/button'
 
 export default function SolucaoOm() {
@@ -681,9 +679,6 @@ export default function SolucaoOm() {
 
       {/* Footer com Diferenciação da Marca */}
       <Footer />
-
-      {/* Widget Flutuante de Atendimento do Plantão de IA (Exclusivo página O&M) */}
-      <PlantaoWidgetFlutuante />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

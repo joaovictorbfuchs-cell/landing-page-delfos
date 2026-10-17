@@ -25,7 +25,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { Button } from '@/components/ui/button'
@@ -481,12 +481,6 @@ export default function Sobre() {
 
       {/* Rodapé com Nota Obrigatória de Diferenciação */}
       <Footer />
-
-      {/* WhatsApp Flutuante */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estive na página Sobre a Delfos e gostaria de falar com a equipe de engenharia."
-        origemSecao="sobre-delfos"
-      />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

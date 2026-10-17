@@ -20,7 +20,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
@@ -486,12 +486,6 @@ export default function SolucaoCarregadores() {
 
       {/* Footer com Diferenciação da Marca */}
       <Footer />
-
-      {/* WhatsApp contextual para Carregadores */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou na página de Carregadores Veiculares da Delfos e gostaria de solicitar uma vistoria técnica para meu condomínio/empresa."
-        origemSecao="solucao-carregadores"
-      />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

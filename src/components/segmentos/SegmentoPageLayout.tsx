@@ -15,7 +15,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { Button } from '@/components/ui/button'
@@ -670,7 +670,6 @@ export default function SegmentoPageLayout({
       </main>
 
       <Footer />
-      <WhatsAppFloating />
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />
 
       {/* Modal de Detalhes do Case se clicado */}

@@ -22,7 +22,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
@@ -643,12 +643,6 @@ export default function SolucaoBess() {
 
       {/* Footer com Diferenciação da Marca */}
       <Footer />
-
-      {/* WhatsApp contextual para BESS */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou na página de BESS da Delfos e gostaria de pedir um estudo de viabilidade para sistemas de armazenamento."
-        origemSecao="solucao-bess"
-      />
 
       {/* Barra Fixa Mobile */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />

@@ -18,7 +18,7 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ContatoForm from '@/components/ContatoForm'
-import WhatsAppFloating from '@/components/WhatsAppFloating'
+
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import CaseHeroFeatured from '@/components/cases/CaseHeroFeatured'
@@ -319,12 +319,6 @@ export default function ProjetosResultados() {
 
       {/* Rodapé com Diferenciação da Marca */}
       <Footer />
-
-      {/* WhatsApp contextual para a página de projetos */}
-      <WhatsAppFloating
-        contextMessage="Olá! Estou na página de Projetos e Resultados da Delfos e gostaria de tirar dúvidas sobre os cases de engenharia."
-        origemSecao={leadOrigem}
-      />
 
       {/* Barra Fixa Mobile CTA */}
       <MobileCtaBar onSolicitarAvaliacao={scrollToContato} />
