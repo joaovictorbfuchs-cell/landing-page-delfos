@@ -429,8 +429,8 @@ export default function SegmentoPageLayout({
                     isDark ? 'text-slate-300' : 'text-slate-600'
                   }`}
                 >
-                  Projetos entregues com autorização para divulgação, telemetria conferida e dados
-                  auditados.
+                  Projetos entregues com autorização para divulgação, monitoramento remoto conferido
+                  e dados auditados.
                 </p>
               </div>
 

@@ -88,7 +88,8 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     solucoesRelevantes: [
       {
         titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
-        subtitulo: 'Redução de até 90% na conta com módulos Tier 1 e 25 anos de garantia.',
+        subtitulo:
+          'Redução de até 90% na conta com módulos de fabricantes de primeira linha e 25 anos de garantia.',
         href: '/solucoes/energia-solar',
         badge: 'Solução Principal',
         icone: Sun,
@@ -143,13 +144,13 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       {
         pergunta: 'A Delfos cuida de toda a papelada e aprovação com a RGE ou CEEE?',
         resposta:
-          'Sim, cuidamos de 100% do processo completo de projeto e instalação: estudo solarimétrico, projeto elétrico, emissão de ART no CREA-RS, homologação junto à concessionária e acompanhamento da troca do medidor bidirecional.',
+          'Sim, cuidamos de 100% do processo completo de projeto e instalação: estudo solarimétrico, projeto elétrico, emissão de ART no CREA-RS, aprovação junto à concessionária e acompanhamento da troca do inversor que carrega e descarrega as baterias e medidor.',
       },
     ],
     seo: {
       title: 'Energia Solar e BESS Residencial no RS | Delfos Engenharia',
       description:
-        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 90% de redução, opção de backup contra blecautes e homologação CREA-RS.',
+        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 90% de redução, opção de backup contra blecautes e aprovação junto à concessionária.',
     },
   },
 
@@ -275,7 +276,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
         subtitulo:
           'Bloqueio do horário de ponta, backup e redução da cobrança de demanda (peak shaving).',
         href: '/solucoes/bess',
-        badge: 'C&I de Alta Potência',
+        badge: 'Empresas e Indústrias de Alta Potência',
         icone: BatteryCharging,
       },
       {
@@ -296,9 +297,10 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     doresERespostas: [
       {
         dor: 'Microinterrupções de rede que desconfiguram fornos, robôs e centros de usinagem.',
-        resposta: 'BESS industrial LiFePO4 com comutação ininterrupta em menos de 20ms.',
+        resposta:
+          'BESS industrial com baterias de lítio de última geração com comutação ininterrupta em menos de 20ms.',
         comoResolvemos:
-          'Eliminamos perdas de lotes inteiros de matéria-prima e paradas de fábrica com bancos de lítio de alta resposta e EMS dedicado.',
+          'Eliminamos perdas de lotes inteiros de matéria-prima e paradas de fábrica com bancos de lítio de alta resposta e sistema inteligente de gestão dedicado.',
       },
       {
         dor: 'Multas frequentes por ultrapassagem de demanda contratada em horários de pico.',
@@ -317,18 +319,18 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       {
         pergunta: 'Como o BESS se integra à usina solar já existente na fábrica?',
         resposta:
-          'O BESS é acoplado em corrente alternada (AC Coupling) ou contínua (DC Coupling) através de inversores bidirecionais híbridos, coordenados por um EMS (Energy Management System) que lê o fluxo da subestação em tempo real.',
+          'O BESS é acoplado em corrente alternada (AC Coupling) ou contínua (DC Coupling) através de inversores que carregam e descarregam as baterias, coordenados por um sistema inteligente de gestão (EMS) que lê o fluxo da subestação em tempo real.',
       },
       {
         pergunta: 'Qual a durabilidade e segurança das baterias industriais em galpões?',
         resposta:
-          'Trabalhamos exclusivamente com química de Lítio Ferro Fosfato (LiFePO4) em gabinetes IP55 climatizados, com controle térmico ativo e sistema automático de supressão de incêndio, certificados para mais de 6.000 ciclos.',
+          'Trabalhamos exclusivamente com baterias de lítio de última geração (LiFePO4) em gabinetes IP55 climatizados, com controle térmico ativo e sistema automático de supressão de incêndio, certificados para mais de 6.000 ciclos.',
       },
       {
         pergunta:
           'A Delfos faz o estudo da fatura de energia e renegociação de demanda contratada?',
         resposta:
-          'Sim. Nossa equipe de engenharia analisa 12 a 24 meses de faturas de alta tensão (Grupo A Verde/Azul) e histórico de medição de telemetria para sugerir o re-enquadramento tarifário ideal em conjunto com o BESS.',
+          'Sim. Nossa equipe de engenharia analisa 12 a 24 meses de faturas de alta tensão (Grupo A Verde/Azul) e histórico de medição de monitoramento remoto para sugerir o re-enquadramento tarifário ideal em conjunto com o BESS.',
       },
     ],
     seo: {
@@ -348,7 +350,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Segurança energética para o campo: usinas de solo e telhado com baterias contra oscilações da rede rural.',
     descricaoHero:
-      'Proteção contra estresse térmico em aviários, perda de leite em tanques resfriadores, ordenhas e irrigação. Sistemas solares de alta robustez com linhas de financiamento Pronaf e Pronamp, homologados para a realidade do Sul.',
+      'Proteção contra estresse térmico em aviários, perda de leite em tanques resfriadores, ordenhas e irrigação. Sistemas solares de alta robustez com linhas de financiamento Pronaf e Pronamp, aprovados junto à concessionária e para a realidade do Sul.',
     ctaRecomendado: 'Avaliar unidade',
     dadoQualificacao: 'Local, atividade e qualidade da rede rural',
     qualificacaoCampoLabel: 'Local da propriedade, atividade e qualidade da rede rural',
@@ -438,7 +440,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     caseSegmentoKey: 'Condomínios',
     perguntaPrincipal: 'Como instalar recarga e dividir o consumo?',
     headlineComplemento:
-      'Infraestrutura inteligente de recarga veicular com gestão dinâmica de carga (DLM) e rateio individual por vaga.',
+      'Infraestrutura inteligente de recarga veicular com Gestão de Carga Inteligente e rateio por vaga.',
     descricaoHero:
       'Acabe com os impasses em assembleia de condomínio: instalação coletiva segura conforme NBR 17019, sem necessidade de trocar o transformador da concessionária e com cobrança individual por RFID ou app.',
     ctaRecomendado: 'Solicitar vistoria',
@@ -457,7 +459,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     isDarkMode: true,
     solucoesRelevantes: [
       {
-        titulo: 'Carregadores Veiculares & Smart DLM',
+        titulo: 'Carregadores Veiculares & Gestão de Carga Inteligente',
         subtitulo:
           'Wallbox com modulação dinâmica de carga para não sobrecarregar o transformador.',
         href: '/solucoes/carregadores',
@@ -482,9 +484,10 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     doresERespostas: [
       {
         dor: 'O condomínio não tem capacidade no transformador para vários carros elétricos.',
-        resposta: 'Sistema Smart DLM (Dynamic Load Management) de gestão dinâmica.',
+        resposta:
+          'Gestão de Carga Inteligente (DLM: mede o consumo por vaga e rateia individualmente).',
         comoResolvemos:
-          'O DLM monitora o consumo dos apartamentos em tempo real e entrega a sobra para as vagas. De madrugada, todos carregam na potência máxima sem aumentar 1 kVA de demanda na concessionária.',
+          'O sistema monitora o consumo dos apartamentos em tempo real e entrega a sobra para as vagas. De madrugada, todos carregam na potência máxima sem aumentar 1 kVA de demanda na concessionária.',
       },
       {
         dor: 'Moradores sem carro elétrico não aceitam ratear o custo da energia da garagem.',
@@ -517,9 +520,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
     ],
     seo: {
-      title: 'Carregadores para Condomínios e Sistema DLM | Delfos Engenharia RS',
+      title: 'Carregadores para Condomínios e Gestão de Carga Inteligente | Delfos Engenharia RS',
       description:
-        'Infraestrutura de recarga veicular para condomínios no RS com gestão dinâmica de carga (DLM) sem sobrecarregar o transformador predial e rateio individual.',
+        'Infraestrutura de recarga veicular para condomínios no RS com gestão de carga inteligente sem sobrecarregar o transformador e com rateio individual.',
     },
   },
 
@@ -574,10 +577,10 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ],
     doresERespostas: [
       {
-        dor: 'Insegurança regulatória sobre regras da Lei 14.300/2022 e tarifação da GD.',
+        dor: 'Insegurança regulatória sobre regras da Lei 14.300/2022 e regras atuais de compensação.',
         resposta: 'Modelagem técnico-financeira detalhada com TIR, VPL e LCOE auditados.',
         comoResolvemos:
-          'Apresentamos simulação fiscal e tarifária transparente com fluxo de caixa projetado, assegurando retorno de investimento sólido para fundos e investidores privados.',
+          'Apresentamos simulação fiscal e tarifária transparente com fluxo de caixa projetado, assegurando retorno de investimento sólido para fundos e investidores privados nas regras atuais de compensação.',
       },
       {
         dor: 'Usina existente gerando abaixo do previsto sem explicação clara do instalador.',
@@ -586,22 +589,24 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
           'Identificamos strings inoperantes, diodos em curto, hotspots e erros de parametrização de inversores, emitindo laudo formal com ART e executando as correções.',
       },
       {
-        dor: 'Complexidade de homologação de subestações de média tensão junto à concessionária.',
-        resposta: 'Engenharia completa com homologação direta na RGE, CEEE ou cooperativas.',
+        dor: 'Complexidade de aprovação junto à concessionária de subestações de média tensão.',
+        resposta:
+          'Engenharia completa com aprovação junto à concessionária direta na RGE, CEEE ou cooperativas.',
         comoResolvemos:
           'Cuidamos desde o parecer de acesso e estudo de fluxo de carga até o comissionamento de proteção e energização oficial.',
       },
     ],
     faq: [
       {
-        pergunta: 'Ainda vale a pena investir em usinas solares após a Lei 14.300/2022?',
+        pergunta:
+          'Ainda vale a pena investir em usinas solares com o sistema de compensação atual?',
         resposta:
           'Sim! Com os custos de equipamentos fotovoltaicos nos menores patamares históricos e a alta contínua das tarifas de energia, a Taxa Interna de Retorno (TIR) de usinas de solo bem dimensionadas segue bastante atrativa (frequentemente superando 18% a 24% a.a.).',
       },
       {
         pergunta: 'A Delfos constrói usinas no modelo Turnkey (chave na mão)?',
         resposta:
-          'Sim. Cobrimos o ciclo completo: estudo de solo, terraplanagem, engenharia civil e elétrica, fornecimento de módulos e inversores Tier 1, subestação abrigada, cabeamento MT, homologação e O&M com SLA.',
+          'Sim. Cobrimos o ciclo completo: estudo de solo, terraplanagem, engenharia civil e elétrica, fornecimento de módulos e inversores de fabricantes de primeira linha, subestação abrigada, cabeamento MT, homologação e O&M com SLA.',
       },
       {
         pergunta: 'Como funciona o diagnóstico para usinas de solo que estão com baixa geração?',
@@ -626,7 +631,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Eletromobilidade corporativa: eletropostos rápidos DC, recarga programada para frotas e integração com energia solar.',
     descricaoHero:
-      'Projetos elétricos para furgões de entrega, ônibus elétricos, frotas corporativas e eletropostos comerciais abertos ao público. Carregadores DC Fast Charger de até 150+ kW com telemetria e subestação dedicada.',
+      'Projetos elétricos para furgões de entrega, ônibus elétricos, frotas corporativas e eletropostos comerciais abertos ao público. Carregadores DC Fast Charger de até 150+ kW com monitoramento remoto e subestação dedicada.',
     ctaRecomendado: 'Pedir estudo elétrico',
     dadoQualificacao: 'Número de veículos, local e padrão de uso',
     qualificacaoCampoLabel: 'Número de veículos elétricos, local e janela de recarga',

@@ -62,11 +62,11 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     palavrasChaveSecundarias: [
       'energia solar Alto Uruguai',
       'instalação fotovoltaica Erechim RS',
-      'homologação RGE solar',
+      'aprovação junto à concessionária RGE solar',
       'economia energia solar RS',
     ],
     metaDescription:
-      'Guia completo de energia solar em Erechim/RS e Alto Uruguai. Entenda irradiação regional, homologação na RGE, economia de até 90% e como dimensionar com a Delfos.',
+      'Guia completo de energia solar em Erechim/RS e Alto Uruguai. Entenda irradiação regional, aprovação junto à concessionária RGE, economia de até 90% e como dimensionar com a Delfos.',
     origemLead: 'blog-energia-solar-erechim',
     solucaoRelacionada: {
       nome: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
@@ -79,7 +79,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         tituloH2: 'O Potencial Solar da Região de Erechim e Alto Uruguai Gaúcho',
         conteudo: [
           'A região norte do Rio Grande do Sul, com destaque para Erechim e os municípios vizinhos do Alto Uruguai, apresenta excelentes índices médios de irradiação solar global horizontal, variando entre 4,3 e 4,9 kWh/m² por dia ao longo do ano.',
-          'Embora o inverno gaúcho registre maior frequência de frentes frias e nebulosidade temporária, a eficiência dos módulos fotovoltaicos de silício monocristalino de alta performance (Tier 1) compensa com folga esse período: temperaturas amenas aumentam o rendimento térmico das células solares, gerando picos de produção surpreendentes nos dias de sol pleno.',
+          'Embora o inverno gaúcho registre maior frequência de frentes frias e nebulosidade temporária, a eficiência dos módulos fotovoltaicos de silício monocristalino de fabricantes de primeira linha compensa com folga esse período: temperaturas amenas aumentam o rendimento térmico das células solares, gerando picos de produção surpreendentes nos dias de sol pleno.',
           'Com mais de 12 anos de atuação em solo gaúcho e mais de 3.000 projetos entregues no Sul do Brasil, a Delfos Engenharia comprova em campo que a curva anual de geração distribui os excedentes de verão para cobrir a demanda de outono e inverno via sistema de compensação da concessionária.',
         ],
       },
@@ -87,7 +87,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         tituloH2: 'Como a Tarifa da RGE Impacta a Decisão de Gerar a Própria Energia',
         conteudo: [
           'Em Erechim e na maior parte da região norte do estado, a distribuição de energia é atendida pela RGE (Grupo CPFL). As revisões tarifárias periódicas, somadas às bandeiras tarifárias e aos encargos setoriais, tornam o custo da energia comprada da rede uma das despesas mais pesadas para comércios, indústrias e residências.',
-          'Ao instalar um sistema fotovoltaico conectado à rede (on-grid), a unidade consumidora passa a gerar sua própria eletricidade durante as horas de sol, reduzindo a conta de luz em até 90%. O valor remanescente corresponde apenas à taxa mínima de disponibilidade da rede e à contribuição de iluminação pública (CIP).',
+          'Ao instalar um sistema fotovoltaico conectado à rede (on-grid) ou com baterias (híbrido), a unidade consumidora passa a gerar sua própria eletricidade durante as horas de sol, reduzindo a conta de luz em até 90%. O valor remanescente corresponde apenas à taxa mínima de disponibilidade da rede e à contribuição de iluminação pública (CIP).',
         ],
         subsecoes: [
           {
@@ -121,7 +121,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       {
         pergunta: 'Quanto tempo dura o processo de homologação junto à RGE?',
         resposta:
-          'Desde a elaboração do projeto executivo até a troca do medidor bidirecional pela concessionária, o prazo médio regulamentado pela Aneel varia de 30 a 60 dias, todo conduzido diretamente pela engenharia da Delfos.',
+          'Desde a elaboração do projeto executivo até a troca do medidor pela concessionária (com inversor que carrega e descarrega as baterias quando há armazenamento), o prazo médio regulamentado pela Aneel varia de 30 a 60 dias, todo conduzido diretamente pela engenharia da Delfos.',
       },
     ],
   },
@@ -132,7 +132,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     subtitulo:
       'Como indústrias e grandes comércios do Sul utilizam baterias de lítio para bloqueio do horário de ponta, segurança energética contínua e redução da cobrança de demanda (peak shaving).',
     resumo:
-      'Entenda como o armazenamento de energia em baterias (BESS C&I) protege linhas fabris contra paradas bruscas, elimina o custo exorbitante da energia no horário de ponta (carregando de madrugada ou de graça com solar durante o dia) e viabiliza a independência da rede elétrica.',
+      'Entenda como o armazenamento de energia em baterias (BESS para empresas e indústrias) protege linhas fabris contra paradas bruscas, elimina o custo exorbitante da energia no horário de ponta (carregando de madrugada ou de graça com solar durante o dia) e viabiliza a independência da rede elétrica.',
     categoria: 'Armazenamento BESS',
     tempoLeitura: '8 min de leitura',
     dataPublicacao: '18 de Outubro de 2026',
@@ -162,13 +162,13 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         conteudo: [
           'No polo metalmecânico, alimentício, frigorífico e plástico do Rio Grande do Sul e de Santa Catarina, um piscar de energia de apenas 200 milissegundos é suficiente para desarmar inversores de frequência, travar robôs de montagem, perder lotes de matéria-prima e paralisar compressores de câmaras frias.',
           'Os prejuízos decorrentes de paradas não planejadas ultrapassam rapidamente centenas de milhares de reais em horas ociosas e retrabalho de manutenção. Tradicionalmente, grupos geradores a diesel eram a única alternativa, mas apresentam tempo de acionamento (10 a 30 segundos com corte no fornecimento), alto custo de combustível fóssil e emissões de poluentes.',
-          'É nesse cenário que os sistemas de armazenamento em baterias (BESS — Battery Energy Storage Systems) revolucionam a estabilidade elétrica do segmento C&I (Commercial & Industrial).',
+          'É nesse cenário que os sistemas de armazenamento em baterias (BESS — Battery Energy Storage Systems) revolucionam a estabilidade elétrica do segmento de empresas e indústrias.',
         ],
       },
       {
         tituloH2: 'As Três Aplicações Centrais do Sistema de Baterias (BESS)',
         conteudo: [
-          'Um sistema de armazenamento de energia em baterias (BESS) não é um simples "no-break de grande porte". Trata-se de uma central eletroquímica modular com inversor bidirecional inteligente e software EMS (Energy Management System).',
+          'Um sistema de armazenamento de energia em baterias (BESS) não é um simples "no-break de grande porte". Trata-se de uma central eletroquímica modular com inversor que carrega e descarrega as baterias inteligente e sistema inteligente de gestão (EMS).',
         ],
         subsecoes: [
           {
@@ -194,8 +194,8 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       {
         tituloH2: 'Arquitetura e Segurança de Células de Lítio LFP',
         conteudo: [
-          'A Delfos Engenharia projeta soluções de baterias (BESS) empregando a química LiFePO4 (Fosfato de Ferro e Lítio), reconhecida globalmente por sua estabilidade térmica extrema, resistência ao thermal runaway e ciclo de vida superior a 6.000 a 8.000 ciclos com garantia estendida.',
-          'Os contêineres e gabinetes industriais contam com climatização de precisão (HVAC ou arrefecimento líquido), sistema automatizado de supressão de incêndio por gás limpo e monitoramento de telemetria célula a célula 24/7.',
+          'A Delfos Engenharia projeta soluções de baterias (BESS) empregando baterias de lítio de última geração (LiFePO4: fosfato de ferro e lítio), reconhecidas globalmente por sua estabilidade térmica extrema, resistência ao thermal runaway e ciclo de vida superior a 6.000 a 8.000 ciclos com garantia estendida.',
+          'Os contêineres e gabinetes industriais contam com climatização de precisão (HVAC ou arrefecimento líquido), sistema automatizado de supressão de incêndio por gás limpo e monitoramento remoto contínuo célula a célula.',
         ],
       },
     ],
@@ -289,7 +289,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       {
         tituloH2: 'Monitoramento Remoto em Tempo Real com Acordo de Nível de Serviço (SLA)',
         conteudo: [
-          'A central de telemetria da Delfos rastreia inversores de clientes diariamente via algoritmos que comparam a geração horária contra a curva solarimétrica meteorológica da região de Erechim e do Sul.',
+          'A central de monitoramento remoto da Delfos rastreia inversores de clientes diariamente via algoritmos que comparam a geração horária contra a curva solarimétrica meteorológica da região de Erechim e do Sul.',
           'Quando um inversor desarma ou apresenta queda anômala de rendimento, o protocolo de SLA é acionado imediatamente, deslocando equipes volantes de técnicos próprios credenciados no CREA para restabelecimento com rapidez, evitando semanas de geração desperdiçada.',
         ],
       },
@@ -316,7 +316,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
   {
     slug: 'carregador-veicular-condominio-dlm-instalacao-guia',
     titulo:
-      'Carregador Veicular em Condomínios: Como Instalar com Gestão Dinâmica de Carga (DLM) e Rateio Individual Justo',
+      'Carregador Veicular em Condomínios: Como Instalar com Gestão de Carga Inteligente e Rateio Individual Justo',
     subtitulo:
       'O guia prático para síndicos, conselhos e moradores sobre infraestrutura de recarga segura sem sobrecarregar o transformador.',
     resumo:
@@ -331,15 +331,15 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     palavraChavePrincipal: 'carregador veicular condomínio',
     palavrasChaveSecundarias: [
       'instalação wallbox condomínio RS',
-      'gestão dinâmica de carga DLM',
+      'gestão de carga inteligente condomínio',
       'ponto de recarga carro elétrico prédio',
       'medição individual recarga veicular',
     ],
     metaDescription:
-      'Guia definitivo de carregador veicular em condomínios no RS: gestão dinâmica de carga DLM, medição individualizada e segurança sem aumentar demanda. Saiba mais.',
+      'Guia definitivo de carregador veicular em condomínios no RS: gestão de carga inteligente, medição individualizada e segurança sem aumentar demanda. Saiba mais.',
     origemLead: 'blog-carregadores-condominio',
     solucaoRelacionada: {
-      nome: 'Carregadores Veiculares & DLM',
+      nome: 'Carregadores Veiculares & Gestão de Carga Inteligente',
       url: '/solucoes/carregadores',
       ctaTexto: 'Solicitar vistoria técnica para condomínio',
       necessidadeForm: 'Carregadores Veiculares',
@@ -355,17 +355,16 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         ],
       },
       {
-        tituloH2:
-          'A Solução de Engenharia: Gestão Dinâmica de Carga (DLM - Dynamic Load Management)',
+        tituloH2: 'A Solução de Engenharia: Gestão de Carga Inteligente',
         conteudo: [
-          'A engenharia da Delfos Solar implementa a tecnologia de Gestão Dinâmica de Carga (DLM), que monitora a demanda em tempo real no quadro geral de entrada do condomínio.',
+          'A engenharia da Delfos Solar implementa a tecnologia de gestão de carga inteligente (DLM: mede o consumo por vaga e rateia individualmente), que monitora a demanda em tempo real no quadro geral de entrada do condomínio.',
         ],
         subsecoes: [
           {
-            tituloH3: 'Como o DLM Funciona na Prática',
+            tituloH3: 'Como o Sistema Funciona na Prática',
             conteudo: [
               'O controlador central mede a folga de potência disponível do transformador do prédio. Se o consumo residencial do condomínio estiver alto, o sistema modula e reduz suavemente a potência entregue a cada carro carregando.',
-              'Quando os condôminos vão dormir e o consumo geral cai na madrugada, o DLM eleva automaticamente a taxa de carregamento para 100%, entregando todos os veículos com bateria cheia pela manhã sem nunca desarmar o disjuntor geral do condomínio e sem exigir que o prédio contrate aumento de demanda milionário com a concessionária (RGE).',
+              'Quando os condôminos vão dormir e o consumo geral cai na madrugada, o sistema eleva automaticamente a taxa de carregamento para 100%, entregando todos os veículos com bateria cheia pela manhã sem nunca desarmar o disjuntor geral do condomínio e sem exigir que o prédio contrate aumento de demanda milionário com a concessionária (RGE).',
             ],
           },
           {
@@ -386,7 +385,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     ],
     conclusao: {
       texto:
-        'Implantar recarga veicular com tecnologia DLM e medição individualizada valoriza o metro quadrado do condomínio em até 10% a 15% e encerra qualquer conflito entre moradores.',
+        'Implantar recarga veicular com tecnologia de gestão de carga inteligente e medição individualizada valoriza o metro quadrado do condomínio em até 10% a 15% e encerra qualquer conflito entre moradores.',
       destaque:
         'Infraestrutura coletiva segura, homologada no CREA-RS e preparada para a expansão contínua da frota elétrica nos próximos 10 anos.',
     },
