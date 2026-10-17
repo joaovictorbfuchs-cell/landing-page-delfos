@@ -55,7 +55,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const solucoesList = [
     {
       title: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
-      desc: 'On-grid e híbrido, telhado e solo, redução de até 90%',
+      desc: 'Conectado à rede ou com baterias, telhado e solo, redução de até 90%',
       href: '/solucoes/energia-solar',
       icon: Sun,
       color: 'text-solar-400',
@@ -75,7 +75,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
       color: 'text-blue-400',
     },
     {
-      title: 'Carregadores Veiculares & DLM',
+      title: 'Carregadores Veiculares com Gestão de Carga Inteligente',
       desc: 'Wallbox inteligente, medição individual em condomínios e frotas',
       href: '/solucoes/carregadores',
       icon: Car,
@@ -102,7 +102,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     },
     {
       title: 'Condomínios',
-      desc: 'Recarga veicular DLM e rateio individual',
+      desc: 'Recarga veicular com gestão inteligente e rateio individual',
       href: '/segmentos/condominios',
     },
     {

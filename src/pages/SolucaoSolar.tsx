@@ -37,7 +37,7 @@ export default function SolucaoSolar() {
   // Sub-ofertas conforme item 5.1 da especificação
   const subOfertas = [
     {
-      titulo: 'Projetos On-Grid e Híbridos',
+      titulo: 'Conectado à Rede (On-Grid) ou com Baterias (Híbrido)',
       desc: 'Sistemas conectados à rede com injeção de excedente e opção de integração híbrida para baterias quando há oscilações na rede da concessionária.',
       badge: 'Geração Conectada',
     },
@@ -47,7 +47,7 @@ export default function SolucaoSolar() {
       badge: 'Estruturas Certificadas',
     },
     {
-      titulo: 'Projetos C&I, Residencial e Rural',
+      titulo: 'Projetos para Empresas e Indústrias, Residencial e Rural',
       desc: 'Dimensionamento voltado à realidade de cada perfil: desde residências de alto padrão a galpões industriais com alta demanda contratada e aviários/leite no agro.',
       badge: 'Multissetorial',
     },
@@ -121,7 +121,7 @@ export default function SolucaoSolar() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Energia Solar Fotovoltaica (Projeto e Instalação) em Erechim e Sul do Brasil"
-        description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos on-grid, híbridos, telhado e solo no RS."
+        description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos conectados à rede ou com baterias, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
       />
 
@@ -169,9 +169,10 @@ export default function SolucaoSolar() {
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Projetos on-grid e híbridos desenvolvidos por engenheiros com registro no CREA-RS.
-                  Dimensionamento rigoroso com simulação de irradiação solar real do Sul do Brasil,
-                  homologação ágil junto à concessionária e máxima eficiência de geração.
+                  Projetos conectados à rede (on-grid) ou com baterias (híbrido) desenvolvidos por
+                  engenheiros com registro no CREA-RS. Dimensionamento rigoroso com simulação de
+                  irradiação solar real do Sul do Brasil, aprovação ágil junto à concessionária e
+                  máxima eficiência de geração.
                 </p>
 
                 {/* Destaque do Problema que Resolve */}
@@ -210,7 +211,7 @@ export default function SolucaoSolar() {
                 <div className="pt-3 flex flex-wrap items-center gap-5 text-xs text-slate-300 font-medium">
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Módulos Tier 1 com 25 anos de garantia</span>
+                    <span>Painéis de fabricantes de primeira linha com 25 anos de garantia</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-solar-400" />
@@ -393,7 +394,8 @@ export default function SolucaoSolar() {
               </h2>
               <p className="text-base text-slate-600 mt-3 leading-relaxed">
                 Projeto e instalação completos: cuidamos de 100% das etapas — do estudo preliminar e
-                compra de equipamentos Tier 1 até a montagem, laudos e ativação definitiva na rede.
+                compra de painéis de fabricantes de primeira linha até a montagem, laudos e ativação
+                definitiva na rede.
               </p>
             </div>
 

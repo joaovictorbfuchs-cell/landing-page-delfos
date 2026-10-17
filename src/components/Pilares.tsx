@@ -18,7 +18,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       problemaResolvido:
         'Redução imediata da conta de luz em até 90%, previsibilidade de custos contra reajustes e valorização do patrimônio físico.',
       subOfertas: [
-        'Projetos on-grid e híbridos em telhado e solo',
+        'Projetos conectados à rede (on-grid) ou com baterias (híbrido) em telhado e solo',
         'Dimensionamento residencial, comercial, industrial e rural',
         'Modelagem para geração própria e distribuída (GD)',
         'Homologação completa junto à concessionária',
@@ -40,7 +40,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
         'Alto custo de energia no horário de ponta, vulnerabilidade a blecautes e oscilações da rede, e parada produtiva de indústrias e comércios.',
       subOfertas: [
         'Economia e bloqueio do horário de ponta (carrega barato ou solar de graça e usa no horário caro)',
-        'Backup ininterrupto e energia de reserva para C&I e rural crítico',
+        'Backup ininterrupto e energia de reserva para empresas e indústrias e rural crítico',
         'Redução da cobrança de demanda na fatura (peak shaving)',
         'Integração híbrida modular solar + banco de lítio',
       ],
@@ -74,8 +74,8 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
     {
       id: 'carregadores',
       numero: '04',
-      titulo: 'Carregadores Veiculares',
-      subtitulo: 'Eletromobilidade com gestão de carga (DLM)',
+      titulo: 'Carregadores Veiculares com Gestão de Carga Inteligente',
+      subtitulo: 'Eletromobilidade com gestão de carga inteligente',
       icone: Car,
       corIcone: 'bg-indigo-100 text-indigo-800 border-indigo-200',
       tagCor: 'bg-indigo-50 text-indigo-800 border-indigo-200',
@@ -84,7 +84,7 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
       subOfertas: [
         'Wallboxes inteligentes para residências e empresas',
         'Carregadores semirrápidos e rápidos DC para frotas',
-        'Gestão dinâmica de carga (DLM) sem troca de transformador',
+        'Gestão de carga inteligente (DLM: mede o consumo por vaga e rateia individualmente) sem troca de transformador',
         'Medição individualizada e cobrança por aplicativo',
       ],
       ctaText: 'Solicitar vistoria',

@@ -23,7 +23,7 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
             Pilar 04 • Eletromobilidade & Infraestrutura
           </span>
           <span className="text-[11px] text-slate-400 uppercase tracking-widest font-mono">
-            Smart DLM Tech
+            Gestão Inteligente de Carga
           </span>
         </div>
 
@@ -38,8 +38,8 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
             </h2>
             <p className="text-slate-300 text-base sm:text-lg mt-4 max-w-2xl leading-relaxed">
               O maior obstáculo em condomínios e empresas é o transformador saturado e a briga por
-              rateio de conta. A Delfos implementa gestão dinâmica de carga (DLM), medição
-              individualizada e faturamento direto por app.
+              rateio de conta. A Delfos implementa gestão de carga inteligente (DLM: mede o consumo
+              por vaga e rateia individualmente) e faturamento direto por app.
             </p>
           </div>
 
@@ -55,7 +55,9 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
               href="/solucoes/carregadores"
               className="text-xs font-bold text-solar-400 hover:text-solar-300 flex items-center gap-1.5 transition-colors"
             >
-              <span>Acessar página completa de Carregadores & DLM</span>
+              <span>
+                Acessar página completa de Carregadores Veiculares com Gestão de Carga Inteligente
+              </span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -68,7 +70,7 @@ export default function SecaoCarregadores({ onSolicitarVistoria }: SecaoCarregad
             <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center mb-4">
               <Sliders className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Gestão Dinâmica DLM</h3>
+            <h3 className="text-xl font-bold text-white mb-2">Gestão de Carga Inteligente</h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
               O sistema monitora o consumo geral do prédio em tempo real e modula a potência enviada
               aos veículos para nunca desarmar o disjuntor geral nem exigir troca de transformador.

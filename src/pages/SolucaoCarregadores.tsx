@@ -51,9 +51,9 @@ export default function SolucaoCarregadores() {
       icone: Fuel,
     },
     {
-      titulo: 'Gestão de Rateio e Medição Individualizada (DLM)',
-      desc: 'Infraestrutura coletiva em condomínios residenciais e comerciais com medição independente por vaga. A energia consumida por cada morador é faturada direto no cartão ou aplicativo — eliminando atritos e discussões em assembleia.',
-      badge: 'Smart DLM & Rateio',
+      titulo: 'Gestão de Carga Inteligente e Medição Individualizada',
+      desc: 'Infraestrutura coletiva em condomínios residenciais e comerciais com tecnologia DLM (mede o consumo por vaga e rateia individualmente). A energia consumida por cada morador é faturada direto no cartão ou aplicativo — eliminando atritos e discussões em assembleia.',
+      badge: 'Gestão Inteligente & Rateio',
       icone: CreditCard,
     },
     {
@@ -66,7 +66,8 @@ export default function SolucaoCarregadores() {
 
   // Prova / Case de referência de condomínio da especificação
   const caseCondominio = {
-    titulo: 'Condomínio Residencial Multifamiliar — Case de Referência DLM',
+    titulo:
+      'Condomínio Residencial Multifamiliar — Case de Referência com Gestão de Carga Inteligente',
     subtitulo:
       'Rede dedicada, medição individual e gestão dinâmica sem aumento de demanda do transformador',
     desafio:
@@ -87,8 +88,8 @@ export default function SolucaoCarregadores() {
   return (
     <div className="min-h-screen flex flex-col bg-[#070A10] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Carregadores Veiculares & Gestão DLM para Condomínios e Frotas"
-        description="Infraestrutura de recarga veicular com gestão dinâmica de carga (DLM) sem sobrecarregar o transformador predial. Wallbox, DC fast charge e medição individual. Delfos."
+        title="Carregadores Veiculares com Gestão de Carga Inteligente para Condomínios e Frotas"
+        description="Infraestrutura de recarga veicular com gestão de carga inteligente sem sobrecarregar o transformador predial. Wallbox, DC fast charge e medição individual. Delfos."
         canonicalPath="/solucoes/carregadores"
       />
 
@@ -122,7 +123,7 @@ export default function SolucaoCarregadores() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider">
                   <Car className="w-3.5 h-3.5" />
-                  Solução 04 • Eletromobilidade & Smart DLM
+                  Solução 04 • Eletromobilidade com Gestão de Carga Inteligente
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
@@ -135,7 +136,11 @@ export default function SolucaoCarregadores() {
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
                   A eletrificação da frota gaúcha já começou. A Delfos projeta e executa toda a
-                  engenharia elétrica de recarga com <strong>gestão dinâmica de carga (DLM)</strong>
+                  engenharia elétrica de recarga com{' '}
+                  <strong>
+                    gestão de carga inteligente (DLM: mede o consumo por vaga e rateia
+                    individualmente)
+                  </strong>
                   , cabeamento antichamas conforme a NBR 17019 e aplicativo de rateio individual.
                 </p>
 
@@ -180,7 +185,7 @@ export default function SolucaoCarregadores() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Sliders className="w-4 h-4 text-indigo-400" />
-                    <span>DLM Integrado em Nuvem</span>
+                    <span>Gestão Inteligente em Nuvem</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CreditCard className="w-4 h-4 text-solar-300" />
@@ -243,7 +248,7 @@ export default function SolucaoCarregadores() {
                         Gestão Dinâmica
                       </span>
                       <strong className="text-sm font-bold text-indigo-300">
-                        Smart DLM 100% Automático
+                        Gestão de Carga Inteligente 100% Automática
                       </strong>
                     </div>
                     <div>
@@ -272,8 +277,8 @@ export default function SolucaoCarregadores() {
                 Como viabilizamos recarga para condomínios sem trocar de transformador
               </h2>
               <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                A solução definitiva para síndicos e condôminos: tecnologia DLM com rede dedicada e
-                faturamento individualizado.
+                A solução definitiva para síndicos e condôminos: gestão de carga inteligente com
+                rede dedicada e faturamento individualizado.
               </p>
             </div>
 

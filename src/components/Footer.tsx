@@ -106,7 +106,7 @@ export default function Footer() {
                   href="/solucoes/carregadores"
                   className="hover:text-solar-400 transition-colors block"
                 >
-                  Carregadores Veiculares & DLM
+                  Carregadores Veiculares com Gestão de Carga Inteligente
                 </a>
               </li>
               <li>

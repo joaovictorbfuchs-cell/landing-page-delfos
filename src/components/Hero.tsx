@@ -247,7 +247,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 <span className="block text-[11px] font-bold text-indigo-300 uppercase tracking-wider">
                   04. Recarga
                 </span>
-                <span className="text-xs text-slate-200 font-medium">Mobilidade & DLM</span>
+                <span className="text-xs text-slate-200 font-medium">Gestão Inteligente</span>
               </div>
             </div>
 

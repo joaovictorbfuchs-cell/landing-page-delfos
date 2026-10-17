@@ -22,7 +22,7 @@ export default function ComoFunciona() {
       step: '03',
       title: 'Projeto Personalizado',
       description:
-        'Elaboramos o dimensionamento exato, escolha dos inversores e módulos tier 1, e fazemos a homologação completa na concessionária.',
+        'Elaboramos o dimensionamento exato, escolha dos inversores e painéis de fabricantes de primeira linha, e garantimos a aprovação junto à concessionária.',
       icon: Wrench,
       duration: 'Sob Medida',
     },

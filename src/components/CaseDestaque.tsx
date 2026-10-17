@@ -157,8 +157,8 @@ export default function CaseDestaque({ onSolicitarProjeto }: CaseDestaqueProps) 
                       </span>
                     </div>
                     <p className="text-xs text-emerald-800 leading-relaxed">
-                      Método de medição: telemetria em tempo real com inversor conectado +
-                      conferência auditada das faturas mensais emitidas pela concessionária local.
+                      Método de medição: monitoramento remoto com inversor conectado + conferência
+                      auditada das faturas mensais emitidas pela concessionária local.
                     </p>
                   </div>
                 </div>

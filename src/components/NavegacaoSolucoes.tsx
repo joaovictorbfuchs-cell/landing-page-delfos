@@ -11,7 +11,8 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     {
       id: 'solar',
       titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
-      descricao: 'On-grid e híbrido, telhado e solo, redução de até 90% na conta de luz.',
+      descricao:
+        'Conectado à rede (on-grid) ou com baterias (híbrido), telhado e solo, redução de até 90% na conta de luz.',
       href: '/solucoes/energia-solar',
       icone: Sun,
       corBadge: 'bg-solar-500/15 text-solar-400 border-solar-500/30',
@@ -30,7 +31,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     {
       id: 'om',
       titulo: 'Manutenção O&M e Monitoramento',
-      descricao: 'Termografia por drone, limpeza técnica, planos com SLA e telemetria.',
+      descricao: 'Termografia por drone, limpeza técnica, planos com SLA e monitoramento remoto.',
       href: '/solucoes/om',
       icone: Wrench,
       corBadge: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
@@ -38,7 +39,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     },
     {
       id: 'carregadores',
-      titulo: 'Carregadores Veiculares & DLM',
+      titulo: 'Carregadores Veiculares com Gestão de Carga Inteligente',
       descricao: 'Wallbox inteligente, medição individual e recarga sem trocar transformador.',
       href: '/solucoes/carregadores',
       icone: Car,

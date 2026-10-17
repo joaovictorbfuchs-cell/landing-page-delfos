@@ -31,14 +31,14 @@ export default function Faq() {
       pergunta:
         'O que é o sistema de armazenamento de energia em baterias (BESS) e por que ele é diferente de um gerador a diesel?',
       resposta:
-        'O sistema de armazenamento de energia em baterias (BESS - Battery Energy Storage System) utiliza baterias industriais inteligentes de lítio (LiFePO4). Ao contrário de geradores barulhentos e poluentes a diesel, o sistema atua silenciosamente em milissegundos, não exige combustível fóssil, bloqueia o consumo no horário de ponta (carregando de madrugada quando é barato, ou de graça durante o dia se a empresa tiver energia solar) e reduz a cobrança de demanda na fatura (peak shaving).',
+        'O sistema de armazenamento de energia em baterias (BESS - Battery Energy Storage System) utiliza baterias de lítio de última geração para empresas e indústrias. Ao contrário de geradores barulhentos e poluentes a diesel, o sistema atua silenciosamente em milissegundos, não exige combustível fóssil, bloqueia o consumo no horário de ponta (carregando de madrugada quando é barato, ou de graça durante o dia se a empresa tiver energia solar) e reduz a cobrança de demanda na fatura (peak shaving).',
     },
     {
       id: 'recarga-condominio',
       pergunta:
         'Como funciona a instalação de carregador veicular em condomínio sem briga de vizinho?',
       resposta:
-        'A Delfos Engenharia aplica tecnologia de Gestão Dinâmica de Carga (DLM) integrada a medição individualizada. Cada vaga tem seu ponto ou wallbox, ativado por cartão RFID ou app do morador. O condomínio não precisa aumentar o disjuntor geral nem pagar obras civis bilionárias de transformador, e o consumo de cada veículo vai exclusivamente para o morador responsável.',
+        'A Delfos Engenharia aplica tecnologia de gestão de carga inteligente (DLM: mede o consumo por vaga e rateia individualmente) integrada à medição individualizada. Cada vaga tem seu ponto ou wallbox, ativado por cartão RFID ou app do morador. O condomínio não precisa aumentar o disjuntor geral nem pagar obras civis bilionárias de transformador, e o consumo de cada veículo vai exclusivamente para o morador responsável.',
     },
     {
       id: 'diferenca-marca',

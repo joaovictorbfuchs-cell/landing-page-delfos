@@ -72,7 +72,7 @@ export default function Sobre() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Sobre a Delfos Solar | Engenharia de Campo em Erechim e no Sul"
-        description="Conheça a história de 12 anos da Delfos Solar: mais de 3.000 projetos entregues no Sul do Brasil, equipe própria com ART/CREA-RS, telemetria e diferenciação da marca."
+        description="Conheça a história de 12 anos da Delfos Solar: mais de 3.000 projetos entregues no Sul do Brasil, equipe própria com ART/CREA-RS, monitoramento remoto e diferenciação da marca."
         canonicalPath="/sobre"
         schemaJsonLd={localBusinessSchema}
       />
@@ -114,9 +114,10 @@ export default function Sobre() {
 
               <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
                 Nascida em Erechim/RS, a <strong>Delfos Engenharia Solar</strong> é uma integradora
-                gaúcha de ciclo completo: projetamos, instalamos, homologamos, operamos e mantemos
-                ativos energéticos. São mais de 3.000 projetos em campo, com respaldo de engenharia
-                registrada no CREA-RS e índice de satisfação 4.9/5 e 5.0/5 no Google.
+                gaúcha de ciclo completo: projetamos, instalamos, garantimos aprovação junto à
+                concessionária (homologação), operamos e mantemos ativos energéticos. São mais de
+                3.000 projetos em campo, com respaldo de engenharia registrada no CREA-RS e índice
+                de satisfação 4.9/5 e 5.0/5 no Google.
               </p>
 
               {/* Métricas-chave em linha */}
@@ -235,9 +236,10 @@ export default function Sobre() {
 
                 <p className="text-base text-slate-600 leading-relaxed">
                   Ao longo de mais de uma década, acompanhamos todas as evoluções do setor no Brasil
-                  — desde os primeiros inversores on-grid regulamentados pela RN 482 até o Marco
-                  Legal da Lei 14.300/2022, a chegada dos sistemas BESS industriais e a modernização
-                  de recarga veicular inteligente (DLM).
+                  — desde os primeiros inversores conectados à rede (on-grid) regulamentados pela RN
+                  482 até o Marco Legal da Lei 14.300/2022, a chegada dos sistemas BESS para
+                  empresas e indústrias e a modernização de recarga veicular com gestão de carga
+                  inteligente (DLM).
                 </p>
 
                 <div className="p-5 rounded-2xl bg-frost border border-slate-200/80 space-y-2">
@@ -265,8 +267,8 @@ export default function Sobre() {
                     Sede Técnica e Operacional em Erechim/RS
                   </h3>
                   <p className="text-xs text-slate-300 mt-1 max-w-sm">
-                    Escritório de engenharia, laboratório de telemetria e pátio logístico da Delfos
-                    Solar no Alto Uruguai.
+                    Escritório de engenharia, laboratório de monitoramento remoto e pátio logístico
+                    da Delfos Solar no Alto Uruguai.
                   </p>
                   <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
                     Erechim/RS • Sul do Brasil
@@ -323,10 +325,13 @@ export default function Sobre() {
                 <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center">
                   <Activity className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">Telemetria em Tempo Real</h3>
+                <h3 className="text-lg font-bold text-slate-900">
+                  Monitoramento Remoto em Tempo Real
+                </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Monitoramento contínuo dos inversores com comparação entre a geração prevista e a
-                  geração solar real. Alertas imediatos caso ocorra qualquer desvio de curva.
+                  Monitoramento remoto contínuo dos inversores com comparação entre a geração
+                  prevista e a geração solar real. Alertas imediatos caso ocorra qualquer desvio de
+                  curva.
                 </p>
               </div>
 
@@ -447,9 +452,9 @@ export default function Sobre() {
 
               <div className="p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-2">
                 <Zap className="w-8 h-8 text-solar-600 mx-auto" />
-                <h3 className="font-bold text-sm text-slate-900">Equipamentos Tier 1</h3>
+                <h3 className="font-bold text-sm text-slate-900">Fabricantes de Primeira Linha</h3>
                 <p className="text-xs text-slate-500">
-                  Parcerias diretas com os maiores fabricantes globais com garantia de até 30 anos.
+                  Parcerias diretas com fabricantes de primeira linha com garantia de até 30 anos.
                 </p>
               </div>
 

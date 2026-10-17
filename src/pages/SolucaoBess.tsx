@@ -59,9 +59,9 @@ export default function SolucaoBess() {
       icone: TrendingDown,
     },
     {
-      titulo: 'Baterias e Armazenamento Industrial e Comercial (BESS C&I)',
-      desc: 'Sistemas em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais. Armazenamento de 30 kWh a 2+ MWh com células de Lítio Ferro Fosfato (LiFePO4) de alta densidade e segurança contra incêndio.',
-      badge: 'C&I de Alta Potência',
+      titulo: 'Baterias e Armazenamento para Empresas e Indústrias (BESS)',
+      desc: 'Sistemas em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais. Armazenamento de 30 kWh a 2+ MWh com baterias de lítio de última geração de alta densidade e segurança contra incêndio.',
+      badge: 'Alta Potência Industrial',
       icone: Factory,
     },
   ]
@@ -73,7 +73,7 @@ export default function SolucaoBess() {
       desafio:
         'Quedas de energia de 15 minutos desconfiguravam centros de usinagem e fornos, causando até R$ 80.000 em matéria-prima perdida.',
       solucao:
-        'Gabinete de baterias (BESS) 250 kWh com EMS dedicado integrado à usina solar fotovoltaica.',
+        'Gabinete de baterias (BESS) 250 kWh com sistema inteligente de gestão dedicado integrado à usina solar fotovoltaica.',
       resultado:
         'Zero tempo de parada produtiva durante o ano todo e R$ 14.500/mês economizados em corte de picos de demanda.',
     },
@@ -91,7 +91,7 @@ export default function SolucaoBess() {
       desafio:
         'Equipamentos de ressonância e tomografia não toleram microinterrupções nem ruídos harmônicos de rede.',
       solucao:
-        'Sistema de baterias (BESS C&I) de onda senoidal pura com filtragem ativa de harmônicos e no-break dinâmico.',
+        'Sistema de baterias (BESS) para empresas e indústrias de onda senoidal pura com filtragem ativa de harmônicos e no-break dinâmico.',
       resultado:
         'Continuidade ininterrupta de exames críticos e redução drástica da fatura no horário das 18h às 21h com bloqueio do horário de ponta.',
     },
@@ -191,7 +191,7 @@ export default function SolucaoBess() {
                 <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-300 font-mono">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Lítio Ferro Fosfato (LiFePO4)</span>
+                    <span>Baterias de lítio de última geração (LiFePO4)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-teal-400" />
@@ -199,7 +199,7 @@ export default function SolucaoBess() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                    <span>EMS c/ Gestão em Nuvem</span>
+                    <span>Gestão Inteligente em Nuvem</span>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default function SolucaoBess() {
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                       Foto real de gabinete BESS — aguardando
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">Padrão C&I</span>
+                    <span className="text-[11px] font-mono text-slate-400">Padrão Industrial</span>
                   </div>
 
                   <div className="aspect-video rounded-2xl bg-[#091322] border border-white/10 flex flex-col items-center justify-center p-6 text-center">

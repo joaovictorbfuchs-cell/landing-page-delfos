@@ -611,7 +611,7 @@ export default function ContatoForm({
                           03. O&M e Monitoramento de Usinas
                         </option>
                         <option value="Carregadores Veiculares">
-                          04. Carregadores Veiculares & DLM
+                          04. Carregadores Veiculares com Gestão de Carga Inteligente
                         </option>
                         <option value="Multiplas Solucoes">
                           Ecossistema Integrado (Mais de uma)

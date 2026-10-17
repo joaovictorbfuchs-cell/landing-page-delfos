@@ -125,7 +125,7 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
                 Foto real / Estudo técnico — aguardando
               </span>
               <h4 className="text-sm font-bold text-white">
-                Gabinete de Baterias (BESS) e Módulos de Lítio (LiFePO4)
+                Gabinete de Baterias (BESS) e Módulos com baterias de lítio de última geração
               </h4>
               <p className="text-xs text-slate-400 mt-0.5">
                 Dimensionamentos modulares de 30 kWh até 1+ MWh sob projeto de engenharia de campo

@@ -137,8 +137,8 @@ export default function ProjetosResultados() {
                 <p className="leading-relaxed">
                   <strong className="text-solar-300">Diretriz de Transparência Delfos:</strong>{' '}
                   Nenhuma métrica é publicada sem conferência técnica, data e definição clara
-                  (capacidade instalada vs. sob contrato). Dados em homologação recente são marcados
-                  explicitamente como <em>"a confirmar"</em>.
+                  (capacidade instalada vs. sob contrato). Dados em aprovação recente junto à
+                  concessionária são marcados explicitamente como <em>"a confirmar"</em>.
                 </p>
               </div>
 
@@ -266,10 +266,12 @@ export default function ProjetosResultados() {
                 <div className="w-10 h-10 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center font-bold">
                   01
                 </div>
-                <h3 className="text-base font-bold text-slate-900">Telemetria em Tempo Real</h3>
+                <h3 className="text-base font-bold text-slate-900">
+                  Monitoramento Remoto em Tempo Real
+                </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Inversores conectados via Wi-Fi/4G e estações solarimétricas enviam dados a cada 5
-                  minutos para comparação de geração prevista vs. real.
+                  Inversores conectados via Wi-Fi/4G e sensores enviam dados para comparação de
+                  geração prevista vs. real.
                 </p>
               </div>
 

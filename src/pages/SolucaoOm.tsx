@@ -41,8 +41,8 @@ export default function SolucaoOm() {
   const subOfertas = [
     {
       titulo: 'Monitoramento Remoto de Performance em Tempo Real',
-      desc: 'Telemetria 24/7 conectada a inversores e sensores de irradiação solar. Algoritmos detectam queda de rendimento diário, strings inoperantes e desvios de geração antes que afetem a fatura do mês.',
-      badge: 'Telemetria Contínua',
+      desc: 'Monitoramento remoto conectado a inversores e sensores de irradiação solar. Algoritmos detectam queda de rendimento diário, strings inoperantes e desvios de geração antes que afetem a fatura do mês.',
+      badge: 'Monitoramento Remoto Contínuo',
       icone: Activity,
     },
     {
@@ -95,7 +95,7 @@ export default function SolucaoOm() {
       visitas: 'Visitas trimestrais programadas',
       destaque: true,
       features: [
-        'Monitoramento 24/7 com alertas em tempo real',
+        'Monitoramento remoto com alertas em tempo real',
         'Termografia aérea anual por drone com laudo',
         'Limpeza técnica trimestral com água desmineralizada',
         'Curva I-V e teste de isolamento elétrico',
@@ -110,12 +110,12 @@ export default function SolucaoOm() {
       sla: 'SLA crítico de até 4h a 8h',
       visitas: 'Gestão contínua com visitas mensais',
       features: [
-        'Telemetria de alta frequência com estação solarimétrica',
+        'Monitoramento remoto de alta frequência com estação solarimétrica',
         '2 inspeções completas com drone termográfico por ano',
         'Gestão de vegetação, roçada e drenagem em usina de solo',
         'Revisão de subestação e transformadores de média tensão',
         'Relatórios regulatórios para investidores e contabilidade',
-        'Linha direta de emergência 24/7',
+        'Linha direta de emergência',
       ],
     },
   ]
@@ -124,7 +124,7 @@ export default function SolucaoOm() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
       <SeoMeta
         title="Manutenção O&M e Monitoramento de Usinas Solares | SLA & Drone"
-        description="Proteja o retorno do seu ativo solar: monitoramento 24/7, limpeza técnica especializada, termografia por drone e planos preventivos com SLA. Delfos O&M."
+        description="Proteja o retorno do seu ativo solar: monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos com SLA. Delfos O&M."
         canonicalPath="/solucoes/om"
       />
 
@@ -158,7 +158,7 @@ export default function SolucaoOm() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
                   <Wrench className="w-3.5 h-3.5 text-blue-400" />
-                  Solução 03 • Operação, Manutenção & Telemetria
+                  Solução 03 • Operação, Manutenção & Monitoramento
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
