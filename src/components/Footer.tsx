@@ -212,18 +212,7 @@ export default function Footer() {
         </div>
 
         {/* NOTA DE DIFERENCIAÇÃO DA MARCA (Obrigatória pela especificação) */}
-        <div className="py-6 border-b border-white/10">
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-400 leading-relaxed flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-slate-200 block mb-1">Diferenciação de Marca:</strong>A{' '}
-              <strong>Delfos Engenharia Solar</strong> (com sede em Erechim/RS, Brasil) é uma
-              empresa integradora de engenharia de campo e serviços técnicos em energia renovável.
-              Não possuímos vínculo, associação ou representação com a "Delfos Energy" (empresa
-              espanhola de software SaaS para monitoramento de parques eólicos/renováveis).
-            </div>
-          </div>
-        </div>
+        <div className="py-6 border-b border-white/10"></div>
 
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
