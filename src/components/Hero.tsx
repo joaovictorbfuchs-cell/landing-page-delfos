@@ -1,14 +1,5 @@
 import { useState, useMemo } from 'react'
-import {
-  Sun,
-  Zap,
-  ArrowRight,
-  TrendingDown,
-  ShieldCheck,
-  Calculator,
-  ChevronDown,
-  Sparkles,
-} from 'lucide-react'
+import { Sun, Zap, ArrowRight, ShieldCheck, Calculator, ChevronDown, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -53,21 +44,14 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
     const economiaMensal = Math.max(0, Math.round(valorConta - taxaResidual))
     const economiaAnual = Math.round(economiaMensal * 12)
     const economia5Anos = Math.round(economiaAnual * 5)
-    const economia25Anos = Math.round(economiaAnual * 25)
-    // Potência do sistema recomendada estimada (RS: irradiância média ~4.2 kWh/m²/dia, PR ~75%)
-    const potenciaEstimadaKwp = (consumoKwh / (4.2 * 30 * 0.78)).toFixed(1)
 
     return {
       consumoKwh,
       economiaMensal,
       economiaAnual,
       economia5Anos,
-      economia25Anos,
-      potenciaEstimadaKwp,
-      taxaResidual: Math.round(taxaResidual),
     }
   }, [valorConta, concessionariaId])
-
   const handleSimularSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const conc = CONCESSIONARIAS_RS.find((c) => c.id === concessionariaId)?.nome || 'RGE'
@@ -263,66 +247,39 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
 
                 {/* Resultado Dinâmico */}
                 {estimativa && (
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
-                    {/* 3 Quadros de Economia: Mensal, 5 anos e 25 anos */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pb-2 border-b border-white/10">
-                      <div className="bg-[#081B30]/70 border border-emerald-500/20 rounded-xl p-2.5">
-                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
-                          Economia Mensal
-                        </span>
-                        <div className="text-lg sm:text-xl font-black text-emerald-400 leading-tight mt-0.5">
-                          R$ {estimativa.economiaMensal.toLocaleString('pt-BR')}
-                          <span className="text-[10px] sm:text-xs font-normal text-slate-300">
-                            {' '}
-                            /mês
-                          </span>
-                        </div>
+                  <div className="p-4 sm:p-5 rounded-2xl bg-[#081B30]/80 border border-emerald-500/20 space-y-3">
+                    {/* Economia Mensal Protagonista */}
+                    <div>
+                      <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wide block">
+                        Economia mensal estimada
+                      </span>
+                      <div className="text-3xl sm:text-4xl font-black text-emerald-400 leading-none mt-1 flex items-baseline gap-1.5">
+                        <span>R$ {estimativa.economiaMensal.toLocaleString('pt-BR')}</span>
+                        <span className="text-xs sm:text-sm font-medium text-slate-300">/mês</span>
                       </div>
+                    </div>
 
-                      <div className="bg-[#081B30]/70 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
-                          Em 5 anos
-                        </span>
-                        <div className="text-lg sm:text-xl font-bold text-solar-300 leading-tight mt-0.5">
+                    {/* Linha discreta de 5 anos */}
+                    <div className="text-xs sm:text-sm text-slate-200 font-medium flex items-center gap-1.5 pt-0.5">
+                      <span>📈</span>
+                      <span>
+                        <strong className="text-solar-300 font-bold">
                           R$ {estimativa.economia5Anos.toLocaleString('pt-BR')}
-                        </div>
-                      </div>
-
-                      <div className="bg-[#081B30]/70 border border-white/10 rounded-xl p-2.5">
-                        <span className="text-[10px] sm:text-[11px] text-slate-400 uppercase font-medium block">
-                          Em 25 anos
-                        </span>
-                        <div className="text-lg sm:text-xl font-bold text-solar-300 leading-tight mt-0.5">
-                          R$ {estimativa.economia25Anos.toLocaleString('pt-BR')}
-                        </div>
-                      </div>
+                        </strong>{' '}
+                        em 5 anos
+                      </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
-                      <div className="bg-[#081B30]/60 p-2 rounded-lg">
-                        <span className="text-slate-400 block">Potência sugerida:</span>
-                        <strong className="text-white text-xs">
-                          ~{estimativa.potenciaEstimadaKwp} kWp
-                        </strong>
-                      </div>
-                      <div className="bg-[#081B30]/60 p-2 rounded-lg">
-                        <span className="text-slate-400 block">Taxa residual est.:</span>
-                        <strong className="text-white text-xs">
-                          R$ {estimativa.taxaResidual}/mês
-                        </strong>
-                      </div>
-                    </div>
+                    {/* Frase fixa de payback */}
+                    <p className="text-xs sm:text-[13px] text-slate-300 leading-snug pt-1 border-t border-white/10">
+                      Se paga em menos de 5 anos — e continua gerando economia por mais de 25.
+                    </p>
 
-                    <div className="space-y-1">
-                      <p className="text-[10px] text-slate-400 italic leading-snug">
-                        * Estimativa paramétrica orientativa para o RS, sujeita a projeto detalhado,
-                        sombreamento e tipo de ligação.
-                      </p>
-                      <p className="text-[10px] text-slate-300/80 leading-snug">
-                        Estimativa preliminar com base em tarifas médias do RS. O valor exato do seu
-                        projeto sai no estudo de viabilidade gratuito.
-                      </p>
-                    </div>
+                    {/* Disclaimer */}
+                    <p className="text-[10px] text-slate-400 leading-snug pt-1 border-t border-white/5">
+                      Estimativa preliminar com base em tarifas médias do RS. O valor exato do seu
+                      projeto sai no estudo de viabilidade gratuito.
+                    </p>
                   </div>
                 )}
                 <Button
