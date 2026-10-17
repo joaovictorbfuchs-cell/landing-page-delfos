@@ -68,7 +68,7 @@ export default function Login() {
           {/* Logo Brand */}
           <div className="flex flex-col items-center text-center mb-8">
             <div className="mb-4">
-              <DelfosLogo height={44} variant="light-bg" />
+              <DelfosLogo height={48} variant="light-bg" />
             </div>
             <h1 className="text-2xl font-bold text-slate-900">Acesso Restrito</h1>
             <p className="text-xs text-slate-500 mt-1">

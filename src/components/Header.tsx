@@ -123,7 +123,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             <DelfosLogo
               height={36}
               variant="dark-bg"
-              className="group-hover:opacity-90 transition-opacity"
+              className="group-hover:opacity-95 transition-opacity"
             />
           </Link>
 
