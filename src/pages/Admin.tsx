@@ -23,6 +23,8 @@ import {
   Layers,
   Info,
   Wrench,
+  AlertTriangle,
+  Bot,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -110,6 +112,7 @@ export default function Admin() {
   // Origens únicas para o filtro
   const origensDisponiveis = useMemo(() => {
     const set = new Set<string>()
+    set.add('plantao-ia') // Sempre disponível no seletor de filtros
     leads.forEach((l) => {
       if (l.origem) set.add(l.origem)
     })
@@ -203,12 +206,14 @@ export default function Admin() {
 
   // Stats calculation
   const totalLeads = leads.length
+  const plantaoIaLeads = leads.filter((l) => l.origem === 'plantao-ia').length
   const solarLeads = leads.filter(
     (l) => (l.necessidade && l.necessidade.includes('Solar')) || l.tipo_imovel === 'Residencia',
   ).length
   const bessLeads = leads.filter((l) => l.necessidade && l.necessidade.includes('BESS')).length
   const manutencaoLeads = leads.filter(
     (l) =>
+      l.origem !== 'plantao-ia' &&
       l.necessidade &&
       (l.necessidade === 'Manutenção' || l.necessidade.toLowerCase().includes('manuten')),
   ).length
@@ -335,16 +340,33 @@ export default function Admin() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8 w-full flex-1 space-y-8">
         {/* Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center">
-              <Zap className="w-6 h-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+          <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center shrink-0">
+              <Zap className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
                 Total Leads
               </span>
-              <p className="text-2xl font-bold text-slate-900">{totalLeads}</p>
+              <p className="text-xl font-bold text-slate-900">{totalLeads}</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl p-4 border-2 border-red-200/90 shadow-sm flex items-center gap-3.5 relative overflow-hidden">
+            <div className="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">
+              <AlertTriangle className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-black text-red-700 uppercase tracking-wider block">
+                  Plantão IA
+                </span>
+                <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-red-600 text-white uppercase">
+                  Alta
+                </span>
+              </div>
+              <p className="text-xl font-black text-red-900">{plantaoIaLeads}</p>
             </div>
           </div>
 
@@ -597,10 +619,24 @@ export default function Admin() {
 
                         {/* Origem */}
                         <td className="py-4 px-5 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-                            <Tag className="w-3 h-3 text-slate-400" />
-                            {lead.origem || 'direto'}
-                          </span>
+                          {lead.origem === 'plantao-ia' ? (
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 text-red-800 border border-red-300 font-bold text-xs shadow-xs">
+                              <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                              </span>
+                              <Bot className="w-3.5 h-3.5 text-red-700" />
+                              <span>Plantão IA</span>
+                              <span className="text-[10px] bg-red-600 text-white px-1 rounded uppercase tracking-wider font-mono">
+                                Alta
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                              <Tag className="w-3 h-3 text-slate-400" />
+                              {lead.origem || 'direto'}
+                            </span>
+                          )}
                         </td>
 
                         {/* Ações */}
@@ -707,11 +743,23 @@ export default function Admin() {
                   {selectedLeadModal.posse_area || 'Próprio'}
                 </strong>
               </div>
-              <div className="bg-frost p-3 rounded-xl">
+              <div
+                className={`p-3 rounded-xl ${selectedLeadModal.origem === 'plantao-ia' ? 'bg-red-50 border border-red-200' : 'bg-frost'}`}
+              >
                 <span className="text-slate-400 block font-semibold">Origem do Lead</span>
-                <strong className="text-slate-900 font-mono">
-                  {selectedLeadModal.origem || 'direto'}
-                </strong>
+                {selectedLeadModal.origem === 'plantao-ia' ? (
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                    <strong className="text-red-700 font-mono">plantao-ia</strong>
+                    <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-red-600 text-white">
+                      Prioridade Alta
+                    </span>
+                  </div>
+                ) : (
+                  <strong className="text-slate-900 font-mono">
+                    {selectedLeadModal.origem || 'direto'}
+                  </strong>
+                )}
               </div>
             </div>
 

@@ -27,6 +27,7 @@ import WhatsAppFloating from '@/components/WhatsAppFloating'
 import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
+import PlantaoEmergenciaIa from '@/components/PlantaoEmergenciaIa'
 import { Button } from '@/components/ui/button'
 
 export default function SolucaoOm() {
@@ -350,9 +351,19 @@ export default function SolucaoOm() {
                       Atendemos usinas de qualquer instalador
                     </p>
                     <Button
+                      onClick={() => {
+                        const el = document.querySelector('#plantao-emergencia-ia')
+                        if (el) el.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 text-xs rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shadow"
+                    >
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span>Acionar Plantão de IA Agora</span>
+                    </Button>
+                    <Button
                       onClick={() => handleConhecerPlanos('om-card-diagnostico-planos')}
                       variant="outline"
-                      className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2.5 text-xs rounded-xl cursor-pointer"
+                      className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2 text-xs rounded-xl cursor-pointer"
                     >
                       Conhecer Planos O&M com SLA
                     </Button>
@@ -360,6 +371,13 @@ export default function SolucaoOm() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* SEÇÃO PLANTÃO DE EMERGÊNCIA IA (Nativo Skip Cloud) */}
+        <section className="py-12 md:py-16 bg-[#041122]">
+          <div className="max-w-7xl mx-auto px-6">
+            <PlantaoEmergenciaIa />
           </div>
         </section>
 
