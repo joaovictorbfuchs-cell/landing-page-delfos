@@ -4,10 +4,6 @@ import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import Metricas from '@/components/Metricas'
 import Pilares from '@/components/Pilares'
-import SecaoBess from '@/components/SecaoBess'
-import SecaoCarregadores from '@/components/SecaoCarregadores'
-import CaseDestaque from '@/components/CaseDestaque'
-import TrustSignals from '@/components/TrustSignals'
 import Depoimentos from '@/components/Depoimentos'
 import Faq from '@/components/Faq'
 import ContatoForm from '@/components/ContatoForm'
@@ -61,60 +57,6 @@ export default function Index() {
     scrollToContato()
   }
 
-  const handleSelectPilar = (pilar: string, origem: string) => {
-    setFormContext((prev) => ({
-      ...prev,
-      necessidade: pilar,
-      origem,
-    }))
-    setWhatsappContext({
-      message: `Olá! Tenho interesse na solução: ${pilar}. Gostaria de entender a viabilidade.`,
-      origem,
-    })
-    scrollToContato()
-  }
-
-  const handleSolicitarViabilidadeBess = () => {
-    setFormContext((prev) => ({
-      ...prev,
-      necessidade: 'BESS (Armazenamento)',
-      origem: 'secao-dark-bess',
-    }))
-    setWhatsappContext({
-      message: 'Olá! Gostaria de um estudo de viabilidade para sistemas de armazenamento BESS.',
-      origem: 'secao-dark-bess',
-    })
-    scrollToContato()
-  }
-
-  const handleSolicitarVistoriaCarregadores = () => {
-    setFormContext((prev) => ({
-      ...prev,
-      necessidade: 'Carregadores Veiculares',
-      origem: 'secao-dark-carregadores',
-    }))
-    setWhatsappContext({
-      message:
-        'Olá! Gostaria de solicitar uma vistoria técnica para recarga veicular com gestão de carga inteligente.',
-      origem: 'secao-dark-carregadores',
-    })
-    scrollToContato()
-  }
-
-  const handleCaseSolicitar = () => {
-    setFormContext((prev) => ({
-      ...prev,
-      necessidade: 'Energia Solar Fotovoltaica',
-      origem: 'case-destaque-indra',
-    }))
-    setWhatsappContext({
-      message:
-        'Olá! Vi o case da Indra de 9,75 kWp no site da Delfos e gostaria de um projeto semelhante.',
-      origem: 'case-destaque-indra',
-    })
-    scrollToContato()
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
@@ -132,31 +74,19 @@ export default function Index() {
         {/* Seção 1: Hero com Novo Posicionamento + Calculadora de Economia */}
         <Hero onSolicitarAvaliacao={handleSolicitarAvaliacaoGeral} />
 
-        {/* Seção 2: Métricas Animadas Verificáveis */}
+        {/* Seção 2: Nossos números */}
         <Metricas />
 
-        {/* Seção 3: As 4 Soluções em Cards Dedicados */}
-        <Pilares onSelectPilar={handleSelectPilar} />
+        {/* Seção 3: 4 Soluções simplificadas */}
+        <Pilares />
 
-        {/* Seção 8A: Seção DARK estilo Tesla para BESS */}
-        <SecaoBess onSolicitarViabilidade={handleSolicitarViabilidadeBess} />
-
-        {/* Seção 8B: Seção DARK estilo Tesla para Carregadores Veiculares */}
-        <SecaoCarregadores onSolicitarVistoria={handleSolicitarVistoriaCarregadores} />
-
-        {/* Seção 5: Projeto em Destaque (Case Completo Indra 9,75 kWp) */}
-        <CaseDestaque onSolicitarProjeto={handleCaseSolicitar} />
-
-        {/* Barra de Trust Signals (CREA, Homologação, Tier 1, Avaliação Google) */}
-        <TrustSignals />
-
-        {/* Seção 6: Depoimentos Reais de Clientes */}
+        {/* Seção 4: Depoimentos Reais de Clientes */}
         <Depoimentos />
 
-        {/* Seção 7: FAQ Didático Acordeão (kWh, inversor, ROI, BESS, etc.) */}
+        {/* Seção 5: FAQ Didático Acordeão (kWh, inversor, ROI, BESS, etc.) */}
         <Faq />
 
-        {/* Formulário em 2 Etapas com Barra de Progresso e Origem do Lead */}
+        {/* Seção 6: Formulário de contato */}
         <ContatoForm
           initialNecessidade={formContext.necessidade}
           initialOrigem={formContext.origem}

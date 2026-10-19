@@ -1,97 +1,50 @@
-import { Sun, BatteryCharging, Wrench, Car, ArrowRight, ShieldCheck, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Sun, BatteryCharging, Wrench, Car, ArrowRight } from 'lucide-react'
 
-interface PilaresProps {
-  onSelectPilar: (pilar: string, origem: string) => void
-}
-
-export default function Pilares({ onSelectPilar }: PilaresProps) {
+export default function Pilares() {
   const pilares = [
     {
       id: 'solar',
       numero: '01',
-      titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
-      subtitulo: 'Geração própria e independência tarifária',
+      titulo: 'Energia Solar Fotovoltaica',
+      beneficio:
+        'Redução imediata de até 90% na conta de luz com engenharia e homologação completa para sua empresa ou residência.',
       icone: Sun,
       corIcone: 'bg-solar-100 text-solar-700 border-solar-200',
       tagCor: 'bg-solar-50 text-solar-800 border-solar-200',
-      problemaResolvido:
-        'Redução imediata da conta de luz em até 90%, previsibilidade de custos contra reajustes e valorização do patrimônio físico.',
-      subOfertas: [
-        'Projetos conectados à rede (on-grid) ou com baterias (híbrido) em telhado e solo',
-        'Dimensionamento residencial, comercial, industrial e rural',
-        'Modelagem para geração própria e distribuída (GD)',
-        'Homologação completa junto à concessionária',
-      ],
-      ctaText: 'Simular projeto',
-      origem: 'pilar-solar',
       paginaUrl: '/solucoes/energia-solar',
-      anchorDark: false,
     },
     {
       id: 'bess',
       numero: '02',
-      titulo: 'Sistema de armazenamento de energia (BESS)',
-      subtitulo: 'Baterias industriais e backup inteligente',
+      titulo: 'Sistemas de Armazenamento BESS',
+      beneficio:
+        'Backup inteligente contra quedas de energia e economia com corte de pico tarifário através de bancos de baterias.',
       icone: BatteryCharging,
       corIcone: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       tagCor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      problemaResolvido:
-        'Alto custo de energia no horário de ponta, vulnerabilidade a blecautes e oscilações da rede, e parada produtiva de indústrias e comércios.',
-      subOfertas: [
-        'Economia e bloqueio do horário de ponta (carrega barato ou solar de graça e usa no horário caro)',
-        'Backup ininterrupto e energia de reserva para empresas e indústrias e rural crítico',
-        'Redução da cobrança de demanda na fatura (peak shaving)',
-        'Integração híbrida modular solar + banco de lítio',
-      ],
-      ctaText: 'Pedir estudo de viabilidade',
-      origem: 'pilar-bess',
       paginaUrl: '/solucoes/bess',
-      anchorDark: true,
-      darkLink: '#secao-bess',
     },
     {
       id: 'oem',
       numero: '03',
       titulo: 'Manutenção O&M e Monitoramento',
-      subtitulo: 'Gestão preventiva de ativos e proteção de ROI',
+      beneficio:
+        'Gestão preventiva, inspeção termográfica e monitoramento contínuo com SLA para garantir a máxima geração da usina.',
       icone: Wrench,
       corIcone: 'bg-blue-100 text-blue-800 border-blue-200',
       tagCor: 'bg-blue-50 text-blue-800 border-blue-200',
-      problemaResolvido:
-        'Perda silenciosa de até 25% da geração por sujidade, falhas de isolamento, aquecimento de células e falta de acompanhamento técnico.',
-      subOfertas: [
-        'Monitoramento remoto de performance em tempo real',
-        'Termografia aérea com drone e inspeção elétrica',
-        'Lavagem técnica especializada com água tratada',
-        'Planos com SLA de atendimento e relatórios analíticos',
-      ],
-      ctaText: 'Solicitar diagnóstico da usina',
-      origem: 'pilar-oem',
       paginaUrl: '/solucoes/om',
-      anchorDark: false,
     },
     {
       id: 'carregadores',
       numero: '04',
-      titulo: 'Carregadores Veiculares com Gestão de Carga Inteligente',
-      subtitulo: 'Eletromobilidade com gestão de carga inteligente',
+      titulo: 'Carregadores Veiculares',
+      beneficio:
+        'Infraestrutura de recarga inteligente com balanceamento de carga para condomínios, frotas e empresas sem sobrecarga.',
       icone: Car,
       corIcone: 'bg-indigo-100 text-indigo-800 border-indigo-200',
       tagCor: 'bg-indigo-50 text-indigo-800 border-indigo-200',
-      problemaResolvido:
-        'Falta de infraestrutura segura de recarga, conflitos em condomínios por rateio de energia e risco de sobrecarga do transformador predial.',
-      subOfertas: [
-        'Wallboxes inteligentes para residências e empresas',
-        'Carregadores semirrápidos e rápidos DC para frotas',
-        'Gestão de carga inteligente (DLM: mede o consumo por vaga e rateia individualmente) sem troca de transformador',
-        'Medição individualizada e cobrança por aplicativo',
-      ],
-      ctaText: 'Solicitar vistoria',
-      origem: 'pilar-carregadores',
       paginaUrl: '/solucoes/carregadores',
-      anchorDark: true,
-      darkLink: '#secao-carregadores',
     },
   ]
 
@@ -143,53 +96,23 @@ export default function Pilares({ onSelectPilar }: PilaresProps) {
                       <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                         {p.titulo}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium">{p.subtitulo}</p>
                     </div>
                   </div>
 
-                  {/* Problema que resolve */}
-                  <div className="mb-6 p-4 rounded-2xl bg-white border border-slate-200/60 shadow-xs">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                      Problema que resolve:
-                    </span>
-                    <p className="text-sm text-slate-700 leading-relaxed">{p.problemaResolvido}</p>
-                  </div>
-
-                  {/* Sub-ofertas */}
-                  <div className="space-y-2 mb-8">
-                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-                      Escopo e diferenciais técnicos:
-                    </span>
-                    <ul className="space-y-2">
-                      {p.subOfertas.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-2 text-xs sm:text-sm text-slate-700"
-                        >
-                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {/* Frase de benefício */}
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-8">
+                    {p.beneficio}
+                  </p>
                 </div>
 
-                {/* Footer Actions */}
-                <div className="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                  <Button
-                    onClick={() => onSelectPilar(p.titulo, `home-${p.origem}`)}
-                    className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 group/btn"
-                  >
-                    <span>{p.ctaText}</span>
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-
+                {/* Footer Action - Botão único 'Saber mais' */}
+                <div className="pt-4 border-t border-slate-200/80 flex items-center">
                   <a
                     href={p.paginaUrl}
-                    className="text-xs font-bold text-slate-700 hover:text-solar-600 text-center sm:text-right flex items-center justify-center sm:justify-end gap-1 group/link"
+                    className="inline-flex items-center justify-center gap-2 bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-3 rounded-xl text-sm shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] group/btn"
                   >
-                    <span>Conhecer página da solução</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    <span>Saber mais</span>
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </a>
                 </div>
               </div>

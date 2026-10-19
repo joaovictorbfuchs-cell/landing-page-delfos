@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Sun, Zap, ArrowRight, ShieldCheck, Calculator, ChevronDown, Sparkles } from 'lucide-react'
+import { ArrowRight, ShieldCheck, Calculator, ChevronDown, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -193,18 +193,6 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
       <div className="absolute bottom-0 -left-20 w-[420px] h-[420px] rounded-full bg-emerald-500/10 blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 w-full">
-        {/* Top Badges: Pilares */}
-        <div className="flex flex-wrap items-center gap-2 mb-6 animate-fade-in">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-solar-400/15 border border-solar-400/30 text-solar-300 text-xs font-semibold tracking-wide">
-            <Zap className="w-3.5 h-3.5 text-solar-400" />
-            Ecossistema Completo de Energia
-          </span>
-          <span className="hidden sm:inline-block text-xs text-slate-400">•</span>
-          <span className="text-xs text-slate-300 hidden sm:inline-block">
-            Solar Fotovoltaico • Armazenamento e Baterias (BESS) • O&M • Eletromobilidade
-          </span>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           {/* Left Column: Novo Posicionamento */}
           <div className="lg:col-span-7 flex flex-col gap-6">
@@ -221,34 +209,6 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 alta performance, sistema de armazenamento de energia em baterias (BESS), planos com
                 SLA de monitoramento contínuo e infraestrutura de recarga veicular no Sul do Brasil.
               </p>
-            </div>
-
-            {/* Sub-pilares visuais em badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
-              <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-                <span className="block text-[11px] font-bold text-solar-300 uppercase tracking-wider">
-                  01. Solar
-                </span>
-                <span className="text-xs text-slate-200 font-medium">Projeto e Instalação</span>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-                <span className="block text-[11px] font-bold text-emerald-400 uppercase tracking-wider">
-                  02. Baterias (BESS)
-                </span>
-                <span className="text-xs text-slate-200 font-medium">Armazenamento & Backup</span>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-                <span className="block text-[11px] font-bold text-cyan-300 uppercase tracking-wider">
-                  03. O&M
-                </span>
-                <span className="text-xs text-slate-200 font-medium">Gestão com SLA</span>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-                <span className="block text-[11px] font-bold text-indigo-300 uppercase tracking-wider">
-                  04. Recarga
-                </span>
-                <span className="text-xs text-slate-200 font-medium">Gestão Inteligente</span>
-              </div>
             </div>
 
             {/* CTAs */}
@@ -284,7 +244,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
             </div>
           </div>
 
-          {/* Right Column: Calculadora de Economia + Espaço Foto Real */}
+          {/* Right Column: Calculadora de Economia */}
           <div className="lg:col-span-5 flex flex-col gap-5">
             {/* Calculadora Card */}
             <div className="bg-gradient-to-br from-[#0F355E] to-[#0A223E] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl backdrop-blur-md relative overflow-hidden">
@@ -395,26 +355,6 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </form>
-            </div>
-
-            {/* Espaço Marcado para Imagem Real de Destaque */}
-            <div className="relative rounded-2xl border-2 border-dashed border-white/20 bg-white/5 p-4 flex items-center gap-4 text-left">
-              <div className="w-16 h-16 rounded-xl bg-midnight-900 border border-white/10 flex flex-col items-center justify-center shrink-0 text-solar-300">
-                <Sun className="w-6 h-6 mb-1 text-solar-400" />
-                <span className="text-[9px] font-bold uppercase">Sul/RS</span>
-              </div>
-              <div className="flex-1">
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 mb-1">
-                  Foto real — aguardando
-                </span>
-                <p className="text-xs font-semibold text-white leading-tight">
-                  Usinas de solo, telhados industriais e comerciais em Erechim/RS
-                </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  Proibido banco de imagens genérico — documentação fotográfica com drone em
-                  homologação.
-                </p>
-              </div>
             </div>
           </div>
         </div>

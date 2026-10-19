@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Calendar, CheckCircle2, Star, Zap, Info } from 'lucide-react'
+import { Calendar, CheckCircle2, Star } from 'lucide-react'
 
 interface CounterProps {
   end: number
@@ -80,8 +80,8 @@ export default function Metricas() {
           </p>
         </div>
 
-        {/* 4 Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 3 Stat Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* 1. Anos de Mercado */}
           <div className="bg-frost rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow relative group">
             <div className="w-12 h-12 rounded-2xl bg-solar-100 text-solar-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
@@ -111,25 +111,7 @@ export default function Metricas() {
             </p>
           </div>
 
-          {/* 3. Potência Instalada (Placeholder explícito conforme doc) */}
-          <div className="bg-frost rounded-3xl p-6 border border-amber-200/80 shadow-sm hover:shadow-md transition-shadow relative group bg-gradient-to-b from-amber-50/50 to-frost">
-            <div className="w-12 h-12 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <Zap className="w-6 h-6" />
-            </div>
-            <div className="text-3xl sm:text-4xl font-black text-midnight-950 tracking-tight mb-2 flex items-baseline gap-2">
-              <span>XX MWp</span>
-              <span className="text-xs font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
-                a confirmar
-              </span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">potência instalada total</h3>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed flex items-start gap-1">
-              <Info className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-              <span>Aguardando consolidação do número oficial auditado com data de corte.</span>
-            </p>
-          </div>
-
-          {/* 4. Avaliação Google */}
+          {/* 3. Avaliação Google */}
           <div className="bg-frost rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow relative group">
             <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
               <Star className="w-6 h-6 fill-solar-400 text-solar-400" />
