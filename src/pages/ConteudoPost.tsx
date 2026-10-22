@@ -129,6 +129,8 @@ export default function ConteudoPost() {
         title={`${titulo} | Delfos Solar Erechim`}
         description={metaDescription}
         canonicalPath={`/conteudos/${slug}`}
+        ogType="article"
+        ogImage={fotoUrl || '/og-image.png'}
       />
 
       {/* Header Institucional */}

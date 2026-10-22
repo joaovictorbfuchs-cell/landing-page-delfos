@@ -141,6 +141,7 @@ export default function ProjetosResultados() {
         title="Projetos e Resultados Reais | Cases Auditados Delfos Solar"
         description="Conheça os cases reais de engenharia da Delfos: solar fotovoltaico, BESS, O&M e recarga veicular com métricas auditadas, período de medição e comprovação."
         canonicalPath="/projetos"
+        ogImage="/og-image.png"
       />
 
       {/* Header Institucional */}

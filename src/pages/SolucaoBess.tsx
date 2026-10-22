@@ -103,6 +103,7 @@ export default function SolucaoBess() {
         title="Sistema de armazenamento de energia (BESS) | Baterias Industriais e Backup"
         description="Sistema de armazenamento de energia em baterias (BESS): economia no horário de ponta, backup ininterrupto e redução de demanda (peak shaving) no Sul do Brasil. Delfos Engenharia."
         canonicalPath="/solucoes/bess"
+        ogImage="/og-image.png"
       />
 
       {/* Header escuro integrado */}

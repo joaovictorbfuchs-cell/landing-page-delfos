@@ -146,6 +146,7 @@ export default function Conteudos() {
         title="Conteúdos & Blog Técnico de Engenharia Solar e BESS | Delfos Solar"
         description="Artigos práticos e técnicos sobre energia solar fotovoltaica em Erechim, BESS industrial, manutenção O&M de usinas e infraestrutura para recarga veicular no Sul."
         canonicalPath="/conteudos"
+        ogImage="/og-image.png"
       />
 
       {/* Header Institucional */}

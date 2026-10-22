@@ -61,7 +61,12 @@ export default function SegmentoPageLayout({
           : 'bg-white text-slate-800 selection:bg-solar-400 selection:text-midnight-950'
       }`}
     >
-      <SeoMeta title={seg.seo.title} description={seg.seo.description} canonicalPath={seg.path} />
+      <SeoMeta
+        title={seg.seo.title}
+        description={seg.seo.description}
+        canonicalPath={seg.path}
+        ogImage="/og-image.png"
+      />
 
       <Header onSolicitarAvaliacao={scrollToContato} />
 

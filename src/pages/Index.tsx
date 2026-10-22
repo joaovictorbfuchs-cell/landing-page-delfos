@@ -61,10 +61,10 @@ export default function Index() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Delfos Engenharia Solar — Da geração à operação da sua energia"
-        description="Integradora gaúcha de Erechim/RS com 12 anos de mercado e +3.000 projetos no Sul. Energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com gestão de carga inteligente."
+        description="Integradora de engenharia gaúcha com 12 anos de atuação e nota 4.9 no Google. Simule sua economia e solicite avaliação técnica gratuita."
         canonicalPath="/"
+        ogImage="/og-image.png"
       />
-
       {/* 1. Header Fixo Global com Novo Menu e CTA Desktop */}
       <Header
         onSolicitarAvaliacao={() => handleSolicitarAvaliacaoGeral({ origem: 'header-menu-cta' })}

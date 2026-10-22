@@ -38,14 +38,14 @@ export default function Sobre() {
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': 'https://delfosengenharia.com.br/#empresa',
+    '@id': 'https://landing-page-delfos-engenharia-672ab.goskip.app/#empresa',
     name: 'Delfos Engenharia Solar',
     alternateName: 'Delfos Solar',
     legalName: 'Delfos Engenharia Solar LTDA',
     taxID: '21.379.952/0001-38',
     description:
       'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
-    url: 'https://delfosengenharia.com.br/sobre',
+    url: 'https://landing-page-delfos-engenharia-672ab.goskip.app/sobre',
     telephone: '+55-54-99129-2121',
     email: 'contato@delfosengenharia.com.br',
     foundingDate: '2014',
@@ -61,22 +61,18 @@ export default function Sobre() {
       { '@type': 'AdministrativeArea', name: 'Santa Catarina' },
       { '@type': 'AdministrativeArea', name: 'Paraná' },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '3000',
-    },
+    sameAs: ['https://share.google/kjuaSjNM7WOz3bVZq'],
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Sobre a Delfos Solar | Engenharia de Campo em Erechim e no Sul"
-        description="Conheça a história de 12 anos da Delfos Solar: mais de 3.000 projetos entregues no Sul do Brasil, equipe própria com ART/CREA-RS e monitoramento remoto."
+        title="Sobre a Delfos Engenharia Solar | 12 Anos, 3.000+ Projetos em Erechim/RS"
+        description="Conheça a história de 12 anos da Delfos Engenharia Solar em Erechim/RS: engenharia de ciclo completo, time próprio de campo, mais de 3.000 projetos entregues no Sul do Brasil."
         canonicalPath="/sobre"
+        ogImage="/og-image.png"
         schemaJsonLd={localBusinessSchema}
       />
-
       {/* Header Institucional */}
       <Header onSolicitarAvaliacao={scrollToContato} />
 

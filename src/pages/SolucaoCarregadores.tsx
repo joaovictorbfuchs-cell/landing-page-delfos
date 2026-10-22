@@ -91,6 +91,7 @@ export default function SolucaoCarregadores() {
         title="Carregadores Veiculares com Gestão de Carga Inteligente para Condomínios e Frotas"
         description="Infraestrutura de recarga veicular com gestão de carga inteligente sem sobrecarregar o transformador predial. Wallbox, DC fast charge e medição individual. Delfos."
         canonicalPath="/solucoes/carregadores"
+        ogImage="/og-image.png"
       />
 
       {/* Header Escuro Integrado */}

@@ -43,6 +43,8 @@ export default function SeoMeta({
       'energia solar Erechim, BESS industrial, manutencao de usina solar, carregador veicular condominio, Delfos Solar RS, engenharia fotovoltaica, armazenamento baterias',
     )
 
+    const BASE_URL = 'https://landing-page-delfos-engenharia-672ab.goskip.app'
+
     // OpenGraph Title & Description
     let ogTitle = document.querySelector('meta[property="og:title"]')
     if (!ogTitle) {
@@ -68,27 +70,76 @@ export default function SeoMeta({
     }
     ogTypeEl.setAttribute('content', ogType)
 
+    const fullImageUrl = ogImage.startsWith('http')
+      ? ogImage
+      : `${BASE_URL}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`
+
     let ogImgEl = document.querySelector('meta[property="og:image"]')
     if (!ogImgEl) {
       ogImgEl = document.createElement('meta')
       ogImgEl.setAttribute('property', 'og:image')
       document.head.appendChild(ogImgEl)
     }
-    ogImgEl.setAttribute(
-      'content',
-      ogImage.startsWith('http') ? ogImage : `https://delfosengenharia.com.br${ogImage}`,
-    )
+    ogImgEl.setAttribute('content', fullImageUrl)
+
+    // Twitter Card tags
+    let twitterCard = document.querySelector('meta[name="twitter:card"]')
+    if (!twitterCard) {
+      twitterCard = document.createElement('meta')
+      twitterCard.setAttribute('name', 'twitter:card')
+      document.head.appendChild(twitterCard)
+    }
+    twitterCard.setAttribute('content', 'summary_large_image')
+
+    let twitterTitle = document.querySelector('meta[name="twitter:title"]')
+    if (!twitterTitle) {
+      twitterTitle = document.createElement('meta')
+      twitterTitle.setAttribute('name', 'twitter:title')
+      document.head.appendChild(twitterTitle)
+    }
+    twitterTitle.setAttribute('content', formattedTitle)
+
+    let twitterDesc = document.querySelector('meta[name="twitter:description"]')
+    if (!twitterDesc) {
+      twitterDesc = document.createElement('meta')
+      twitterDesc.setAttribute('name', 'twitter:description')
+      document.head.appendChild(twitterDesc)
+    }
+    twitterDesc.setAttribute('content', description)
+
+    let twitterImg = document.querySelector('meta[name="twitter:image"]')
+    if (!twitterImg) {
+      twitterImg = document.createElement('meta')
+      twitterImg.setAttribute('name', 'twitter:image')
+      document.head.appendChild(twitterImg)
+    }
+    twitterImg.setAttribute('content', fullImageUrl)
 
     // Canonical link
-    if (canonicalPath) {
-      let canonical = document.querySelector('link[rel="canonical"]')
-      if (!canonical) {
-        canonical = document.createElement('link')
-        canonical.setAttribute('rel', 'canonical')
-        document.head.appendChild(canonical)
-      }
-      canonical.setAttribute('href', `https://delfosengenharia.com.br${canonicalPath}`)
+    const normalizedPath = canonicalPath || window.location.pathname
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
     }
+    canonical.setAttribute(
+      'href',
+      normalizedPath.startsWith('http')
+        ? normalizedPath
+        : `${BASE_URL}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`,
+    )
+
+    let ogUrl = document.querySelector('meta[property="og:url"]')
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta')
+      ogUrl.setAttribute('property', 'og:url')
+      document.head.appendChild(ogUrl)
+    }
+    ogUrl.setAttribute(
+      'content',
+      `${BASE_URL}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`,
+    )
 
     // Optional dynamic Schema.org JSON-LD
     let scriptJsonLd: HTMLScriptElement | null = null

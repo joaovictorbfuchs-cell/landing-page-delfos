@@ -123,6 +123,7 @@ export default function SolucaoSolar() {
         title="Energia Solar Fotovoltaica (Projeto e Instalação) em Erechim e Sul do Brasil"
         description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos conectados à rede ou com baterias, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
+        ogImage="/og-image.png"
       />
 
       {/* Header institucional */}

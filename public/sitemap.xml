@@ -2,107 +2,107 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Home -->
   <url>
-    <loc>https://delfosengenharia.com.br/</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- As 4 Páginas de Solução -->
   <url>
-    <loc>https://delfosengenharia.com.br/solucoes/energia-solar</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/solucoes/energia-solar</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/solucoes/bess</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/solucoes/bess</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/solucoes/om</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/solucoes/om</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/solucoes/carregadores</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/solucoes/carregadores</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Projetos e Resultados (Cases Reais) -->
   <url>
-    <loc>https://delfosengenharia.com.br/projetos</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/projetos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- As 7 Portas de Entrada / Páginas de Segmento -->
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/residencias</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/residencias</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/comercio-servicos</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/comercio-servicos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/industria</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/industria</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/agronegocio</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/agronegocio</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/condominios</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/condominios</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/investidores</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/investidores</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/segmentos/frotas-eletropostos</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/frotas-eletropostos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Fase 5: Sobre e Diferenciação de Marca -->
   <url>
-    <loc>https://delfosengenharia.com.br/sobre</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/sobre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Fase 5: Conteúdos (Blog) e Artigos de Captura Orgânica -->
   <url>
-    <loc>https://delfosengenharia.com.br/conteudos</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/conteudos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/conteudos/energia-solar-erechim-guia-completo</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/conteudos/energia-solar-erechim-guia-completo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/conteudos/bess-industrial-armazenamento-baterias-guia-viabilidade</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/conteudos/bess-industrial-armazenamento-baterias-guia-viabilidade</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/conteudos/manutencao-usina-solar-om-monitoramento-dicas</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/conteudos/manutencao-usina-solar-om-monitoramento-dicas</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://delfosengenharia.com.br/conteudos/carregador-veicular-condominio-dlm-instalacao-guia</loc>
+    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/conteudos/carregador-veicular-condominio-dlm-instalacao-guia</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

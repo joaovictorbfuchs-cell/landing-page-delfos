@@ -119,6 +119,7 @@ export default function SolucaoOm() {
         title="Manutenção O&M e Monitoramento de Usinas Solares | Termografia & Drone"
         description="Proteja o retorno do seu ativo solar: monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos personalizados com prazo garantido. Delfos O&M."
         canonicalPath="/solucoes/om"
+        ogImage="/og-image.png"
       />
 
       {/* Header Institucional */}

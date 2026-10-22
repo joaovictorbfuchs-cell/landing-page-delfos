@@ -6,4 +6,4 @@ Disallow: /admin
 Disallow: /login
 
 # Sitemap location
-Sitemap: https://delfosengenharia.com.br/sitemap.xml
+Sitemap: https://landing-page-delfos-engenharia-672ab.goskip.app/sitemap.xml
