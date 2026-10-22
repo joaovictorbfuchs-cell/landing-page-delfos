@@ -288,7 +288,8 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
       {
         titulo: 'Manutenção O&M e Monitoramento',
-        subtitulo: 'Planos com tempo de resposta rápido de até 4h, termografia radiométrica e revisão de subestação.',
+        subtitulo:
+          'Planos com tempo de resposta rápido de até 4h, termografia radiométrica e revisão de subestação.',
         href: '/solucoes/om',
         badge: 'Resposta Rápida Industrial',
         icone: Wrench,
@@ -561,7 +562,8 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
       {
         titulo: 'Manutenção O&M e Monitoramento',
-        subtitulo: 'Recuperação de usinas com baixo índice de geração (PR), drone termográfico e atendimento prioritário para investidores.',
+        subtitulo:
+          'Recuperação de usinas com baixo índice de geração (PR), drone termográfico e atendimento prioritário para investidores.',
         href: '/solucoes/om',
         badge: 'Proteção da TIR',
         icone: Wrench,

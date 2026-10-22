@@ -287,7 +287,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         ],
       },
       {
-        tituloH2: 'Monitoramento Remoto em Tempo Real com Tempo de Resposta Combinado (SLA)',
+        tituloH2: 'Monitoramento Remoto em Tempo Real com Prazo de Resposta Garantido',
         conteudo: [
           'A central de monitoramento remoto da Delfos rastreia inversores de clientes diariamente via algoritmos que comparam a geração horária contra a curva solarimétrica meteorológica da região de Erechim e do Sul.',
           'Quando um inversor desarma ou apresenta queda anômala de rendimento, o protocolo de resposta rápida é acionado imediatamente, deslocando equipes volantes de técnicos próprios credenciados no CREA para restabelecimento com rapidez, evitando semanas de geração desperdiçada.',

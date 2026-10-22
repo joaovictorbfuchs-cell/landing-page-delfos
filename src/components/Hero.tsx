@@ -205,7 +205,8 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl">
-                Reduza sua conta de luz até 90% com energia solar projetada e instalada por engenheiros próprios — e conte com a gente na operação e manutenção, do início ao fim.
+                A Delfos Engenharia cuida da sua energia de ponta a ponta: projeto e instalação de
+                energia solar, baterias e recarga veicular — com redução real na sua conta de luz.
               </p>
             </div>
 

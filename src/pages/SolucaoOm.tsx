@@ -29,7 +29,6 @@ import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
 
 export default function SolucaoOm() {
-  const [activePlan, setActivePlan] = useState<'essencial' | 'pro' | 'enterprise'>('pro')
   const [formNecessidade, setFormNecessidade] = useState<string>('Manutenção')
   const [formOrigem, setFormOrigem] = useState<string>('solucao-om-manutencao')
 
@@ -43,14 +42,7 @@ export default function SolucaoOm() {
   const handleConhecerPlanos = (origemEspecifica = 'om-hero-planos') => {
     setFormNecessidade('O&M e Monitoramento')
     setFormOrigem(origemEspecifica)
-    const el = document.querySelector('#planos-om') || document.querySelector('#contato')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const handleContratarPlano = (nomePlano: string) => {
-    setFormNecessidade('O&M e Monitoramento')
-    setFormOrigem(`om-plano-${nomePlano.toLowerCase().replace(/\s+/g, '-')}`)
-    const el = document.querySelector('#contato')
+    const el = document.querySelector('#o-que-oferecemos') || document.querySelector('#contato')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -59,7 +51,7 @@ export default function SolucaoOm() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Sub-ofertas conforme item 5.3 da especificação
+  // Sub-ofertas técnicas de operação e manutenção
   const subOfertas = [
     {
       titulo: 'Monitoramento Remoto de Performance em Tempo Real',
@@ -80,9 +72,9 @@ export default function SolucaoOm() {
       icone: Plane,
     },
     {
-      titulo: 'Planos de Manutenção Preventiva e Corretiva com SLA',
-      desc: 'Contratos estruturados com tempos de resposta garantidos (SLA de 4h a 24h), reaperto de conexões elétricas, medição de curva I-V, teste de aterramento e substituição ágil de peças.',
-      badge: 'SLA Contratual',
+      titulo: 'Planos de Manutenção Preventiva e Corretiva com Prazo Definido',
+      desc: 'Contratos estruturados com prazos de resposta garantidos (atendimento ágil de 4h a 24h), reaperto de conexões elétricas, medição de curva I-V, teste de aterramento e substituição de peças.',
+      badge: 'Prazo Garantido em Contrato',
       icone: ShieldCheck,
     },
     {
@@ -93,60 +85,39 @@ export default function SolucaoOm() {
     },
   ]
 
-  // Planos de O&M com SLA explícito
-  const planosSla = [
+  // Pilares do modelo personalizado "O que oferecemos"
+  const servicosPersonalizados = [
     {
-      id: 'essencial',
-      nome: 'Plano Essencial',
-      indicacao: 'Usinas comerciais e residenciais de 15 kWp a 50 kWp',
-      sla: 'SLA de até 48h úteis',
-      visitas: '1 visita preventiva semestral',
-      features: [
-        'Monitoramento remoto semanal de alarmes',
-        '1 limpeza técnica semestral inclusa',
-        'Inspeção visual e aperto de torque nos quadros',
-        'Relatório semestral de geração e economia',
-        'Suporte técnico via WhatsApp de seg. a sex.',
-      ],
+      titulo: 'Planos Customizados para o Seu Sistema',
+      desc: 'Cada usina tem seu porte, localização e nível de criticidade. Ajustamos a frequência de visitas e o escopo de serviços sob medida para a sua necessidade — de telhados comerciais a grandes usinas de solo.',
+      icone: Layers,
+      destaque: 'Sob medida',
     },
     {
-      id: 'pro',
-      nome: 'Plano Pro (Mais Escolhido)',
-      indicacao: 'Indústrias, comércios e usinas de 50 kWp a 300 kWp',
-      sla: 'SLA de até 24h com equipe no local',
-      visitas: 'Visitas trimestrais programadas',
-      destaque: true,
-      features: [
-        'Monitoramento remoto com alertas em tempo real',
-        'Termografia aérea anual por drone com laudo',
-        'Limpeza técnica trimestral com água desmineralizada',
-        'Curva I-V e teste de isolamento elétrico',
-        'Relatório mensal executivo assinado por engenheiro',
-        'Garantia de atendimento prioritário em falhas',
-      ],
+      titulo: 'Eficiência Energética e Máxima Geração',
+      desc: 'Monitoramento contínuo e limpezas técnicas periódicas evitam perdas invisíveis na produção e garantem que cada kilowatt-hora projetado vire economia real na conta de luz.',
+      icone: TrendingUp,
+      destaque: 'Mais rendimento',
     },
     {
-      id: 'enterprise',
-      nome: 'Plano Usinas & Investidores',
-      indicacao: 'Usinas de solo, geração compartilhada e acima de 300 kWp',
-      sla: 'SLA crítico de até 4h a 8h',
-      visitas: 'Gestão contínua com visitas mensais',
-      features: [
-        'Monitoramento remoto de alta frequência com estação solarimétrica',
-        '2 inspeções completas com drone termográfico por ano',
-        'Gestão de vegetação, roçada e drenagem em usina de solo',
-        'Revisão de subestação e transformadores de média tensão',
-        'Relatórios regulatórios para investidores e contabilidade',
-        'Linha direta de emergência',
-      ],
+      titulo: 'Segurança Técnica e Prevenção de Sinistros',
+      desc: 'Inspeções com drone termográfico e testes elétricos identificam pontos quentes, conectores folgados e riscos de queima antes que causem falhas graves ou paralisações do sistema.',
+      icone: ShieldCheck,
+      destaque: 'Proteção total',
+    },
+    {
+      titulo: 'Prazo de Resposta Garantido em Contrato',
+      desc: 'Equipes técnicas próprias com compromisso formal de atendimento rápido quando houver qualquer parada ou anomalia, restabelecendo a operação sem esperas desnecessárias.',
+      icone: Clock,
+      destaque: 'Atendimento ágil',
     },
   ]
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Manutenção O&M e Monitoramento de Usinas Solares | SLA & Drone"
-        description="Proteja o retorno do seu ativo solar: monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos com SLA. Delfos O&M."
+        title="Manutenção O&M e Monitoramento de Usinas Solares | Termografia & Drone"
+        description="Proteja o retorno do seu ativo solar: monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos personalizados com prazo garantido. Delfos O&M."
         canonicalPath="/solucoes/om"
       />
 
@@ -241,7 +212,7 @@ export default function SolucaoOm() {
                         <span>Conhecer Planos O&M</span>
                       </Button>
                       <span className="text-[11px] text-slate-300 mt-1.5">
-                        com SLA contratual de até 4h a 48h
+                        com prazo de resposta garantido em contrato
                       </span>
                     </div>
                   </div>
@@ -267,7 +238,7 @@ export default function SolucaoOm() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-emerald-400" />
-                    <span>Contratos com SLA explícito</span>
+                    <span>Contratos com prazo de atendimento definido</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Award className="w-4 h-4 text-blue-300" />
@@ -364,7 +335,7 @@ export default function SolucaoOm() {
                       variant="outline"
                       className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2 text-xs rounded-xl cursor-pointer"
                     >
-                      Conhecer Planos O&M com SLA
+                      Conhecer Planos O&M
                     </Button>
                   </div>
                 </div>
@@ -558,108 +529,94 @@ export default function SolucaoOm() {
           </div>
         </section>
 
-        {/* PLANOS COM SLA EXPLÍCITO (Item 5.3 da especificação) */}
-        <section id="planos-om" className="py-20 bg-slate-50 border-t border-b border-slate-200/80">
+        {/* SEÇÃO O QUE OFERECEMOS: PLANOS PERSONALIZADOS */}
+        <section
+          id="o-que-oferecemos"
+          className="py-20 bg-slate-50 border-t border-b border-slate-200/80"
+        >
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-14">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">
-                Compromisso Contratual
+                Atendimento sob medida
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Planos de O&M com SLA explícito e garantia de atendimento
+                O que oferecemos em Operação e Manutenção
               </h2>
               <p className="text-base text-slate-600 mt-3 leading-relaxed">
-                Sem surpresas: nossos contratos preveem prazos de resposta máximos para você nunca
-                perder dias de geração por causa de um inversor em pane.
+                Não engessamos seu negócio em pacotes pré-fixados. Desenhamos planos personalizados
+                conforme a necessidade, o porte e as particularidades da sua usina — com foco total
+                em máxima eficiência e segurança do sistema.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-              {planosSla.map((plano) => (
-                <div
-                  key={plano.id}
-                  className={`rounded-3xl p-8 flex flex-col justify-between transition-all relative ${
-                    plano.destaque
-                      ? 'bg-gradient-to-b from-[#09223D] to-[#061526] text-white shadow-2xl border-2 border-solar-400 scale-[1.02]'
-                      : 'bg-white text-slate-800 border border-slate-200/90 shadow-sm'
-                  }`}
-                >
-                  {plano.destaque && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-solar-400 text-midnight-950 text-xs font-black uppercase tracking-wider shadow">
-                      Mais Recomendado para Empresas
-                    </div>
-                  )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+              {servicosPersonalizados.map((item, idx) => {
+                const Icone = item.icone
+                return (
+                  <div
+                    key={idx}
+                    className="rounded-3xl p-7 bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                          <Icone className="w-6 h-6" />
+                        </div>
+                        <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                          {item.destaque}
+                        </span>
+                      </div>
 
-                  <div>
-                    <div className="mb-4">
-                      <h3
-                        className={`text-xl font-black ${
-                          plano.destaque ? 'text-white' : 'text-slate-900'
-                        }`}
-                      >
-                        {plano.nome}
+                      <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug">
+                        {item.titulo}
                       </h3>
-                      <p
-                        className={`text-xs mt-1 ${
-                          plano.destaque ? 'text-slate-300' : 'text-slate-500'
-                        }`}
-                      >
-                        {plano.indicacao}
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {item.desc}
                       </p>
                     </div>
 
-                    {/* SLA Badge */}
-                    <div
-                      className={`p-3.5 rounded-xl mb-6 font-mono text-xs font-bold flex items-center gap-2 ${
-                        plano.destaque
-                          ? 'bg-solar-400/20 text-solar-300 border border-solar-400/30'
-                          : 'bg-blue-50 text-blue-800 border border-blue-200'
-                      }`}
-                    >
-                      <Clock className="w-4 h-4 shrink-0" />
-                      <span>{plano.sla}</span>
-                    </div>
-
-                    <div className="space-y-3 mb-8">
-                      <span
-                        className={`text-xs font-bold uppercase tracking-wider block ${
-                          plano.destaque ? 'text-slate-400' : 'text-slate-500'
-                        }`}
-                      >
-                        Incluso no plano:
-                      </span>
-                      <ul className="space-y-2.5">
-                        {plano.features.map((feat, idx) => (
-                          <li
-                            key={idx}
-                            className={`flex items-start gap-2.5 text-xs ${
-                              plano.destaque ? 'text-slate-200' : 'text-slate-700'
-                            }`}
-                          >
-                            <CheckCircle2
-                              className={`w-4 h-4 shrink-0 mt-0.5 ${
-                                plano.destaque ? 'text-solar-400' : 'text-emerald-600'
-                              }`}
-                            />
-                            <span>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="pt-5 mt-5 border-t border-slate-100 flex items-center gap-2 text-xs font-medium text-slate-500">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Opções flexíveis e adaptáveis</span>
                     </div>
                   </div>
+                )
+              })}
+            </div>
 
-                  <Button
-                    onClick={() => handleContratarPlano(plano.nome)}
-                    className={`w-full font-bold py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer ${
-                      plano.destaque
-                        ? 'bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black'
-                        : 'bg-slate-900 hover:bg-slate-800 text-white'
-                    }`}
-                  >
-                    Contratar {plano.nome}
-                  </Button>
-                </div>
-              ))}
+            {/* Banner explicativo de personalização com CTAs da página */}
+            <div className="mt-10 rounded-3xl bg-gradient-to-r from-[#09223D] via-[#0B2C4F] to-[#0A223E] text-white p-8 sm:p-10 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="space-y-2 max-w-2xl">
+                <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
+                  Planos Personalizados • Sem Custos Ocultos
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  Precisa de um plano para sua usina ou de um atendimento pontual?
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                  Avaliamos o estado atual dos seus inversores, módulos e instalações elétricas para
+                  estruturar o cronograma ideal de manutenções preventivas, vistorias termográficas
+                  e prazos de resposta garantidos.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full lg:w-auto shrink-0">
+                <Button
+                  onClick={() => handleSolicitarManutencao('om-secao-oferecemos-manutencao')}
+                  className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-6 py-5 text-sm rounded-xl shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Wrench className="w-4 h-4 text-midnight-950" />
+                  <span>Solicitar Manutenção</span>
+                </Button>
+                <Button
+                  onClick={() => handleConhecerPlanos('om-secao-oferecemos-planos')}
+                  variant="outline"
+                  className="bg-white/10 hover:bg-white/15 border-white/20 text-white font-bold px-6 py-5 text-sm rounded-xl cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <ShieldCheck className="w-4 h-4 text-blue-300" />
+                  <span>Conhecer Planos O&M</span>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
