@@ -10,6 +10,7 @@ import {
   Phone,
   FileSpreadsheet,
   Check,
+  MapPin,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -376,6 +377,10 @@ export default function ContatoForm({
               <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
                 <Sun className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Equipe de campo com ART / CREA-RS em Erechim e todo Sul.</span>
+              </div>
+              <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
+                <MapPin className="w-4 h-4 text-solar-500 shrink-0" />
+                <span>Sede própria: Rua Espírito Santo, 275 — Erechim/RS</span>
               </div>
             </div>
 

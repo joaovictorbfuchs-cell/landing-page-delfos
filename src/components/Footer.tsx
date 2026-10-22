@@ -175,14 +175,19 @@ export default function Footer() {
           </div>
 
           {/* Contact Info & Telefone Real */}
-          <div className="lg:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
+          <div className="lg:col-span-4 space-y-4">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">
               Sede Regional & Atendimento
             </h4>
-            <ul className="space-y-3 text-xs sm:text-sm text-slate-300">
+            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                <span>Erechim/RS e Região Alto Uruguai • Atuação em todo o Sul do Brasil</span>
+                <div>
+                  <p className="text-white font-medium">Rua Espírito Santo, 275, bairro Fátima</p>
+                  <p className="text-xs text-slate-400">
+                    Erechim - RS • Atuação em todo o Sul do Brasil
+                  </p>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -204,10 +209,24 @@ export default function Footer() {
                   contato@delfos.eng.br
                 </a>
               </li>
-              <li className="pt-2 text-xs text-slate-400">
+              <li className="text-xs text-slate-400">
                 Horário de Atendimento Técnico: Seg a Sex das 08h às 17:20h
               </li>
             </ul>
+
+            {/* Mapa compacto do Google Maps */}
+            <div className="w-full h-[190px] rounded-xl overflow-hidden border border-white/10 bg-[#08172c]/60 shadow-inner">
+              <iframe
+                title="Localização da Delfos Engenharia - Erechim/RS"
+                src="https://maps.google.com/maps?q=Rua%20Esp%C3%ADrito%20Santo%2C%20275%2C%20F%C3%A1tima%2C%20Erechim%2C%20RS&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full opacity-90 hover:opacity-100 transition-opacity"
+              />
+            </div>
           </div>
         </div>
 
@@ -217,8 +236,8 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>
-            © {new Date().getFullYear()} Delfos Engenharia Solar. Todos os direitos reservados. CNPJ
-            e registro no CREA-RS ativos.
+            © {new Date().getFullYear()} Delfos Engenharia • CNPJ 21.379.952/0001-38. Todos os
+            direitos reservados.
           </p>
           <div className="flex items-center gap-5">
             <a href="/login" className="hover:text-solar-400 transition-colors font-medium">

@@ -42,6 +42,7 @@ export default function Sobre() {
     name: 'Delfos Engenharia Solar',
     alternateName: 'Delfos Solar',
     legalName: 'Delfos Engenharia Solar LTDA',
+    taxID: '21.379.952/0001-38',
     description:
       'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
     url: 'https://delfosengenharia.com.br/sobre',
@@ -50,6 +51,7 @@ export default function Sobre() {
     foundingDate: '2014',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'Rua Espírito Santo, 275, bairro Fátima',
       addressLocality: 'Erechim',
       addressRegion: 'RS',
       addressCountry: 'BR',
@@ -212,7 +214,7 @@ export default function Sobre() {
                     da Delfos Solar no Alto Uruguai.
                   </p>
                   <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
-                    Erechim/RS • Sul do Brasil
+                    Rua Espírito Santo, 275 • Fátima, Erechim/RS
                   </div>
                 </div>
               </div>
