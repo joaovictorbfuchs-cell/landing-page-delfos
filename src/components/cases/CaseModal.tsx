@@ -106,21 +106,33 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
 
         {/* Modal Body: Estrutura obrigatória dos 7 campos */}
         <div className="p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-          {/* Foto real placeholder marcado */}
-          <div className="rounded-2xl border-2 border-dashed border-solar-400/50 bg-solar-50/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <div className="w-12 h-12 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6" />
+          {/* Foto no modal (Foto real se enviada via upload, ou Card Placeholder) */}
+          {caseStudy.fotoUrl ? (
+            <div className="rounded-2xl overflow-hidden aspect-video border border-slate-200 shadow-md">
+              <img
+                src={caseStudy.fotoUrl}
+                alt={caseStudy.titulo}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start mb-1">
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-solar-500/20 text-solar-800 border border-solar-400/40 font-mono">
-                  {caseStudy.fotoPlaceholderNota}
-                </span>
-                <span className="text-[11px] font-mono text-slate-500">Acervo Técnico Delfos</span>
+          ) : (
+            <div className="rounded-2xl border-2 border-dashed border-solar-400/50 bg-solar-50/40 p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+              <div className="w-12 h-12 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center shrink-0">
+                <Zap className="w-6 h-6" />
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">{caseStudy.fotoDescricao}</p>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start mb-1">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-solar-500/20 text-solar-800 border border-solar-400/40 font-mono">
+                    {caseStudy.fotoPlaceholderNota}
+                  </span>
+                  <span className="text-[11px] font-mono text-slate-500">
+                    Acervo Técnico Delfos
+                  </span>
+                </div>
+                <p className="text-xs text-slate-700 leading-relaxed">{caseStudy.fotoDescricao}</p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quick Summary Grid: Segmento, Local, Escopo, Data */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-frost border border-slate-200/80 text-xs">

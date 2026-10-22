@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   BookOpen,
@@ -25,10 +25,42 @@ import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { listPublishedPosts, getPostImageUrl } from '@/services/content'
+import type { PostRecord } from '@/types/content'
+
+// Interface unificada para exibição tanto de posts estáticos quanto dinâmicos do PocketBase
+interface DisplayArticle {
+  slug: string
+  titulo: string
+  subtitulo: string
+  resumo: string
+  categoria: string
+  tempoLeitura: string
+  dataPublicacao: string
+  autorNome: string
+  autorCargo: string
+  palavraChave: string
+  palavrasChaveSecundarias: string[]
+  fotoUrl?: string
+  isDynamic?: boolean
+}
 
 export default function Conteudos() {
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>('todas')
   const [busca, setBusca] = useState<string>('')
+  const [dynamicPosts, setDynamicPosts] = useState<PostRecord[]>([])
+
+  useEffect(() => {
+    async function loadDynamic() {
+      try {
+        const posts = await listPublishedPosts()
+        setDynamicPosts(posts)
+      } catch (err) {
+        console.warn('Falha ao carregar posts publicados:', err)
+      }
+    }
+    loadDynamic()
+  }, [])
 
   const scrollToContato = () => {
     const el = document.querySelector('#contato')
@@ -47,8 +79,50 @@ export default function Conteudos() {
     { label: 'Mobilidade Elétrica', value: 'Mobilidade Elétrica', icon: Car },
   ]
 
+  // Unifica os posts estáticos com os dinâmicos do PocketBase (apenas os com status "publicado")
+  const todosArtigos = useMemo<DisplayArticle[]>(() => {
+    // 1. Converter posts do PocketBase
+    const fromDb: DisplayArticle[] = dynamicPosts.map((p) => ({
+      slug: p.slug,
+      titulo: p.titulo,
+      subtitulo: p.subtitulo || '',
+      resumo: p.resumo || p.subtitulo || '',
+      categoria: p.categoria,
+      tempoLeitura: p.tempo_leitura || '5 min de leitura',
+      dataPublicacao: p.data_publicacao || new Date(p.created).toLocaleDateString('pt-BR'),
+      autorNome: p.autor_nome || 'Engenharia Delfos',
+      autorCargo: p.autor_cargo || 'Especialista em Energia',
+      palavraChave: p.palavra_chave || p.categoria,
+      palavrasChaveSecundarias: [],
+      fotoUrl: getPostImageUrl(p),
+      isDynamic: true,
+    }))
+
+    // 2. Converter posts estáticos existentes (evitando duplicar se o slug existir no banco)
+    const existingSlugs = new Set(fromDb.map((d) => d.slug))
+    const fromStatic: DisplayArticle[] = ARTIGOS_BLOG.filter((a) => !existingSlugs.has(a.slug)).map(
+      (a) => ({
+        slug: a.slug,
+        titulo: a.titulo,
+        subtitulo: a.subtitulo,
+        resumo: a.resumo,
+        categoria: a.categoria,
+        tempoLeitura: a.tempoLeitura,
+        dataPublicacao: a.dataPublicacao,
+        autorNome: a.autor.nome,
+        autorCargo: a.autor.cargo,
+        palavraChave: a.palavraChavePrincipal,
+        palavrasChaveSecundarias: a.palavrasChaveSecundarias,
+        isDynamic: false,
+      }),
+    )
+
+    // Coloca os dinâmicos primeiro (mais recentes) seguidos dos estáticos
+    return [...fromDb, ...fromStatic]
+  }, [dynamicPosts])
+
   const artigosFiltrados = useMemo(() => {
-    return ARTIGOS_BLOG.filter((artigo) => {
+    return todosArtigos.filter((artigo) => {
       const matchCategoria = categoriaFiltro === 'todas' || artigo.categoria === categoriaFiltro
       const term = busca.toLowerCase().trim()
       const matchBusca =
@@ -56,15 +130,15 @@ export default function Conteudos() {
         artigo.titulo.toLowerCase().includes(term) ||
         artigo.subtitulo.toLowerCase().includes(term) ||
         artigo.resumo.toLowerCase().includes(term) ||
-        artigo.palavraChavePrincipal.toLowerCase().includes(term) ||
+        artigo.palavraChave.toLowerCase().includes(term) ||
         artigo.palavrasChaveSecundarias.some((kw) => kw.toLowerCase().includes(term))
 
       return matchCategoria && matchBusca
     })
-  }, [categoriaFiltro, busca])
+  }, [todosArtigos, categoriaFiltro, busca])
 
   // Artigo de destaque (primeiro da lista)
-  const artigoDestaque = ARTIGOS_BLOG[0]
+  const artigoDestaque = artigosFiltrados[0] || todosArtigos[0]
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
@@ -174,8 +248,8 @@ export default function Conteudos() {
 
                     <div className="flex items-center justify-between pt-2">
                       <div className="text-xs text-slate-500">
-                        Por <strong className="text-slate-800">{artigoDestaque.autor.nome}</strong>{' '}
-                        — {artigoDestaque.autor.cargo}
+                        Por <strong className="text-slate-800">{artigoDestaque.autorNome}</strong> —{' '}
+                        {artigoDestaque.autorCargo}
                       </div>
 
                       <Link
@@ -189,22 +263,35 @@ export default function Conteudos() {
                   </div>
 
                   <div className="lg:col-span-5">
-                    {/* Placeholder de foto real conforme regra da especificação */}
-                    <div className="relative aspect-video lg:aspect-4/3 rounded-2xl bg-gradient-to-br from-[#081B30] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-6 text-center text-white overflow-hidden shadow-inner">
-                      <div className="w-12 h-12 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-                        <Sun className="w-6 h-6" />
+                    {/* Foto real carregada do banco se houver, ou placeholder */}
+                    {artigoDestaque.fotoUrl ? (
+                      <div className="relative aspect-video lg:aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-slate-200">
+                        <img
+                          src={artigoDestaque.fotoUrl}
+                          alt={artigoDestaque.titulo}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-midnight-950/80 text-[10px] font-bold text-solar-300 border border-white/10">
+                          Foto Oficial
+                        </div>
                       </div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-                        Foto Real — Aguardando
-                      </span>
-                      <p className="text-[11px] text-slate-300 mt-1 max-w-xs">
-                        Instalação fotovoltaica residencial e comercial em telhado no Alto Uruguai
-                        gaúcho (acervo técnico Delfos).
-                      </p>
-                      <div className="absolute bottom-3 right-3 text-[10px] text-slate-400 font-mono">
-                        Erechim/RS • 12 anos
+                    ) : (
+                      <div className="relative aspect-video lg:aspect-4/3 rounded-2xl bg-gradient-to-br from-[#081B30] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-6 text-center text-white overflow-hidden shadow-inner">
+                        <div className="w-12 h-12 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
+                          <Sun className="w-6 h-6" />
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
+                          Foto Real — Aguardando
+                        </span>
+                        <p className="text-[11px] text-slate-300 mt-1 max-w-xs">
+                          Instalação fotovoltaica residencial e comercial em telhado no Alto Uruguai
+                          gaúcho (acervo técnico Delfos).
+                        </p>
+                        <div className="absolute bottom-3 right-3 text-[10px] text-slate-400 font-mono">
+                          Erechim/RS • 12 anos
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -292,18 +379,31 @@ export default function Conteudos() {
                       className="bg-white rounded-3xl border border-slate-200/90 hover:border-solar-400/60 transition-all p-6 sm:p-7 shadow-xs hover:shadow-md flex flex-col justify-between group"
                     >
                       <div className="space-y-4">
-                        {/* Placeholder Foto Real de Cada Artigo */}
-                        <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#081B30] to-[#103A66] border border-white/10 flex flex-col items-center justify-center p-4 text-center text-white relative overflow-hidden">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
-                            Foto Real — Aguardando
-                          </span>
-                          <span className="text-[11px] text-slate-300 mt-0.5 line-clamp-1 max-w-xs">
-                            {artigo.palavraChavePrincipal} • Delfos Engenharia de Campo
-                          </span>
-                          <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/40 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
-                            {artigo.categoria}
+                        {/* Foto de Capa (se houver no banco) ou Placeholder técnico */}
+                        {artigo.fotoUrl ? (
+                          <div className="aspect-video w-full rounded-2xl overflow-hidden relative shadow-sm border border-slate-200">
+                            <img
+                              src={artigo.fotoUrl}
+                              alt={artigo.titulo}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-midnight-950/80 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
+                              {artigo.categoria}
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#081B30] to-[#103A66] border border-white/10 flex flex-col items-center justify-center p-4 text-center text-white relative overflow-hidden">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
+                              Foto Real — Aguardando
+                            </span>
+                            <span className="text-[11px] text-slate-300 mt-0.5 line-clamp-1 max-w-xs">
+                              {artigo.palavraChave} • Delfos Engenharia de Campo
+                            </span>
+                            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/40 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
+                              {artigo.categoria}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Metadados */}
                         <div className="flex items-center gap-3 text-xs text-slate-400">
@@ -335,7 +435,7 @@ export default function Conteudos() {
                             Foco:
                           </span>
                           <span className="px-2 py-0.5 rounded-md bg-frost text-[11px] font-medium text-slate-700 border border-slate-200">
-                            {artigo.palavraChavePrincipal}
+                            {artigo.palavraChave}
                           </span>
                           {artigo.palavrasChaveSecundarias.slice(0, 2).map((kw) => (
                             <span
@@ -351,7 +451,7 @@ export default function Conteudos() {
                       {/* Footer do Card com CTA */}
                       <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-xs text-slate-500 font-medium">
-                          {artigo.autor.nome}
+                          {artigo.autorNome}
                         </span>
 
                         <Link

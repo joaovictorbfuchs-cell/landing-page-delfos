@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import {
   Calendar,
@@ -27,13 +27,41 @@ import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import { getPostBySlug, getPostImageUrl } from '@/services/content'
+import type { PostRecord } from '@/types/content'
 
 export default function ConteudoPost() {
   const { slug } = useParams<{ slug: string }>()
   const { toast } = useToast()
 
-  const artigo = useMemo(() => {
+  const [dynamicPost, setDynamicPost] = useState<PostRecord | null>(null)
+  const [loadingDb, setLoadingDb] = useState(true)
+
+  useEffect(() => {
+    async function loadPost() {
+      if (!slug) return
+      setLoadingDb(true)
+      try {
+        const item = await getPostBySlug(slug)
+        // Garante que só exibe se o status for publicado (se rascunho, ignora)
+        if (item && item.status === 'publicado') {
+          setDynamicPost(item)
+        }
+      } catch (err) {
+        console.warn('Erro ao buscar post por slug:', err)
+      } finally {
+        setLoadingDb(false)
+      }
+    }
+    loadPost()
+  }, [slug])
+
+  const staticArtigo = useMemo(() => {
     return ARTIGOS_BLOG.find((item) => item.slug === slug)
+  }, [slug])
+
+  const artigosRelacionados = useMemo(() => {
+    return ARTIGOS_BLOG.filter((item) => item.slug !== slug).slice(0, 3)
   }, [slug])
 
   const scrollToContato = () => {
@@ -41,21 +69,39 @@ export default function ConteudoPost() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Artigos recomendados (outros artigos da lista)
-  const artigosRelacionados = useMemo(() => {
-    return ARTIGOS_BLOG.filter((item) => item.slug !== slug).slice(0, 3)
-  }, [slug])
-
-  if (!artigo) {
+  // Se não encontrar nem estático nem dinâmico e já terminou de buscar
+  if (!loadingDb && !dynamicPost && !staticArtigo) {
     return <Navigate to="/conteudos" replace />
   }
+
+  // Prepara modelo unificado
+  const titulo = dynamicPost?.titulo || staticArtigo?.titulo || ''
+  const subtitulo = dynamicPost?.subtitulo || staticArtigo?.subtitulo || ''
+  const categoria = dynamicPost?.categoria || staticArtigo?.categoria || 'Energia Solar'
+  const tempoLeitura =
+    dynamicPost?.tempo_leitura || staticArtigo?.tempoLeitura || '5 min de leitura'
+  const dataPublicacao = dynamicPost?.data_publicacao || staticArtigo?.dataPublicacao || ''
+  const autorNome = dynamicPost?.autor_nome || staticArtigo?.autor.nome || 'Engenharia Delfos'
+  const autorCargo =
+    dynamicPost?.autor_cargo || staticArtigo?.autor.cargo || 'Especialista em Energia'
+  const palavraChave =
+    dynamicPost?.palavra_chave || staticArtigo?.palavraChavePrincipal || categoria
+  const fotoUrl = dynamicPost ? getPostImageUrl(dynamicPost) : ''
+  const conteudoTexto = dynamicPost?.conteudo || ''
+  const resumo = dynamicPost?.resumo || staticArtigo?.resumo || ''
+  const metaDescription = dynamicPost
+    ? dynamicPost.resumo || dynamicPost.subtitulo || dynamicPost.titulo
+    : staticArtigo?.metaDescription || ''
+  const formNecessidade =
+    staticArtigo?.solucaoRelacionada.necessidadeForm || 'Energia Solar Fotovoltaica'
+  const formOrigem = staticArtigo?.origemLead || `conteudo-post-${slug}`
 
   const handleCompartilhar = () => {
     if (navigator.share) {
       navigator
         .share({
-          title: artigo.titulo,
-          text: artigo.resumo,
+          title: titulo,
+          text: resumo,
           url: window.location.href,
         })
         .catch(() => {})
@@ -69,20 +115,20 @@ export default function ConteudoPost() {
   }
 
   const CategoryIcon =
-    artigo.categoria === 'Armazenamento BESS'
+    categoria === 'Armazenamento BESS'
       ? BatteryCharging
-      : artigo.categoria === 'Operação & Manutenção'
+      : categoria === 'Operação & Manutenção'
         ? Wrench
-        : artigo.categoria === 'Mobilidade Elétrica'
+        : categoria === 'Mobilidade Elétrica'
           ? Car
           : Sun
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title={`${artigo.titulo} | Delfos Solar Erechim`}
-        description={artigo.metaDescription}
-        canonicalPath={`/conteudos/${artigo.slug}`}
+        title={`${titulo} | Delfos Solar Erechim`}
+        description={metaDescription}
+        canonicalPath={`/conteudos/${slug}`}
       />
 
       {/* Header Institucional */}
@@ -101,7 +147,7 @@ export default function ConteudoPost() {
             </Link>
             <span>/</span>
             <span className="text-slate-900 font-semibold truncate max-w-xs sm:max-w-md">
-              {artigo.titulo}
+              {titulo}
             </span>
           </div>
         </div>
@@ -132,29 +178,31 @@ export default function ConteudoPost() {
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-solar-100 text-solar-900 font-bold uppercase tracking-wider">
                 <CategoryIcon className="w-3.5 h-3.5 text-solar-600" />
-                {artigo.categoria}
+                {categoria}
               </span>
               <span className="text-slate-300">•</span>
               <span className="flex items-center gap-1 text-slate-500 font-medium">
                 <Clock className="w-3.5 h-3.5" />
-                {artigo.tempoLeitura}
+                {tempoLeitura}
               </span>
               <span className="text-slate-300">•</span>
               <span className="flex items-center gap-1 text-slate-500 font-medium">
                 <Calendar className="w-3.5 h-3.5" />
-                {artigo.dataPublicacao}
+                {dataPublicacao}
               </span>
             </div>
 
             {/* H1 OBRIGATÓRIO */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.2]">
-              {artigo.titulo}
+              {titulo}
             </h1>
 
             {/* Subtítulo H2 semântico de apoio */}
-            <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-normal">
-              {artigo.subtitulo}
-            </p>
+            {subtitulo && (
+              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-normal">
+                {subtitulo}
+              </p>
+            )}
 
             {/* Ficha do Autor e Credenciais */}
             <div className="pt-4 flex items-center justify-between gap-4 p-4 rounded-2xl bg-frost border border-slate-200/80">
@@ -163,11 +211,9 @@ export default function ConteudoPost() {
                   <UserCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-slate-900 block">
-                    {artigo.autor.nome}
-                  </span>
+                  <span className="text-xs font-bold text-slate-900 block">{autorNome}</span>
                   <span className="text-[11px] text-slate-500 block leading-tight">
-                    {artigo.autor.cargo}
+                    {autorCargo}
                   </span>
                 </div>
               </div>
@@ -179,76 +225,100 @@ export default function ConteudoPost() {
             </div>
           </header>
 
-          {/* Placeholder Foto Real Obrigatória */}
-          <div className="my-10 aspect-video w-full rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0B2C4F] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-8 text-center text-white relative overflow-hidden shadow-lg">
-            <div className="w-14 h-14 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-              <CategoryIcon className="w-7 h-7" />
+          {/* Foto de Capa (se houver via upload) ou Placeholder */}
+          {fotoUrl ? (
+            <div className="my-10 aspect-video w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200">
+              <img src={fotoUrl} alt={titulo} className="w-full h-full object-cover" />
             </div>
-            <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-              Foto Real de Campo — Aguardando
-            </span>
-            <p className="text-xs text-slate-300 mt-1 max-w-md">
-              Registro fotográfico da engenharia da Delfos Solar em obra no Sul do Brasil (
-              {artigo.palavraChavePrincipal}).
-            </p>
-            <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
-              Erechim/RS • Delfos Engenharia
-            </div>
-          </div>
-
-          {/* CONTEÚDO ESTRUTURADO EM H2 / H3 */}
-          <div className="space-y-12 text-slate-700 leading-relaxed text-base sm:text-lg">
-            {artigo.secoes.map((secao, idx) => (
-              <section key={idx} className="space-y-5">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                  {secao.tituloH2}
-                </h2>
-
-                {secao.conteudo.map((paragrafo, pIdx) => (
-                  <p key={pIdx} className="leading-relaxed">
-                    {paragrafo}
-                  </p>
-                ))}
-
-                {/* Subseções H3 se houver */}
-                {secao.subsecoes && secao.subsecoes.length > 0 && (
-                  <div className="space-y-6 pt-4 pl-4 sm:pl-6 border-l-2 border-solar-300">
-                    {secao.subsecoes.map((sub, sIdx) => (
-                      <div key={sIdx} className="space-y-3">
-                        <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-                          {sub.tituloH3}
-                        </h3>
-                        {sub.conteudo.map((subPar, spIdx) => (
-                          <p key={spIdx} className="text-slate-600 text-base leading-relaxed">
-                            {subPar}
-                          </p>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            ))}
-
-            {/* Caixa de Conclusão e Destaque */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-solar-50 border-2 border-solar-200 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-solar-800 block">
-                Conclusão da Engenharia Delfos
+          ) : (
+            <div className="my-10 aspect-video w-full rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0B2C4F] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-8 text-center text-white relative overflow-hidden shadow-lg">
+              <div className="w-14 h-14 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
+                <CategoryIcon className="w-7 h-7" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
+                Foto Real de Campo — Aguardando
               </span>
-              <p className="text-base text-slate-800 leading-relaxed">{artigo.conclusao.texto}</p>
-              <div className="p-3.5 rounded-xl bg-white border border-solar-200 text-sm font-semibold text-solar-900">
-                {artigo.conclusao.destaque}
+              <p className="text-xs text-slate-300 mt-1 max-w-md">
+                Registro fotográfico da engenharia da Delfos Solar em obra no Sul do Brasil (
+                {palavraChave}).
+              </p>
+              <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
+                Erechim/RS • Delfos Engenharia
               </div>
             </div>
+          )}
 
-            {/* Perguntas Frequentes do Artigo (FAQ Schema Ready) */}
-            {artigo.faqs && artigo.faqs.length > 0 && (
+          {/* CONTEÚDO DO ARTIGO */}
+          <div className="space-y-12 text-slate-700 leading-relaxed text-base sm:text-lg">
+            {/* Se for do banco (texto completo) */}
+            {dynamicPost && conteudoTexto && (
+              <div className="space-y-6">
+                {conteudoTexto.split('\n\n').map((paragraph, pIdx) => (
+                  <p key={pIdx} className="leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Se for estático, renderiza seções estruturadas */}
+            {staticArtigo &&
+              !dynamicPost &&
+              staticArtigo.secoes.map((secao, idx) => (
+                <section key={idx} className="space-y-5">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                    {secao.tituloH2}
+                  </h2>
+
+                  {secao.conteudo.map((paragrafo, pIdx) => (
+                    <p key={pIdx} className="leading-relaxed">
+                      {paragrafo}
+                    </p>
+                  ))}
+
+                  {/* Subseções H3 se houver */}
+                  {secao.subsecoes && secao.subsecoes.length > 0 && (
+                    <div className="space-y-6 pt-4 pl-4 sm:pl-6 border-l-2 border-solar-300">
+                      {secao.subsecoes.map((sub, sIdx) => (
+                        <div key={sIdx} className="space-y-3">
+                          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
+                            {sub.tituloH3}
+                          </h3>
+                          {sub.conteudo.map((subPar, spIdx) => (
+                            <p key={spIdx} className="text-slate-600 text-base leading-relaxed">
+                              {subPar}
+                            </p>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              ))}
+
+            {/* Caixa de Conclusão e Destaque */}
+            {staticArtigo && (
+              <div className="p-6 sm:p-8 rounded-3xl bg-solar-50 border-2 border-solar-200 space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-solar-800 block">
+                  Conclusão da Engenharia Delfos
+                </span>
+                <p className="text-base text-slate-800 leading-relaxed">
+                  {staticArtigo.conclusao.texto}
+                </p>
+                <div className="p-3.5 rounded-xl bg-white border border-solar-200 text-sm font-semibold text-solar-900">
+                  {staticArtigo.conclusao.destaque}
+                </div>
+              </div>
+            )}
+
+            {/* Perguntas Frequentes do Artigo (FAQ Schema Ready se estático) */}
+            {staticArtigo?.faqs && staticArtigo.faqs.length > 0 && (
               <section className="pt-6 space-y-6">
                 <h3 className="text-2xl font-extrabold text-slate-900">
-                  Dúvidas Frequentes sobre {artigo.palavraChavePrincipal}
+                  Dúvidas Frequentes sobre {palavraChave}
                 </h3>
                 <div className="space-y-4">
-                  {artigo.faqs.map((faq, fIdx) => (
+                  {staticArtigo.faqs.map((faq, fIdx) => (
                     <div
                       key={fIdx}
                       className="p-5 rounded-2xl bg-frost border border-slate-200/90 space-y-2"
@@ -264,7 +334,7 @@ export default function ConteudoPost() {
               </section>
             )}
 
-            {/* CTA CONTEXTUAL EXCLUSIVO DO ARTIGO COM ORIGEM DO LEAD */}
+            {/* CTA CONTEXTUAL EXCLUSIVO DO ARTIGO */}
             <div className="mt-12 p-8 sm:p-10 rounded-3xl bg-[#081B30] text-white space-y-6 shadow-xl relative overflow-hidden">
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
@@ -284,15 +354,15 @@ export default function ConteudoPost() {
                   onClick={scrollToContato}
                   className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-6 rounded-xl text-sm shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <span>{artigo.solucaoRelacionada.ctaTexto}</span>
+                  <span>Solicitar estudo de viabilidade técnica</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
 
                 <Link
-                  to={artigo.solucaoRelacionada.url}
+                  to="/solucoes/energia-solar"
                   className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl border border-white/20 text-xs font-semibold text-slate-200 hover:bg-white/10 transition-colors"
                 >
-                  <span>Conhecer a página de {artigo.solucaoRelacionada.nome}</span>
+                  <span>Conhecer soluções de engenharia</span>
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -302,19 +372,11 @@ export default function ConteudoPost() {
             <div className="pt-8 border-t border-slate-200 flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold text-slate-500 mr-2 flex items-center gap-1">
                 <Tag className="w-3.5 h-3.5 text-solar-500" />
-                Palavras-chave:
+                Palavra-chave:
               </span>
               <span className="px-3 py-1 rounded-lg bg-solar-50 text-xs font-semibold text-solar-900 border border-solar-200">
-                {artigo.palavraChavePrincipal}
+                {palavraChave}
               </span>
-              {artigo.palavrasChaveSecundarias.map((kw) => (
-                <span
-                  key={kw}
-                  className="px-3 py-1 rounded-lg bg-frost text-xs text-slate-600 border border-slate-200"
-                >
-                  {kw}
-                </span>
-              ))}
             </div>
           </div>
         </article>
@@ -375,10 +437,10 @@ export default function ConteudoPost() {
 
         {/* Formulário Contextual com a Origem Específica do Lead deste Artigo */}
         <ContatoForm
-          initialNecessidade={artigo.solucaoRelacionada.necessidadeForm}
-          initialOrigem={artigo.origemLead}
-          tituloSecao={`Solicite uma avaliação técnica de ${artigo.categoria}`}
-          subtituloSecao={`Estudo preliminar e dimensionamento customizado conduzido pela equipe técnica de Erechim/RS referente ao tema: "${artigo.palavraChavePrincipal}".`}
+          initialNecessidade={formNecessidade}
+          initialOrigem={formOrigem}
+          tituloSecao={`Solicite uma avaliação técnica de ${categoria}`}
+          subtituloSecao={`Estudo preliminar e dimensionamento customizado conduzido pela equipe técnica de Erechim/RS referente ao tema: "${palavraChave}".`}
           textoBotaoFinal="Finalizar e Solicitar Avaliação"
         />
       </main>

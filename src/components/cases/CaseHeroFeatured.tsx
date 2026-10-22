@@ -48,17 +48,27 @@ export default function CaseHeroFeatured({
             </div>
           </div>
 
-          {/* Photo Placeholder Card */}
-          <div className="my-6 rounded-2xl border-2 border-dashed border-white/20 bg-white/5 p-6 text-center">
-            <Zap className="w-10 h-10 text-solar-400 mx-auto mb-2 opacity-80" />
-            <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-solar-400/20 text-solar-300 mb-1 font-mono">
-              {caseStudy.fotoPlaceholderNota}
-            </span>
-            <p className="text-xs text-slate-200 font-medium">{caseStudy.fotoDescricao}</p>
-            <p className="text-[11px] text-slate-400 mt-1 font-mono">
-              {caseStudy.potenciaOuCapacidadeCurta} • Homologado e em operação contínua
-            </p>
-          </div>
+          {/* Photo (Upload real ou Card de Placeholder) */}
+          {caseStudy.fotoUrl ? (
+            <div className="my-6 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-xl">
+              <img
+                src={caseStudy.fotoUrl}
+                alt={caseStudy.titulo}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="my-6 rounded-2xl border-2 border-dashed border-white/20 bg-white/5 p-6 text-center">
+              <Zap className="w-10 h-10 text-solar-400 mx-auto mb-2 opacity-80" />
+              <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-solar-400/20 text-solar-300 mb-1 font-mono">
+                {caseStudy.fotoPlaceholderNota}
+              </span>
+              <p className="text-xs text-slate-200 font-medium">{caseStudy.fotoDescricao}</p>
+              <p className="text-[11px] text-slate-400 mt-1 font-mono">
+                {caseStudy.potenciaOuCapacidadeCurta} • Homologado e em operação contínua
+              </p>
+            </div>
+          )}
 
           {/* Key Stat Summary (Tesla style) */}
           <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">

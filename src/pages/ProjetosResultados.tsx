@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Award,
@@ -25,13 +25,28 @@ import CaseHeroFeatured from '@/components/cases/CaseHeroFeatured'
 import CaseFilters from '@/components/cases/CaseFilters'
 import CaseCard from '@/components/cases/CaseCard'
 import CaseModal from '@/components/cases/CaseModal'
-import { CASES_DATA, type CaseStudy } from '@/data/cases'
+import { CASES_DATA, type CaseStudy, type SegmentoCase, type SolucaoCase } from '@/data/cases'
 import { Button } from '@/components/ui/button'
+import { listPublishedCases, getCaseImageUrl } from '@/services/content'
+import type { CaseRecord } from '@/types/content'
 
 export default function ProjetosResultados() {
   const [segmentoFiltro, setSegmentoFiltro] = useState<string>('todos')
   const [solucaoFiltro, setSolucaoFiltro] = useState<string>('todas')
   const [selectedCaseModal, setSelectedCaseModal] = useState<CaseStudy | null>(null)
+  const [dynamicCases, setDynamicCases] = useState<CaseRecord[]>([])
+
+  useEffect(() => {
+    async function loadCases() {
+      try {
+        const published = await listPublishedCases()
+        setDynamicCases(published)
+      } catch (err) {
+        console.warn('Erro ao carregar cases publicados do PocketBase:', err)
+      }
+    }
+    loadCases()
+  }, [])
 
   // Context for form conversion when clicking CTA from case
   const [leadOrigem, setLeadOrigem] = useState<string>('case-projetos-grid')
@@ -45,19 +60,58 @@ export default function ProjetosResultados() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Find featured case (Indra)
+  // Unifica os cases estáticos com os dinâmicos do PocketBase (apenas os com status "publicado")
+  const todosCases = useMemo<CaseStudy[]>(() => {
+    // 1. Converter cases do PocketBase
+    const fromDb: CaseStudy[] = dynamicCases.map((c) => {
+      const imageUrl = getCaseImageUrl(c)
+      return {
+        id: c.slug || c.id,
+        slug: c.slug || c.id,
+        titulo: c.titulo,
+        cliente: c.cliente || c.titulo,
+        segmento: c.setor as SegmentoCase,
+        solucao: (c.solucao || 'Energia Solar (EPC)') as SolucaoCase,
+        local: c.local || 'Erechim / RS',
+        dataEntrega: c.data_entrega || 'Auditado',
+        escopo: c.escopo || `${c.potencia_capacidade || ''} Projeto Turnkey Delfos`,
+        desafioInicial: c.descricao || 'Redução de custos operacionais e segurança energética.',
+        solucaoTecnica: c.solucao_tecnica || 'Engenharia de precisão e homologação completa.',
+        resultadoMedido: {
+          destaqueValor: c.resultado_valor || 'Redução auditada',
+          destaqueLabel: c.resultado_label || 'Resultado medido em campo',
+          descricao: c.resultado || 'Economia verificada após comissionamento.',
+          periodoMedicao: 'Medição formal pós-energização',
+          metodoMedicao: 'Auditoria cruzada com faturas RGE',
+        },
+        destaque: Boolean(c.destaque),
+        fotoDescricao: c.descricao || 'Case auditado pela Delfos Engenharia.',
+        fotoPlaceholderNota: 'Foto real oficial',
+        potenciaOuCapacidadeCurta: c.potencia_capacidade || 'Não informado',
+        fotoUrl: imageUrl || undefined,
+      }
+    })
+
+    // 2. Cases estáticos evitando duplicar por id/slug
+    const existingIds = new Set(fromDb.map((c) => c.id))
+    const fromStatic: CaseStudy[] = CASES_DATA.filter((c) => !existingIds.has(c.id))
+
+    return [...fromDb, ...fromStatic]
+  }, [dynamicCases])
+
+  // Find featured case
   const caseDestaque = useMemo(() => {
-    return CASES_DATA.find((c) => c.destaque) || CASES_DATA[0]
-  }, [])
+    return todosCases.find((c) => c.destaque) || todosCases[0]
+  }, [todosCases])
 
   // Filter cases dynamically by Segmento and Solucao
   const casesFiltrados = useMemo(() => {
-    return CASES_DATA.filter((item) => {
+    return todosCases.filter((item) => {
       const matchSegmento = segmentoFiltro === 'todos' || item.segmento === segmentoFiltro
       const matchSolucao = solucaoFiltro === 'todas' || item.solucao === solucaoFiltro
       return matchSegmento && matchSolucao
     })
-  }, [segmentoFiltro, solucaoFiltro])
+  }, [todosCases, segmentoFiltro, solucaoFiltro])
 
   // Open modal
   const handleVerDetalhes = (c: CaseStudy) => {

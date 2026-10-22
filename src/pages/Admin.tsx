@@ -25,6 +25,10 @@ import {
   Wrench,
   AlertTriangle,
   Bot,
+  Users,
+  FileText,
+  Award,
+  Image as ImageIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -32,12 +36,22 @@ import DelfosLogo from '@/components/DelfosLogo'
 import { useToast } from '@/hooks/use-toast'
 import { isAuthenticated, logout, getCurrentUser } from '@/services/auth'
 import { listLeads, deleteLead } from '@/services/leads'
+import { listPostsAdmin, listCasesAdmin, listMedia } from '@/services/content'
 import type { Lead } from '@/types/leads'
+import type { PostRecord, CaseRecord, MediaRecord } from '@/types/content'
+import AdminPostsTab from '@/components/admin/AdminPostsTab'
+import AdminCasesTab from '@/components/admin/AdminCasesTab'
+import AdminMediaTab from '@/components/admin/AdminMediaTab'
+
+type AdminSection = 'leads' | 'posts' | 'cases' | 'media'
 
 export default function Admin() {
   const navigate = useNavigate()
   const { toast } = useToast()
 
+  const [activeTab, setActiveTab] = useState<AdminSection>('leads')
+
+  // Leads state
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -45,6 +59,18 @@ export default function Admin() {
   const [filterOrigem, setFilterOrigem] = useState<string>('todos')
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [selectedLeadModal, setSelectedLeadModal] = useState<Lead | null>(null)
+
+  // Posts state
+  const [posts, setPosts] = useState<PostRecord[]>([])
+  const [loadingPosts, setLoadingPosts] = useState(false)
+
+  // Cases state
+  const [cases, setCases] = useState<CaseRecord[]>([])
+  const [loadingCases, setLoadingCases] = useState(false)
+
+  // Media state
+  const [mediaList, setMediaList] = useState<MediaRecord[]>([])
+  const [loadingMedia, setLoadingMedia] = useState(false)
 
   const currentUser = getCurrentUser()
 
@@ -54,6 +80,9 @@ export default function Admin() {
       return
     }
     fetchLeads()
+    fetchPosts()
+    fetchCases()
+    fetchMedia()
   }, [navigate])
 
   const fetchLeads = async () => {
@@ -71,6 +100,49 @@ export default function Admin() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const fetchPosts = async () => {
+    setLoadingPosts(true)
+    try {
+      const data = await listPostsAdmin()
+      setPosts(data)
+    } catch (err) {
+      console.error('Erro ao buscar posts:', err)
+    } finally {
+      setLoadingPosts(false)
+    }
+  }
+
+  const fetchCases = async () => {
+    setLoadingCases(true)
+    try {
+      const data = await listCasesAdmin()
+      setCases(data)
+    } catch (err) {
+      console.error('Erro ao buscar cases:', err)
+    } finally {
+      setLoadingCases(false)
+    }
+  }
+
+  const fetchMedia = async () => {
+    setLoadingMedia(true)
+    try {
+      const data = await listMedia()
+      setMediaList(data)
+    } catch (err) {
+      console.error('Erro ao buscar mídia:', err)
+    } finally {
+      setLoadingMedia(false)
+    }
+  }
+
+  const handleRefreshCurrentTab = () => {
+    if (activeTab === 'leads') fetchLeads()
+    else if (activeTab === 'posts') fetchPosts()
+    else if (activeTab === 'cases') fetchCases()
+    else if (activeTab === 'media') fetchMedia()
   }
 
   const handleLogout = () => {
@@ -236,12 +308,85 @@ export default function Admin() {
             </Link>
             <div className="border-l border-white/20 pl-3 hidden sm:block">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit">
-                Painel de Leads
+                Painel Administrativo
               </span>
               <span className="text-xs text-slate-400 block leading-tight mt-0.5">
                 Erechim/RS • {currentUser?.email || 'Administrador'}
               </span>
             </div>
+          </div>
+
+          {/* Abas Centrais de Navegação do Painel */}
+          <div className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+            <button
+              type="button"
+              onClick={() => setActiveTab('leads')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'leads'
+                  ? 'bg-solar-400 text-midnight-950 shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Leads & Métricas</span>
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                {leads.length}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('posts')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'posts'
+                  ? 'bg-solar-400 text-midnight-950 shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Blog / Conteúdos</span>
+              {posts.length > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                  {posts.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('cases')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'cases'
+                  ? 'bg-solar-400 text-midnight-950 shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <Award className="w-3.5 h-3.5" />
+              <span>Cases</span>
+              {cases.length > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                  {cases.length}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('media')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'media'
+                  ? 'bg-solar-400 text-midnight-950 shadow-sm'
+                  : 'text-slate-300 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              <ImageIcon className="w-3.5 h-3.5" />
+              <span>Biblioteca de Mídia</span>
+              {mediaList.length > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                  {mediaList.length}
+                </span>
+              )}
+            </button>
           </div>
 
           <div className="flex items-center gap-3">
@@ -335,348 +480,414 @@ export default function Admin() {
         </div>
       </header>
 
+      {/* Mobile Sub-Nav Tab Bar */}
+      <div className="lg:hidden bg-midnight-900 border-b border-white/10 px-4 py-2 flex items-center gap-1 overflow-x-auto">
+        <button
+          type="button"
+          onClick={() => setActiveTab('leads')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+            activeTab === 'leads'
+              ? 'bg-solar-400 text-midnight-950'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          Leads ({leads.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('posts')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+            activeTab === 'posts'
+              ? 'bg-solar-400 text-midnight-950'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          Blog ({posts.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('cases')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+            activeTab === 'cases'
+              ? 'bg-solar-400 text-midnight-950'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          Cases ({cases.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('media')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+            activeTab === 'media'
+              ? 'bg-solar-400 text-midnight-950'
+              : 'text-slate-300 hover:text-white'
+          }`}
+        >
+          Mídia ({mediaList.length})
+        </button>
+      </div>
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8 w-full flex-1 space-y-8">
-        {/* Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-          <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Total Leads
-              </span>
-              <p className="text-xl font-bold text-slate-900">{totalLeads}</p>
-            </div>
-          </div>
+        {activeTab === 'posts' && (
+          <AdminPostsTab posts={posts} loading={loadingPosts} onRefresh={fetchPosts} />
+        )}
 
-          <div className="bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl p-4 border-2 border-red-200/90 shadow-sm flex items-center gap-3.5 relative overflow-hidden">
-            <div className="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">
-              <AlertTriangle className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-black text-red-700 uppercase tracking-wider block">
-                  Plantão IA
-                </span>
-                <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-red-600 text-white uppercase">
-                  Alta
-                </span>
+        {activeTab === 'cases' && (
+          <AdminCasesTab cases={cases} loading={loadingCases} onRefresh={fetchCases} />
+        )}
+
+        {activeTab === 'media' && (
+          <AdminMediaTab mediaList={mediaList} loading={loadingMedia} onRefresh={fetchMedia} />
+        )}
+
+        {activeTab === 'leads' && (
+          <>
+            {/* Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+              <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center shrink-0">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
+                    Total Leads
+                  </span>
+                  <p className="text-xl font-bold text-slate-900">{totalLeads}</p>
+                </div>
               </div>
-              <p className="text-xl font-black text-red-900">{plantaoIaLeads}</p>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Sun className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Fotovoltaico EPC
-              </span>
-              <p className="text-2xl font-bold text-slate-900">{solarLeads}</p>
-            </div>
-          </div>
+              <div className="bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl p-4 border-2 border-red-200/90 shadow-sm flex items-center gap-3.5 relative overflow-hidden">
+                <div className="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black text-red-700 uppercase tracking-wider block">
+                      Plantão IA
+                    </span>
+                    <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-red-600 text-white uppercase">
+                      Alta
+                    </span>
+                  </div>
+                  <p className="text-xl font-black text-red-900">{plantaoIaLeads}</p>
+                </div>
+              </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <BatteryCharging className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                BESS (Baterias)
-              </span>
-              <p className="text-2xl font-bold text-slate-900">{bessLeads}</p>
-            </div>
-          </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                  <Sun className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Fotovoltaico EPC
+                  </span>
+                  <p className="text-2xl font-bold text-slate-900">{solarLeads}</p>
+                </div>
+              </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-              <Wrench className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Manutenção
-              </span>
-              <p className="text-2xl font-bold text-slate-900">{manutencaoLeads}</p>
-            </div>
-          </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <BatteryCharging className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    BESS (Baterias)
+                  </span>
+                  <p className="text-2xl font-bold text-slate-900">{bessLeads}</p>
+                </div>
+              </div>
 
-          <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-              <Layers className="w-6 h-6" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                O&M / Recarga
-              </span>
-              <p className="text-2xl font-bold text-slate-900">{outrosPilaresLeads}</p>
-            </div>
-          </div>
-        </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                  <Wrench className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Manutenção
+                  </span>
+                  <p className="text-2xl font-bold text-slate-900">{manutencaoLeads}</p>
+                </div>
+              </div>
 
-        {/* Filters and Actions */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-          <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar por nome, WhatsApp, cidade, origem..."
-                className="pl-9 h-10 rounded-xl bg-frost border-slate-200 text-sm"
-              />
-            </div>
-
-            {/* Filter by Pilar / Necessidade */}
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-slate-400 hidden sm:block" />
-              <select
-                value={filterNecessidade}
-                onChange={(e) => setFilterNecessidade(e.target.value)}
-                aria-label="Filtrar por necessidade ou pilar"
-                className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
-              >
-                <option value="todos">Todos os pilares</option>
-                <option value="Solar">Energia Solar (EPC)</option>
-                <option value="BESS">BESS (Armazenamento)</option>
-                <option value="Manutenção">Manutenção / Assistência Técnica</option>
-                <option value="O&M">O&M / Monitoramento</option>
-                <option value="Carregadores">Carregadores Veiculares</option>
-              </select>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                  <Layers className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    O&M / Recarga
+                  </span>
+                  <p className="text-2xl font-bold text-slate-900">{outrosPilaresLeads}</p>
+                </div>
+              </div>
             </div>
 
-            {/* Filter by Origem */}
-            {origensDisponiveis.length > 0 && (
-              <select
-                value={filterOrigem}
-                onChange={(e) => setFilterOrigem(e.target.value)}
-                aria-label="Filtrar por origem do lead"
-                className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
-              >
-                <option value="todos">Todas as origens</option>
-                {origensDisponiveis.map((orig) => (
-                  <option key={orig} value={orig}>
-                    Origem: {orig}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
+            {/* Filters and Actions */}
+            <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+              <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                {/* Search */}
+                <div className="relative flex-1">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Buscar por nome, WhatsApp, cidade, origem..."
+                    className="pl-9 h-10 rounded-xl bg-frost border-slate-200 text-sm"
+                  />
+                </div>
 
-          <div className="flex items-center gap-2 justify-end">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fetchLeads}
-              disabled={loading}
-              className="h-10 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700"
-            >
-              <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
-              Atualizar
-            </Button>
+                {/* Filter by Pilar / Necessidade */}
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-slate-400 hidden sm:block" />
+                  <select
+                    value={filterNecessidade}
+                    onChange={(e) => setFilterNecessidade(e.target.value)}
+                    aria-label="Filtrar por necessidade ou pilar"
+                    className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    <option value="todos">Todos os pilares</option>
+                    <option value="Solar">Energia Solar (EPC)</option>
+                    <option value="BESS">BESS (Armazenamento)</option>
+                    <option value="Manutenção">Manutenção / Assistência Técnica</option>
+                    <option value="O&M">O&M / Monitoramento</option>
+                    <option value="Carregadores">Carregadores Veiculares</option>
+                  </select>
+                </div>
 
-            <Button
-              onClick={exportCSV}
-              size="sm"
-              className="h-10 rounded-xl bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold shadow-sm"
-            >
-              <Download className="w-4 h-4 mr-1.5" />
-              Exportar CSV
-            </Button>
-          </div>
-        </div>
+                {/* Filter by Origem */}
+                {origensDisponiveis.length > 0 && (
+                  <select
+                    value={filterOrigem}
+                    onChange={(e) => setFilterOrigem(e.target.value)}
+                    aria-label="Filtrar por origem do lead"
+                    className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    <option value="todos">Todas as origens</option>
+                    {origensDisponiveis.map((orig) => (
+                      <option key={orig} value={orig}>
+                        Origem: {orig}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
 
-        {/* Leads Table */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="py-4 px-5">Data</th>
-                  <th className="py-4 px-5">Cliente</th>
-                  <th className="py-4 px-5">Contato & Cidade</th>
-                  <th className="py-4 px-5">Pilar / Necessidade</th>
-                  <th className="py-4 px-5">Qualificação Técnica</th>
-                  <th className="py-4 px-5">Origem</th>
-                  <th className="py-4 px-5 text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
-                {loading ? (
-                  <tr>
-                    <td colSpan={7} className="py-12 text-center text-slate-500">
-                      <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-solar-500" />
-                      Carregando leads do banco...
-                    </td>
-                  </tr>
-                ) : filteredLeads.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-12 text-center text-slate-500">
-                      Nenhum lead encontrado com os filtros atuais.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredLeads.map((lead) => {
-                    const dateFormatted = new Date(lead.created).toLocaleDateString('pt-BR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })
+              <div className="flex items-center gap-2 justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchLeads}
+                  disabled={loading}
+                  className="h-10 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700"
+                >
+                  <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+                  Atualizar
+                </Button>
 
-                    const cleanPhone = lead.telefone.replace(/\D/g, '')
-                    const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
-                      lead.nome,
-                    )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+                <Button
+                  onClick={exportCSV}
+                  size="sm"
+                  className="h-10 rounded-xl bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold shadow-sm"
+                >
+                  <Download className="w-4 h-4 mr-1.5" />
+                  Exportar CSV
+                </Button>
+              </div>
+            </div>
 
-                    const valorFinal = lead.valor_conta || lead.consumo_mensal
-
-                    return (
-                      <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
-                        {/* Data */}
-                        <td className="py-4 px-5 text-xs text-slate-500 whitespace-nowrap">
-                          <div className="flex items-center gap-1.5">
-                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{dateFormatted}</span>
-                          </div>
-                        </td>
-
-                        {/* Nome */}
-                        <td className="py-4 px-5">
-                          <button
-                            onClick={() => setSelectedLeadModal(lead)}
-                            className="font-bold text-slate-900 hover:text-solar-600 text-left block"
-                          >
-                            {lead.nome}
-                          </button>
-                        </td>
-
-                        {/* Contatos & Cidade */}
-                        <td className="py-4 px-5 whitespace-nowrap">
-                          <div className="space-y-1">
-                            <a
-                              href={whatsappLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-xs text-emerald-700 hover:underline font-semibold"
-                            >
-                              <Phone className="w-3.5 h-3.5 text-emerald-600" />
-                              <span>{lead.telefone}</span>
-                            </a>
-                            <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                              <span>{lead.cidade || 'Não informada'}</span>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* Pilar / Necessidade */}
-                        <td className="py-4 px-5 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-                              (lead.necessidade || '') === 'Manutenção' ||
-                              (lead.necessidade || '').toLowerCase().includes('manuten')
-                                ? 'bg-rose-100 text-rose-800'
-                                : (lead.necessidade || '').includes('BESS')
-                                  ? 'bg-emerald-100 text-emerald-800'
-                                  : (lead.necessidade || '').includes('Carregadores')
-                                    ? 'bg-indigo-100 text-indigo-800'
-                                    : (lead.necessidade || '').includes('O&M')
-                                      ? 'bg-blue-100 text-blue-800'
-                                      : 'bg-solar-100 text-solar-800'
-                            }`}
-                          >
-                            {(lead.necessidade || '') === 'Manutenção'
-                              ? 'Manutenção / Assistência'
-                              : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
-                          </span>
-                        </td>
-
-                        {/* Qualificação Técnica */}
-                        <td className="py-4 px-5 text-xs text-slate-700 whitespace-nowrap">
-                          <div>
-                            {valorFinal ? (
-                              <span className="font-bold text-emerald-800">
-                                R$ {valorFinal.toLocaleString('pt-BR')}
-                                <span className="text-[10px] text-slate-400 font-normal">/mês</span>
-                              </span>
-                            ) : (
-                              <span className="text-slate-400 italic">Conta não inf.</span>
-                            )}
-                          </div>
-                          <div className="text-[11px] text-slate-500">
-                            {lead.tipo_ligacao ? `Ligação: ${lead.tipo_ligacao}` : ''}
-                            {lead.concessionaria ? ` • ${lead.concessionaria}` : ''}
-                          </div>
-                        </td>
-
-                        {/* Origem */}
-                        <td className="py-4 px-5 whitespace-nowrap">
-                          {lead.origem === 'plantao-ia' ? (
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 text-red-800 border border-red-300 font-bold text-xs shadow-xs">
-                              <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
-                              </span>
-                              <Bot className="w-3.5 h-3.5 text-red-700" />
-                              <span>Plantão IA</span>
-                              <span className="text-[10px] bg-red-600 text-white px-1 rounded uppercase tracking-wider font-mono">
-                                Alta
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
-                              <Tag className="w-3 h-3 text-slate-400" />
-                              {lead.origem || 'direto'}
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Ações */}
-                        <td className="py-4 px-5 text-right whitespace-nowrap">
-                          <div className="flex items-center justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setSelectedLeadModal(lead)}
-                              className="text-xs text-slate-600 hover:text-slate-900"
-                            >
-                              Ver ficha
-                            </Button>
-                            <a
-                              href={whatsappLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-2 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
-                              title="Chamar no WhatsApp"
-                            >
-                              <Phone className="w-4 h-4" />
-                            </a>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              disabled={deletingId === lead.id}
-                              onClick={() => handleDelete(lead.id, lead.nome)}
-                              className="text-slate-400 hover:text-red-600 hover:bg-red-50"
-                              title="Remover lead"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
+            {/* Leads Table */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                      <th className="py-4 px-5">Data</th>
+                      <th className="py-4 px-5">Cliente</th>
+                      <th className="py-4 px-5">Contato & Cidade</th>
+                      <th className="py-4 px-5">Pilar / Necessidade</th>
+                      <th className="py-4 px-5">Qualificação Técnica</th>
+                      <th className="py-4 px-5">Origem</th>
+                      <th className="py-4 px-5 text-right">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-sm">
+                    {loading ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 text-center text-slate-500">
+                          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-solar-500" />
+                          Carregando leads do banco...
                         </td>
                       </tr>
-                    )
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                    ) : filteredLeads.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 text-center text-slate-500">
+                          Nenhum lead encontrado com os filtros atuais.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredLeads.map((lead) => {
+                        const dateFormatted = new Date(lead.created).toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+
+                        const cleanPhone = lead.telefone.replace(/\D/g, '')
+                        const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
+                          lead.nome,
+                        )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+
+                        const valorFinal = lead.valor_conta || lead.consumo_mensal
+
+                        return (
+                          <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
+                            {/* Data */}
+                            <td className="py-4 px-5 text-xs text-slate-500 whitespace-nowrap">
+                              <div className="flex items-center gap-1.5">
+                                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                <span>{dateFormatted}</span>
+                              </div>
+                            </td>
+
+                            {/* Nome */}
+                            <td className="py-4 px-5">
+                              <button
+                                onClick={() => setSelectedLeadModal(lead)}
+                                className="font-bold text-slate-900 hover:text-solar-600 text-left block"
+                              >
+                                {lead.nome}
+                              </button>
+                            </td>
+
+                            {/* Contatos & Cidade */}
+                            <td className="py-4 px-5 whitespace-nowrap">
+                              <div className="space-y-1">
+                                <a
+                                  href={whatsappLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1.5 text-xs text-emerald-700 hover:underline font-semibold"
+                                >
+                                  <Phone className="w-3.5 h-3.5 text-emerald-600" />
+                                  <span>{lead.telefone}</span>
+                                </a>
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>{lead.cidade || 'Não informada'}</span>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Pilar / Necessidade */}
+                            <td className="py-4 px-5 whitespace-nowrap">
+                              <span
+                                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+                                  (lead.necessidade || '') === 'Manutenção' ||
+                                  (lead.necessidade || '').toLowerCase().includes('manuten')
+                                    ? 'bg-rose-100 text-rose-800'
+                                    : (lead.necessidade || '').includes('BESS')
+                                      ? 'bg-emerald-100 text-emerald-800'
+                                      : (lead.necessidade || '').includes('Carregadores')
+                                        ? 'bg-indigo-100 text-indigo-800'
+                                        : (lead.necessidade || '').includes('O&M')
+                                          ? 'bg-blue-100 text-blue-800'
+                                          : 'bg-solar-100 text-solar-800'
+                                }`}
+                              >
+                                {(lead.necessidade || '') === 'Manutenção'
+                                  ? 'Manutenção / Assistência'
+                                  : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
+                              </span>
+                            </td>
+
+                            {/* Qualificação Técnica */}
+                            <td className="py-4 px-5 text-xs text-slate-700 whitespace-nowrap">
+                              <div>
+                                {valorFinal ? (
+                                  <span className="font-bold text-emerald-800">
+                                    R$ {valorFinal.toLocaleString('pt-BR')}
+                                    <span className="text-[10px] text-slate-400 font-normal">
+                                      /mês
+                                    </span>
+                                  </span>
+                                ) : (
+                                  <span className="text-slate-400 italic">Conta não inf.</span>
+                                )}
+                              </div>
+                              <div className="text-[11px] text-slate-500">
+                                {lead.tipo_ligacao ? `Ligação: ${lead.tipo_ligacao}` : ''}
+                                {lead.concessionaria ? ` • ${lead.concessionaria}` : ''}
+                              </div>
+                            </td>
+
+                            {/* Origem */}
+                            <td className="py-4 px-5 whitespace-nowrap">
+                              {lead.origem === 'plantao-ia' ? (
+                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 text-red-800 border border-red-300 font-bold text-xs shadow-xs">
+                                  <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                                  </span>
+                                  <Bot className="w-3.5 h-3.5 text-red-700" />
+                                  <span>Plantão IA</span>
+                                  <span className="text-[10px] bg-red-600 text-white px-1 rounded uppercase tracking-wider font-mono">
+                                    Alta
+                                  </span>
+                                </div>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                                  <Tag className="w-3 h-3 text-slate-400" />
+                                  {lead.origem || 'direto'}
+                                </span>
+                              )}
+                            </td>
+
+                            {/* Ações */}
+                            <td className="py-4 px-5 text-right whitespace-nowrap">
+                              <div className="flex items-center justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setSelectedLeadModal(lead)}
+                                  className="text-xs text-slate-600 hover:text-slate-900"
+                                >
+                                  Ver ficha
+                                </Button>
+                                <a
+                                  href={whatsappLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                                  title="Chamar no WhatsApp"
+                                >
+                                  <Phone className="w-4 h-4" />
+                                </a>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={deletingId === lead.id}
+                                  onClick={() => handleDelete(lead.id, lead.nome)}
+                                  className="text-slate-400 hover:text-red-600 hover:bg-red-50"
+                                  title="Remover lead"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Modal Ficha Completa do Lead */}

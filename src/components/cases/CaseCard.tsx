@@ -80,18 +80,28 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
             </div>
           </div>
 
-          {/* Photo Placeholder Card */}
-          <div className="mt-4 rounded-2xl border border-dashed border-white/20 bg-white/5 p-3 text-center">
-            <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-              <span className="px-1.5 py-0.5 rounded bg-solar-400/20 text-solar-300 font-bold uppercase">
-                {caseStudy.fotoPlaceholderNota}
-              </span>
-              <span className="text-slate-400">{caseStudy.dataEntrega.split('(')[0].trim()}</span>
+          {/* Photo (Upload real do banco se existir, ou card de placeholder) */}
+          {caseStudy.fotoUrl ? (
+            <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md">
+              <img
+                src={caseStudy.fotoUrl}
+                alt={caseStudy.titulo}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
-            <p className="text-[11px] text-slate-300 line-clamp-1 leading-tight text-left">
-              {caseStudy.fotoDescricao}
-            </p>
-          </div>
+          ) : (
+            <div className="mt-4 rounded-2xl border border-dashed border-white/20 bg-white/5 p-3 text-center">
+              <div className="flex items-center justify-between text-[10px] font-mono mb-1">
+                <span className="px-1.5 py-0.5 rounded bg-solar-400/20 text-solar-300 font-bold uppercase">
+                  {caseStudy.fotoPlaceholderNota}
+                </span>
+                <span className="text-slate-400">{caseStudy.dataEntrega.split('(')[0].trim()}</span>
+              </div>
+              <p className="text-[11px] text-slate-300 line-clamp-1 leading-tight text-left">
+                {caseStudy.fotoDescricao}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Card Body: Key Results in Big Numbers (Tesla style) */}

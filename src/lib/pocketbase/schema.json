@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T19:07:12.978Z",
+  "generatedAt": "2026-10-22T19:20:12.587Z",
   "collections": [
     {
       "name": "users",
@@ -164,6 +164,345 @@
       "indexes": [
         "CREATE INDEX idx_leads_created ON leads (created DESC)",
         "CREATE INDEX idx_leads_tipo_imovel ON leads (tipo_imovel)"
+      ]
+    },
+    {
+      "name": "posts",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' || status = 'publicado'",
+        "view": "@request.auth.id != '' || status = 'publicado'",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "titulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "subtitulo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resumo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "Energia Solar",
+            "Armazenamento BESS",
+            "Operação & Manutenção",
+            "Mobilidade Elétrica",
+            "Institucional e Outros"
+          ]
+        },
+        {
+          "name": "conteudo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "foto_capa",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_publicacao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["rascunho", "publicado"]
+        },
+        {
+          "name": "tempo_leitura",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "autor_nome",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "autor_cargo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "palavra_chave",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_posts_slug ON posts (slug)",
+        "CREATE INDEX idx_posts_status ON posts (status)",
+        "CREATE INDEX idx_posts_created ON posts (created DESC)"
+      ]
+    },
+    {
+      "name": "cases",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' || status = 'publicado'",
+        "view": "@request.auth.id != '' || status = 'publicado'",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "titulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "cliente",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "setor",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": [
+            "Residências",
+            "Comércio e Serviços",
+            "Indústria",
+            "Agronegócio",
+            "Condomínios",
+            "Investidores e Usinas",
+            "Frotas e Eletropostos"
+          ]
+        },
+        {
+          "name": "solucao",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "Energia Solar (EPC)",
+            "BESS (Armazenamento)",
+            "O&M e Monitoramento",
+            "Carregadores Veiculares"
+          ]
+        },
+        {
+          "name": "local",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "escopo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "solucao_tecnica",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resultado",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resultado_valor",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "resultado_label",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "potencia_capacidade",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "data_entrega",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "foto",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["rascunho", "publicado"]
+        },
+        {
+          "name": "destaque",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_cases_slug ON cases (slug)",
+        "CREATE INDEX idx_cases_status ON cases (status)",
+        "CREATE INDEX idx_cases_setor ON cases (setor)",
+        "CREATE INDEX idx_cases_created ON cases (created DESC)"
+      ]
+    },
+    {
+      "name": "media",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' || @request.auth.id = ''",
+        "view": "@request.auth.id != '' || @request.auth.id = ''",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "titulo",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "arquivo",
+          "type": "file",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "categoria",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "Geral",
+            "Solar EPC",
+            "BESS Baterias",
+            "O&M Manutenção",
+            "Carregadores",
+            "Segmentos",
+            "Equipe e Empresa"
+          ]
+        },
+        {
+          "name": "descricao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destino_sugerido",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_media_categoria ON media (categoria)",
+        "CREATE INDEX idx_media_created ON media (created DESC)"
       ]
     }
   ]
