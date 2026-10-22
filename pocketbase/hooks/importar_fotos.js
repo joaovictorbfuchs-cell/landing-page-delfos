@@ -4,16 +4,17 @@
  * Hook administrativo para importar e sincronizar fotos reais da Delfos Engenharia.
  *
  * Otimização de imagens:
- * 1. Faz o download com timeout e headers apropriados.
- * 2. Armazena os arquivos de mídia na coleção 'media' e vincula aos 'cases' correspondentes.
- * 3. Utiliza a infraestrutura de thumbnails nativa de alta performance do PocketBase
- *    (pre-gerando as versões otimizadas:
- *      - Versão capa/grande: 1600x0 (~1600px de largura, mantendo proporção original)
- *      - Versão leve para cards/galerias: 900x0 (~900px de largura, mantendo proporção original)
- *    ambas comprimidas em JPEG/WebP com otimização pelo motor libvips/imaging do PB).
- * 4. Mecanismo idempotente e de reprocessamento:
- *    Se o registro já existir, reprocessa/atualiza os arquivos e pré-gera os thumbs
- *    (sem duplicar registros no banco).
+ * 1. Raspa a listagem de projetos em https://www.delfos.eng.br/site/projetos/ (e páginas seguintes se houver paginação).
+ * 2. Identifica os links individuais de cada projeto do site antigo.
+ * 3. Acessa as páginas dos projetos e extrai URLs reais das imagens das obras (FooBox / href ou src do wp-content/uploads).
+ * 4. Casa de forma resiliente cada projeto com os 9 cases cadastrados no banco (Cassul, Clanel, Panificadora Garcia,
+ *    Silo de Grãos Erebango, Posto Mercosul, Usina de Solo Erechim, Condomínio Notabile, Pecuária de Leite Barão de Cotegipe,
+ *    Residência Urbana Erechim). Se não casar, ignora sem quebrar.
+ * 5. Faz o download com timeout e headers apropriados.
+ * 6. Armazena os arquivos de mídia na coleção 'media' e vincula aos 'cases' correspondentes no campo 'foto'.
+ * 7. Utiliza a infraestrutura de thumbnails nativa de alta performance do PocketBase
+ *    (pré-gerando as versões otimizadas 1600x0 e 900x0 via fsys.createThumb).
+ * 8. Mantém fluxo idempotente: se já existir na 'media' ou no 'case', reprocessa/atualiza sem duplicar registros.
  */
 const executarSincronizacaoFotos = (e) => {
   let fsys = null
@@ -57,136 +58,349 @@ const executarSincronizacaoFotos = (e) => {
       }
     }
 
-    // Lista de fotos reais de obras da Delfos a serem importadas/sincronizadas
-    const fotosParaImportar = [
+    // Definição dos 9 cases cadastrados e seus critérios de casamento
+    const DEFINICAO_CASES = [
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
-        titulo: 'Obra Cassul Distribuidora 155 kWp — Vista Aérea',
+        slug: 'cassul-erechim-rs-155-0-kwp',
+        nomeAmigavel: 'Cassul Distribuidora 155 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          'Instalação solar fotovoltaica de 155 kWp na cobertura da Cassul Distribuidora em Erechim/RS.',
-        destino_sugerido: 'Case Cassul / Solução Solar / Comércio',
-        caseSlug: 'cassul-erechim-rs-155-0-kwp',
-        nomeArquivo: 'cassul-155kwp-dji-0120.jpg',
+        destino: 'Case Cassul / Solução Solar / Comércio',
+        patterns: [/cassul/i],
+        tituloPrefixo: 'Obra Cassul Distribuidora 155 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0140.jpg',
-        titulo: 'Obra Cassul Distribuidora — Painéis em Telhado Metálico',
+        slug: 'clanel-ind-confeccoes-erechim-rs-123-5-kwp',
+        nomeAmigavel: 'Clanel Ind. e Comércio de Confecções 123,5 kWp',
         categoria: 'Solar EPC',
-        descricao: 'Arranjo fotovoltaico em cobertura metálica comercial da Cassul em Erechim/RS.',
-        destino_sugerido: 'Biblioteca de Mídia / Galeria Solar',
-        caseSlug: null,
-        nomeArquivo: 'cassul-155kwp-dji-0140.jpg',
+        destino: 'Case Clanel / Indústria / Solução Solar',
+        patterns: [/clanel/i],
+        tituloPrefixo: 'Obra Clanel Confecções 123,5 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
-        titulo: 'Obra Clanel Confecções 123,5 kWp — Vista Superior',
+        slug: 'panificadora-garcia-passo-fundo-rs-112-5-kwp',
+        nomeAmigavel: 'Panificadora Garcia 112,5 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          '390 módulos solares instalados na cobertura industrial da Clanel Confecções em Erechim/RS.',
-        destino_sugerido: 'Case Clanel / Indústria / Solução Solar',
-        caseSlug: 'clanel-ind-confeccoes-erechim-rs-123-5-kwp',
-        nomeArquivo: 'clanel-123kwp-dji-0075.jpg',
+        destino: 'Case Panificadora Garcia / Comércio / Solução Solar',
+        // Casar preferencialmente o projeto de 112,5 kWp da Panificadora Garcia
+        patterns: [/panificadora[-_\s]+garcia.*112/i, /garcia.*112/i, /panificadora[-_\s]+garcia/i],
+        tituloPrefixo: 'Panificadora Garcia 112,5 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/4.jpg',
-        titulo: 'Obra Clanel Confecções — Módulos Fotovoltaicos Industriais',
+        slug: 'silo-erebango-rs-76-16-kwp',
+        nomeAmigavel: 'Silo de Grãos Erebango 76,16 kWp',
         categoria: 'Solar EPC',
-        descricao: 'Detalhe dos módulos solares na cobertura fabril da Clanel em Erechim/RS.',
-        destino_sugerido: 'Segmento Indústria / Acervo Delfos',
-        caseSlug: null,
-        nomeArquivo: 'clanel-modulos-telhado.jpg',
+        destino: 'Case Silo Erebango / Agronegócio / Solução Solar',
+        patterns: [/silo.*erebango/i, /silo.*76/i],
+        tituloPrefixo: 'Silo de Grãos Erebango 76,16 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
-        titulo: 'Panificadora Garcia 112,5 kWp — Passo Fundo/RS',
+        slug: 'posto-caminho-do-mercosul-severiano-de-almeida-rs-54-9-kwp',
+        nomeAmigavel: 'Posto Caminho do Mercosul 54,9 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          'Usina solar comercial de 112,5 kWp instalada na Panificadora Garcia em Passo Fundo/RS.',
-        destino_sugerido: 'Case Panificadora Garcia / Comércio / Solução Solar',
-        caseSlug: 'panificadora-garcia-passo-fundo-rs-112-5-kwp',
-        nomeArquivo: 'panificadora-garcia-dji-0047.jpg',
+        destino: 'Case Posto Mercosul / Comércio e Serviços',
+        patterns: [/mercosul/i, /cerro[-_\s]+do[-_\s]+meio[-_\s]+dia/i],
+        tituloPrefixo: 'Posto Caminho do Mercosul 54,9 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
-        titulo: 'Silo Erebango 76,16 kWp — Agronegócio',
+        slug: 'usina-solar-solo-erechim-rs-40-8-kwp',
+        nomeAmigavel: 'Usina Fotovoltaica de Solo Erechim 40,8 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          'Instalação solar fotovoltaica de 76,16 kWp em silo de secagem e armazenagem de grãos em Erebango/RS.',
-        destino_sugerido: 'Case Silo Erebango / Agronegócio / Solução Solar',
-        caseSlug: 'silo-erebango-rs-76-16-kwp',
-        nomeArquivo: 'silo-erebango-dji-0023.jpg',
+        destino: 'Case Usina Solo / Investidores / Solução Solar',
+        patterns: [/usina[-_\s]+fotovoltaica.*40/i, /usina.*408/i, /usina.*solo.*40/i],
+        tituloPrefixo: 'Usina Solar de Solo Erechim 40,8 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/04/DJI_0068.jpg',
-        titulo: 'Posto Caminho do Mercosul 54,9 kWp — Severiano de Almeida/RS',
+        slug: 'condominio-residencial-notabile-erechim-rs-32-kwp',
+        nomeAmigavel: 'Condomínio Residencial Notabile 32 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          '169 módulos solares instalados na cobertura do Posto de Combustíveis Cerro do Meio Dia.',
-        destino_sugerido: 'Case Posto Mercosul / Comércio e Serviços',
-        caseSlug: 'posto-caminho-do-mercosul-severiano-de-almeida-rs-54-9-kwp',
-        nomeArquivo: 'posto-mercosul-dji-0068.jpg',
+        destino: 'Case Notabile / Condomínios / Solução Solar',
+        patterns: [/notabile/i],
+        tituloPrefixo: 'Condomínio Residencial Notabile 32 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/WhatsApp-Image-2019-12-11-at-17.44.44-1.jpeg',
-        titulo: 'Usina Solar de Solo 40,8 kWp — Erechim/RS',
+        slug: 'pecuaria-de-leite-barao-de-cotegipe-rs-18-5-kwp',
+        nomeAmigavel: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          'Estrutura metálica de usina de solo com 40,8 kWp de potência instalada em Erechim/RS.',
-        destino_sugerido: 'Case Usina Solo / Investidores / Solução Solar',
-        caseSlug: 'usina-solar-solo-erechim-rs-40-8-kwp',
-        nomeArquivo: 'usina-solo-erechim-40kwp.jpeg',
+        destino: 'Case Pecuária Leite / Agronegócio',
+        patterns: [/pecuaria.*cotegipe/i, /leite.*cotegipe/i, /pecuaria.*185/i, /pecuaria.*18/i],
+        tituloPrefixo: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
       },
       {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/07/1-3.jpg',
-        titulo: 'Pecuária de Leite 18,5 kWp — Barão de Cotegipe/RS',
+        slug: 'residencia-urbana-erechim-rs-6-48-kwp',
+        nomeAmigavel: 'Residência Urbana Erechim 6,48 kWp',
         categoria: 'Solar EPC',
-        descricao:
-          'Sistema solar fotovoltaico para atividade leiteira e resfriamento em Barão de Cotegipe/RS.',
-        destino_sugerido: 'Case Pecuária Leite / Agronegócio',
-        caseSlug: 'pecuaria-de-leite-barao-de-cotegipe-rs-18-5-kwp',
-        nomeArquivo: 'pecuaria-leite-18kwp.jpg',
-      },
-      {
-        url: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/06/DJI_0029-e1591648388934.jpg',
-        titulo: 'Residência Urbana 6,48 kWp — Erechim/RS',
-        categoria: 'Solar EPC',
-        descricao: 'Instalação solar residencial em telhado cerâmico de alto padrão em Erechim/RS.',
-        destino_sugerido: 'Case Residência / Residências / Solução Solar',
-        caseSlug: 'residencia-urbana-erechim-rs-6-48-kwp',
-        nomeArquivo: 'residencia-erechim-6kwp.jpg',
+        destino: 'Case Residência / Residências / Solução Solar',
+        patterns: [/residencia.*648/i, /residencia.*6,48/i, /residencia.*6-48/i],
+        tituloPrefixo: 'Residência Urbana Erechim 6,48 kWp',
       },
     ]
 
-    const resultados = []
+    // Helper para fazer GET HTTP simples com User-Agent de navegador
+    const httpGet = (url) => {
+      try {
+        return $http.send({
+          url: url,
+          method: 'GET',
+          timeout: 25,
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            Accept:
+              'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+          },
+        })
+      } catch (err) {
+        console.log('Falha na requisição HTTP para:', url, err)
+        return null
+      }
+    }
 
-    for (let i = 0; i < fotosParaImportar.length; i++) {
-      const item = fotosParaImportar[i]
+    // 1. Descobrir links de projetos a partir da listagem
+    const urlBaseListagem = 'https://www.delfos.eng.br/site/projetos/'
+    const projectLinksMap = {} // url -> true
+    const urlsToScan = [urlBaseListagem]
+
+    // Varre a listagem inicial e busca paginação (ex.: /page/2/, etc.)
+    const visitadas = {}
+    while (urlsToScan.length > 0) {
+      const currentListUrl = urlsToScan.shift()
+      if (visitadas[currentListUrl]) continue
+      visitadas[currentListUrl] = true
+
+      console.log('Raspando listagem de projetos:', currentListUrl)
+      const resList = httpGet(currentListUrl)
+      if (!resList || resList.statusCode !== 200) {
+        console.log(
+          'Status diferente de 200 na listagem:',
+          currentListUrl,
+          resList ? resList.statusCode : 'sem resposta',
+        )
+        continue
+      }
+
+      const html = resList.raw.toString()
+
+      // Encontrar links de projetos: href="https://www.delfos.eng.br/site/projetos/[^"]+"
+      const regexLink =
+        /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/([a-zA-Z0-9_-]+)\/?)["']/gi
+      let match
+      while ((match = regexLink.exec(html)) !== null) {
+        const fullLink = match[1]
+        const slug = match[2]
+
+        // Ignorar páginas de sistema, categorias ou a própria página principal
+        if (
+          !slug ||
+          slug === 'projetos' ||
+          slug.startsWith('page') ||
+          slug === 'category' ||
+          slug === 'tag'
+        ) {
+          continue
+        }
+
+        // Normalizar URL terminando com /
+        const normalizedUrl = fullLink.endsWith('/') ? fullLink : fullLink + '/'
+        projectLinksMap[normalizedUrl] = true
+      }
+
+      // Verificar se há links de paginação WordPress (ex: /site/projetos/page/2/)
+      const regexPagina =
+        /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/page\/([0-9]+)\/?)["']/gi
+      let matchPagina
+      while ((matchPagina = regexPagina.exec(html)) !== null) {
+        const paginaUrl = matchPagina[1].endsWith('/') ? matchPagina[1] : matchPagina[1] + '/'
+        if (!visitadas[paginaUrl] && !urlsToScan.includes(paginaUrl)) {
+          urlsToScan.push(paginaUrl)
+        }
+      }
+    }
+
+    const discoveredUrls = Object.keys(projectLinksMap)
+    console.log(`Total de páginas de projetos descobertas no site antigo: ${discoveredUrls.length}`)
+
+    // 2. Extrair fotos reais de cada página de projeto
+    // Estrutura: { url, titulo, descricao, caseSlug, nomeArquivo, categoria, destino_sugerido }
+    const fotosParaProcessar = []
+    const fotosJaAdicionadas = {}
+
+    for (let i = 0; i < discoveredUrls.length; i++) {
+      const projUrl = discoveredUrls[i]
+
+      // Identificar qual case casa com este link do projeto
+      let caseCorrespondente = null
+      for (let c = 0; c < DEFINICAO_CASES.length; c++) {
+        const def = DEFINICAO_CASES[c]
+        for (let p = 0; p < def.patterns.length; p++) {
+          if (def.patterns[p].test(projUrl)) {
+            caseCorrespondente = def
+            break
+          }
+        }
+        if (caseCorrespondente) break
+      }
+
+      // Se a URL não casou diretamente, ainda faremos o fetch da página para verificar o título h1 / h2 ou conteúdo
+      let resProj = null
+      try {
+        resProj = httpGet(projUrl)
+      } catch (fErr) {
+        console.log('Erro ao buscar página de projeto:', projUrl, fErr)
+        continue
+      }
+
+      if (!resProj || resProj.statusCode !== 200) {
+        continue
+      }
+
+      const projHtml = resProj.raw.toString()
+
+      // Se ainda não casou com nenhum case, verificar o título da página ou texto
+      if (!caseCorrespondente) {
+        for (let c = 0; c < DEFINICAO_CASES.length; c++) {
+          const def = DEFINICAO_CASES[c]
+          for (let p = 0; p < def.patterns.length; p++) {
+            if (def.patterns[p].test(projHtml)) {
+              caseCorrespondente = def
+              break
+            }
+          }
+          if (caseCorrespondente) break
+        }
+      }
+
+      // Se não casou com nenhum dos 9 cases, ignorar resiliente sem quebrar (requisito 4)
+      if (!caseCorrespondente) {
+        continue
+      }
+
+      // Extrair URLs de imagens da página do projeto
+      // Prioridade 1: links de imagem em tags <a> (como FooBox / lightbox: <a href="...wp-content/uploads/...")
+      // Prioridade 2: tags <img src="...wp-content/uploads/...">
+      const imageUrlsFound = []
+
+      // a) Links de lightbox para imagens em tamanho original (alta resolução)
+      const regexAImg = /<a[^>]+href=["']([^"']+\.(?:jpe?g|png|webp))["'][^>]*>/gi
+      let matchImg
+      while ((matchImg = regexAImg.exec(projHtml)) !== null) {
+        const imgUrl = matchImg[1]
+        if (
+          imgUrl.includes('/wp-content/uploads/') &&
+          !imgUrl.includes('/cache/') &&
+          !imgUrl.includes('logo') &&
+          !imgUrl.includes('contato')
+        ) {
+          if (!imageUrlsFound.includes(imgUrl)) {
+            imageUrlsFound.push(imgUrl)
+          }
+        }
+      }
+
+      // b) Se não achou em <a> ou se foram poucas, buscar nas próprias tags <img> (removendo tamanhos intermediários se possível)
+      const regexImgTag = /<img[^>]+src=["']([^"']+\.(?:jpe?g|png|webp))["'][^>]*>/gi
+      let matchTag
+      while ((matchTag = regexImgTag.exec(projHtml)) !== null) {
+        let imgUrl = matchTag[1]
+        // Ignorar ícones, mapas, logos
+        if (
+          imgUrl.includes('logo') ||
+          imgUrl.includes('camadaTransparente') ||
+          imgUrl.includes('contato.png') ||
+          imgUrl.includes('m.png') ||
+          imgUrl.includes('231221.png')
+        ) {
+          continue
+        }
+
+        // Se for imagem de upload
+        if (imgUrl.includes('/wp-content/uploads/')) {
+          // Se for versão de cache ou com sufixo de dimensão (ex: -300x225.jpg), tentar pegar a versão limpa
+          const limpaUrl = imgUrl.replace(/-[0-9]{3,4}x[0-9]{3,4}(\.[a-zA-Z]{3,4})$/, '$1')
+          if (!imageUrlsFound.includes(limpaUrl) && !imageUrlsFound.includes(imgUrl)) {
+            imageUrlsFound.push(limpaUrl)
+          }
+        }
+      }
+
+      console.log(
+        `Projeto ${caseCorrespondente.nomeAmigavel}: ${imageUrlsFound.length} fotos encontradas.`,
+      )
+
+      // Adicionar as fotos encontradas para este case
+      for (let imgIdx = 0; imgIdx < imageUrlsFound.length; imgIdx++) {
+        const rawImgUrl = imageUrlsFound[imgIdx]
+        if (fotosJaAdicionadas[rawImgUrl]) continue
+        fotosJaAdicionadas[rawImgUrl] = true
+
+        // Gerar nome de arquivo limpo e sem caracteres especiais
+        const urlParts = rawImgUrl.split('/')
+        const originalFileName = urlParts[urlParts.length - 1].split('?')[0]
+        const cleanBase = originalFileName
+          .toLowerCase()
+          .replace(/[^a-z0-9_.-]/g, '-')
+          .replace(/-+/g, '-')
+
+        const nomeArquivoFinal = `${caseCorrespondente.slug}-${cleanBase}`
+        const isPrincipal = imgIdx === 0
+
+        fotosParaProcessar.push({
+          url: rawImgUrl,
+          titulo: `${caseCorrespondente.tituloPrefixo} — Foto ${imgIdx + 1} (${originalFileName})`,
+          categoria: caseCorrespondente.categoria,
+          descricao: `Foto real da instalação do case ${caseCorrespondente.nomeAmigavel} (${originalFileName}).`,
+          destino_sugerido: caseCorrespondente.destino,
+          caseSlug: isPrincipal ? caseCorrespondente.slug : null, // primeira foto vai como capa principal do case
+          fallbackCaseSlug: caseCorrespondente.slug,
+          nomeArquivo: nomeArquivoFinal,
+          ordem: imgIdx,
+        })
+      }
+    }
+
+    console.log(
+      `Total de fotos reais prontas para importação/sincronização: ${fotosParaProcessar.length}`,
+    )
+
+    // 3. Processar download, gravação no banco e thumbs
+    const resultados = []
+    const casesAtualizados = {}
+
+    for (let i = 0; i < fotosParaProcessar.length; i++) {
+      const item = fotosParaProcessar[i]
 
       try {
-        // 1. Verificar se o registro na coleção 'media' já existe
+        // Verificar se já existe registro em 'media' com mesmo título ou destino
         let mediaRecord = null
         try {
           mediaRecord = $app.findFirstRecordByData('media', 'titulo', item.titulo)
         } catch (_) {}
 
-        // Baixar imagem do WordPress antigo
+        // Download da imagem real com timeout
         const res = $http.send({
           url: item.url,
           method: 'GET',
-          timeout: 20, // 20 segundos
+          timeout: 25,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; DelfosEngenhariaOptimizer/2.0)',
-            Accept: 'image/webp,image/jpeg,image/*,*/*',
+            'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            Accept: 'image/webp,image/apng,image/*,*/*',
           },
         })
 
-        if (res.statusCode !== 200) {
-          resultados.push({ item: item.titulo, status: 'erro_http', code: res.statusCode })
+        if (!res || res.statusCode !== 200) {
+          console.log(
+            `Falha HTTP ${res ? res.statusCode : 'sem resposta'} para imagem: ${item.url}`,
+          )
+          resultados.push({
+            item: item.titulo,
+            url: item.url,
+            status: 'erro_http',
+            code: res ? res.statusCode : 0,
+          })
           continue
         }
 
-        // Criar arquivo do PocketBase a partir dos bytes recebidos
+        // Criar objeto de arquivo PocketBase
         const fileObj = $filesystem.fileFromBytes(res.raw, item.nomeArquivo)
 
         // Salvar ou atualizar na coleção 'media' (idempotente)
@@ -199,7 +413,7 @@ const executarSincronizacaoFotos = (e) => {
           mediaRecord.set('arquivo', fileObj)
           $app.save(mediaRecord)
         } else {
-          // Atualiza o arquivo para garantir versões frescas e metadados
+          // Atualiza o arquivo e metadados se já existir
           mediaRecord.set('arquivo', fileObj)
           mediaRecord.set('categoria', item.categoria)
           mediaRecord.set('descricao', item.descricao)
@@ -207,21 +421,33 @@ const executarSincronizacaoFotos = (e) => {
           $app.save(mediaRecord)
         }
 
-        // Pré-gerar versões otimizadas no storage
+        // Pré-gerar thumbs otimizados (1600x0 e 900x0)
         gerarThumbsOtimizados(mediaRecord, 'arquivo')
 
-        // 2. Se tiver caseSlug associado, vincular/atualizar foto no case correspondente
-        if (item.caseSlug) {
-          try {
-            const caseRec = $app.findFirstRecordByData('cases', 'slug', item.caseSlug)
-            const caseFileObj = $filesystem.fileFromBytes(res.raw, item.nomeArquivo)
-            caseRec.set('foto', caseFileObj)
-            $app.save(caseRec)
+        // Vincular ao Case correspondente se for foto principal OU se o case ainda não tiver foto
+        const targetCaseSlug =
+          item.caseSlug || (!casesAtualizados[item.fallbackCaseSlug] ? item.fallbackCaseSlug : null)
 
-            // Pré-gerar versões otimizadas da foto do case
-            gerarThumbsOtimizados(caseRec, 'foto')
+        if (targetCaseSlug) {
+          try {
+            const caseRec = $app.findFirstRecordByData('cases', 'slug', targetCaseSlug)
+            const currentFoto = caseRec.getString('foto')
+
+            // Atualiza se for a foto principal (item.ordem === 0) OU se o case não possuir foto ainda
+            if (item.ordem === 0 || !currentFoto) {
+              const caseFileObj = $filesystem.fileFromBytes(res.raw, item.nomeArquivo)
+              caseRec.set('foto', caseFileObj)
+              $app.save(caseRec)
+
+              // Pré-gerar thumbs da foto do case
+              gerarThumbsOtimizados(caseRec, 'foto')
+              casesAtualizados[targetCaseSlug] = true
+              console.log(
+                `Foto vinculada com sucesso ao case ${targetCaseSlug}: ${item.nomeArquivo}`,
+              )
+            }
           } catch (caseErr) {
-            console.log('Erro ao associar/reprocessar foto do case:', item.caseSlug, caseErr)
+            console.log('Erro ao associar foto ao case:', targetCaseSlug, caseErr)
           }
         }
 
@@ -229,45 +455,40 @@ const executarSincronizacaoFotos = (e) => {
           item: item.titulo,
           status: 'sucesso',
           mediaId: mediaRecord.id,
+          caseVinculado: targetCaseSlug,
           otimizacoes: ['1600x0 (grande/capas)', '900x0 (leve/cards)'],
         })
-      } catch (err) {
-        resultados.push({ item: item.titulo, status: 'erro', error: err.message })
+      } catch (itemErr) {
+        console.log('Erro ao processar imagem:', item.titulo, itemErr)
+        resultados.push({ item: item.titulo, status: 'erro', error: itemErr.message })
       }
     }
 
-    // Reprocessar também qualquer outro case que já tenha foto gravada mas falte thumb
+    // Varredura final de thumbs em cases existentes para garantir todos otimizados
     try {
-      const allCases = $app.findRecordsByFilter('cases', "foto != ''", '-created', 100, 0)
-      for (let j = 0; j < allCases.length; j++) {
-        gerarThumbsOtimizados(allCases[j], 'foto')
+      const allCasesWithPhoto = $app.findRecordsByFilter('cases', "foto != ''", '-created', 100, 0)
+      for (let j = 0; j < allCasesWithPhoto.length; j++) {
+        gerarThumbsOtimizados(allCasesWithPhoto[j], 'foto')
       }
     } catch (cScanErr) {
       console.log('Varredura adicional de cases:', cScanErr)
     }
 
-    // Reprocessar também registros de media existentes
-    try {
-      const allMedia = $app.findRecordsByFilter('media', "arquivo != ''", '-created', 100, 0)
-      for (let k = 0; k < allMedia.length; k++) {
-        gerarThumbsOtimizados(allMedia[k], 'arquivo')
-      }
-    } catch (mScanErr) {
-      console.log('Varredura adicional de media:', mScanErr)
-    }
-
     return e.json(200, {
       sucesso: true,
-      total: fotosParaImportar.length,
+      paginasProjetosDescobertas: discoveredUrls.length,
+      totalFotosProcessadas: fotosParaProcessar.length,
+      casesAtualizados: Object.keys(casesAtualizados),
       otimizacao: {
         versaoGrande: '1600px de largura máxima (capas e modais expandidos)',
         versaoLeve: '900px de largura máxima (cards de cases e galerias)',
-        formato: 'JPEG/WebP otimizado com preservação de proporção',
+        formato: 'JPEG/WebP otimizado nativamente pelo PocketBase',
       },
       resultados: resultados,
     })
   } catch (err) {
-    return e.json(500, { error: err.message || 'Erro durante importação e otimização de fotos' })
+    console.log('Erro fatal no hook de fotos:', err)
+    return e.json(500, { error: err.message || 'Erro durante raspagem e sincronização de fotos' })
   } finally {
     if (fsys) {
       try {
