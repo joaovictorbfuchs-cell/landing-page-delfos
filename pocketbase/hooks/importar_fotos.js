@@ -500,3 +500,338 @@ const executarSincronizacaoFotos = (e) => {
 
 routerAdd('GET', '/backend/v1/importar-fotos-delfos', executarSincronizacaoFotos)
 routerAdd('POST', '/backend/v1/importar-fotos-delfos', executarSincronizacaoFotos)
+
+onRecordAfterCreateSuccess((e) => {
+  try {
+    if (e.record.getString('origem') === 'trigger-sync-fotos') {
+      const mediaCollection = $app.findCollectionByNameOrId('media')
+      const casesCollection = $app.findCollectionByNameOrId('cases')
+      let fsys = null
+      try {
+        fsys = $app.newFilesystem()
+      } catch (_) {}
+
+      const gerarThumbsOtimizados = (record, fileFieldName) => {
+        if (!fsys || !record) return
+        const fileName = record.getString(fileFieldName)
+        if (!fileName) return
+        try {
+          const basePath = record.baseFilesPath()
+          const originalKey = basePath + '/' + fileName
+          try {
+            fsys.createThumb(originalKey, basePath + '/thumbs_' + fileName + '/1600x0', '1600x0')
+          } catch (_) {}
+          try {
+            fsys.createThumb(originalKey, basePath + '/thumbs_' + fileName + '/900x0', '900x0')
+          } catch (_) {}
+        } catch (_) {}
+      }
+
+      const DEFINICAO_CASES = [
+        {
+          slug: 'cassul-erechim-rs-155-0-kwp',
+          nomeAmigavel: 'Cassul Distribuidora 155 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Cassul / Solução Solar / Comércio',
+          patterns: [/cassul/i],
+          tituloPrefixo: 'Obra Cassul Distribuidora 155 kWp',
+        },
+        {
+          slug: 'clanel-ind-confeccoes-erechim-rs-123-5-kwp',
+          nomeAmigavel: 'Clanel Ind. e Comércio de Confecções 123,5 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Clanel / Indústria / Solução Solar',
+          patterns: [/clanel/i],
+          tituloPrefixo: 'Obra Clanel Confecções 123,5 kWp',
+        },
+        {
+          slug: 'panificadora-garcia-passo-fundo-rs-112-5-kwp',
+          nomeAmigavel: 'Panificadora Garcia 112,5 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Panificadora Garcia / Comércio / Solução Solar',
+          patterns: [
+            /panificadora[-_\s]+garcia.*112/i,
+            /garcia.*112/i,
+            /panificadora[-_\s]+garcia/i,
+          ],
+          tituloPrefixo: 'Panificadora Garcia 112,5 kWp',
+        },
+        {
+          slug: 'silo-erebango-rs-76-16-kwp',
+          nomeAmigavel: 'Silo de Grãos Erebango 76,16 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Silo Erebango / Agronegócio / Solução Solar',
+          patterns: [/silo.*erebango/i, /silo.*76/i],
+          tituloPrefixo: 'Silo de Grãos Erebango 76,16 kWp',
+        },
+        {
+          slug: 'posto-caminho-do-mercosul-severiano-de-almeida-rs-54-9-kwp',
+          nomeAmigavel: 'Posto Caminho do Mercosul 54,9 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Posto Mercosul / Comércio e Serviços',
+          patterns: [/mercosul/i, /cerro[-_\s]+do[-_\s]+meio[-_\s]+dia/i],
+          tituloPrefixo: 'Posto Caminho do Mercosul 54,9 kWp',
+        },
+        {
+          slug: 'usina-solar-solo-erechim-rs-40-8-kwp',
+          nomeAmigavel: 'Usina Fotovoltaica de Solo Erechim 40,8 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Usina Solo / Investidores / Solução Solar',
+          patterns: [/usina[-_\s]+fotovoltaica.*40/i, /usina.*408/i, /usina.*solo.*40/i],
+          tituloPrefixo: 'Usina Solar de Solo Erechim 40,8 kWp',
+        },
+        {
+          slug: 'condominio-residencial-notabile-erechim-rs-32-kwp',
+          nomeAmigavel: 'Condomínio Residencial Notabile 32 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Notabile / Condomínios / Solução Solar',
+          patterns: [/notabile/i],
+          tituloPrefixo: 'Condomínio Residencial Notabile 32 kWp',
+        },
+        {
+          slug: 'pecuaria-de-leite-barao-de-cotegipe-rs-18-5-kwp',
+          nomeAmigavel: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Pecuária Leite / Agronegócio',
+          patterns: [/pecuaria.*cotegipe/i, /leite.*cotegipe/i, /pecuaria.*185/i, /pecuaria.*18/i],
+          tituloPrefixo: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
+        },
+        {
+          slug: 'residencia-urbana-erechim-rs-6-48-kwp',
+          nomeAmigavel: 'Residência Urbana Erechim 6,48 kWp',
+          categoria: 'Solar EPC',
+          destino: 'Case Residência / Residências / Solução Solar',
+          patterns: [/residencia.*648/i, /residencia.*6,48/i, /residencia.*6-48/i],
+          tituloPrefixo: 'Residência Urbana Erechim 6,48 kWp',
+        },
+      ]
+
+      const httpGet = (url) => {
+        try {
+          return $http.send({
+            url: url,
+            method: 'GET',
+            timeout: 25,
+            headers: {
+              'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            },
+          })
+        } catch (_) {
+          return null
+        }
+      }
+
+      // Varredura da listagem de projetos
+      const urlBase = 'https://www.delfos.eng.br/site/projetos/'
+      const projLinksMap = {}
+      const urlsQueue = [urlBase]
+      const seen = {}
+
+      while (urlsQueue.length > 0) {
+        const cur = urlsQueue.shift()
+        if (seen[cur]) continue
+        seen[cur] = true
+        const resp = httpGet(cur)
+        if (!resp || resp.statusCode !== 200) continue
+        const html = resp.raw.toString()
+        const rL =
+          /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/([a-zA-Z0-9_-]+)\/?)["']/gi
+        let m
+        while ((m = rL.exec(html)) !== null) {
+          const u = m[1].endsWith('/') ? m[1] : m[1] + '/'
+          const slug = m[2]
+          if (!slug || slug === 'projetos' || slug.startsWith('page') || slug === 'category')
+            continue
+          projLinksMap[u] = true
+        }
+        const rP =
+          /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/page\/([0-9]+)\/?)["']/gi
+        let mP
+        while ((mP = rP.exec(html)) !== null) {
+          const pU = mP[1].endsWith('/') ? mP[1] : mP[1] + '/'
+          if (!seen[pU] && !urlsQueue.includes(pU)) urlsQueue.push(pU)
+        }
+      }
+
+      const allUrls = Object.keys(projLinksMap)
+      console.log('[TRIGGER] Paginas de projetos encontradas:', allUrls.length)
+
+      const fotos = []
+      const added = {}
+
+      for (let i = 0; i < allUrls.length; i++) {
+        const pUrl = allUrls[i]
+        let matchedCase = null
+        for (let c = 0; c < DEFINICAO_CASES.length; c++) {
+          const d = DEFINICAO_CASES[c]
+          for (let p = 0; p < d.patterns.length; p++) {
+            if (d.patterns[p].test(pUrl)) {
+              matchedCase = d
+              break
+            }
+          }
+          if (matchedCase) break
+        }
+
+        const rProj = httpGet(pUrl)
+        if (!rProj || rProj.statusCode !== 200) continue
+        const pHtml = rProj.raw.toString()
+
+        if (!matchedCase) {
+          for (let c = 0; c < DEFINICAO_CASES.length; c++) {
+            const d = DEFINICAO_CASES[c]
+            for (let p = 0; p < d.patterns.length; p++) {
+              if (d.patterns[p].test(pHtml)) {
+                matchedCase = d
+                break
+              }
+            }
+            if (matchedCase) break
+          }
+        }
+
+        if (!matchedCase) continue
+
+        const imgs = []
+        const rA = /<a[^>]+href=["']([^"']+\.(?:jpe?g|png|webp))["'][^>]*>/gi
+        let mA
+        while ((mA = rA.exec(pHtml)) !== null) {
+          const iu = mA[1]
+          if (
+            iu.includes('/wp-content/uploads/') &&
+            !iu.includes('/cache/') &&
+            !iu.includes('logo') &&
+            !imgs.includes(iu)
+          ) {
+            imgs.push(iu)
+          }
+        }
+
+        const rI = /<img[^>]+src=["']([^"']+\.(?:jpe?g|png|webp))["'][^>]*>/gi
+        let mI
+        while ((mI = rI.exec(pHtml)) !== null) {
+          let iu = mI[1]
+          if (
+            iu.includes('/wp-content/uploads/') &&
+            !iu.includes('logo') &&
+            !iu.includes('contato')
+          ) {
+            const clean = iu.replace(/-[0-9]{3,4}x[0-9]{3,4}(\.[a-zA-Z]{3,4})$/, '$1')
+            if (!imgs.includes(clean) && !imgs.includes(iu)) imgs.push(clean)
+          }
+        }
+
+        console.log(
+          `[TRIGGER] Projeto ${matchedCase.nomeAmigavel}: ${imgs.length} fotos encontradas`,
+        )
+
+        for (let idx = 0; idx < imgs.length; idx++) {
+          const imgUrl = imgs[idx]
+          if (added[imgUrl]) continue
+          added[imgUrl] = true
+          const parts = imgUrl.split('/')
+          const origName = parts[parts.length - 1].split('?')[0]
+          const cleanName = origName
+            .toLowerCase()
+            .replace(/[^a-z0-9_.-]/g, '-')
+            .replace(/-+/g, '-')
+          const finalName = `${matchedCase.slug}-${cleanName}`
+
+          fotos.push({
+            url: imgUrl,
+            titulo: `${matchedCase.tituloPrefixo} — Foto ${idx + 1} (${origName})`,
+            categoria: matchedCase.categoria,
+            descricao: `Foto real da instalação do case ${matchedCase.nomeAmigavel} (${origName}).`,
+            destino_sugerido: matchedCase.destino,
+            caseSlug: idx === 0 ? matchedCase.slug : null,
+            fallbackCaseSlug: matchedCase.slug,
+            nomeArquivo: finalName,
+            ordem: idx,
+          })
+        }
+      }
+
+      console.log(`[TRIGGER] Total fotos para salvar: ${fotos.length}`)
+      const casesDone = {}
+
+      for (let i = 0; i < fotos.length; i++) {
+        const it = fotos[i]
+        try {
+          let mRec = null
+          try {
+            mRec = $app.findFirstRecordByData('media', 'titulo', it.titulo)
+          } catch (_) {}
+
+          const dRes = $http.send({
+            url: it.url,
+            method: 'GET',
+            timeout: 25,
+            headers: {
+              'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              Accept: 'image/webp,image/apng,image/*,*/*',
+            },
+          })
+
+          if (!dRes || dRes.statusCode !== 200) {
+            console.log(`[TRIGGER] Erro download ${it.url}: status ${dRes ? dRes.statusCode : 0}`)
+            continue
+          }
+
+          const fObj = $filesystem.fileFromBytes(dRes.raw, it.nomeArquivo)
+          if (!mRec) {
+            mRec = new Record(mediaCollection)
+            mRec.set('titulo', it.titulo)
+            mRec.set('categoria', it.categoria)
+            mRec.set('descricao', it.descricao)
+            mRec.set('destino_sugerido', it.destino_sugerido)
+            mRec.set('arquivo', fObj)
+            $app.save(mRec)
+          } else {
+            mRec.set('arquivo', fObj)
+            mRec.set('categoria', it.categoria)
+            mRec.set('descricao', it.descricao)
+            mRec.set('destino_sugerido', it.destino_sugerido)
+            $app.save(mRec)
+          }
+
+          gerarThumbsOtimizados(mRec, 'arquivo')
+
+          const targetSlug =
+            it.caseSlug || (!casesDone[it.fallbackCaseSlug] ? it.fallbackCaseSlug : null)
+          if (targetSlug) {
+            try {
+              const cRec = $app.findFirstRecordByData('cases', 'slug', targetSlug)
+              const curF = cRec.getString('foto')
+              if (it.ordem === 0 || !curF) {
+                const cFile = $filesystem.fileFromBytes(dRes.raw, it.nomeArquivo)
+                cRec.set('foto', cFile)
+                $app.save(cRec)
+                gerarThumbsOtimizados(cRec, 'foto')
+                casesDone[targetSlug] = true
+                console.log(`[TRIGGER] Case atualizado: ${targetSlug}`)
+              }
+            } catch (cErr) {
+              console.log(`[TRIGGER] Erro ao associar case ${targetSlug}:`, cErr)
+            }
+          }
+        } catch (itemErr) {
+          console.log(`[TRIGGER] Erro processando item ${it.titulo}:`, itemErr)
+        }
+      }
+
+      if (fsys) {
+        try {
+          fsys.close()
+        } catch (_) {}
+      }
+      console.log('[TRIGGER] Concluido com sucesso! Cases atualizados:', Object.keys(casesDone))
+    }
+  } catch (outerErr) {
+    console.log('[TRIGGER] Erro no hook de lead:', outerErr)
+  } finally {
+    e.next()
+  }
+}, 'leads')
