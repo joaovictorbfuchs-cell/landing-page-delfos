@@ -61,7 +61,7 @@ export default function Index() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Delfos Engenharia Solar — Da geração à operação da sua energia"
-        description="Integradora de engenharia gaúcha com 12 anos de atuação e nota 4.9 no Google. Simule sua economia e solicite avaliação técnica gratuita."
+        description="Integradora de engenharia gaúcha com 12 anos de atuação e nota 4.9 no Google. Simule sua economia e solicite avaliação técnica."
         canonicalPath="/"
         ogImage="/og-image.png"
       />

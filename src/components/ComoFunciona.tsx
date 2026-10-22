@@ -6,7 +6,7 @@ export default function ComoFunciona() {
       step: '01',
       title: 'Contato',
       description:
-        'Você envia seus dados e o consumo médio da sua fatura pelo nosso formulário gratuito em menos de 1 minuto.',
+        'Você envia seus dados e o consumo médio da sua fatura pelo nosso formulário em menos de 1 minuto.',
       icon: FileText,
       duration: 'Imediato',
     },

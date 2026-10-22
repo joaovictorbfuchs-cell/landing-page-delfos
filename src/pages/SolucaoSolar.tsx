@@ -297,7 +297,7 @@ export default function SolucaoSolar() {
                       onClick={scrollToContato}
                       className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer"
                     >
-                      Solicitar orçamento gratuito (conta de R$ {contaSimulador})
+                      Solicitar orçamento (conta de R$ {contaSimulador})
                     </Button>
                   </div>
                 </div>
@@ -516,7 +516,7 @@ export default function SolucaoSolar() {
                       onClick={scrollToContato}
                       className="hover:underline flex items-center gap-1 cursor-pointer"
                     >
-                      <span>Solicitar orçamento gratuito</span>
+                      <span>Solicitar orçamento</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -617,9 +617,9 @@ export default function SolucaoSolar() {
           initialNecessidade="Energia Solar Fotovoltaica"
           initialOrigem="solucao-solar"
           initialValorConta={contaSimulador}
-          tituloSecao="Solicite seu orçamento gratuito de energia solar"
-          subtituloSecao="Receba um dimensionamento técnico preliminar e estudo financeiro gratuito elaborado por nossa equipe de engenharia em Erechim/RS."
-          textoBotaoFinal="Solicitar orçamento gratuito"
+          tituloSecao="Solicite seu orçamento de energia solar"
+          subtituloSecao="Receba um dimensionamento técnico preliminar e estudo financeiro elaborado por nossa equipe de engenharia em Erechim/RS."
+          textoBotaoFinal="Solicitar orçamento"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

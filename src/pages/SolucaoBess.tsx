@@ -172,7 +172,7 @@ export default function SolucaoBess() {
                     onClick={scrollToContato}
                     className="bg-emerald-500 hover:bg-emerald-400 text-midnight-950 font-black px-8 py-6 text-base rounded-xl shadow-xl shadow-emerald-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Solicitar orçamento gratuito</span>
+                    <span>Solicitar orçamento</span>
                     <ArrowRight className="w-5 h-5" />
                   </Button>
 
@@ -552,7 +552,7 @@ export default function SolucaoBess() {
                         onClick={scrollToContato}
                         className="hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>Solicitar orçamento gratuito</span>
+                        <span>Solicitar orçamento</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -629,9 +629,9 @@ export default function SolucaoBess() {
           initialNecessidade="BESS (Armazenamento)"
           initialOrigem="solucao-bess"
           destaqueDark={true}
-          tituloSecao="Solicite seu orçamento gratuito de baterias de energia"
+          tituloSecao="Solicite seu orçamento de baterias de energia"
           subtituloSecao="Nossos engenheiros analisam sua fatura de energia, histórico de consumo e necessidades de operação para dimensionar a capacidade ideal."
-          textoBotaoFinal="Solicitar orçamento gratuito"
+          textoBotaoFinal="Solicitar orçamento"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

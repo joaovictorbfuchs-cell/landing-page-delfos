@@ -275,7 +275,7 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
               Precisa de um estudo técnico com parâmetros semelhantes?
             </span>
             <span className="text-[11px] text-slate-500">
-              Dimensionamento preliminar gratuito por engenheiro especialista.
+              Dimensionamento preliminar por engenheiro especialista.
             </span>
           </div>
 
