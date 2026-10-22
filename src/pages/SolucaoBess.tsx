@@ -38,62 +38,62 @@ export default function SolucaoBess() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Sub-ofertas conforme item 5.2 da especificação
+  // Sub-ofertas especializadas em baterias de energia
   const subOfertas = [
     {
-      titulo: 'Bloqueio do Horário de Ponta e Integração Solar',
-      desc: 'Carregamento nos horários de tarifa barata na madrugada e uso à noite quando fica caro. E se a empresa já tem energia solar, carrega as baterias de graça durante o dia para despachar no horário de ponta.',
+      titulo: 'Economia no horário mais caro e integração com solar',
+      desc: 'Carregamento nos horários em que a energia é barata (ou direto dos painéis solares de graça durante o dia) e uso automático no horário mais caro, entre 18h e 21h.',
       badge: 'Economia no Horário Caro',
       icone: Cpu,
     },
     {
-      titulo: 'Backup e Energia de Reserva Crítica',
-      desc: 'Transição ultrarrápida (menos de 20 milissegundos) para proteger ordenhadeiras, aviários mecanizados, câmaras frias, servidores e indústrias contra quedas e oscilações na rede rural ou urbana.',
+      titulo: 'Energia de reserva e proteção contra quedas',
+      desc: 'Acionamento instantâneo em milissegundos para proteger ordenhadeiras, aviários climatizados, câmaras frias, servidores e máquinas industriais contra quedas de luz.',
       badge: 'Continuidade Operacional',
       icone: Tractor,
     },
     {
-      titulo: 'Redução da Cobrança de Demanda na Fatura (Peak Shaving)',
-      desc: 'Modulação automática que descarrega as baterias exatamente nos momentos de partida de motores ou picos fabris, evitando que a empresa ultrapasse a demanda contratada em kW e pague penalidades tarifárias (peak shaving).',
+      titulo: 'Corte dos picos de consumo que encarecem a fatura',
+      desc: 'Acionamento automático das baterias na partida de máquinas pesadas ou picos de produção, evitando que a empresa ultrapasse o limite contratado e pague multas na fatura.',
       badge: 'Eficiência Tarifária',
       icone: TrendingDown,
     },
     {
-      titulo: 'Baterias e Armazenamento para Empresas e Indústrias (BESS)',
-      desc: 'Sistemas em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais. Armazenamento de 30 kWh a 2+ MWh com baterias de lítio de última geração de alta densidade e segurança contra incêndio.',
-      badge: 'Alta Potência Industrial',
+      titulo: 'Baterias de grande porte para empresas e indústrias',
+      desc: 'Sistemas completos em gabinete climatizado para indústrias, cooperativas, supermercados e hospitais, com baterias de lítio de última geração e máxima segurança.',
+      badge: 'Grande Porte Industrial',
       icone: Factory,
     },
   ]
 
-  // Casos de Continuidade Operacional
-  const casesContinuidade = [
+  // Exemplos ilustrativos de aplicação prática
+  const exemplosAplicacao = [
     {
-      segmento: 'Indústria Metalmecânica & Alimentos',
+      segmento: 'Indústria Metalmecânica e Alimentos',
       desafio:
-        'Quedas de energia de 15 minutos desconfiguravam centros de usinagem e fornos, causando até R$ 80.000 em matéria-prima perdida.',
+        'Quedas pontuais de energia desconfiguravam máquinas e linhas de produção, causando perda de matéria-prima e paradas de turno não programadas.',
       solucao:
-        'Gabinete de baterias (BESS) 250 kWh com sistema inteligente de gestão dedicado integrado à usina solar fotovoltaica.',
+        'Gabinete de baterias de energia com sistema de gestão inteligente integrado à geração solar.',
       resultado:
-        'Zero tempo de parada produtiva durante o ano todo e R$ 14.500/mês economizados em corte de picos de demanda.',
+        'Eliminação de paradas produtivas por falta de luz e corte dos picos de consumo que aumentavam a fatura mensal.',
     },
     {
-      segmento: 'Avicultura & Suinocultura Rural (RS)',
+      segmento: 'Avicultura e Suinocultura Rural',
       desafio:
-        'Rede rural sujeita a temporais, oscilações constantes de tensão e risco de morte de lotes por asfixia em galpões climatizados.',
+        'Rede rural sujeita a temporais e oscilações constantes, colocando em risco a ventilação e a climatização de galpões com lotes de animais.',
       solucao:
-        'Sistema de armazenamento em baterias (BESS) modular 80 kWh com reversão automática silenciosa sem oscilação.',
+        'Sistema de baterias de energia modular com acionamento automático instantâneo e silencioso.',
       resultado:
-        '100% de confiabilidade operacional sem a necessidade de combustível e manutenção pesada de geradores a diesel.',
+        'Operação contínua e protegida sem depender exclusivamente de geradores a diesel e do custo constante de combustível.',
     },
     {
-      segmento: 'Hospital e Centro Diagnóstico',
+      segmento: 'Clínicas e Centros Diagnósticos',
       desafio:
-        'Equipamentos de ressonância e tomografia não toleram microinterrupções nem ruídos harmônicos de rede.',
+        'Equipamentos sensíveis de imagem e diagnóstico não podem sofrer microquedas nem ruídos elétricos durante os procedimentos.',
       solucao:
-        'Sistema de baterias (BESS) para empresas e indústrias de onda senoidal pura com filtragem ativa de harmônicos e no-break dinâmico.',
+        'Baterias de energia de alta estabilidade atuando como reserva contínua de eletricidade limpa.',
       resultado:
-        'Continuidade ininterrupta de exames críticos e redução drástica da fatura no horário das 18h às 21h com bloqueio do horário de ponta.',
+        'Continuidade total nos atendimentos e redução no consumo durante a tarifa mais cara do início da noite.',
     },
   ]
 
@@ -101,7 +101,7 @@ export default function SolucaoBess() {
     <div className="min-h-screen flex flex-col bg-[#050A10] text-slate-100 antialiased selection:bg-emerald-500 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Baterias de energia | Armazenamento e Backup | Delfos Engenharia"
-        description="Baterias de energia e sistemas de armazenamento: economia no horário de ponta, backup ininterrupto e redução de demanda (peak shaving) no Sul do Brasil. Delfos Engenharia."
+        description="Baterias de energia para empresas e indústrias: economia no horário mais caro, energia de reserva ininterrupta e corte dos picos de consumo no Sul do Brasil. Delfos Engenharia."
         canonicalPath="/solucoes/bess"
         ogImage="/og-image.png"
       />
@@ -142,27 +142,27 @@ export default function SolucaoBess() {
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
                   Baterias de energia:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                    estratégia própria de energia
+                    segurança e economia
                   </span>{' '}
-                  para economizar no horário de ponta e zerar riscos de blecaute.
+                  para fugir da tarifa cara e zerar riscos de falta de luz.
                 </h1>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  O sistema de armazenamento de energia em baterias (BESS — Battery Energy Storage
-                  System) <strong>não é um simples acessório do painel solar</strong>: é o cérebro
-                  que garante economia no horário de ponta, autonomia ininterrupta para a sua
-                  indústria e redução da cobrança de demanda contratada na fatura (peak shaving).
+                  As baterias de energia{' '}
+                  <strong>não são um simples acessório do painel solar</strong>: são a central
+                  inteligente que garante economia no horário mais caro, autonomia ininterrupta para
+                  a sua operação e corte dos picos de consumo que encarecem a fatura.
                 </p>
 
                 {/* Bloco do problema resolvido */}
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">
-                    Problema que as baterias (BESS) resolvem:
+                    Problema que as baterias de energia resolvem:
                   </span>
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Tarifas abusivas no horário de ponta (18h às 21h), vulnerabilidade a blecautes e
-                    oscilações na rede da concessionária (gerando paradas de produção que custam
-                    caro) e multas por ultrapassagem de demanda contratada.
+                    Tarifa mais cara entre 18h e 21h, vulnerabilidade a quedas e oscilações na rede
+                    da distribuidora (gerando paradas de produção e prejuízo) e multas por picos de
+                    consumo.
                   </p>
                 </div>
 
@@ -172,99 +172,97 @@ export default function SolucaoBess() {
                     onClick={scrollToContato}
                     className="bg-emerald-500 hover:bg-emerald-400 text-midnight-950 font-black px-8 py-6 text-base rounded-xl shadow-xl shadow-emerald-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Pedir estudo de viabilidade</span>
+                    <span>Solicitar orçamento gratuito</span>
                     <ArrowRight className="w-5 h-5" />
                   </Button>
 
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20um%20estudo%20de%20viabilidade%20BESS%20com%20a%20engenharia%20da%20Delfos%20(Origem:%20solucao-bess)"
+                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20de%20baterias%20de%20energia%20com%20a%20engenharia%20da%20Delfos%20(Origem:%20solucao-bess)"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs sm:text-sm font-bold text-white transition-all text-center"
                   >
-                    <span>Falar sobre BESS no WhatsApp</span>
+                    <span>Falar com especialista no WhatsApp</span>
                   </a>
                 </div>
 
                 {/* Badges Técnicos */}
-                <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-300 font-mono">
+                <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-300">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Baterias de lítio de última geração (LiFePO4)</span>
+                    <span>Baterias de lítio de última geração</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-teal-400" />
-                    <span>Comutação &lt; 20ms (Zero Blink)</span>
+                    <span>A luz não pisca nem desliga equipamentos</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                    <span>Gestão Inteligente em Nuvem</span>
+                    <span>Monitoramento inteligente em tempo real</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Hero: Foto real reservada + Painel de Métricas estilo Tesla */}
+              {/* Right Hero: Destaque de Tecnologia e Especificações */}
               <div className="lg:col-span-5 space-y-5">
-                {/* Espaço reservado de foto real de BESS */}
-                <div className="rounded-3xl border-2 border-dashed border-emerald-500/30 bg-emerald-950/20 p-6 backdrop-blur-md relative overflow-hidden group">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      Foto real de gabinete BESS — aguardando
+                {/* Card Institucional de Baterias de Energia */}
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                      Alta Tecnologia
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">Padrão Industrial</span>
+                    <span className="text-xs text-slate-400">Padrão Empresarial e Rural</span>
                   </div>
 
-                  <div className="aspect-video rounded-2xl bg-[#091322] border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-105 transition-transform">
-                      <BatteryCharging className="w-8 h-8" />
+                  <div className="flex items-start gap-4 pt-1">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                      <BatteryCharging className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">
-                      Gabinete BESS Industrial Climatizado
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                      Bancos de lítio modulares de 30 kWh a 1 MWh com sistema automático de
-                      supressão de incêndio e inversor bidirecional híbrido.
-                    </p>
+                    <div>
+                      <h3 className="text-base font-bold text-white leading-snug">
+                        Sistemas seguros e com acionamento instantâneo
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                        Módulos de baterias de lítio com gerenciamento térmico inteligente, proteção
+                        automática contra incêndio e resposta em milissegundos.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Tesla-style Specs Card */}
+                {/* Especificações em linguagem leiga */}
                 <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl">
                   <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                    <span className="text-xs font-mono uppercase text-emerald-400 font-bold">
-                      Especificações de Engenharia
+                    <span className="text-xs uppercase text-emerald-400 font-bold">
+                      Especificações do Sistema
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">Delfos Energy Lab</span>
+                    <span className="text-xs text-slate-400">Engenharia Delfos</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Química de Célula
-                      </span>
-                      <strong className="text-sm font-bold text-white">LiFePO4 Premium</strong>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Vida Útil de Ciclos
-                      </span>
-                      <strong className="text-sm font-bold text-emerald-400">
-                        6.000+ Ciclos (90% DoD)
-                      </strong>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Tempo de Transferência
-                      </span>
+                      <span className="text-xs text-slate-400 block">Tecnologia das Baterias</span>
                       <strong className="text-sm font-bold text-white">
-                        &lt; 20 ms (Ininterrupto)
+                        Lítio de última geração
                       </strong>
                     </div>
                     <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Capacidade Modular
-                      </span>
-                      <strong className="text-sm font-bold text-cyan-300">30 kWh até 2+ MWh</strong>
+                      <span className="text-xs text-slate-400 block">Vida Útil Longa</span>
+                      <strong className="text-sm font-bold text-emerald-400">
+                        Mais de 6.000 recargas com uso seguro
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">Tempo de Acionamento</span>
+                      <strong className="text-sm font-bold text-white">
+                        Instantâneo (a luz não pisca)
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">Capacidade do Sistema</span>
+                      <strong className="text-sm font-bold text-cyan-300">
+                        Sob medida para o seu consumo
+                      </strong>
                     </div>
                   </div>
                 </div>
@@ -281,11 +279,11 @@ export default function SolucaoBess() {
                 Conceito Técnico Didático
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Como o BESS gera economia matemática na fatura de alta tensão
+                Como as baterias de energia geram economia na sua fatura
               </h2>
               <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                Entenda visualmente as duas operações fundamentais que transformam baterias em um
-                centro de lucro e estabilidade operacional para o seu negócio.
+                Entenda visualmente as funções fundamentais que transformam baterias em economia
+                financeira direta e estabilidade para o seu negócio.
               </p>
             </div>
 
@@ -333,55 +331,55 @@ export default function SolucaoBess() {
               {activeTabDidatica === 'shaving' && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-fade-in">
                   <div className="lg:col-span-7 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">
-                      Redução de Demanda Contratada (kW)
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">
+                      Corte dos Picos de Consumo
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      Redução da cobrança de demanda na fatura (peak shaving)
+                      Corte dos picos de consumo que encarecem a fatura
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed">
                       Em indústrias e grandes comércios, a ligação de máquinas pesadas gera picos de
-                      demanda que duram poucos minutos, mas obrigam a empresa a contratar uma
-                      demanda elevada com a concessionária ou pagar pesadas multas tarifárias por
-                      ultrapassagem.
+                      consumo que duram poucos minutos, mas obrigam a empresa a contratar limites
+                      altos com a distribuidora ou pagar pesadas multas tarifárias.
                     </p>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      O sistema de baterias monitora a curva de carga em microssegundos. Ao detectar
-                      que o consumo está se aproximando do limite contratado,{' '}
+                      O sistema de baterias monitora o consumo a cada instante. Ao detectar que a
+                      operação está se aproximando do limite contratado,{' '}
                       <strong className="text-emerald-400">
-                        a bateria injeta energia instantaneamente na fábrica
+                        a bateria injeta energia instantaneamente na empresa
                       </strong>
-                      , aplainando a curva e eliminando a cobrança de multas de demanda na fatura
-                      (peak shaving).
+                      , aplainando a curva e eliminando a cobrança de multas na fatura.
                     </p>
 
-                    <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-900/60 text-xs text-emerald-300 font-mono">
-                      ✓ Resultado: Redução direta na demanda faturada mês a mês, permitindo enxugar
-                      o contrato de alta tensão sem risco de multa (peak shaving).
+                    <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-900/60 text-xs text-emerald-300">
+                      ✓ Resultado: Redução direta na cobrança mensal, permitindo ajustar o contrato
+                      com a distribuidora sem risco de pagar multas.
                     </div>
                   </div>
 
                   <div className="lg:col-span-5 bg-[#091322] border border-white/10 rounded-2xl p-6 text-center space-y-4">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase block">
-                      Curva de Carga Fabril (Exemplo)
+                    <span className="text-xs text-slate-400 uppercase block">
+                      Curva de Consumo Fabril (Exemplo)
                     </span>
                     <div className="h-44 flex items-end justify-center gap-2 pt-4 px-2 border-b border-slate-700">
                       <div className="w-8 bg-slate-700 rounded-t h-[40%]" title="Consumo base" />
                       <div className="w-8 bg-slate-700 rounded-t h-[55%]" title="Consumo base" />
                       <div className="w-8 bg-slate-700 rounded-t h-[65%]" title="Consumo base" />
-                      {/* Pico cortado pelo BESS */}
+                      {/* Pico cortado pelas baterias */}
                       <div className="w-12 relative flex flex-col justify-end items-center h-[95%]">
                         <div className="w-full bg-emerald-400/90 rounded-t h-[40%] flex items-center justify-center text-[10px] font-bold text-midnight-950">
-                          BESS
+                          Baterias
                         </div>
                         <div className="w-full bg-slate-600 h-[60%]" />
                       </div>
                       <div className="w-8 bg-slate-700 rounded-t h-[70%]" title="Consumo base" />
                       <div className="w-8 bg-slate-700 rounded-t h-[50%]" title="Consumo base" />
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <div className="flex items-center justify-between text-xs text-slate-400">
                       <span>08:00 (Início)</span>
-                      <span className="text-emerald-400 font-bold">Pico Fabril (Corte BESS)</span>
+                      <span className="text-emerald-400 font-bold">
+                        Pico de consumo (Corte pelas baterias)
+                      </span>
                       <span>18:00 (Fim)</span>
                     </div>
                   </div>
@@ -391,42 +389,41 @@ export default function SolucaoBess() {
               {activeTabDidatica === 'arbitragem' && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-fade-in">
                   <div className="lg:col-span-7 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">
-                      Bloqueio do Horário de Ponta
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold">
+                      Tarifa mais barata
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      Bloqueio do horário de ponta: carrega de madrugada e usa à noite
+                      Economia no horário mais caro: carrega quando a energia é barata e usa à noite
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      Na tarifa horossazonal (Verde ou Azul), o kilowatt-hora consumido durante o{' '}
-                      <strong>Horário de Ponta (18h às 21h)</strong> chega a custar de 4 a 5 vezes
-                      mais caro do que fora da ponta.
+                      Para empresas com tarifas diferenciadas, o consumo durante a tarifa mais cara
+                      entre 18h e 21h chega a custar de 4 a 5 vezes mais do que no restante do dia.
                     </p>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      Com o sistema de baterias (BESS), a empresa carrega de madrugada, quando a
-                      energia é barata, e usa de noite, quando fica caro.{' '}
+                      Com o sistema de baterias de energia, a empresa carrega nos momentos em que a
+                      tarifa é mais barata e usa a energia armazenada à noite.{' '}
                       <strong className="text-cyan-300">
-                        E se a empresa já tem energia solar, carrega as baterias de graça durante o
-                        dia
+                        E se a empresa já tem energia solar, recarrega as baterias de graça com o
+                        sol
                       </strong>{' '}
-                      para consumir no horário de ponta sem pagar nada à distribuidora.
+                      para consumir no início da noite sem comprar energia cara da distribuidora.
                     </p>
 
-                    <div className="p-4 rounded-xl bg-cyan-950/40 border border-cyan-900/60 text-xs text-cyan-300 font-mono">
-                      ✓ Resultado: Bloqueio do consumo na ponta e máxima multiplicação do retorno
-                      financeiro.
+                    <div className="p-4 rounded-xl bg-cyan-950/40 border border-cyan-900/60 text-xs text-cyan-300">
+                      ✓ Resultado: Fuga total da tarifa cara do início da noite e máxima economia na
+                      fatura mensal.
                     </div>
                   </div>
 
                   <div className="lg:col-span-5 bg-[#091322] border border-white/10 rounded-2xl p-6 text-center space-y-4">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase block">
-                      Comparativo de Custo do kWh
+                    <span className="text-xs text-slate-400 uppercase block">
+                      Comparativo de Custo da Energia
                     </span>
                     <div className="space-y-3 text-left">
                       <div className="p-3 rounded-xl bg-white/5 border border-white/10">
                         <div className="flex justify-between text-xs text-slate-300 mb-1">
-                          <span>Fora de Ponta (Geração Solar / Noite)</span>
-                          <span className="font-bold text-emerald-400">R$ 0,35 a 0,60 / kWh</span>
+                          <span>Horário Comum (Geração Solar / Fora de Ponta)</span>
+                          <span className="font-bold text-emerald-400">Tarifa Econômica</span>
                         </div>
                         <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
                           <div className="w-[30%] h-full bg-emerald-400" />
@@ -435,16 +432,16 @@ export default function SolucaoBess() {
 
                       <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/30">
                         <div className="flex justify-between text-xs text-slate-300 mb-1">
-                          <span>Horário de Ponta (18h às 21h na rede)</span>
-                          <span className="font-bold text-red-400">R$ 1,80 a 2,50+ / kWh</span>
+                          <span>Horário Mais Caro (18h às 21h na rede)</span>
+                          <span className="font-bold text-red-400">Até 4x a 5x mais caro</span>
                         </div>
                         <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
                           <div className="w-[90%] h-full bg-red-400" />
                         </div>
                       </div>
                     </div>
-                    <p className="text-[11px] text-slate-400 font-mono">
-                      BESS descarrega exatamente durante a faixa vermelha.
+                    <p className="text-xs text-slate-400">
+                      As baterias abastecem sua empresa automaticamente na faixa mais cara.
                     </p>
                   </div>
                 </div>
@@ -453,51 +450,50 @@ export default function SolucaoBess() {
               {activeTabDidatica === 'backup' && (
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-fade-in">
                   <div className="lg:col-span-7 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-mono font-bold">
-                      Comutação Zero Blink (&lt; 20ms)
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold">
+                      A luz não pisca nem desliga equipamentos
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                      Backup Crítico: a sua empresa continua funcionando quando a rede cai
+                      Energia de reserva: sua empresa continua operando mesmo se a rede cair
                     </h3>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      Geradores a diesel levam de 15 a 45 segundos para dar a partida, dependem de
-                      combustível fóssil estocado, emitem ruído extremo e exigem manutenção mecânica
-                      pesada.
+                      Geradores a diesel levam tempo para dar a partida, dependem de combustível
+                      armazenado, emitem fumaça, fazem barulho alto e exigem manutenção mecânica
+                      frequente.
                     </p>
                     <p className="text-slate-300 text-sm leading-relaxed">
-                      O BESS atua como um{' '}
-                      <strong className="text-amber-400">No-Break Industrial Dinâmico</strong>: a
-                      transição é tão rápida que computadores, servidores, controladores lógicos
-                      (CLPs) e equipamentos médicos não reiniciam.
+                      As baterias de energia atuam de forma instantânea: a transição é tão rápida
+                      que computadores, servidores, painéis de controle e equipamentos sensíveis
+                      continuam ligados normalmente sem reiniciar.
                     </p>
 
-                    <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-900/60 text-xs text-amber-300 font-mono">
-                      ✓ Resultado: Zero perda de dados, sem queima de placas eletrônicas e silêncio
-                      absoluto.
+                    <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-900/60 text-xs text-amber-300">
+                      ✓ Resultado: Zero perda de produção ou dados, sem queima de placas eletrônicas
+                      e silêncio absoluto.
                     </div>
                   </div>
 
                   <div className="lg:col-span-5 bg-[#091322] border border-white/10 rounded-2xl p-6 text-center space-y-4">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase block">
+                    <span className="text-xs text-slate-400 uppercase block">
                       Comparativo com Gerador a Diesel
                     </span>
                     <div className="grid grid-cols-2 gap-3 text-xs">
                       <div className="p-3 rounded-xl bg-red-950/30 border border-red-900/40 text-left">
                         <strong className="text-red-400 block mb-1">Gerador Diesel</strong>
                         <ul className="space-y-1 text-slate-400 text-[11px]">
-                          <li>• Queda de 15-45s</li>
-                          <li>• Diesel caro e volátil</li>
+                          <li>• Demora para ligar</li>
+                          <li>• Combustível fóssil caro</li>
                           <li>• Ruído alto e fumaça</li>
-                          <li>• Manutenção frequente</li>
+                          <li>• Manutenção mecânica pesada</li>
                         </ul>
                       </div>
                       <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-left">
-                        <strong className="text-emerald-400 block mb-1">BESS Delfos</strong>
+                        <strong className="text-emerald-400 block mb-1">Baterias Delfos</strong>
                         <ul className="space-y-1 text-slate-300 text-[11px]">
-                          <li>• Queda &lt; 20ms</li>
-                          <li>• Recarga solar grátis</li>
+                          <li>• Acionamento instantâneo</li>
+                          <li>• Recarga solar gratuita</li>
                           <li>• Silêncio total</li>
-                          <li>• Zero peças móveis</li>
+                          <li>• Sem peças móveis ou queima</li>
                         </ul>
                       </div>
                     </div>
@@ -556,7 +552,7 @@ export default function SolucaoBess() {
                         onClick={scrollToContato}
                         className="hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>Pedir estudo para este escopo</span>
+                        <span>Solicitar orçamento gratuito</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -567,54 +563,56 @@ export default function SolucaoBess() {
           </div>
         </section>
 
-        {/* ESPAÇO PARA CASES DE CONTINUIDADE OPERACIONAL (Item 5.2) */}
+        {/* EXEMPLOS DE APLICAÇÃO PRÁTICA */}
         <section className="py-20 bg-[#080E18] border-t border-b border-white/10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 block mb-2">
-                Provas de Campo
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-2">
+                Exemplos de Aplicação Prática
               </span>
               <h2 className="text-3xl font-extrabold text-white">
-                Casos de continuidade operacional garantidos por BESS
+                Como as baterias de energia resolvem desafios reais de operação
               </h2>
               <p className="text-slate-300 text-sm sm:text-base mt-2">
-                Aplicações práticas onde o custo da falta de energia superava amplamente o
-                investimento no sistema de armazenamento.
+                Cenários onde o custo da falta de energia ou da tarifa cara supera amplamente o
+                investimento no sistema de baterias.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {casesContinuidade.map((c, idx) => (
+              {exemplosAplicacao.map((c, idx) => (
                 <div
                   key={idx}
                   className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-4 hover:border-emerald-500/30 transition-colors"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-emerald-400 uppercase font-bold">
+                      <span className="text-xs text-emerald-400 uppercase font-bold">
                         {c.segmento}
                       </span>
-                      <span className="text-[10px] text-slate-400 uppercase">Case Gaúcho</span>
+                      <span className="text-[11px] text-slate-400 uppercase">
+                        Exemplo de Aplicação
+                      </span>
                     </div>
 
                     <div>
-                      <strong className="text-xs text-red-400 uppercase block tracking-wider font-mono">
+                      <strong className="text-xs text-red-400 uppercase block tracking-wider">
                         Desafio:
                       </strong>
                       <p className="text-xs text-slate-300 leading-relaxed mt-1">{c.desafio}</p>
                     </div>
 
                     <div>
-                      <strong className="text-xs text-cyan-400 uppercase block tracking-wider font-mono">
-                        Solução Implementada:
+                      <strong className="text-xs text-cyan-400 uppercase block tracking-wider">
+                        Solução com Baterias:
                       </strong>
                       <p className="text-xs text-slate-200 leading-relaxed mt-1">{c.solucao}</p>
                     </div>
                   </div>
 
                   <div className="pt-3 border-t border-white/10">
-                    <strong className="text-xs text-emerald-400 uppercase block tracking-wider font-mono">
-                      Resultado Medido:
+                    <strong className="text-xs text-emerald-400 uppercase block tracking-wider">
+                      Benefício Esperado:
                     </strong>
                     <p className="text-xs text-white font-semibold leading-relaxed mt-1">
                       {c.resultado}
@@ -626,14 +624,14 @@ export default function SolucaoBess() {
           </div>
         </section>
 
-        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM "solucao-bess" E CTA "Pedir estudo de viabilidade" */}
+        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM "solucao-bess" E CTA PADRONIZADO */}
         <ContatoForm
           initialNecessidade="BESS (Armazenamento)"
           initialOrigem="solucao-bess"
           destaqueDark={true}
-          tituloSecao="Peça o estudo de viabilidade técnica e financeira de baterias (BESS)"
-          subtituloSecao="Nossos engenheiros analisam a fatura de alta tensão, o perfil de carga e o histórico de oscilações para dimensionar a capacidade exata em kWh/kW."
-          textoBotaoFinal="Pedir estudo de viabilidade de baterias (BESS)"
+          tituloSecao="Solicite seu orçamento gratuito de baterias de energia"
+          subtituloSecao="Nossos engenheiros analisam sua fatura de energia, histórico de consumo e necessidades de operação para dimensionar a capacidade ideal."
+          textoBotaoFinal="Solicitar orçamento gratuito"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

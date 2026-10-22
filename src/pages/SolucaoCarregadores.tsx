@@ -36,52 +36,51 @@ export default function SolucaoCarregadores() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Sub-ofertas conforme item 5.4 da especificação
+  // Sub-ofertas especializadas em recarga veicular
   const subOfertas = [
     {
-      titulo: 'Wallbox Inteligente Residencial e Condominial',
-      desc: 'Carregadores de 7 kW a 22 kW em corrente alternada (AC) com cabo integrado Tipo 2. Autenticação por cartão RFID ou aplicativo no smartphone, conectividade Wi-Fi/4G e compatibilidade com 100% dos veículos elétricos e híbridos plug-in.',
-      badge: 'Wallbox Inteligente',
+      titulo: 'Carregador inteligente de parede residencial e condominial',
+      desc: 'Carregadores modernos para residências e garagens prediais. Identificação por cartão de aproximação ou aplicativo no celular, compatíveis com todos os veículos elétricos e híbridos.',
+      badge: 'Carregador de Parede',
       icone: Zap,
     },
     {
-      titulo: 'Carregadores Semirrápidos e DC Fast Chargers',
-      desc: 'Estações ultrarrápidas em corrente contínua (DC) de 30 kW até 150+ kW para postos de combustíveis, rodovias, frotas logísticas e centros comerciais. Recarga de 20% a 80% da bateria em menos de 30 minutos.',
-      badge: 'DC Fast Charge',
+      titulo: 'Estações de carregamento rápido para empresas e rodovias',
+      desc: 'Estações de alta potência para postos de combustíveis, rodovias, frotas logísticas e centros comerciais, permitindo recargas rápidas em poucos minutos.',
+      badge: 'Carregamento Rápido',
       icone: Fuel,
     },
     {
-      titulo: 'Gestão de Carga Inteligente e Medição Individualizada',
-      desc: 'Infraestrutura coletiva em condomínios residenciais e comerciais com tecnologia DLM (mede o consumo por vaga e rateia individualmente). A energia consumida por cada morador é faturada direto no cartão ou aplicativo — eliminando atritos e discussões em assembleia.',
-      badge: 'Gestão Inteligente & Rateio',
+      titulo: 'Gestão de consumo e rateio automático por vaga',
+      desc: 'Infraestrutura coletiva para condomínios residenciais e comerciais onde o sistema mede o consumo de cada vaga e rateia sozinho. Cada morador paga apenas o que consumiu, sem gerar atritos em assembleia.',
+      badge: 'Rateio Automático',
       icone: CreditCard,
     },
     {
-      titulo: 'Infraestrutura para Frotas Corporativas e Eletropostos',
-      desc: 'Engenharia completa de eletromobilidade: barramento blindado, quadros de proteção dedicados com DR Tipo B, SPDA e integração com usina solar própria para rodar frotas com custo próximo de zero por km.',
+      titulo: 'Infraestrutura completa para frotas corporativas',
+      desc: 'Engenharia completa com quadros de proteção dedicados, cabeamento de alta segurança conforme as normas brasileiras e integração com usina solar própria para rodar sua frota com custo mínimo.',
       badge: 'Frotas Corporativas',
       icone: Building2,
     },
   ]
 
-  // Prova / Case de referência de condomínio da especificação
-  const caseCondominio = {
-    titulo:
-      'Condomínio Residencial Multifamiliar — Case de Referência com Gestão de Carga Inteligente',
+  // Exemplo ilustrativo de aplicação em condomínio
+  const exemploCondominio = {
+    titulo: 'Condomínio Residencial — Exemplo de Aplicação com Rateio Inteligente',
     subtitulo:
-      'Rede dedicada, medição individual e gestão dinâmica sem aumento de demanda do transformador',
+      'Rede dedicada, medição individual e gestão dinâmica sem sobrecarregar o transformador predial',
     desafio:
-      'O prédio possuía demanda contratada de 75 kVA no transformador geral e mais de 40 vagas de garagem. Três moradores compraram carros elétricos e outros 10 planejavam adquirir. A concessionária exigia a troca onerosa do transformador da rua (orçada em mais de R$ 90.000) e os condôminos não aceitavam dividir a conta de luz da garagem.',
+      'Com moradores adquirindo veículos elétricos e híbridos, o condomínio enfrentava o risco de sobrecarregar a rede elétrica do prédio. A concessionária exigiria obras caras na rede da rua e os condôminos não aceitavam dividir o custo da energia da garagem na taxa comum.',
     solucaoDelfos: [
-      'Implantação de barramento blindado com eletrocalhas dedicadas e proteção NBR 17019 em toda a garagem.',
-      'Instalação de software DLM (Dynamic Load Management) conectado ao medidor de entrada do condomínio.',
-      'Autenticação individual via RFID em cada ponto de recarga, vinculada ao apartamento do usuário.',
-      'Modulação inteligente da potência: de madrugada, quando o prédio consome pouco, os carros recebem carga máxima; no início da noite, a potência é reduzida automaticamente.',
+      'Instalação de cabeamento e quadros dedicados em toda a garagem conforme as normas de segurança brasileiras.',
+      'Sistema onde o equipamento mede o consumo de cada vaga e rateia sozinho.',
+      'Identificação individual por cartão de aproximação ou celular em cada ponto, vinculada ao apartamento do usuário.',
+      'Gestão inteligente da energia: na madrugada, quando o prédio consome pouco, os carros recarregam na potência máxima; nos horários de maior uso do prédio, a recarga se ajusta automaticamente.',
     ],
-    resultadosMedidos: [
-      'Zero aumento na demanda contratada do transformador (economia imediata de R$ 90.000+ em obra na concessionária).',
-      'Rateio 100% individualizado via aplicativo — o condomínio não gasta um centavo da taxa ordinária com carros dos moradores.',
-      'Capacidade de expansão futura para até 32 vagas sem necessidade de nova intervenção de engenharia civil.',
+    resultadosEsperados: [
+      'Sem necessidade de obras caras de aumento de transformador com a distribuidora.',
+      'Rateio 100% individualizado via aplicativo: o condomínio não gasta a taxa dos moradores com recarga de terceiros.',
+      'Infraestrutura pronta para expansão ordenada conforme novos moradores comprarem carros elétricos.',
     ],
   }
 
@@ -89,7 +88,7 @@ export default function SolucaoCarregadores() {
     <div className="min-h-screen flex flex-col bg-[#070A10] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       <SeoMeta
         title="Recarga veicular para condomínios, empresas e residências | Delfos Engenharia"
-        description="Infraestrutura de recarga veicular com gestão de carga inteligente sem sobrecarregar o transformador predial. Wallbox, DC fast charge e medição individual. Delfos."
+        description="Infraestrutura de recarga veicular inteligente sem sobrecarregar o transformador predial. Carregadores de parede, carregamento rápido e rateio individual por vaga. Delfos."
         canonicalPath="/solucoes/carregadores"
         ogImage="/og-image.png"
       />
@@ -137,12 +136,9 @@ export default function SolucaoCarregadores() {
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
                   A eletrificação da frota gaúcha já começou. A Delfos projeta e executa toda a
-                  engenharia elétrica de recarga com{' '}
-                  <strong>
-                    gestão de carga inteligente (DLM: mede o consumo por vaga e rateia
-                    individualmente)
-                  </strong>
-                  , cabeamento antichamas conforme a NBR 17019 e aplicativo de rateio individual.
+                  engenharia elétrica de recarga: o sistema mede o consumo de cada vaga e rateia
+                  sozinho, com instalação conforme as normas de segurança brasileiras e aplicativo
+                  de controle individual.
                 </p>
 
                 {/* Bloco do problema resolvido */}
@@ -164,12 +160,12 @@ export default function SolucaoCarregadores() {
                     onClick={scrollToContato}
                     className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black px-8 py-6 text-base rounded-xl shadow-xl shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Solicitar vistoria</span>
+                    <span>Solicitar orçamento gratuito</span>
                     <ArrowRight className="w-5 h-5" />
                   </Button>
 
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20uma%20vistoria%20para%20carregadores%20veiculares%20(Origem:%20solucao-carregadores)"
+                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20para%20carregadores%20veiculares%20(Origem:%20solucao-carregadores)"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs sm:text-sm font-bold text-white transition-all text-center"
@@ -179,85 +175,81 @@ export default function SolucaoCarregadores() {
                 </div>
 
                 {/* Badges de Normas & Tecnologia */}
-                <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-300 font-mono">
+                <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-300">
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Conforme Norma NBR 17019</span>
+                    <span>Instalação conforme as normas de segurança brasileiras</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Sliders className="w-4 h-4 text-indigo-400" />
-                    <span>Gestão Inteligente em Nuvem</span>
+                    <span>O sistema mede o consumo e rateia sozinho</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CreditCard className="w-4 h-4 text-solar-300" />
-                    <span>Medição Individual por RFID/App</span>
+                    <span>Identificação por cartão ou celular</span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Hero: Foto real reservada + Painel de Tecnologia DLM */}
+              {/* Right Hero: Destaque de Tecnologia e Parâmetros */}
               <div className="lg:col-span-5 space-y-5">
-                {/* Espaço reservado de foto real de carregadores */}
-                <div className="rounded-3xl border-2 border-dashed border-indigo-500/30 bg-indigo-950/20 p-6 backdrop-blur-md relative overflow-hidden group">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                      Foto real de carregadores — aguardando
+                {/* Card Institucional de Recarga Inteligente */}
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      Mobilidade Elétrica
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">
-                      Garagem / Condomínio
-                    </span>
+                    <span className="text-xs text-slate-400">Condomínios e Empresas</span>
                   </div>
 
-                  <div className="aspect-video rounded-2xl bg-[#09101C] border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-300 mb-3 group-hover:scale-105 transition-transform">
-                      <Car className="w-8 h-8" />
+                  <div className="flex items-start gap-4 pt-1">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
+                      <Car className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">
-                      Wallboxes Inteligentes & Barramento Blindado
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                      Instalação real em garagem predial com eletrocalhas suspensas, disjuntores DR
-                      Tipo B e identificação de vaga personalizada.
-                    </p>
+                    <div>
+                      <h3 className="text-base font-bold text-white leading-snug">
+                        Garagens preparadas sem risco de sobrecarga
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                        Infraestrutura segura com proteção contra choques e sobrecargas,
+                        identificação individual e rateio automático na fatura.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Tesla-style Specs Card */}
+                {/* Parâmetros em linguagem leiga */}
                 <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl">
                   <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                    <span className="text-xs font-mono uppercase text-indigo-300 font-bold">
-                      Parâmetros de Recarga Inteligente
+                    <span className="text-xs uppercase text-indigo-300 font-bold">
+                      Parâmetros da Solução
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">Delfos Mobility</span>
+                    <span className="text-xs text-slate-400">Engenharia Delfos</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Potência AC (Wallbox)
-                      </span>
-                      <strong className="text-sm font-bold text-white">7,4 kW até 22 kW</strong>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Potência DC Rápida
-                      </span>
-                      <strong className="text-sm font-bold text-solar-400">30 kW a 150+ kW</strong>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Gestão Dinâmica
-                      </span>
-                      <strong className="text-sm font-bold text-indigo-300">
-                        Gestão de Carga Inteligente 100% Automática
+                      <span className="text-xs text-slate-400 block">Carregadores de Parede</span>
+                      <strong className="text-sm font-bold text-white">
+                        Ideal para casas e prédios
                       </strong>
                     </div>
                     <div>
-                      <span className="text-[11px] text-slate-400 block font-mono">
-                        Rateio Financeiro
-                      </span>
+                      <span className="text-xs text-slate-400 block">Carregamento Rápido</span>
+                      <strong className="text-sm font-bold text-solar-400">
+                        Ideal para frotas e postos
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">Gestão da Energia</span>
+                      <strong className="text-sm font-bold text-indigo-300">
+                        Ajusta a potência sem sobrecarregar a rede
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-400 block">Divisão da Conta</span>
                       <strong className="text-sm font-bold text-emerald-400">
-                        Fatura Direta por RFID / App
+                        Cada um paga o que gastou
                       </strong>
                     </div>
                   </div>
@@ -267,34 +259,36 @@ export default function SolucaoCarregadores() {
           </div>
         </section>
 
-        {/* PROVA CENTRAL: CASE DE REFERÊNCIA DE CONDOMÍNIO (Item 5.4 da especificação) */}
+        {/* EXEMPLO DE APLICAÇÃO EM CONDOMÍNIO */}
         <section className="py-20 bg-[#090D15] border-t border-b border-white/10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-300 block mb-2">
-                Elemento de Prova • Case de Referência
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 block mb-2">
+                Exemplo de Aplicação em Condomínio
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Como viabilizamos recarga para condomínios sem trocar de transformador
+                Como viabilizar recarga para condomínios sem trocar o transformador
               </h2>
               <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                A solução definitiva para síndicos e condôminos: gestão de carga inteligente com
-                rede dedicada e faturamento individualizado.
+                A solução definitiva para síndicos e moradores: o sistema mede o consumo de cada
+                vaga, rateia sozinho e evita sobrecarga da rede elétrica do prédio.
               </p>
             </div>
 
             <div className="rounded-3xl bg-white/5 border border-white/10 p-8 lg:p-12 space-y-8 backdrop-blur-md">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
                 <div>
-                  <span className="text-xs font-mono font-bold text-solar-400 uppercase tracking-wider">
-                    Condomínio Residencial Gaúcho
+                  <span className="text-xs font-bold text-solar-400 uppercase tracking-wider">
+                    Condomínio Residencial
                   </span>
-                  <h3 className="text-2xl font-black text-white mt-1">{caseCondominio.titulo}</h3>
-                  <p className="text-xs text-slate-400 mt-1">{caseCondominio.subtitulo}</p>
+                  <h3 className="text-2xl font-black text-white mt-1">
+                    {exemploCondominio.titulo}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">{exemploCondominio.subtitulo}</p>
                 </div>
                 <div className="shrink-0 flex items-center gap-2">
-                  <span className="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
-                    Sem Aumento de Demanda
+                  <span className="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
+                    Sem Sobrecarga da Rede
                   </span>
                 </div>
               </div>
@@ -303,23 +297,23 @@ export default function SolucaoCarregadores() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Desafio */}
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-red-400">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase text-red-400">
                     <AlertTriangle className="w-4 h-4" />
-                    <span>O Desafio Inicial do Condomínio</span>
+                    <span>O Desafio do Condomínio</span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed bg-[#0C121E] p-5 rounded-2xl border border-white/5">
-                    {caseCondominio.desafio}
+                    {exemploCondominio.desafio}
                   </p>
                 </div>
 
                 {/* Solução Delfos */}
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-indigo-300">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase text-indigo-300">
                     <Cpu className="w-4 h-4" />
                     <span>A Solução de Engenharia Delfos</span>
                   </div>
                   <ul className="space-y-2 bg-[#0C121E] p-5 rounded-2xl border border-white/5">
-                    {caseCondominio.solucaoDelfos.map((item, idx) => (
+                    {exemploCondominio.solucaoDelfos.map((item, idx) => (
                       <li key={idx} className="flex items-start gap-2 text-xs text-slate-200">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                         <span>{item}</span>
@@ -329,13 +323,13 @@ export default function SolucaoCarregadores() {
                 </div>
               </div>
 
-              {/* Resultados Medidos */}
+              {/* Benefícios Esperados */}
               <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-950/40 via-sky-950/30 to-emerald-950/40 border border-indigo-500/30">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 block mb-3">
-                  Resultados Medidos e Auditados:
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-3">
+                  Benefícios para o Condomínio:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {caseCondominio.resultadosMedidos.map((res, idx) => (
+                  {exemploCondominio.resultadosEsperados.map((res, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-200">
                       <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
                         ✓
@@ -354,22 +348,22 @@ export default function SolucaoCarregadores() {
                   onClick={scrollToContato}
                   className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-3 text-xs sm:text-sm rounded-xl cursor-pointer"
                 >
-                  Solicitar vistoria técnica gratuita no condomínio
+                  Solicitar orçamento gratuito
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* COMO FUNCIONA O SMART DLM (GESTÃO DINÂMICA DE CARGA) */}
+        {/* COMO FUNCIONA A GESTÃO INTELIGENTE DE CARGA */}
         <section className="py-20 bg-[#070A10]">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-300 block mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 block mb-2">
                 Tecnologia Inteligente
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Como a gestão dinâmica de carga protege o prédio em tempo real
+                Como a gestão inteligente de carga protege o prédio em tempo real
               </h2>
             </div>
 
@@ -378,10 +372,10 @@ export default function SolucaoCarregadores() {
                 <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
                   <Gauge className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">1. Medição em Alta Frequência</h3>
+                <h3 className="text-lg font-bold text-white">1. Medição Contínua</h3>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Sensores instalados no barramento de entrada medem segundo a segundo quanto o
-                  prédio está consumindo com elevadores, bombas d'água e apartamentos.
+                  Sensores medem a todo instante o quanto o prédio está consumindo com elevadores,
+                  bombas de água e os apartamentos.
                 </p>
               </div>
 
@@ -389,11 +383,11 @@ export default function SolucaoCarregadores() {
                 <div className="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center">
                   <Sliders className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">2. Modulação Instantânea</h3>
+                <h3 className="text-lg font-bold text-white">2. Ajuste Automático</h3>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Quando o consumo dos apartamentos aumenta, o sistema reduz temporariamente a
-                  amperagem dos carros. Quando o prédio entra em repouso (madrugada), a potência
-                  volta ao máximo.
+                  Quando o consumo dos apartamentos aumenta, a velocidade de recarga dos carros é
+                  ajustada suavemente. Na madrugada, quando o prédio repousa, a potência volta ao
+                  máximo.
                 </p>
               </div>
 
@@ -401,11 +395,10 @@ export default function SolucaoCarregadores() {
                 <div className="w-12 h-12 rounded-xl bg-solar-400/20 text-solar-300 flex items-center justify-center">
                   <CreditCard className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">3. Cobrança Automatizada</h3>
+                <h3 className="text-lg font-bold text-white">3. Cobrança e Rateio</h3>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  O software gera relatórios mensais discriminando o consumo de cada morador por
-                  kWh, pronto para envio à administradora do condomínio ou desconto direto em
-                  cartão.
+                  O sistema gera relatórios mensais claros com o consumo exato de cada morador,
+                  pronto para rateio direto ou débito por cartão, sem onerar o condomínio.
                 </p>
               </div>
             </div>
@@ -460,7 +453,7 @@ export default function SolucaoCarregadores() {
                         onClick={scrollToContato}
                         className="hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>Solicitar vistoria para este modelo</span>
+                        <span>Solicitar orçamento gratuito</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -471,14 +464,14 @@ export default function SolucaoCarregadores() {
           </div>
         </section>
 
-        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM "solucao-carregadores" E CTA "Solicitar vistoria" */}
+        {/* FORMULÁRIO 2 ETAPAS COM ORIGEM "solucao-carregadores" E CTA PADRONIZADO */}
         <ContatoForm
           initialNecessidade="Carregadores Veiculares"
           initialOrigem="solucao-carregadores"
           destaqueDark={true}
-          tituloSecao="Solicite uma vistoria técnica para recarga veicular"
-          subtituloSecao="Nossos engenheiros inspecionam o quadro geral, a demanda contratada e as vagas de garagem para desenhar o projeto mais seguro e econômico."
-          textoBotaoFinal="Solicitar vistoria técnica"
+          tituloSecao="Solicite seu orçamento gratuito para recarga veicular"
+          subtituloSecao="Nossos engenheiros analisam as características elétricas do imóvel, o quadro geral e as vagas para desenhar o projeto mais seguro e econômico."
+          textoBotaoFinal="Solicitar orçamento gratuito"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

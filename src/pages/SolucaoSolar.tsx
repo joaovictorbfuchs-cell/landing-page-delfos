@@ -34,36 +34,36 @@ export default function SolucaoSolar() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // Sub-ofertas conforme item 5.1 da especificação
+  // Sub-ofertas especializadas
   const subOfertas = [
     {
-      titulo: 'Conectado à Rede (On-Grid) ou com Baterias (Híbrido)',
-      desc: 'Sistemas conectados à rede com injeção de excedente e opção de integração híbrida para baterias quando há oscilações na rede da concessionária.',
-      badge: 'Geração Conectada',
+      titulo: 'Conectado à rede ou com baterias',
+      desc: 'Sistemas que enviam o excedente gerado para a rede da distribuidora e contam com opção de baterias para manter sua estrutura funcionando mesmo quando a energia cai.',
+      badge: 'Conectado ou com Baterias',
     },
     {
-      titulo: 'Usinas em Telhado e Solo',
-      desc: 'Engenharia completa de fixação estrutural: telhas cerâmicas, fibrocimento, trapezoidais/metálicas e estruturas monoposte ou biposte para usinas de solo.',
+      titulo: 'Usinas em telhado e solo',
+      desc: 'Engenharia completa com fixação estrutural segura: telhas cerâmicas, fibrocimento, coberturas metálicas e estruturas reforçadas para usinas em solo.',
       badge: 'Estruturas Certificadas',
     },
     {
-      titulo: 'Projetos para Empresas e Indústrias, Residencial e Rural',
-      desc: 'Dimensionamento voltado à realidade de cada perfil: desde residências de alto padrão a galpões industriais com alta demanda contratada e aviários/leite no agro.',
+      titulo: 'Projetos para empresas, indústrias, residências e agronegócio',
+      desc: 'Dimensionamento sob medida para a sua necessidade real: desde residências a pavilhões industriais com alta demanda e propriedades rurais.',
       badge: 'Multissetorial',
     },
     {
-      titulo: 'Modelagem para Geração Distribuída (GD)',
-      desc: 'Enquadramento regulatório nas regras da Lei 14.300/2022, autoconsumo remoto, geração compartilhada e consórcios para investidores de energia.',
-      badge: 'Regulatório GD',
+      titulo: 'Enquadramento legal e regulatório completo',
+      desc: 'Cuidamos de todo o enquadramento legal da geração própria: aprovação formal junto à distribuidora, compensação entre imóveis e consórcios.',
+      badge: 'Engenharia & Aprovação',
     },
   ]
 
-  // Provas obrigatórias da especificação
+  // Provas comprovadas da engenharia Delfos
   const provas = [
     {
       metrica: 'Até 90%',
       label: 'Economia na Fatura de Energia',
-      detalhe: 'Redução drástica do valor pago à concessionária (RGE / CEEE / Cooperativas)',
+      detalhe: 'Redução direta no valor pago à distribuidora de energia (RGE, CEEE e cooperativas)',
       destaque: true,
     },
     {
@@ -73,48 +73,28 @@ export default function SolucaoSolar() {
       destaque: false,
     },
     {
-      metrica: 'XX MWp',
-      label: 'Potência Total Instalada',
+      metrica: '12 anos',
+      label: 'Tradição e Solidez Técnica',
       detalhe:
-        'Placeholder oficial: a confirmar (aguardando consolidação oficial com data de corte)',
+        'Engenharia própria com sede em Erechim/RS e atuação contínua em mais de 60 municípios',
       destaque: false,
-      placeholder: true,
     },
     {
       metrica: '100% ART',
       label: 'Engenharia Responsável CREA-RS',
-      detalhe: 'Projetos homologados com Anotação de Responsabilidade Técnica e laudo mecânico',
+      detalhe:
+        'Projetos homologados com Anotação de Responsabilidade Técnica e laudo de engenharia',
       destaque: false,
     },
   ]
 
-  // Segmentos atendidos
-  const segmentosAtendidos = [
-    {
-      icon: Home,
-      nome: 'Residências e Condomínios',
-      foco: 'Conforto térmico (ar-condicionado), piscina aquecida e valorização imediata do imóvel.',
-    },
-    {
-      icon: Building,
-      nome: 'Comércio e Serviços',
-      foco: 'Supermercados, padarias, academias e varejo: redução de custo operacional sem parar a operação.',
-    },
-    {
-      icon: Zap,
-      nome: 'Indústrias',
-      foco: 'Alta tensão, mitigação de custos de demanda contratada e previsibilidade de planilha fabril.',
-    },
-    {
-      icon: Tractor,
-      nome: 'Agronegócio',
-      foco: 'Granjas, suinocultura, ordenha e irrigação: segurança de suprimento com linhas Pronaf/Pronamp.',
-    },
-    {
-      icon: Coins,
-      nome: 'Investidores e Usinas de Solo',
-      foco: 'Modelagem de rentabilidade para locação de cotas de geração e proteção patrimonial indexada à inflação.',
-    },
+  // Segmentos atendidos em formato resumido
+  const segmentosResumo = [
+    { icon: Home, nome: 'Residências e Condomínios', rota: '/segmentos/residencias' },
+    { icon: Building, nome: 'Comércio e Serviços', rota: '/segmentos/comercio' },
+    { icon: Zap, nome: 'Indústrias', rota: '/segmentos/industria' },
+    { icon: Tractor, nome: 'Agronegócio', rota: '/segmentos/agronegocio' },
+    { icon: Coins, nome: 'Investidores e Usinas de Solo', rota: '/segmentos/investidores' },
   ]
 
   return (
@@ -168,10 +148,10 @@ export default function SolucaoSolar() {
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Projetos conectados à rede (on-grid) ou com baterias (híbrido) desenvolvidos por
-                  engenheiros com registro no CREA-RS. Dimensionamento rigoroso com simulação de
-                  irradiação solar real do Sul do Brasil, aprovação ágil junto à concessionária e
-                  máxima eficiência de geração.
+                  Projetos conectados à rede ou com baterias desenvolvidos por engenheiros com
+                  registro no CREA-RS. Dimensionamento rigoroso com base na incidência de sol real
+                  do Sul do Brasil, aprovação ágil junto à distribuidora e máxima eficiência de
+                  geração.
                 </p>
 
                 {/* Destaque do Problema que Resolve */}
@@ -192,7 +172,7 @@ export default function SolucaoSolar() {
                     onClick={scrollToContato}
                     className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-8 py-6 text-base rounded-xl shadow-xl shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Simular projeto</span>
+                    <span>Solicitar orçamento gratuito</span>
                     <ArrowRight className="w-5 h-5" />
                   </Button>
 
@@ -223,30 +203,30 @@ export default function SolucaoSolar() {
                 </div>
               </div>
 
-              {/* Right Hero: Espaço Reservado de Foto Real + Calculadora rápida */}
+              {/* Right Hero: Destaque de Engenharia + Calculadora rápida de economia */}
               <div className="lg:col-span-5 space-y-4">
-                {/* Placeholder de Foto Real marcado explicitamente */}
-                <div className="rounded-3xl border-2 border-dashed border-solar-400/40 bg-solar-950/30 p-6 backdrop-blur-md relative overflow-hidden group">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-solar-400/20 text-solar-300 border border-solar-400/30">
-                      Foto real de obra — aguardando
+                {/* Destaque Institucional de Engenharia no Sul */}
+                <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-md relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-solar-400/20 text-solar-300 border border-solar-400/30">
+                      Engenharia Própria
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">
-                      Erechim / Alto Uruguai
-                    </span>
+                    <span className="text-xs text-slate-300">Erechim e mais de 60 municípios</span>
                   </div>
 
-                  <div className="aspect-video rounded-2xl bg-slate-900/60 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-solar-400/10 border border-solar-400/30 flex items-center justify-center text-solar-400 mb-3 group-hover:scale-105 transition-transform">
-                      <Sun className="w-7 h-7" />
+                  <div className="flex items-start gap-4 pt-1">
+                    <div className="w-12 h-12 rounded-2xl bg-solar-400/20 border border-solar-400/30 flex items-center justify-center text-solar-300 shrink-0">
+                      <Sun className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">
-                      Instalação Fotovoltaica Real em Telhado Gaúcho
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                      Foto aérea de drone da usina fotovoltaica comercial/industrial com estrutura
-                      de alumínio anodizado e módulos monocristalinos.
-                    </p>
+                    <div>
+                      <h3 className="text-base font-bold text-white leading-snug">
+                        Usinas projetadas para as condições reais do Sul
+                      </h3>
+                      <p className="text-xs text-slate-200 mt-1 leading-relaxed">
+                        Cálculo estrutural para suportar ventos, telhados de todos os tipos e
+                        módulos de alta eficiência com até 25 anos de garantia.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -303,7 +283,7 @@ export default function SolucaoSolar() {
                       onClick={scrollToContato}
                       className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer"
                     >
-                      Simular projeto com esta conta (R$ {contaSimulador})
+                      Solicitar orçamento gratuito (conta de R$ {contaSimulador})
                     </Button>
                   </div>
                 </div>
@@ -342,11 +322,6 @@ export default function SolucaoSolar() {
                     >
                       {p.metrica}
                     </span>
-                    {p.placeholder && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800 uppercase font-mono">
-                        A confirmar
-                      </span>
-                    )}
                   </div>
                   <h3 className="text-sm font-bold text-slate-900 mb-1">{p.label}</h3>
                   <p className="text-xs text-slate-500 leading-relaxed">{p.detalhe}</p>
@@ -423,7 +398,7 @@ export default function SolucaoSolar() {
                       onClick={scrollToContato}
                       className="hover:underline flex items-center gap-1 cursor-pointer"
                     >
-                      <span>Simular este modelo</span>
+                      <span>Solicitar orçamento gratuito</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -433,45 +408,38 @@ export default function SolucaoSolar() {
           </div>
         </section>
 
-        {/* SEGMENTOS ATENDIDOS */}
-        <section className="py-20 bg-slate-50 border-t border-b border-slate-200/80">
+        {/* SEGMENTOS ATENDIDOS — ENXUTO COM PILLS E TEXTO CORRIDO */}
+        <section className="py-16 bg-slate-50 border-t border-b border-slate-200/80">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block mb-2">
-                Portas de Entrada
+            <div className="max-w-3xl mx-auto text-center space-y-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
+                Soluções Sob Medida
               </span>
-              <h2 className="text-3xl font-extrabold text-slate-900">
-                Soluções solares dimensionadas por segmento
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                Projetos solares dimensionados para cada necessidade
               </h2>
-            </div>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                Desenvolvemos projetos específicos para cada setor: residências e condomínios,
+                comércio, indústrias, propriedades rurais e investidores de usinas de energia.
+              </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
-              {segmentosAtendidos.map((seg, idx) => {
-                const Icone = seg.icon
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="w-10 h-10 rounded-xl bg-solar-100 text-solar-700 flex items-center justify-center mb-3">
-                        <Icone className="w-5 h-5" />
-                      </div>
-                      <h3 className="text-sm font-bold text-slate-900 mb-2">{seg.nome}</h3>
-                      <p className="text-xs text-slate-500 leading-relaxed">{seg.foco}</p>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={scrollToContato}
-                      className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-solar-600 hover:text-solar-800 text-left flex items-center gap-1 cursor-pointer"
+              {/* Pills simples com links para as páginas dedicadas */}
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+                {segmentosResumo.map((seg, idx) => {
+                  const Icone = seg.icon
+                  return (
+                    <Link
+                      key={idx}
+                      to={seg.rota}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:border-solar-400 hover:text-solar-700 shadow-2xs transition-all"
                     >
-                      <span>Simular para este perfil</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </button>
-                  </div>
-                )
-              })}
+                      <Icone className="w-4 h-4 text-solar-600" />
+                      <span>{seg.nome}</span>
+                      <ArrowRight className="w-3 h-3 text-slate-400" />
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </section>
@@ -526,14 +494,14 @@ export default function SolucaoSolar() {
           </div>
         </section>
 
-        {/* FORMULÁRIO 2 ETAPAS CONTEXTUAL COM ORIGEM "solucao-solar" E CTA "Simular projeto" */}
+        {/* FORMULÁRIO 2 ETAPAS CONTEXTUAL COM ORIGEM "solucao-solar" E CTA PADRONIZADO */}
         <ContatoForm
           initialNecessidade="Energia Solar Fotovoltaica"
           initialOrigem="solucao-solar"
           initialValorConta={contaSimulador}
-          tituloSecao="Simule o projeto fotovoltaico da sua empresa ou residência"
-          subtituloSecao="Receba um dimensionamento técnico preliminar e estudo de ROI elaborado por nossa equipe de engenharia em Erechim/RS."
-          textoBotaoFinal="Simular projeto agora"
+          tituloSecao="Solicite seu orçamento gratuito de energia solar"
+          subtituloSecao="Receba um dimensionamento técnico preliminar e estudo financeiro gratuito elaborado por nossa equipe de engenharia em Erechim/RS."
+          textoBotaoFinal="Solicitar orçamento gratuito"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}

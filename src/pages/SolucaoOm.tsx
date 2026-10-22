@@ -54,33 +54,33 @@ export default function SolucaoOm() {
   // Sub-ofertas técnicas de operação e manutenção
   const subOfertas = [
     {
-      titulo: 'Monitoramento Remoto de Performance em Tempo Real',
-      desc: 'Monitoramento remoto conectado a inversores e sensores de irradiação solar. Algoritmos detectam queda de rendimento diário, strings inoperantes e desvios de geração antes que afetem a fatura do mês.',
-      badge: 'Monitoramento Remoto Contínuo',
+      titulo: 'Monitoramento contínuo em tempo real',
+      desc: 'Acompanhamento constante dos inversores e da produção. O sistema detecta quedas inesperadas de rendimento e placas inoperantes antes que o problema afete a sua fatura.',
+      badge: 'Monitoramento Contínuo',
       icone: Activity,
     },
     {
-      titulo: 'Limpeza Técnica de Módulos Especializada',
-      desc: 'Lavagem com água deionizada/filtrada e escovas rotativas de cerdas suaves antiarranhão, respeitando as garantias de fábrica do vidro temperado. Remoção de fuligem, pólen, terra e dejetos de pássaros.',
+      titulo: 'Limpeza técnica especializada de painéis',
+      desc: 'Lavagem com água pura filtrada e escovas especiais que não riscam o vidro nem anulam a garantia dos fabricantes. Remoção de poeira, fuligem, pólen e dejetos.',
       badge: 'Recuperação até +25%',
       icone: Droplets,
     },
     {
-      titulo: 'Termografia por Drone e Inspeção Elétrica Avançada',
-      desc: 'Câmeras termográficas calibradas acopladas a drone sobrevoam centenas de módulos em minutos, detectando hotspots invisíveis a olho nu, bypass com falha, diodos queimados e conexões aquecidas.',
-      badge: 'Diferencial Técnico',
+      titulo: 'Inspeção com drone termográfico',
+      desc: 'Câmeras térmicas de alta precisão em drones inspecionam toda a usina em minutos, detectando pontos superaquecidos invisíveis a olho nu, falhas elétricas e conexões frouxas.',
+      badge: 'Inspeção Aérea Especializada',
       icone: Plane,
     },
     {
-      titulo: 'Planos de Manutenção Preventiva e Corretiva com Prazo Definido',
-      desc: 'Contratos estruturados com prazos de resposta garantidos (atendimento ágil de 4h a 24h), reaperto de conexões elétricas, medição de curva I-V, teste de aterramento e substituição de peças.',
+      titulo: 'Planos de manutenção preventiva e corretiva com prazo definido',
+      desc: 'Atendimento ágil com compromisso formal de resposta em contrato, reaperto elétrico, testes de aterramento e substituição rápida de componentes.',
       badge: 'Prazo Garantido em Contrato',
       icone: ShieldCheck,
     },
     {
-      titulo: 'Relatórios Periódicos de Desempenho e Engenharia',
-      desc: 'Laudos técnicos mensais ou trimestrais com PR (Performance Ratio), comparativo de geração esperada vs. real, análise climática e recomendações assinadas por engenheiro do CREA-RS.',
-      badge: 'Governança & ROI',
+      titulo: 'Relatórios periódicos de geração e desempenho',
+      desc: 'Relatórios claros que mostram exatamente quanto a usina gerou versus o que deveria gerar, histórico de produção e recomendações assinadas por engenheiro do CREA-RS.',
+      badge: 'Transparência & Resultados',
       icone: FileText,
     },
   ]
@@ -164,10 +164,10 @@ export default function SolucaoOm() {
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Diferente de instaladoras que somem após a entrega da obra, a Delfos posiciona o
-                  O&M como uma <strong>solução estratégica de ciclo completo</strong>. Monitoramento
-                  em tempo real, limpeza técnica e termografia por drone para garantir que cada kWh
-                  planejado vire economia no bolso.
+                  Diferente de empresas que somem após a instalação, a Delfos cuida da sua usina
+                  depois que a obra termina. Monitoramento contínuo, limpeza técnica e inspeção
+                  térmica por drone para garantir que a usina gere o máximo de economia no seu
+                  bolso.
                 </p>
 
                 {/* Bloco do problema resolvido */}
@@ -202,7 +202,7 @@ export default function SolucaoOm() {
                       </span>
                     </div>
 
-                    {/* CTA Secundário: Conhecer Planos O&M */}
+                    {/* CTA Secundário: Conhecer planos de manutenção */}
                     <div className="flex-1 flex flex-col">
                       <Button
                         onClick={() => handleConhecerPlanos('om-hero-conhecer-planos')}
@@ -210,7 +210,7 @@ export default function SolucaoOm() {
                         className="w-full bg-white/10 hover:bg-white/15 border border-white/25 text-white font-bold px-6 py-6 text-base rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <ShieldCheck className="w-5 h-5 text-blue-300 shrink-0" />
-                        <span>Conhecer Planos O&M</span>
+                        <span>Conhecer planos de manutenção</span>
                       </Button>
                       <span className="text-[11px] text-slate-300 mt-1.5">
                         com prazo de resposta garantido em contrato
@@ -248,28 +248,30 @@ export default function SolucaoOm() {
                 </div>
               </div>
 
-              {/* Right Hero: Foto real reservada + Diagnóstico Visual */}
+              {/* Right Hero: Destaque de Manutenção Técnica + Diagnóstico Visual */}
               <div className="lg:col-span-5 space-y-4">
-                {/* Espaço reservado de foto real de O&M */}
-                <div className="rounded-3xl border-2 border-dashed border-blue-400/40 bg-blue-950/30 p-6 backdrop-blur-md relative overflow-hidden group">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
-                      Foto real de equipe / Drone — aguardando
+                {/* Destaque Institucional de Manutenção Técnica */}
+                <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-md relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                      Equipe Técnica Própria
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">Inspeção no RS</span>
+                    <span className="text-xs text-slate-300">Atendimento em todo o Sul</span>
                   </div>
 
-                  <div className="aspect-video rounded-2xl bg-slate-900/70 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-300 mb-3 group-hover:scale-105 transition-transform">
-                      <Plane className="w-8 h-8" />
+                  <div className="flex items-start gap-4 pt-1">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-300 shrink-0">
+                      <Wrench className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">
-                      Equipe em Campo & Inspeção Aérea por Drone
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                      Técnicos com EPIs regulamentares (NR-10 e NR-35), lavagem especializada e
-                      sensor infravermelho para auditoria de usinas em operação.
-                    </p>
+                    <div>
+                      <h3 className="text-base font-bold text-white leading-snug">
+                        Cuidamos da sua usina mesmo que instalada por outra empresa
+                      </h3>
+                      <p className="text-xs text-slate-200 mt-1 leading-relaxed">
+                        Técnicos certificados para trabalho em altura e com eletricidade, limpeza
+                        profissional e diagnóstico elétrico completo.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -301,10 +303,10 @@ export default function SolucaoOm() {
 
                     <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200">
                       <span className="text-emerald-900 font-medium">
-                        Com O&M Delfos programado
+                        Com manutenção Delfos programada
                       </span>
                       <strong className="text-emerald-700 font-bold">
-                        100% de disponibilidade contratada
+                        Máxima geração o ano todo
                       </strong>
                     </div>
                   </div>
@@ -315,14 +317,13 @@ export default function SolucaoOm() {
                       className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black py-3 text-xs sm:text-sm rounded-xl shadow-md cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Wrench className="w-4 h-4" />
-                      <span>Solicitar Manutenção Imediata</span>
+                      <span>Solicitar Manutenção</span>
                     </Button>
                     <p className="text-[10px] text-center text-slate-500">
                       Atendemos usinas de qualquer instalador
                     </p>
                     <Button
                       onClick={() => {
-                        // Rola até o formulário ou abre o atendimento de plantão
                         const el = document.querySelector('#contato')
                         if (el) el.scrollIntoView({ behavior: 'smooth' })
                       }}
@@ -336,7 +337,7 @@ export default function SolucaoOm() {
                       variant="outline"
                       className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2 text-xs rounded-xl cursor-pointer"
                     >
-                      Conhecer Planos O&M
+                      Conhecer planos de manutenção
                     </Button>
                   </div>
                 </div>
@@ -410,40 +411,43 @@ export default function SolucaoOm() {
                     </span>
                   </div>
 
-                  {/* Placeholder de Imagem Termográfica */}
-                  <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-900 p-6 text-white text-center">
+                  {/* Ilustração da Análise Termográfica */}
+                  <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white text-center">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <span className="w-3 h-3 rounded-full bg-blue-500" />
                       <span className="w-3 h-3 rounded-full bg-yellow-400" />
                       <span className="w-3 h-3 rounded-full bg-red-500" />
-                      <span className="text-[11px] font-mono text-slate-300 ml-1">
-                        Paleta Radiométrica Ironbow
+                      <span className="text-xs text-slate-300 ml-1">
+                        Inspeção Térmica por Infravermelho
                       </span>
                     </div>
-                    <p className="text-xs text-slate-300 font-mono mt-1">
-                      [Espaço reservado: Captura real de tela do sensor termográfico do drone da
-                      Delfos]
+                    <p className="text-xs text-slate-300 mt-1">
+                      Identificação precisa de módulos aquecidos e conexões com defeito
                     </p>
-                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 text-[11px] font-mono text-solar-300">
-                      <span>Módulo #42 • String 03 • Anomalia térmica: +28,4°C</span>
+                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 text-xs text-solar-300">
+                      <span>
+                        Módulo identificado com anomalia térmica de +28°C em relação à média
+                      </span>
                     </div>
                   </div>
 
                   {/* Resumo do Relatório */}
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between py-1.5 border-b border-slate-100">
-                      <span className="text-slate-500">Performance Ratio (PR) Apurado:</span>
-                      <strong className="text-emerald-700 font-bold">81,4% (Excelente)</strong>
-                    </div>
-                    <div className="flex justify-between py-1.5 border-b border-slate-100">
-                      <span className="text-slate-500">Módulos com anomalia crítica:</span>
-                      <strong className="text-amber-600 font-bold">
-                        2 módulos (cobertos por garantia)
+                      <span className="text-slate-500">Rendimento apurado da usina:</span>
+                      <strong className="text-emerald-700 font-bold">
+                        Mais de 81% (Excelente)
                       </strong>
                     </div>
                     <div className="flex justify-between py-1.5 border-b border-slate-100">
-                      <span className="text-slate-500">Geração recuperada pós-limpeza:</span>
-                      <strong className="text-slate-900 font-bold">+18,7% no mês seguinte</strong>
+                      <span className="text-slate-500">Módulos com anomalia identificada:</span>
+                      <strong className="text-amber-600 font-bold">
+                        2 módulos (elegíveis para garantia do fabricante)
+                      </strong>
+                    </div>
+                    <div className="flex justify-between py-1.5 border-b border-slate-100">
+                      <span className="text-slate-500">Geração recuperada após a limpeza:</span>
+                      <strong className="text-slate-900 font-bold">+18% no mês seguinte</strong>
                     </div>
                   </div>
 
@@ -453,7 +457,7 @@ export default function SolucaoOm() {
                       className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black py-3 text-xs rounded-xl shadow cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Wrench className="w-4 h-4" />
-                      <span>Solicitar Manutenção & Laudo Termográfico</span>
+                      <span>Solicitar Manutenção</span>
                     </Button>
                     <p className="text-[10px] text-center text-slate-500">
                       Atendemos usinas de qualquer instalador
@@ -463,7 +467,7 @@ export default function SolucaoOm() {
                       variant="outline"
                       className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 font-bold py-2.5 text-xs rounded-xl cursor-pointer"
                     >
-                      Conhecer Planos O&M com Termografia
+                      Conhecer planos de manutenção
                     </Button>
                   </div>
                 </div>
@@ -516,10 +520,10 @@ export default function SolucaoOm() {
                       <span>Engenharia Delfos</span>
                       <button
                         type="button"
-                        onClick={scrollToContato}
+                        onClick={() => handleSolicitarManutencao('om-card-servico')}
                         className="hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <span>Pedir diagnóstico</span>
+                        <span>Solicitar Manutenção</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -615,7 +619,7 @@ export default function SolucaoOm() {
                   className="bg-white/10 hover:bg-white/15 border-white/20 text-white font-bold px-6 py-5 text-sm rounded-xl cursor-pointer flex items-center justify-center gap-2"
                 >
                   <ShieldCheck className="w-4 h-4 text-blue-300" />
-                  <span>Conhecer Planos O&M</span>
+                  <span>Conhecer planos de manutenção</span>
                 </Button>
               </div>
             </div>
@@ -626,9 +630,9 @@ export default function SolucaoOm() {
         <ContatoForm
           initialNecessidade={formNecessidade}
           initialOrigem={formOrigem}
-          tituloSecao="Solicite manutenção ou proposta de plano O&M"
+          tituloSecao="Solicite manutenção ou proposta de plano de manutenção"
           subtituloSecao="Atendemos usinas de qualquer instalador. Descubra se o seu sistema está operando na capacidade máxima ou restabeleça a geração com equipe técnica registrada no CREA-RS."
-          textoBotaoFinal="Solicitar atendimento técnico"
+          textoBotaoFinal="Solicitar Manutenção"
         />
 
         {/* NAVEGAÇÃO CRUZADA ENTRE AS 4 SOLUÇÕES */}
