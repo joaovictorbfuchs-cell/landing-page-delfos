@@ -181,7 +181,7 @@ export default function SolucaoSolar() {
                     onClick={scrollToContato}
                     className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-8 py-6 text-base rounded-xl shadow-xl shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Solicitar orçamento gratuito</span>
+                    <span>Solicitar orçamento</span>
                     <ArrowRight className="w-5 h-5" />
                   </Button>
 
