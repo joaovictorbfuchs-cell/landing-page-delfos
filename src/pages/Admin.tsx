@@ -568,8 +568,8 @@ export default function Admin() {
                     const json = await res.json()
                     if (res.ok) {
                       toast({
-                        title: 'Fotos reais importadas!',
-                        description: `${json.total || 10} fotos reais de obras foram processadas e salvas na biblioteca de mídia e nos cases.`,
+                        title: 'Fotos sincronizadas e otimizadas!',
+                        description: `${json.total || 10} fotos reais processadas com versões otimizadas: grande (~1600px para capas/modais) e leve (~900px para cards).`,
                       })
                       fetchMedia()
                       fetchCases()

@@ -62,9 +62,11 @@ export default function ProjetosResultados() {
 
   // Unifica os cases estáticos com os dinâmicos do PocketBase (apenas os com status "publicado")
   const todosCases = useMemo<CaseStudy[]>(() => {
-    // 1. Converter cases do PocketBase
+    // 1. Converter cases do PocketBase usando versão leve (900px) para cards e versão grande (1600px) para modal/capas
     const fromDb: CaseStudy[] = dynamicCases.map((c) => {
-      const imageUrl = getCaseImageUrl(c)
+      const imageUrlLeve = getCaseImageUrl(c, 'leve')
+      const imageUrlGrande = getCaseImageUrl(c, 'grande')
+
       // Mapeamento de fallback para fotos reais históricas caso ainda não haja arquivo binário uploaded no PB
       const fallbackPhotoMap: Record<string, string> = {
         'cassul-erechim-rs-155-0-kwp':
@@ -84,7 +86,8 @@ export default function ProjetosResultados() {
         'residencia-urbana-erechim-rs-6-48-kwp':
           'https://www.delfos.eng.br/site/wp-content/uploads/2020/06/DJI_0029-e1591648388934.jpg',
       }
-      const finalPhotoUrl = imageUrl || fallbackPhotoMap[c.slug] || undefined
+      const finalPhotoUrlLeve = imageUrlLeve || fallbackPhotoMap[c.slug] || undefined
+      const finalPhotoUrlGrande = imageUrlGrande || fallbackPhotoMap[c.slug] || undefined
 
       return {
         id: c.slug || c.id,
@@ -109,7 +112,8 @@ export default function ProjetosResultados() {
         fotoDescricao: c.descricao || 'Case auditado pela Delfos Engenharia.',
         fotoPlaceholderNota: 'Foto real oficial',
         potenciaOuCapacidadeCurta: c.potencia_capacidade || 'Não informado',
-        fotoUrl: finalPhotoUrl,
+        fotoUrl: finalPhotoUrlLeve,
+        fotoUrlGrande: finalPhotoUrlGrande,
       }
     })
 

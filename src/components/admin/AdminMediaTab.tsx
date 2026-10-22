@@ -253,7 +253,8 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredMedia.map((item) => {
-            const url = getMediaFileUrl(item)
+            const urlLeve = getMediaFileUrl(item, 'leve')
+            const urlOriginal = getMediaFileUrl(item, 'original')
             const isCopied = copiedId === item.id
 
             return (
@@ -262,12 +263,14 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
                 className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between hover:border-solar-400 transition-all group"
               >
                 <div>
-                  {/* Image container */}
+                  {/* Image container - usa versão leve (900px) com fallback */}
                   <div className="relative aspect-video bg-slate-900 overflow-hidden">
-                    {url ? (
+                    {urlLeve ? (
                       <img
-                        src={url}
+                        src={urlLeve}
                         alt={item.titulo}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
@@ -319,9 +322,9 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
                   </Button>
 
                   <div className="flex items-center gap-1">
-                    {url && (
+                    {urlOriginal && (
                       <a
-                        href={url}
+                        href={urlOriginal}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-200/60"

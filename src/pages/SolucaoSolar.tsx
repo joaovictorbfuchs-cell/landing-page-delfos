@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { listCasesAdmin, getCaseImageUrl } from '@/services/content'
+import { CaseRecord } from '@/types/content'
 import {
   Sun,
   Zap,
@@ -28,6 +30,13 @@ import { Button } from '@/components/ui/button'
 
 export default function SolucaoSolar() {
   const [contaSimulador, setContaSimulador] = useState<number>(1200)
+  const [pbCases, setPbCases] = useState<CaseRecord[]>([])
+
+  useEffect(() => {
+    listCasesAdmin()
+      .then((res) => setPbCases(res))
+      .catch((err) => console.log('Erro ao carregar cases do backend:', err))
+  }, [])
 
   const scrollToContato = () => {
     const el = document.querySelector('#contato')
@@ -207,10 +216,18 @@ export default function SolucaoSolar() {
               <div className="lg:col-span-5 space-y-4">
                 {/* Foto Real de Instalação Comercial Delfos */}
                 <div className="rounded-3xl border border-white/15 bg-white/10 p-4 backdrop-blur-md relative overflow-hidden group">
-                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-3 border border-white/20 shadow-xl">
+                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-3 border border-white/20 shadow-xl bg-slate-900">
                     <img
-                      src="https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg"
+                      src={(() => {
+                        const cassul = pbCases.find((c) => c.slug === 'cassul-erechim-rs-155-0-kwp')
+                        return (
+                          (cassul && cassul.foto ? getCaseImageUrl(cassul, 'grande') : null) ||
+                          'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg'
+                        )
+                      })()}
                       alt="Obra real Delfos Engenharia — Cassul 155 kWp em Erechim/RS"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-midnight-950/80 via-transparent to-transparent pointer-events-none" />
@@ -385,54 +402,74 @@ export default function SolucaoSolar() {
                   titulo: 'Cassul Distribuidora — 155 kWp',
                   local: 'Erechim / RS',
                   setor: 'Comércio e Serviços',
-                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
+                  slug: 'cassul-erechim-rs-155-0-kwp',
+                  fallbackImg:
+                    'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
                   destaque: '20.000 kWh/mês',
                 },
                 {
                   titulo: 'Clanel Confecções — 123,5 kWp',
                   local: 'Erechim / RS',
                   setor: 'Indústria Têxtil',
-                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
+                  slug: 'clanel-ind-confeccoes-erechim-rs-123-5-kwp',
+                  fallbackImg:
+                    'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
                   destaque: '390 módulos solares',
                 },
                 {
                   titulo: 'Panificadora Garcia — 112,5 kWp',
                   local: 'Passo Fundo / RS',
                   setor: 'Comércio e Serviços',
-                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
+                  slug: 'panificadora-garcia-passo-fundo-rs-112-5-kwp',
+                  fallbackImg:
+                    'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
                   destaque: '112,5 kWp instalados',
                 },
                 {
                   titulo: 'Silo de Armazenagem — 76,16 kWp',
                   local: 'Erebango / RS',
                   setor: 'Agronegócio',
-                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
+                  slug: 'silo-erebango-rs-76-16-kwp',
+                  fallbackImg:
+                    'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
                   destaque: '9.000 kWh/mês gerados',
                 },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden hover:shadow-lg hover:border-solar-400 transition-all group"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-slate-900">
-                    <img
-                      src={item.img}
-                      alt={item.titulo}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase backdrop-blur-xs">
-                      {item.setor}
-                    </span>
-                  </div>
-                  <div className="p-4 space-y-1.5">
-                    <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{item.titulo}</h3>
-                    <div className="flex items-center justify-between text-xs text-slate-500">
-                      <span>{item.local}</span>
-                      <strong className="text-emerald-700 font-bold">{item.destaque}</strong>
+              ].map((item, idx) => {
+                // Tenta buscar case correspondente no PocketBase com versão leve (900px) para cards
+                const caseDb = pbCases.find((c) => c.slug === item.slug)
+                const imgSrc =
+                  (caseDb && caseDb.foto ? getCaseImageUrl(caseDb, 'leve') : null) ||
+                  item.fallbackImg
+
+                return (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden hover:shadow-lg hover:border-solar-400 transition-all group"
+                  >
+                    <div className="relative aspect-video overflow-hidden bg-slate-900">
+                      <img
+                        src={imgSrc}
+                        alt={item.titulo}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase backdrop-blur-xs">
+                        {item.setor}
+                      </span>
+                    </div>
+                    <div className="p-4 space-y-1.5">
+                      <h3 className="font-bold text-slate-900 text-sm line-clamp-1">
+                        {item.titulo}
+                      </h3>
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span>{item.local}</span>
+                        <strong className="text-emerald-700 font-bold">{item.destaque}</strong>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}{' '}
             </div>
           </div>
         </section>

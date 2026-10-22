@@ -296,7 +296,7 @@ export default function AdminPostsTab({ posts, loading, onRefresh }: AdminPostsT
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
                 {posts.map((post) => {
-                  const imageUrl = getPostImageUrl(post)
+                  const imageUrl = getPostImageUrl(post, 'leve')
                   const isPublicado = post.status === 'publicado'
 
                   return (
@@ -307,6 +307,8 @@ export default function AdminPostsTab({ posts, loading, onRefresh }: AdminPostsT
                           <img
                             src={imageUrl}
                             alt={post.titulo}
+                            loading="lazy"
+                            decoding="async"
                             className="w-16 h-12 object-cover rounded-xl border border-slate-200"
                           />
                         ) : (

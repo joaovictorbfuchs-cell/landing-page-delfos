@@ -48,12 +48,14 @@ export default function CaseHeroFeatured({
             </div>
           </div>
 
-          {/* Photo (Upload real ou Card de Placeholder) */}
-          {caseStudy.fotoUrl ? (
-            <div className="my-6 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-xl">
+          {/* Photo (Versão grande/capa para o card hero em destaque ou fotoUrl com lazy loading) */}
+          {caseStudy.fotoUrlGrande || caseStudy.fotoUrl ? (
+            <div className="my-6 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-xl bg-slate-900">
               <img
-                src={caseStudy.fotoUrl}
+                src={caseStudy.fotoUrlGrande || caseStudy.fotoUrl}
                 alt={caseStudy.titulo}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>

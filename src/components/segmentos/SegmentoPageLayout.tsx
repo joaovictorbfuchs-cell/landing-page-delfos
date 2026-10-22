@@ -476,6 +476,18 @@ export default function SegmentoPageLayout({
                         {c.titulo}
                       </h3>
 
+                      {c.fotoUrl && (
+                        <div className="my-3 rounded-xl overflow-hidden aspect-video border border-slate-200/20 bg-slate-900">
+                          <img
+                            src={c.fotoUrl}
+                            alt={c.titulo}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+
                       <p
                         className={`text-xs line-clamp-2 leading-relaxed mb-4 ${
                           isDark ? 'text-slate-300' : 'text-slate-600'

@@ -321,7 +321,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
                 {cases.map((caseItem) => {
-                  const imageUrl = getCaseImageUrl(caseItem)
+                  const imageUrl = getCaseImageUrl(caseItem, 'leve')
                   const isPublicado = caseItem.status === 'publicado'
 
                   return (
@@ -332,6 +332,8 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                           <img
                             src={imageUrl}
                             alt={caseItem.titulo}
+                            loading="lazy"
+                            decoding="async"
                             className="w-16 h-12 object-cover rounded-xl border border-slate-200"
                           />
                         ) : (

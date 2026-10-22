@@ -38,6 +38,7 @@ export interface CaseStudy {
   fotoDescricao: string // Descrição do placeholder técnico
   fotoPlaceholderNota: string // "Foto real — aguardando" ou nota de autorização
   fotoUrl?: string
+  fotoUrlGrande?: string
   potenciaOuCapacidadeCurta: string // Ex: "9,75 kWp", "250 kWh", "75 kWp", "Wallbox DLM"
   tags?: string[]
 }

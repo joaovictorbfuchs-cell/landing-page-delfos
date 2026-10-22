@@ -80,12 +80,14 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
             </div>
           </div>
 
-          {/* Photo (Upload real do banco se existir, ou card de placeholder) */}
+          {/* Photo (Upload real do banco se existir, ou card de placeholder) - versão leve otimizada com lazy loading */}
           {caseStudy.fotoUrl ? (
-            <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md">
+            <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md bg-slate-900">
               <img
                 src={caseStudy.fotoUrl}
                 alt={caseStudy.titulo}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>

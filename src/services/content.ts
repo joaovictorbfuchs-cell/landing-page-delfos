@@ -8,29 +8,46 @@ import type {
   CreateMediaPayload,
 } from '@/types/content'
 
-// Helper para obter a URL pública de arquivos de uma coleção
+export type ImageSizeVariant = 'original' | 'grande' | 'leve' | string
+
+// Helper para obter a URL pública de arquivos de uma coleção com suporte a versão otimizada
 export function getPocketBaseFileUrl(
   collectionName: string,
   recordId: string,
   filename: string,
+  variant?: ImageSizeVariant,
 ): string {
   if (!filename) return ''
-  return `${pb.baseUrl}/api/files/${collectionName}/${recordId}/${filename}`
+  const baseUrl = `${pb.baseUrl}/api/files/${collectionName}/${recordId}/${filename}`
+  if (!variant || variant === 'original') {
+    return baseUrl
+  }
+  // Mapeamento dos formatos de thumb otimizados:
+  // - grande: 1600x0 (~1600px de largura mantendo proporção)
+  // - leve: 900x0 (~900px de largura para cards e galerias)
+  const thumbParam = variant === 'grande' ? '1600x0' : variant === 'leve' ? '900x0' : variant
+  return `${baseUrl}?thumb=${encodeURIComponent(thumbParam)}`
 }
 
-export function getPostImageUrl(post: PostRecord): string {
+export function getPostImageUrl(post: PostRecord, variant: ImageSizeVariant = 'original'): string {
   if (!post.foto_capa) return ''
-  return getPocketBaseFileUrl('posts', post.id, post.foto_capa)
+  return getPocketBaseFileUrl('posts', post.id, post.foto_capa, variant)
 }
 
-export function getCaseImageUrl(caseItem: CaseRecord): string {
+export function getCaseImageUrl(
+  caseItem: CaseRecord,
+  variant: ImageSizeVariant = 'original',
+): string {
   if (!caseItem.foto) return ''
-  return getPocketBaseFileUrl('cases', caseItem.id, caseItem.foto)
+  return getPocketBaseFileUrl('cases', caseItem.id, caseItem.foto, variant)
 }
 
-export function getMediaFileUrl(media: MediaRecord): string {
+export function getMediaFileUrl(
+  media: MediaRecord,
+  variant: ImageSizeVariant = 'original',
+): string {
   if (!media.arquivo) return ''
-  return getPocketBaseFileUrl('media', media.id, media.arquivo)
+  return getPocketBaseFileUrl('media', media.id, media.arquivo, variant)
 }
 
 // ----------------------------------------------------

@@ -106,12 +106,14 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
 
         {/* Modal Body: Estrutura obrigatória dos 7 campos */}
         <div className="p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-          {/* Foto no modal (Foto real se enviada via upload, ou Card Placeholder) */}
-          {caseStudy.fotoUrl ? (
-            <div className="rounded-2xl overflow-hidden aspect-video border border-slate-200 shadow-md">
+          {/* Foto no modal (Versão grande/capa ~1600px se disponível para visualização nítida expandida) */}
+          {caseStudy.fotoUrlGrande || caseStudy.fotoUrl ? (
+            <div className="rounded-2xl overflow-hidden aspect-video border border-slate-200 shadow-md bg-slate-900">
               <img
-                src={caseStudy.fotoUrl}
+                src={caseStudy.fotoUrlGrande || caseStudy.fotoUrl}
                 alt={caseStudy.titulo}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>

@@ -94,7 +94,7 @@ export default function Conteudos() {
       autorCargo: p.autor_cargo || 'Especialista em Energia',
       palavraChave: p.palavra_chave || p.categoria,
       palavrasChaveSecundarias: [],
-      fotoUrl: getPostImageUrl(p),
+      fotoUrl: getPostImageUrl(p, 'leve'),
       isDynamic: true,
     }))
 

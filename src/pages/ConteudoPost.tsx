@@ -86,7 +86,7 @@ export default function ConteudoPost() {
     dynamicPost?.autor_cargo || staticArtigo?.autor.cargo || 'Especialista em Energia'
   const palavraChave =
     dynamicPost?.palavra_chave || staticArtigo?.palavraChavePrincipal || categoria
-  const fotoUrl = dynamicPost ? getPostImageUrl(dynamicPost) : ''
+  const fotoUrl = dynamicPost ? getPostImageUrl(dynamicPost, 'grande') : ''
   const conteudoTexto = dynamicPost?.conteudo || ''
   const resumo = dynamicPost?.resumo || staticArtigo?.resumo || ''
   const metaDescription = dynamicPost
