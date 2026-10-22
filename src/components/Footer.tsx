@@ -76,17 +76,17 @@ export default function Footer() {
                   href="/solucoes/energia-solar"
                   className="hover:text-solar-400 transition-colors block"
                 >
-                  Energia Solar Fotovoltaica (Projeto e Instalação)
+                  Energia solar
                 </a>
               </li>
               <li>
                 <a href="/solucoes/bess" className="hover:text-solar-400 transition-colors block">
-                  Sistema de armazenamento de energia (BESS)
+                  Baterias de energia
                 </a>
               </li>
               <li>
                 <a href="/solucoes/om" className="hover:text-solar-400 transition-colors block">
-                  Manutenção O&M e Monitoramento
+                  Manutenção e monitoramento
                 </a>
               </li>
               <li>
@@ -94,7 +94,7 @@ export default function Footer() {
                   href="/solucoes/carregadores"
                   className="hover:text-solar-400 transition-colors block"
                 >
-                  Carregadores Veiculares com Gestão de Carga Inteligente
+                  Recarga veicular
                 </a>
               </li>
               <li>

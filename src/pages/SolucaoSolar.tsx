@@ -120,7 +120,7 @@ export default function SolucaoSolar() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Energia Solar Fotovoltaica (Projeto e Instalação) em Erechim e Sul do Brasil"
+        title="Energia solar em Erechim e Sul do Brasil | Delfos Engenharia"
         description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos conectados à rede ou com baterias, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
         ogImage="/og-image.png"
@@ -141,9 +141,7 @@ export default function SolucaoSolar() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-slate-900 font-semibold">
-              Energia Solar Fotovoltaica (Projeto e Instalação)
-            </span>
+            <span className="text-slate-900 font-semibold">Energia solar</span>
           </div>
         </div>
 
@@ -158,11 +156,11 @@ export default function SolucaoSolar() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-400/15 border border-solar-400/30 text-solar-300 text-xs font-bold uppercase tracking-wider">
                   <Sun className="w-3.5 h-3.5 text-solar-400" />
-                  Solução 01 • Engenharia Completa (Projeto e Instalação)
+                  Solução 01 • Energia solar
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Energia Solar Fotovoltaica:{' '}
+                  Energia solar:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-amber-300 to-solar-400">
                     engenharia de ponta a ponta
                   </span>{' '}

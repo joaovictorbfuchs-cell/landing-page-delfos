@@ -100,8 +100,8 @@ export default function SolucaoBess() {
   return (
     <div className="min-h-screen flex flex-col bg-[#050A10] text-slate-100 antialiased selection:bg-emerald-500 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Sistema de armazenamento de energia (BESS) | Baterias Industriais e Backup"
-        description="Sistema de armazenamento de energia em baterias (BESS): economia no horário de ponta, backup ininterrupto e redução de demanda (peak shaving) no Sul do Brasil. Delfos Engenharia."
+        title="Baterias de energia | Armazenamento e Backup | Delfos Engenharia"
+        description="Baterias de energia e sistemas de armazenamento: economia no horário de ponta, backup ininterrupto e redução de demanda (peak shaving) no Sul do Brasil. Delfos Engenharia."
         canonicalPath="/solucoes/bess"
         ogImage="/og-image.png"
       />
@@ -121,9 +121,7 @@ export default function SolucaoBess() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-white font-semibold">
-              Sistema de armazenamento de energia (BESS)
-            </span>
+            <span className="text-white font-semibold">Baterias de energia</span>
           </div>
         </div>
 
@@ -138,11 +136,11 @@ export default function SolucaoBess() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider">
                   <BatteryCharging className="w-3.5 h-3.5" />
-                  Solução 02 • Armazenamento Eletroquímico Avançado
+                  Solução 02 • Baterias de energia
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Armazenamento e Baterias (BESS):{' '}
+                  Baterias de energia:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
                     estratégia própria de energia
                   </span>{' '}

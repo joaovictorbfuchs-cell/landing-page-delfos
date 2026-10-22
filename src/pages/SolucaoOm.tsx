@@ -116,8 +116,8 @@ export default function SolucaoOm() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Manutenção O&M e Monitoramento de Usinas Solares | Termografia & Drone"
-        description="Proteja o retorno do seu ativo solar: monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos personalizados com prazo garantido. Delfos O&M."
+        title="Manutenção e monitoramento de usinas solares | Delfos Engenharia"
+        description="Proteja o retorno do seu ativo solar: manutenção e monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos personalizados com prazo garantido. Delfos."
         canonicalPath="/solucoes/om"
         ogImage="/og-image.png"
       />
@@ -137,7 +137,7 @@ export default function SolucaoOm() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-slate-900 font-semibold">Manutenção O&M e Monitoramento</span>
+            <span className="text-slate-900 font-semibold">Manutenção e monitoramento</span>
           </div>
         </div>
 
@@ -152,11 +152,11 @@ export default function SolucaoOm() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
                   <Wrench className="w-3.5 h-3.5 text-blue-400" />
-                  Solução 03 • Operação, Manutenção & Monitoramento
+                  Solução 03 • Manutenção e monitoramento
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  O&M Solar:{' '}
+                  Manutenção e monitoramento:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-200 to-solar-300">
                     recupere até 25% da geração
                   </span>{' '}

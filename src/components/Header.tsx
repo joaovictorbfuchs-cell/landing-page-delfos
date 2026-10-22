@@ -48,28 +48,28 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
 
   const solucoesList = [
     {
-      title: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
+      title: 'Energia solar',
       desc: 'Conectado à rede ou com baterias, telhado e solo, redução de até 90%',
       href: '/solucoes/energia-solar',
       icon: Sun,
       color: 'text-solar-400',
     },
     {
-      title: 'Sistema de armazenamento de energia (BESS)',
+      title: 'Baterias de energia',
       desc: 'Bloqueio do horário de ponta, backup ininterrupto e redução da demanda (peak shaving)',
       href: '/solucoes/bess',
       icon: BatteryCharging,
       color: 'text-emerald-400',
     },
     {
-      title: 'Manutenção O&M e Monitoramento',
+      title: 'Manutenção e monitoramento',
       desc: 'Termografia por drone, limpeza técnica e tempo de resposta combinado',
       href: '/solucoes/om',
       icon: Wrench,
       color: 'text-blue-400',
     },
     {
-      title: 'Carregadores Veiculares com Gestão de Carga Inteligente',
+      title: 'Recarga veicular',
       desc: 'Wallbox inteligente, medição individual em condomínios e frotas',
       href: '/solucoes/carregadores',
       icon: Car,

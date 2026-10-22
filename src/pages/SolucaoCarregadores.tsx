@@ -88,7 +88,7 @@ export default function SolucaoCarregadores() {
   return (
     <div className="min-h-screen flex flex-col bg-[#070A10] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Carregadores Veiculares com Gestão de Carga Inteligente para Condomínios e Frotas"
+        title="Recarga veicular para condomínios, empresas e residências | Delfos Engenharia"
         description="Infraestrutura de recarga veicular com gestão de carga inteligente sem sobrecarregar o transformador predial. Wallbox, DC fast charge e medição individual. Delfos."
         canonicalPath="/solucoes/carregadores"
         ogImage="/og-image.png"
@@ -109,7 +109,7 @@ export default function SolucaoCarregadores() {
               Soluções
             </Link>
             <span>/</span>
-            <span className="text-white font-semibold">Carregadores Veiculares</span>
+            <span className="text-white font-semibold">Recarga veicular</span>
           </div>
         </div>
 
@@ -124,11 +124,11 @@ export default function SolucaoCarregadores() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider">
                   <Car className="w-3.5 h-3.5" />
-                  Solução 04 • Eletromobilidade com Gestão de Carga Inteligente
+                  Solução 04 • Recarga veicular
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Carregadores Veiculares:{' '}
+                  Recarga veicular:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-sky-300 to-solar-300">
                     infraestrutura inteligente e segura
                   </span>{' '}

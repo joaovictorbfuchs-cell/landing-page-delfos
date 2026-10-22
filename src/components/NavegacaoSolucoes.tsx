@@ -10,7 +10,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
   const solucoes = [
     {
       id: 'solar',
-      titulo: 'Energia Solar Fotovoltaica (Projeto e Instalação)',
+      titulo: 'Energia solar',
       descricao:
         'Conectado à rede (on-grid) ou com baterias (híbrido), telhado e solo, redução de até 90% na conta de luz.',
       href: '/solucoes/energia-solar',
@@ -20,7 +20,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     },
     {
       id: 'bess',
-      titulo: 'Sistema de armazenamento de energia (BESS)',
+      titulo: 'Baterias de energia',
       descricao:
         'Bloqueio do horário de ponta, backup ininterrupto e redução da cobrança de demanda (peak shaving).',
       href: '/solucoes/bess',
@@ -30,7 +30,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     },
     {
       id: 'om',
-      titulo: 'Manutenção O&M e Monitoramento',
+      titulo: 'Manutenção e monitoramento',
       descricao:
         'Termografia por drone, limpeza técnica, tempo de resposta combinado e monitoramento remoto.',
       href: '/solucoes/om',
@@ -40,7 +40,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     },
     {
       id: 'carregadores',
-      titulo: 'Carregadores Veiculares com Gestão de Carga Inteligente',
+      titulo: 'Recarga veicular',
       descricao: 'Wallbox inteligente, medição individual e recarga sem trocar transformador.',
       href: '/solucoes/carregadores',
       icone: Car,

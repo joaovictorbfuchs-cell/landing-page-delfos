@@ -5,9 +5,9 @@ export default function Pilares() {
     {
       id: 'solar',
       numero: '01',
-      titulo: 'Energia Solar Fotovoltaica',
+      titulo: 'Energia solar',
       beneficio:
-        'Redução imediata de até 90% na conta de luz com engenharia e homologação completa para sua empresa ou residência.',
+        'Redução de até 90% na conta de luz, com toda a papelada e a aprovação na concessionária resolvidas por nós.',
       icone: Sun,
       corIcone: 'bg-solar-100 text-solar-700 border-solar-200',
       tagCor: 'bg-solar-50 text-solar-800 border-solar-200',
@@ -16,9 +16,8 @@ export default function Pilares() {
     {
       id: 'bess',
       numero: '02',
-      titulo: 'Sistemas de Armazenamento BESS',
-      beneficio:
-        'Backup inteligente contra quedas de energia e economia com corte de pico tarifário através de bancos de baterias.',
+      titulo: 'Baterias de energia',
+      beneficio: 'Energia de reserva quando falta luz, e mais economia nas horas de consumo alto.',
       icone: BatteryCharging,
       corIcone: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       tagCor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -27,9 +26,9 @@ export default function Pilares() {
     {
       id: 'oem',
       numero: '03',
-      titulo: 'Manutenção O&M e Monitoramento',
+      titulo: 'Manutenção e monitoramento',
       beneficio:
-        'Gestão preventiva, inspeção termográfica e monitoramento contínuo com tempo de resposta combinado para garantir a máxima geração da usina.',
+        'Vistorias periódicas e atendimento rápido quando algo sair do normal — sua usina sempre gerando no máximo.',
       icone: Wrench,
       corIcone: 'bg-blue-100 text-blue-800 border-blue-200',
       tagCor: 'bg-blue-50 text-blue-800 border-blue-200',
@@ -38,9 +37,9 @@ export default function Pilares() {
     {
       id: 'carregadores',
       numero: '04',
-      titulo: 'Carregadores Veiculares',
+      titulo: 'Recarga veicular',
       beneficio:
-        'Infraestrutura de recarga inteligente com balanceamento de carga para condomínios, frotas e empresas sem sobrecarga.',
+        'Carregue veículos sem estourar a rede elétrica do seu imóvel — para casas, condomínios e empresas.',
       icone: Car,
       corIcone: 'bg-indigo-100 text-indigo-800 border-indigo-200',
       tagCor: 'bg-indigo-50 text-indigo-800 border-indigo-200',
@@ -54,14 +53,14 @@ export default function Pilares() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-100 text-solar-800 text-xs font-bold uppercase tracking-wider mb-3">
-            Soluções Estratégicas Delfos
+            Nossas soluções
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-            Quatro soluções que operam o seu ciclo energético
+            Tudo para a sua energia, em um só lugar
           </h2>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Mais do que instalar placas: desenhamos a arquitetura completa de geração,
-            armazenamento, continuidade operacional e mobilidade da sua empresa ou residência.
+            Projeto, instalação e manutenção de energia solar, baterias e recarga veicular — com uma
+            única equipe responsável, do orçamento ao suporte.
           </p>
         </div>
 
@@ -105,13 +104,13 @@ export default function Pilares() {
                   </p>
                 </div>
 
-                {/* Footer Action - Botão único 'Saber mais' */}
+                {/* Footer Action - Botão 'Ver como funciona' */}
                 <div className="pt-4 border-t border-slate-200/80 flex items-center">
                   <a
                     href={p.paginaUrl}
                     className="inline-flex items-center justify-center gap-2 bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-3 rounded-xl text-sm shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] group/btn"
                   >
-                    <span>Saber mais</span>
+                    <span>Ver como funciona</span>
                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </a>
                 </div>
