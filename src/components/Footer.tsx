@@ -201,11 +201,11 @@ export default function Footer() {
                   href="mailto:contato@delfosengenharia.com.br"
                   className="hover:text-solar-400 transition-colors"
                 >
-                  contato@delfosengenharia.com.br
+                  contato@delfos.eng.br
                 </a>
               </li>
               <li className="pt-2 text-xs text-slate-400">
-                Horário de Atendimento Técnico: Seg a Sex das 08h às 18h
+                Horário de Atendimento Técnico: Seg a Sex das 08h às 17:20h
               </li>
             </ul>
           </div>
