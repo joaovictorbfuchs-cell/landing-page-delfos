@@ -72,8 +72,8 @@ export default function Depoimentos() {
             O que nossos clientes dizem
           </h2>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Mais de 150 sistemas solares instalados com índice de 99% de satisfação em Erechim e
-            toda a região norte gaúcha.
+            Mais de 2.000 clientes atendidos em Erechim e região — projetos executados por
+            engenheiros, com responsabilidade técnica e ART.
           </p>
         </div>
 
