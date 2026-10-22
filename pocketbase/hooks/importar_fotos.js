@@ -15,7 +15,7 @@
  *    Se o registro já existir, reprocessa/atualiza os arquivos e pré-gera os thumbs
  *    (sem duplicar registros no banco).
  */
-routerAdd('POST', '/backend/v1/importar-fotos-delfos', (e) => {
+const executarSincronizacaoFotos = (e) => {
   let fsys = null
   try {
     const mediaCollection = $app.findCollectionByNameOrId('media')
@@ -275,4 +275,7 @@ routerAdd('POST', '/backend/v1/importar-fotos-delfos', (e) => {
       } catch (_) {}
     }
   }
-})
+}
+
+routerAdd('GET', '/backend/v1/importar-fotos-delfos', executarSincronizacaoFotos)
+routerAdd('POST', '/backend/v1/importar-fotos-delfos', executarSincronizacaoFotos)
