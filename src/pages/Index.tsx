@@ -61,7 +61,7 @@ export default function Index() {
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Delfos Engenharia Solar — Da geração à operação da sua energia"
-        description="Integradora gaúcha de Erechim/RS com 12 anos de mercado e +3.000 projetos no Sul. Energia solar fotovoltaica, BESS industrial, O&M com SLA e recarga veicular com gestão de carga inteligente."
+        description="Integradora gaúcha de Erechim/RS com 12 anos de mercado e +3.000 projetos no Sul. Energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com gestão de carga inteligente."
         canonicalPath="/"
       />
 

@@ -110,7 +110,7 @@ export default function Conteudos() {
 
               <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
                 Artigos didáticos e aprofundados sobre geração fotovoltaica em Erechim e no RS,
-                dimensionamento de BESS industrial, rotinas de O&M com SLA e infraestrutura de
+                dimensionamento de BESS industrial, rotinas de O&M com tempo de resposta garantido e infraestrutura de
                 recarga para condomínios. Sem promessas vazias — apenas engenharia prática.
               </p>
 

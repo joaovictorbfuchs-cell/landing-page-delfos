@@ -29,7 +29,7 @@ export default function Pilares() {
       numero: '03',
       titulo: 'Manutenção O&M e Monitoramento',
       beneficio:
-        'Gestão preventiva, inspeção termográfica e monitoramento contínuo com SLA para garantir a máxima geração da usina.',
+        'Gestão preventiva, inspeção termográfica e monitoramento contínuo com tempo de resposta combinado para garantir a máxima geração da usina.',
       icone: Wrench,
       corIcone: 'bg-blue-100 text-blue-800 border-blue-200',
       tagCor: 'bg-blue-50 text-blue-800 border-blue-200',

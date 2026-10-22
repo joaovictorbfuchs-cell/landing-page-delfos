@@ -31,7 +31,7 @@ export default function NavegacaoSolucoes({ solucaoAtual, dark = false }: Navega
     {
       id: 'om',
       titulo: 'Manutenção O&M e Monitoramento',
-      descricao: 'Termografia por drone, limpeza técnica, planos com SLA e monitoramento remoto.',
+      descricao: 'Termografia por drone, limpeza técnica, tempo de resposta combinado e monitoramento remoto.',
       href: '/solucoes/om',
       icone: Wrench,
       corBadge: 'bg-blue-500/15 text-blue-400 border-blue-500/30',

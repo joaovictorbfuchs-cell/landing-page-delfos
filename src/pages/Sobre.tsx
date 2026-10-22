@@ -43,7 +43,7 @@ export default function Sobre() {
     alternateName: 'Delfos Solar',
     legalName: 'Delfos Engenharia Solar LTDA',
     description:
-      'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, O&M com SLA e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
+      'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
     url: 'https://delfosengenharia.com.br/sobre',
     telephone: '+55-54-99129-2121',
     email: 'contato@delfosengenharia.com.br',
@@ -415,7 +415,7 @@ export default function Sobre() {
           initialNecessidade="Energia Solar Fotovoltaica"
           initialOrigem="sobre-delfos-institucional"
           tituloSecao="Inicie sua jornada energética com a Delfos Solar"
-          subtituloSecao="Fale diretamente com nossa engenharia de Erechim/RS para simular sua usina solar, avaliar seu projeto de BESS industrial ou estruturar manutenção com SLA."
+          subtituloSecao="Fale diretamente com nossa engenharia de Erechim/RS para simular sua usina solar, avaliar seu projeto de BESS industrial ou estruturar manutenção com tempo de resposta garantido."
           textoBotaoFinal="Solicitar atendimento de engenharia"
         />
       </main>

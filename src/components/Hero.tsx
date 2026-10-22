@@ -205,9 +205,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl">
-                A <strong>Delfos Engenharia</strong> projeta, constrói e opera sistemas solares de
-                alta performance, sistema de armazenamento de energia em baterias (BESS), planos com
-                SLA de monitoramento contínuo e infraestrutura de recarga veicular no Sul do Brasil.
+                Reduza sua conta de luz até 90% com energia solar projetada e instalada por engenheiros próprios — e conte com a gente na operação e manutenção, do início ao fim.
               </p>
             </div>
 
@@ -218,7 +216,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                 size="lg"
                 className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-7 py-6 text-base rounded-xl shadow-lg shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
               >
-                Solicitar avaliação
+                Solicitar orçamento gratuito
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
 

@@ -262,7 +262,7 @@ export default function PlantaoWidgetFlutuante({
         setIsClientValidated(false)
         setStep(2)
         const reply =
-          'Perfeito! Temos planos de O&M (Essencial, Pro e Usinas) com SLA rápido e termografia. O que motivou seu contato ou qual a situação da sua usina?'
+          'Perfeito! Oferecemos planos personalizados de operação e manutenção sob medida, com tempo de resposta rápido e termografia por drone. O que motivou seu contato ou qual a situação da sua usina?'
         appendAssistantMessage(reply)
         setIsLoading(false)
         return

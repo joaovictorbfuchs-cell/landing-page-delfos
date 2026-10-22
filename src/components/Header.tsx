@@ -63,7 +63,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     },
     {
       title: 'Manutenção O&M e Monitoramento',
-      desc: 'Termografia por drone, limpeza técnica e planos com SLA',
+      desc: 'Termografia por drone, limpeza técnica e tempo de resposta combinado',
       href: '/solucoes/om',
       icon: Wrench,
       color: 'text-blue-400',

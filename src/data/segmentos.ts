@@ -236,7 +236,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       {
         pergunta: 'Vocês realizam manutenção em usinas instaladas por outras integradoras?',
         resposta:
-          'Sim! A solução de O&M da Delfos atende usinas comerciais e industriais de qualquer fabricante, com contratos preventivos com SLA e laudos periódicos com ART no CREA-RS.',
+          'Sim! A solução de O&M da Delfos atende usinas comerciais e industriais de qualquer fabricante, com contratos preventivos com tempo de resposta combinado e laudos periódicos com ART no CREA-RS.',
       },
     ],
     seo: {
@@ -288,9 +288,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
       {
         titulo: 'Manutenção O&M e Monitoramento',
-        subtitulo: 'Planos com SLA de até 4h, termografia radiométrica e revisão de subestação.',
+        subtitulo: 'Planos com tempo de resposta rápido de até 4h, termografia radiométrica e revisão de subestação.',
         href: '/solucoes/om',
-        badge: 'SLA Industrial',
+        badge: 'Resposta Rápida Industrial',
         icone: Wrench,
       },
     ],
@@ -336,7 +336,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Energia Solar, Baterias (BESS) e Demanda Contratada para Indústrias | Delfos RS',
       description:
-        'Engenharia industrial de ciclo completo no RS: baterias (BESS) para continuidade, bloqueio de ponta, redução de demanda (peak shaving), solar e O&M com SLA para indústrias em Erechim e no Sul.',
+        'Engenharia industrial de ciclo completo no RS: baterias (BESS) para continuidade, bloqueio de ponta, redução de demanda (peak shaving), solar e O&M com tempo de resposta combinado para indústrias em Erechim e no Sul.',
     },
   },
 
@@ -561,7 +561,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
       {
         titulo: 'Manutenção O&M e Monitoramento',
-        subtitulo: 'Recuperação de usinas com baixo PR, drone termográfico e SLA de investidor.',
+        subtitulo: 'Recuperação de usinas com baixo índice de geração (PR), drone termográfico e atendimento prioritário para investidores.',
         href: '/solucoes/om',
         badge: 'Proteção da TIR',
         icone: Wrench,
@@ -606,7 +606,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       {
         pergunta: 'A Delfos constrói usinas no modelo Turnkey (chave na mão)?',
         resposta:
-          'Sim. Cobrimos o ciclo completo: estudo de solo, terraplanagem, engenharia civil e elétrica, fornecimento de módulos e inversores de fabricantes de primeira linha, subestação abrigada, cabeamento MT, homologação e O&M com SLA.',
+          'Sim. Cobrimos o ciclo completo: estudo de solo, terraplanagem, engenharia civil e elétrica, fornecimento de módulos e inversores de fabricantes de primeira linha, subestação abrigada, cabeamento MT, homologação e O&M com tempo de resposta garantido.',
       },
       {
         pergunta: 'Como funciona o diagnóstico para usinas de solo que estão com baixa geração?',

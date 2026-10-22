@@ -34,7 +34,7 @@ export default function Footer() {
             <p className="text-sm text-slate-300 leading-relaxed max-w-md">
               Da geração à operação da sua energia. Integradora de engenharia gaúcha com 12 anos de
               mercado, mais de 3.000 projetos entregues e atuação no ecossistema de geração
-              fotovoltaica, baterias e armazenamento (BESS), O&M com SLA e recarga de veículos
+              fotovoltaica, baterias e armazenamento (BESS), operação e manutenção (O&M) com tempo de resposta combinado e recarga de veículos
               elétricos.
             </p>
 

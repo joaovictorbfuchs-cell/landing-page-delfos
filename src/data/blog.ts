@@ -224,9 +224,9 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     titulo:
       'Manutenção de Usina Solar (O&M): Como Evitar a Perda Silenciosa de até 25% da Geração de Energia',
     subtitulo:
-      'Limpeza técnica especializada, termografia com drone e inspeção elétrica preventiva com SLA de restabelecimento no Sul.',
+      'Limpeza técnica especializada, termografia com drone e inspeção elétrica preventiva com tempo de resposta rápido combinado no Sul.',
     resumo:
-      'Poeira, dejetos de aves, conexões superaquecidas e microfissuras drenam o rendimento financeiro de usinas solares de solo e telhado. Descubra a metodologia de O&M com SLA da Delfos Engenharia.',
+      'Poeira, dejetos de aves, conexões superaquecidas e microfissuras drenam o rendimento financeiro de usinas solares de solo e telhado. Descubra a metodologia de operação e manutenção (O&M) com tempo de resposta garantido da Delfos Engenharia.',
     categoria: 'Operação & Manutenção',
     tempoLeitura: '6 min de leitura',
     dataPublicacao: '20 de Outubro de 2026',
@@ -287,10 +287,10 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
         ],
       },
       {
-        tituloH2: 'Monitoramento Remoto em Tempo Real com Acordo de Nível de Serviço (SLA)',
+        tituloH2: 'Monitoramento Remoto em Tempo Real com Tempo de Resposta Combinado (SLA)',
         conteudo: [
           'A central de monitoramento remoto da Delfos rastreia inversores de clientes diariamente via algoritmos que comparam a geração horária contra a curva solarimétrica meteorológica da região de Erechim e do Sul.',
-          'Quando um inversor desarma ou apresenta queda anômala de rendimento, o protocolo de SLA é acionado imediatamente, deslocando equipes volantes de técnicos próprios credenciados no CREA para restabelecimento com rapidez, evitando semanas de geração desperdiçada.',
+          'Quando um inversor desarma ou apresenta queda anômala de rendimento, o protocolo de resposta rápida é acionado imediatamente, deslocando equipes volantes de técnicos próprios credenciados no CREA para restabelecimento com rapidez, evitando semanas de geração desperdiçada.',
         ],
       },
     ],
