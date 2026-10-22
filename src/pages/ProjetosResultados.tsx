@@ -65,6 +65,27 @@ export default function ProjetosResultados() {
     // 1. Converter cases do PocketBase
     const fromDb: CaseStudy[] = dynamicCases.map((c) => {
       const imageUrl = getCaseImageUrl(c)
+      // Mapeamento de fallback para fotos reais históricas caso ainda não haja arquivo binário uploaded no PB
+      const fallbackPhotoMap: Record<string, string> = {
+        'cassul-erechim-rs-155-0-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
+        'clanel-ind-confeccoes-erechim-rs-123-5-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
+        'panificadora-garcia-passo-fundo-rs-112-5-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
+        'silo-erebango-rs-76-16-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
+        'posto-caminho-do-mercosul-severiano-de-almeida-rs-54-9-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/04/DJI_0068.jpg',
+        'usina-solar-solo-erechim-rs-40-8-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/WhatsApp-Image-2019-12-11-at-17.44.44-1.jpeg',
+        'pecuaria-de-leite-barao-de-cotegipe-rs-18-5-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/07/1-3.jpg',
+        'residencia-urbana-erechim-rs-6-48-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2020/06/DJI_0029-e1591648388934.jpg',
+      }
+      const finalPhotoUrl = imageUrl || fallbackPhotoMap[c.slug] || undefined
+
       return {
         id: c.slug || c.id,
         slug: c.slug || c.id,
@@ -88,13 +109,15 @@ export default function ProjetosResultados() {
         fotoDescricao: c.descricao || 'Case auditado pela Delfos Engenharia.',
         fotoPlaceholderNota: 'Foto real oficial',
         potenciaOuCapacidadeCurta: c.potencia_capacidade || 'Não informado',
-        fotoUrl: imageUrl || undefined,
+        fotoUrl: finalPhotoUrl,
       }
     })
 
     // 2. Cases estáticos evitando duplicar por id/slug
     const existingIds = new Set(fromDb.map((c) => c.id))
-    const fromStatic: CaseStudy[] = CASES_DATA.filter((c) => !existingIds.has(c.id))
+    const fromStatic: CaseStudy[] = CASES_DATA.filter(
+      (c) => !existingIds.has(c.id) && !existingIds.has(c.slug),
+    )
 
     return [...fromDb, ...fromStatic]
   }, [dynamicCases])

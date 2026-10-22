@@ -71,6 +71,7 @@ export default function Admin() {
   // Media state
   const [mediaList, setMediaList] = useState<MediaRecord[]>([])
   const [loadingMedia, setLoadingMedia] = useState(false)
+  const [importingFotos, setImportingFotos] = useState(false)
 
   const currentUser = getCurrentUser()
 
@@ -539,7 +540,66 @@ export default function Admin() {
         )}
 
         {activeTab === 'media' && (
-          <AdminMediaTab mediaList={mediaList} loading={loadingMedia} onRefresh={fetchMedia} />
+          <div className="space-y-6">
+            {/* Banner de Sincronização de Fotos Reais Delfos */}
+            <div className="bg-gradient-to-r from-[#0B2C4F] to-[#081B30] text-white p-5 rounded-2xl border border-solar-400/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-solar-400 block">
+                  Acervo Histórico Delfos Engenharia
+                </span>
+                <h3 className="text-base font-extrabold text-white">
+                  Fotos Reais de Obras e Instalações (WordPress Delfos)
+                </h3>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Importa automaticamente fotos de obras (Cassul 155 kWp, Clanel 123 kWp,
+                  Panificadora Garcia 112 kWp, Silo Erebango, etc.) para o banco de dados e vincula
+                  aos respectivos cases.
+                </p>
+              </div>
+              <Button
+                disabled={importingFotos}
+                onClick={async () => {
+                  setImportingFotos(true)
+                  try {
+                    const pbUrl = import.meta.env.VITE_POCKETBASE_URL
+                    const res = await fetch(`${pbUrl}/backend/v1/importar-fotos-delfos`, {
+                      method: 'POST',
+                    })
+                    const json = await res.json()
+                    if (res.ok) {
+                      toast({
+                        title: 'Fotos reais importadas!',
+                        description: `${json.total || 10} fotos reais de obras foram processadas e salvas na biblioteca de mídia e nos cases.`,
+                      })
+                      fetchMedia()
+                      fetchCases()
+                    } else {
+                      toast({
+                        variant: 'destructive',
+                        title: 'Erro na importação',
+                        description: json.error || 'Não foi possível importar as fotos.',
+                      })
+                    }
+                  } catch (err: unknown) {
+                    toast({
+                      variant: 'destructive',
+                      title: 'Erro de rede',
+                      description:
+                        (err as Error)?.message || 'Falha ao acionar rotina de importação.',
+                    })
+                  } finally {
+                    setImportingFotos(false)
+                  }
+                }}
+                className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs rounded-xl shadow-md shrink-0 h-10 px-4"
+              >
+                <RefreshCw className={`w-4 h-4 mr-1.5 ${importingFotos ? 'animate-spin' : ''}`} />
+                <span>{importingFotos ? 'Importando fotos...' : 'Sincronizar Fotos Delfos'}</span>
+              </Button>
+            </div>
+
+            <AdminMediaTab mediaList={mediaList} loading={loadingMedia} onRefresh={fetchMedia} />
+          </div>
         )}
 
         {activeTab === 'leads' && (

@@ -203,30 +203,27 @@ export default function SolucaoSolar() {
                 </div>
               </div>
 
-              {/* Right Hero: Destaque de Engenharia + Calculadora rápida de economia */}
+              {/* Right Hero: Foto Real de Obra + Calculadora rápida de economia */}
               <div className="lg:col-span-5 space-y-4">
-                {/* Destaque Institucional de Engenharia no Sul */}
-                <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-md relative overflow-hidden">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-solar-400/20 text-solar-300 border border-solar-400/30">
-                      Engenharia Própria
+                {/* Foto Real de Instalação Comercial Delfos */}
+                <div className="rounded-3xl border border-white/15 bg-white/10 p-4 backdrop-blur-md relative overflow-hidden group">
+                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-3 border border-white/20 shadow-xl">
+                    <img
+                      src="https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg"
+                      alt="Obra real Delfos Engenharia — Cassul 155 kWp em Erechim/RS"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-950/80 via-transparent to-transparent pointer-events-none" />
+                    <span className="absolute bottom-2.5 left-3 text-[11px] font-mono font-bold text-white bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/20">
+                      Obra Real: Cassul Distribuidora • 155 kWp
                     </span>
-                    <span className="text-xs text-slate-300">Erechim e mais de 60 municípios</span>
                   </div>
 
-                  <div className="flex items-start gap-4 pt-1">
-                    <div className="w-12 h-12 rounded-2xl bg-solar-400/20 border border-solar-400/30 flex items-center justify-center text-solar-300 shrink-0">
-                      <Sun className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-bold text-white leading-snug">
-                        Usinas projetadas para as condições reais do Sul
-                      </h3>
-                      <p className="text-xs text-slate-200 mt-1 leading-relaxed">
-                        Cálculo estrutural para suportar ventos, telhados de todos os tipos e
-                        módulos de alta eficiência com até 25 anos de garantia.
-                      </p>
-                    </div>
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-solar-300">
+                      Engenharia Própria de Campo
+                    </span>
+                    <span className="text-xs text-slate-300">Erechim e +60 municípios</span>
                   </div>
                 </div>
 
@@ -352,6 +349,90 @@ export default function SolucaoSolar() {
                   RS & SC Cobertos
                 </span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* GALERIA DE INSTALAÇÕES REAIS DE OBRAS DA DELFOS */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block mb-1">
+                  Evidência de Obras
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                  Instalações reais da Delfos Engenharia no Sul
+                </h2>
+                <p className="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl">
+                  Registros fotográficos de projetos comerciais, industriais, agrícolas e
+                  residenciais construídos e homologados pela nossa equipe.
+                </p>
+              </div>
+
+              <Link
+                to="/projetos"
+                className="inline-flex items-center gap-2 text-xs font-bold text-solar-700 hover:text-solar-900 bg-solar-50 px-4 py-2.5 rounded-xl border border-solar-200 w-fit transition-colors"
+              >
+                <span>Ver todos os cases com métricas</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  titulo: 'Cassul Distribuidora — 155 kWp',
+                  local: 'Erechim / RS',
+                  setor: 'Comércio e Serviços',
+                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
+                  destaque: '20.000 kWh/mês',
+                },
+                {
+                  titulo: 'Clanel Confecções — 123,5 kWp',
+                  local: 'Erechim / RS',
+                  setor: 'Indústria Têxtil',
+                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
+                  destaque: '390 módulos solares',
+                },
+                {
+                  titulo: 'Panificadora Garcia — 112,5 kWp',
+                  local: 'Passo Fundo / RS',
+                  setor: 'Comércio e Serviços',
+                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
+                  destaque: '112,5 kWp instalados',
+                },
+                {
+                  titulo: 'Silo de Armazenagem — 76,16 kWp',
+                  local: 'Erebango / RS',
+                  setor: 'Agronegócio',
+                  img: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
+                  destaque: '9.000 kWh/mês gerados',
+                },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden hover:shadow-lg hover:border-solar-400 transition-all group"
+                >
+                  <div className="relative aspect-video overflow-hidden bg-slate-900">
+                    <img
+                      src={item.img}
+                      alt={item.titulo}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase backdrop-blur-xs">
+                      {item.setor}
+                    </span>
+                  </div>
+                  <div className="p-4 space-y-1.5">
+                    <h3 className="font-bold text-slate-900 text-sm line-clamp-1">{item.titulo}</h3>
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>{item.local}</span>
+                      <strong className="text-emerald-700 font-bold">{item.destaque}</strong>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
