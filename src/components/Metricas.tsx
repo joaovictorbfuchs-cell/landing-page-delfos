@@ -84,11 +84,13 @@ export default function Metricas() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* 1. Anos de Mercado */}
           <div className="bg-frost rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow relative group">
-            <div className="w-12 h-12 rounded-2xl bg-solar-100 text-solar-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <Calendar className="w-6 h-6" />
-            </div>
-            <div className="text-4xl sm:text-5xl font-black text-midnight-950 tracking-tight mb-2">
-              <Counter end={12} suffix=" anos" />
+            <div className="flex items-baseline gap-3.5 mb-3">
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-solar-100 text-solar-700 flex items-center justify-center group-hover:scale-105 transition-transform self-end">
+                <Calendar className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-midnight-950 tracking-tight leading-none">
+                <Counter end={12} suffix=" anos" />
+              </div>
             </div>
             <h3 className="text-base font-bold text-slate-900">de mercado contínuo</h3>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -99,11 +101,13 @@ export default function Metricas() {
 
           {/* 2. Projetos Entregues */}
           <div className="bg-frost rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow relative group">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <CheckCircle2 className="w-6 h-6" />
-            </div>
-            <div className="text-4xl sm:text-5xl font-black text-midnight-950 tracking-tight mb-2">
-              <Counter end={3000} suffix="+" />
+            <div className="flex items-baseline gap-3.5 mb-3">
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:scale-105 transition-transform self-end">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-midnight-950 tracking-tight leading-none">
+                <Counter end={3000} suffix="+" />
+              </div>
             </div>
             <h3 className="text-base font-bold text-slate-900">projetos entregues</h3>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -113,12 +117,14 @@ export default function Metricas() {
 
           {/* 3. Avaliação Google */}
           <div className="bg-frost rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow relative group">
-            <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-              <Star className="w-6 h-6 fill-solar-400 text-solar-400" />
-            </div>
-            <div className="text-4xl sm:text-5xl font-black text-midnight-950 tracking-tight mb-2 flex items-baseline gap-1">
-              <span>4.9</span>
-              <span className="text-xl font-bold text-slate-400">/ 5.0</span>
+            <div className="flex items-baseline gap-3.5 mb-3">
+              <div className="w-12 h-12 shrink-0 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center group-hover:scale-105 transition-transform self-end">
+                <Star className="w-6 h-6 fill-solar-400 text-solar-400" />
+              </div>
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-midnight-950 tracking-tight leading-none flex items-baseline gap-1">
+                <span>4.9</span>
+                <span className="text-lg sm:text-xl font-bold text-slate-400">/ 5.0</span>
+              </div>
             </div>
             <h3 className="text-base font-bold text-slate-900">avaliação no Google</h3>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
