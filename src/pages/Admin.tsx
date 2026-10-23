@@ -608,7 +608,7 @@ export default function Admin() {
 
                     toast({
                       title: 'Fotos sincronizadas e otimizadas!',
-                      description: `${totalFotosProcessadas} fotos processadas (${totalSalvas} novas salvas, ${totalExistentes} já existentes reaproveitadas). Versões otimizadas 1600px e 900px geradas.`,
+                      description: `${totalFotosProcessadas} fotos processadas (${totalSalvas} novas salvas, ${totalExistentes} já existentes reaproveitadas, ${casesAfetadosCount} cases vinculados). Versões otimizadas 1600px e 900px geradas.`,
                     })
                     fetchMedia()
                     fetchCases()
@@ -632,7 +632,15 @@ export default function Admin() {
               </Button>
             </div>
 
-            <AdminMediaTab mediaList={mediaList} loading={loadingMedia} onRefresh={fetchMedia} />
+            <AdminMediaTab
+              mediaList={mediaList}
+              casesList={cases}
+              loading={loadingMedia}
+              onRefresh={() => {
+                fetchMedia()
+                fetchCases()
+              }}
+            />
           </div>
         )}
 

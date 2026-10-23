@@ -9,13 +9,26 @@ import {
   Search,
   Filter,
   Check,
+  Edit2,
   Image as ImageIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
-import type { MediaRecord, CreateMediaPayload, MediaCategoria } from '@/types/content'
-import { createMedia, deleteMedia, getMediaFileUrl } from '@/services/content'
+import type {
+  MediaRecord,
+  CreateMediaPayload,
+  UpdateMediaPayload,
+  MediaCategoria,
+  CaseRecord,
+} from '@/types/content'
+import {
+  createMedia,
+  updateMedia,
+  deleteMedia,
+  getMediaFileUrl,
+  updateCase,
+} from '@/services/content'
 
 const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Geral',
@@ -29,11 +42,17 @@ const MEDIA_CATEGORIAS: MediaCategoria[] = [
 
 interface AdminMediaTabProps {
   mediaList: MediaRecord[]
+  casesList?: CaseRecord[]
   loading: boolean
   onRefresh: () => void
 }
 
-export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMediaTabProps) {
+export default function AdminMediaTab({
+  mediaList,
+  casesList = [],
+  loading,
+  onRefresh,
+}: AdminMediaTabProps) {
   const { toast } = useToast()
   const [search, setSearch] = useState('')
   const [filterCat, setFilterCat] = useState<string>('todos')
@@ -41,6 +60,17 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
   const [submitting, setSubmitting] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  // Edit State & Modal
+  const [editingItem, setEditingItem] = useState<MediaRecord | null>(null)
+  const [editTitulo, setEditTitulo] = useState('')
+  const [editCategoria, setEditCategoria] = useState<MediaCategoria>('Geral')
+  const [editDescricao, setEditDescricao] = useState('')
+  const [editDestinoSugerido, setEditDestinoSugerido] = useState('')
+  const [editCaseId, setEditCaseId] = useState<string>('')
+  const [editArquivoFile, setEditArquivoFile] = useState<File | null>(null)
+  const [editPreview, setEditPreview] = useState<string | null>(null)
+  const [savingEdit, setSavingEdit] = useState(false)
 
   // Upload Form
   const [titulo, setTitulo] = useState('')
@@ -58,6 +88,94 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
     setArquivoFile(null)
     setPreview(null)
     setModalOpen(true)
+  }
+
+  const handleOpenEdit = (item: MediaRecord) => {
+    setEditingItem(item)
+    setEditTitulo(item.titulo || '')
+    setEditCategoria(item.categoria || 'Geral')
+    setEditDescricao(item.descricao || '')
+    setEditDestinoSugerido(item.destino_sugerido || '')
+    setEditArquivoFile(null)
+    setEditPreview(null)
+
+    // Se houver algum case com nome/slug contido no destino_sugerido ou título, sugerir pré-seleção
+    const matchCase = casesList.find((c) => {
+      const dest = (item.destino_sugerido || '').toLowerCase()
+      const tit = (item.titulo || '').toLowerCase()
+      const cNome = (c.cliente || '').toLowerCase()
+      const cTit = (c.titulo || '').toLowerCase()
+      return (
+        (cNome && (dest.includes(cNome) || tit.includes(cNome))) ||
+        (cTit && (dest.includes(cTit) || tit.includes(cTit)))
+      )
+    })
+    setEditCaseId(matchCase ? matchCase.id : '')
+  }
+
+  const handleCloseEdit = () => {
+    setEditingItem(null)
+    setEditArquivoFile(null)
+    setEditPreview(null)
+  }
+
+  const handleEditFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setEditArquivoFile(file)
+      setEditPreview(URL.createObjectURL(file))
+    }
+  }
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingItem) return
+
+    if (!editTitulo.trim()) {
+      toast({
+        variant: 'destructive',
+        title: 'Título obrigatório',
+        description: 'Informe um título/identificador para a imagem.',
+      })
+      return
+    }
+
+    setSavingEdit(true)
+    try {
+      // 1. Atualizar registro em media
+      const payload: UpdateMediaPayload = {
+        titulo: editTitulo.trim(),
+        categoria: editCategoria,
+        descricao: editDescricao.trim(),
+        destino_sugerido: editDestinoSugerido.trim(),
+      }
+      if (editArquivoFile) {
+        payload.arquivo = editArquivoFile
+      }
+
+      await updateMedia(editingItem.id, payload)
+
+      // 2. Se o usuário vinculou ou trocou a imagem no case selecionado e forneceu novo arquivo
+      if (editCaseId && editArquivoFile) {
+        await updateCase(editCaseId, { foto: editArquivoFile })
+      }
+
+      toast({
+        title: 'Imagem atualizada!',
+        description: `As informações de "${editTitulo}" foram salvas na biblioteca com sucesso.`,
+      })
+      handleCloseEdit()
+      onRefresh()
+    } catch (err: unknown) {
+      console.error('Erro ao atualizar mídia:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao salvar',
+        description: (err as Error)?.message || 'Não foi possível salvar as alterações da imagem.',
+      })
+    } finally {
+      setSavingEdit(false)
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -322,6 +440,17 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
                   </Button>
 
                   <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleOpenEdit(item)}
+                      className="text-[11px] h-7 px-2 text-slate-600 hover:text-solar-700 hover:bg-solar-50 flex items-center gap-1"
+                      title="Editar informações da imagem"
+                    >
+                      <Edit2 className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Editar</span>
+                    </Button>
+
                     {urlOriginal && (
                       <a
                         href={urlOriginal}
@@ -348,6 +477,166 @@ export default function AdminMediaTab({ mediaList, loading, onRefresh }: AdminMe
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Modal Edição de Imagem */}
+      {editingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full my-6 overflow-hidden shadow-2xl border border-slate-100 space-y-6 p-6 sm:p-8 animate-fade-in-up">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600 block">
+                  Editar Imagem da Biblioteca
+                </span>
+                <h3 className="text-xl font-extrabold text-slate-900">Editar Detalhes da Imagem</h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleCloseEdit}
+                className="text-slate-400 hover:text-slate-900"
+              >
+                ✕
+              </Button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              {/* Preview e Troca de Arquivo */}
+              <div className="p-4 bg-frost rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                <div className="w-28 h-20 bg-slate-900 rounded-xl overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
+                  <img
+                    src={editPreview || getMediaFileUrl(editingItem, 'leve')}
+                    alt={editTitulo}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1 text-left space-y-1.5">
+                  <span className="text-xs font-bold text-slate-800 block">
+                    Substituir arquivo da foto (opcional)
+                  </span>
+                  <p className="text-[11px] text-slate-500">
+                    Arquivo atual:{' '}
+                    <span className="font-mono text-slate-700">{editingItem.arquivo}</span>
+                  </p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleEditFileChange}
+                    className="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              {/* Título */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Título / Identificador *</label>
+                <Input
+                  value={editTitulo}
+                  onChange={(e) => setEditTitulo(e.target.value)}
+                  placeholder="Ex: Instalação usina de solo Erechim 300 kWp"
+                  required
+                  className="rounded-xl text-xs sm:text-sm"
+                />
+                <p className="text-[11px] text-slate-400">
+                  Nome amigável da foto. Evite nomes de clientes que não correspondam à obra real.
+                </p>
+              </div>
+
+              {/* Categoria e Case Vinculado */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Categoria</label>
+                  <select
+                    value={editCategoria}
+                    onChange={(e) => setEditCategoria(e.target.value as MediaCategoria)}
+                    className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    {MEDIA_CATEGORIAS.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">
+                    Case / Projeto Vinculado
+                  </label>
+                  <select
+                    value={editCaseId}
+                    onChange={(e) => {
+                      const selectedId = e.target.value
+                      setEditCaseId(selectedId)
+                      if (selectedId) {
+                        const targetCase = casesList.find((c) => c.id === selectedId)
+                        if (targetCase) {
+                          setEditDestinoSugerido(
+                            `Case ${targetCase.cliente || targetCase.titulo} / ${targetCase.setor || 'Solar'}`,
+                          )
+                        }
+                      }
+                    }}
+                    className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    <option value="">Nenhum / Não vinculado</option>
+                    {casesList.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.cliente
+                          ? `${c.cliente} (${c.potencia_capacidade || c.local || ''})`
+                          : c.titulo}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Destino Sugerido */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">
+                  Destino Sugerido / Onde Usar
+                </label>
+                <Input
+                  value={editDestinoSugerido}
+                  onChange={(e) => setEditDestinoSugerido(e.target.value)}
+                  placeholder="Ex: Case Cassul / Solução Solar / Comércio"
+                  className="rounded-xl text-xs"
+                />
+              </div>
+
+              {/* Descrição */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Descrição / Legenda</label>
+                <textarea
+                  value={editDescricao}
+                  onChange={(e) => setEditDescricao(e.target.value)}
+                  rows={2}
+                  placeholder="Detalhes da foto: tipo de estrutura, módulos solares, ângulo..."
+                  className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                />
+              </div>
+
+              {/* Ações */}
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCloseEdit}
+                  className="rounded-xl text-xs"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={savingEdit}
+                  className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl text-xs shadow-md"
+                >
+                  {savingEdit ? 'Salvando...' : 'Salvar Alterações'}
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

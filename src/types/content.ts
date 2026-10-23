@@ -129,3 +129,11 @@ export interface CreateMediaPayload {
   descricao?: string
   destino_sugerido?: string
 }
+
+export interface UpdateMediaPayload {
+  titulo?: string
+  categoria?: MediaCategoria
+  descricao?: string
+  destino_sugerido?: string
+  arquivo?: File | null
+}

@@ -6,6 +6,7 @@ import type {
   UpsertCasePayload,
   MediaRecord,
   CreateMediaPayload,
+  UpdateMediaPayload,
 } from '@/types/content'
 
 export type ImageSizeVariant = 'original' | 'grande' | 'leve' | string
@@ -254,6 +255,21 @@ export async function createMedia(payload: CreateMediaPayload): Promise<MediaRec
   if (payload.destino_sugerido) formData.append('destino_sugerido', payload.destino_sugerido.trim())
 
   return await pb.collection('media').create<MediaRecord>(formData)
+}
+
+export async function updateMedia(id: string, payload: UpdateMediaPayload): Promise<MediaRecord> {
+  const formData = new FormData()
+  if (payload.titulo !== undefined) formData.append('titulo', payload.titulo.trim())
+  if (payload.categoria !== undefined) formData.append('categoria', payload.categoria)
+  if (payload.descricao !== undefined) formData.append('descricao', payload.descricao.trim())
+  if (payload.destino_sugerido !== undefined) {
+    formData.append('destino_sugerido', payload.destino_sugerido.trim())
+  }
+  if (payload.arquivo instanceof File) {
+    formData.append('arquivo', payload.arquivo)
+  }
+
+  return await pb.collection('media').update<MediaRecord>(id, formData)
 }
 
 export async function deleteMedia(id: string): Promise<boolean> {
