@@ -40,7 +40,7 @@ export default function SegmentoPageLayout({
   const seg: SegmentoInfo = SEGMENTOS_CONFIG[segmentoKey]
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null)
 
-  // Carregar cases dinâmicos do PocketBase (se disponíveis) ou estáticos
+  // Carregar cases dinâmicos do PocketBase (se disponíveis) e mesclar com CASES_DATA
   const [dynamicCases, setDynamicCases] = useState<CaseStudy[]>([])
 
   useEffect(() => {
@@ -48,32 +48,52 @@ export default function SegmentoPageLayout({
     listPublishedCases()
       .then((records) => {
         if (!active || !records || records.length === 0) return
-        const mapped: CaseStudy[] = records.map((r) => ({
-          id: r.id,
-          slug: r.slug,
-          titulo: r.titulo,
-          cliente: r.cliente,
-          segmento: r.setor as any,
-          solucao: r.solucao as any,
-          local: r.local,
-          desafioInicial: r.descricao,
-          escopo: r.escopo,
-          solucaoTecnica: r.solucao_tecnica,
-          resultadoMedido: {
-            destaqueValor: r.resultado_valor,
-            destaqueLabel: r.resultado_label,
-            descricao: r.resultado,
-            periodoMedicao: r.data_entrega,
-            metodoMedicao: 'Monitoramento remoto e concessionária',
-          },
-          dataEntrega: r.data_entrega,
-          destaque: Boolean(r.destaque),
-          potenciaOuCapacidadeCurta: r.potencia_capacidade,
-          fotoDescricao: r.titulo,
-          fotoPlaceholderNota: 'Foto real oficial',
-          fotoUrl: getCaseImageUrl(r, 'large') || getCaseImageUrl(r),
-          tags: [r.setor, r.solucao, r.potencia_capacidade, r.local],
-        }))
+        const staticMap = new Map(CASES_DATA.map((item) => [item.slug, item]))
+
+        const mapped: CaseStudy[] = records.map((r) => {
+          const staticMatch = staticMap.get(r.slug)
+          const pbPhoto =
+            getCaseImageUrl(r, 'grande') || getCaseImageUrl(r, 'leve') || getCaseImageUrl(r)
+          return {
+            id: r.slug || r.id,
+            slug: r.slug || r.id,
+            titulo: r.titulo,
+            cliente: r.cliente || r.titulo,
+            segmento: (r.setor as any) || staticMatch?.segmento || 'Comércio e Serviços',
+            solucao: (r.solucao as any) || staticMatch?.solucao || 'Energia Solar (EPC)',
+            local: r.local || staticMatch?.local || 'Erechim / RS',
+            desafioInicial: r.descricao || staticMatch?.desafioInicial || '',
+            escopo:
+              r.escopo || staticMatch?.escopo || `${r.potencia_capacidade || ''} Projeto Turnkey`,
+            solucaoTecnica: r.solucao_tecnica || staticMatch?.solucaoTecnica || '',
+            resultadoMedido: {
+              destaqueValor: r.resultado_valor || staticMatch?.resultadoMedido?.destaqueValor || '',
+              destaqueLabel:
+                r.resultado_label ||
+                staticMatch?.resultadoMedido?.destaqueLabel ||
+                'Resultado medido',
+              descricao: r.resultado || staticMatch?.resultadoMedido?.descricao || '',
+              periodoMedicao:
+                r.data_entrega ||
+                staticMatch?.resultadoMedido?.periodoMedicao ||
+                'Medição contínua',
+              metodoMedicao:
+                staticMatch?.resultadoMedido?.metodoMedicao ||
+                'Monitoramento remoto e concessionária',
+              dadoPendente: staticMatch?.resultadoMedido?.dadoPendente,
+              notaAuditoria: staticMatch?.resultadoMedido?.notaAuditoria,
+            },
+            dataEntrega: r.data_entrega || staticMatch?.dataEntrega || 'Comissionado',
+            destaque: Boolean(r.destaque),
+            potenciaOuCapacidadeCurta:
+              r.potencia_capacidade || staticMatch?.potenciaOuCapacidadeCurta || '',
+            fotoDescricao: r.titulo,
+            fotoPlaceholderNota: staticMatch?.fotoPlaceholderNota || 'Foto real oficial',
+            fotoUrl: pbPhoto || staticMatch?.fotoUrl,
+            fotoUrlGrande: pbPhoto || staticMatch?.fotoUrlGrande || staticMatch?.fotoUrl,
+            tags: [r.setor, r.solucao, r.potencia_capacidade, r.local].filter(Boolean) as string[],
+          }
+        })
         setDynamicCases(mapped)
       })
       .catch(() => {
@@ -85,10 +105,15 @@ export default function SegmentoPageLayout({
     }
   }, [])
 
-  // Mesclar cases reais priorizando fotos e dados do banco quando existirem
+  // Mesclar cases do PocketBase com CASES_DATA sem duplicar por slug/id
   const todosCasesDoSegmento = useMemo(() => {
-    const list = dynamicCases.length > 0 ? dynamicCases : CASES_DATA
-    return list.filter((c) => c.segmento === seg.caseSegmentoKey)
+    const existingSlugs = new Set(dynamicCases.map((c) => c.slug))
+    const existingIds = new Set(dynamicCases.map((c) => c.id))
+    const fromStatic = CASES_DATA.filter(
+      (c) => !existingSlugs.has(c.slug) && !existingIds.has(c.id),
+    )
+    const combined = [...dynamicCases, ...fromStatic]
+    return combined.filter((c) => c.segmento === seg.caseSegmentoKey)
   }, [dynamicCases, seg.caseSegmentoKey])
 
   // Primeiro case com foto para o bloco visual do hero

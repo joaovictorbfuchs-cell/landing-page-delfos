@@ -104,6 +104,8 @@ export default function ProjetosResultados() {
           'https://www.delfos.eng.br/site/wp-content/uploads/2020/12/DJI_0106.jpg',
         'bem-estar-moveis-erechim-rs-25-41-kwp':
           'https://www.delfos.eng.br/site/wp-content/uploads/2018/11/1-1.jpg',
+        'condominio-residencial-notabile-erechim-rs-32-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/Captura-de-tela-2025-12-18-213403.png',
         'condominio-residencial-lyon-erechim-rs-15-kwp':
           'https://www.delfos.eng.br/site/wp-content/uploads/2021/01/DJI_0001.jpg',
         'indra-distribuidora-agropecuaria-erechim-rs-9-75-kwp':

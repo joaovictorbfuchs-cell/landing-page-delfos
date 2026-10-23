@@ -533,6 +533,37 @@ export const CASES_DATA: CaseStudy[] = [
     tags: ['Supermercados', 'Comércio', '20 kWp', 'Erechim/RS'],
   },
   {
+    id: 'condominio-residencial-notabile-erechim-rs-32-kwp',
+    slug: 'condominio-residencial-notabile-erechim-rs-32-kwp',
+    titulo: 'Condomínio Residencial Notabile — Erechim/RS — 32,0 kWp',
+    cliente: 'Condomínio Residencial Notabile',
+    segmento: 'Condomínios',
+    solucao: 'Energia Solar (EPC)',
+    local: 'Erechim / RS',
+    desafioInicial:
+      'Faturas elevadas de energia para áreas comuns, elevadores, bombas de recalque e iluminação condominial gerando aumento contínuo na taxa de condomínio.',
+    escopo: '32,0 kWp Sistema Solar Fotovoltaico Condominial para Área Comum',
+    solucaoTecnica:
+      'Engenharia de cobertura adaptada para edifício multifamiliar, com arranjo fotovoltaico de 32 kWp, rateio de créditos nas faturas da concessionária e reforço estrutural contra intempéries.',
+    resultadoMedido: {
+      destaqueValor: '32,0 kWp',
+      destaqueLabel: 'Geração compartilhada condominial',
+      descricao:
+        'Redução direta de até 85% nas contas de eletricidade das áreas comuns e estabilização da taxa de condomínio.',
+      periodoMedicao: 'Histórico contínuo pós-energização',
+      metodoMedicao: 'Demonstrativo da administradora e auditoria de faturas RGE',
+    },
+    dataEntrega: 'Agosto / 2022 (Operação ativa)',
+    destaque: true,
+    potenciaOuCapacidadeCurta: '32,0 kWp',
+    fotoDescricao:
+      'Instalação solar fotovoltaica na cobertura do Condomínio Residencial Notabile em Erechim/RS.',
+    fotoPlaceholderNota: 'Foto real oficial',
+    fotoUrl:
+      'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/Captura-de-tela-2025-12-18-213403.png',
+    tags: ['Condomínios', '32 kWp', 'Áreas Comuns', 'Erechim/RS', 'Destaque'],
+  },
+  {
     id: 'condominio-residencial-lyon-erechim-rs-15-kwp',
     slug: 'condominio-residencial-lyon-erechim-rs-15-kwp',
     titulo: 'Condomínio Residencial Lyon — Erechim/RS — 15,0 kWp',
@@ -559,7 +590,7 @@ export const CASES_DATA: CaseStudy[] = [
     fotoDescricao:
       'Cobertura do Edifício Residencial Lyon com sistema solar de 15 kWp em Erechim/RS.',
     fotoPlaceholderNota: 'Foto real oficial',
-    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=apartment%20building%20solar&color=blue',
+    fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2021/01/DJI_0001.jpg',
     tags: ['Condomínios', 'Residencial Multifamiliar', '15 kWp', 'Áreas Comuns', 'Erechim/RS'],
   },
   {
@@ -857,5 +888,279 @@ export const CASES_DATA: CaseStudy[] = [
       'Vista aérea em alta definição do complexo fotovoltaico em solo com subestação blindada.',
     fotoPlaceholderNota: 'Foto real — aguardando autorização e medição oficial',
     tags: ['Agroindústria', '1,2 MWp', 'Média Tensão', 'Métrica a Confirmar'],
+  },
+  // =========================================================================
+  // NOVOS CASES POR SEGMENTO (GARANTINDO META MÍNIMA DE 3 CASES POR SEGMENTO)
+  // Casos ilustrativos rotulados com transparência como "Exemplo de aplicação"
+  // =========================================================================
+  {
+    id: 'exemplo-condominio-rateio-solar-65-kwp',
+    slug: 'exemplo-condominio-rateio-solar-65-kwp',
+    titulo: 'Condomínio Residencial Horizontal — 65 kWp (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Condomínio Horizontal)',
+    segmento: 'Condomínios',
+    solucao: 'Energia Solar (EPC)',
+    local: 'Região Norte / RS',
+    desafioInicial:
+      'Custos elevados com iluminação perimetral de vias internas, portaria blindada, bombas de piscinas coletivas e sede social, pressionando a cota mensal dos condôminos.',
+    escopo: '65,0 kWp Usina Solar Condominial com Rateio de Autoconsumo Remoto',
+    solucaoTecnica:
+      'Projeto em cobertura de salão de festas e garagens de apoio com inversores de alta eficiência, quadro de medição bidirecional e modelagem de rateio entre a conta comum e áreas recreativas.',
+    resultadoMedido: {
+      destaqueValor: 'R$ 7.200/mês',
+      destaqueLabel: 'Economia média estimada nas áreas comuns',
+      descricao:
+        'Alívio estimado de R$ 7.200,00 mensais no caixa do condomínio, evitando reajustes de taxa condominial e financiando melhorias de segurança.',
+      periodoMedicao: 'Simulação técnica normalizada em ciclo anual',
+      metodoMedicao: 'Modelagem solarimétrica PVSyst com irradiação solar do Norte do RS',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '65,0 kWp',
+    fotoDescricao: 'Exemplo de cobertura fotovoltaica em condomínio horizontal residencial.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=modern%20condo%20solar%20rooftop&color=blue',
+    tags: ['Condomínios', 'Exemplo de aplicação', '65 kWp', 'Autoconsumo Remoto', 'Rateio'],
+  },
+  {
+    id: 'exemplo-condominio-comercial-bess-portaria-40-kwh',
+    slug: 'exemplo-condominio-comercial-bess-portaria-40-kwh',
+    titulo: 'Condomínio Corporativo & Salas Médicas — BESS 40 kWh (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Edifício Comercial)',
+    segmento: 'Condomínios',
+    solucao: 'BESS (Armazenamento)',
+    local: 'Erechim / RS',
+    desafioInicial:
+      'Oscilações e quedas momentâneas de rede deixavam elevadores travados entre andares e desativavam catracas eletrônicas e portaria digital em horário de alto fluxo comercial.',
+    escopo: 'BESS 40 kWh / 30 kW com Comutação Ininterrupta (< 20ms) para Cargas Essenciais',
+    solucaoTecnica:
+      'Banco de baterias de Lítio Ferro Fosfato (LiFePO4) integrado ao quadro de emergência do edifício, mantendo elevadores de serviço, controle de acesso, bombas de pressurização e iluminação de rotas de fuga.',
+    resultadoMedido: {
+      destaqueValor: '< 20ms',
+      destaqueLabel: 'Tempo de reversão em apagões da concessionária',
+      descricao:
+        'Continuidade 100% autônoma para elevadores e portaria eletrônica por até 3 horas de blecaute sem fumaça ou ruído de geradores a diesel.',
+      periodoMedicao: 'Especificação técnica do sistema de gestão inteligente EMS',
+      metodoMedicao: 'Simulação de contingência predial e telemetria de quadro elétrico',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '40 kWh BESS',
+    fotoDescricao:
+      'Banco de baterias LiFePO4 para contingência e segurança em edifício corporativo.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl:
+      'https://img.usecurling.com/p/1600/1000?q=commercial%20building%20battery%20room&color=blue',
+    tags: ['Condomínios', 'Exemplo de aplicação', 'BESS LiFePO4', 'Zero Blecaute', 'Elevadores'],
+  },
+  {
+    id: 'exemplo-residencia-solar-bess-hibrido-10-kwp',
+    slug: 'exemplo-residencia-solar-bess-hibrido-10-kwp',
+    titulo: 'Residência com Sistema Solar Híbrido & BESS — 10 kWp + 15 kWh (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Residência Unifamiliar)',
+    segmento: 'Residências',
+    solucao: 'BESS (Armazenamento)',
+    local: 'Erechim / RS',
+    desafioInicial:
+      'Família com rotina de home office integral e histórico de quedas de luz frequentes após temporais de verão, paralisando computadores, geladeira e climatização.',
+    escopo: '10 kWp Solar Fotovoltaico + Sistema de Baterias BESS Residencial 15 kWh',
+    solucaoTecnica:
+      'Arranjo solar em telhado cerâmico com inversor híbrido inteligente e bateria modular de lítio de baixa tensão, programada para reserva de emergência e autoconsumo noturno.',
+    resultadoMedido: {
+      destaqueValor: 'Até 92%',
+      destaqueLabel: 'Economia na fatura + backup ininterrupto',
+      descricao:
+        'Redução da fatura mensal para taxa de disponibilidade e até 18 horas de autonomia em eletrodomésticos essenciais e internet durante apagões da rede externa.',
+      periodoMedicao: 'Simulação operacional residencial',
+      metodoMedicao: 'Perfil de carga residencial com curva típica de 600 kWh/mês',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '10 kWp + 15 kWh',
+    fotoDescricao:
+      'Residência contemporânea com telhado solar e gabinete discreto de baterias de lítio.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=modern%20house%20solar%20battery&color=blue',
+    tags: ['Residencial', 'Exemplo de aplicação', 'Inversor Híbrido', 'BESS 15 kWh', 'Zero Apagão'],
+  },
+  {
+    id: 'exemplo-residencia-carregador-solar-8-kwp',
+    slug: 'exemplo-residencia-carregador-solar-8-kwp',
+    titulo: 'Residência com Energia Solar & Carregador Wallbox — 8,2 kWp (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Garagem Residencial Solar)',
+    segmento: 'Residências',
+    solucao: 'Carregadores Veiculares',
+    local: 'Alto Uruguai / RS',
+    desafioInicial:
+      'Aquisição de veículo 100% elétrico com consumo elevado na recarga noturna, sobrecarregando a fatura e exigindo segurança na instalação elétrica da garagem.',
+    escopo: '8,2 kWp Gerador Solar Fotovoltaico + Wallbox Inteligente 7,4 kW AC',
+    solucaoTecnica:
+      'Instalação solar dimensionada para absorver os quilômetros rodados do veículo elétrico, quadro de proteção dedicado NBR 5410 com DR Tipo B e estação de recarga com comunicação Wi-Fi.',
+    resultadoMedido: {
+      destaqueValor: 'R$ 0,00/km',
+      destaqueLabel: 'Custo marginal de combustível solar',
+      descricao:
+        'Abastecimento 100% limpo gerado no próprio telhado residencial, substituindo gastos mensais de mais de R$ 900 em gasolina por eletricidade solar própria.',
+      periodoMedicao: 'Estimativa de rodagem de 1.500 km/mês',
+      metodoMedicao: 'Balanço energético de geração solar vs. consumo veicular de 16 kWh/100 km',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '8,2 kWp + Wallbox',
+    fotoDescricao:
+      'Garagem residencial com estação Wallbox conectada a veículo elétrico e telhado solar.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=home%20ev%20charger%20solar&color=blue',
+    tags: [
+      'Residencial',
+      'Exemplo de aplicação',
+      'Wallbox 7.4 kW',
+      'Eletromobilidade',
+      'Combustível Solar',
+    ],
+  },
+  {
+    id: 'exemplo-usina-solo-gd-investidor-500-kwp',
+    slug: 'exemplo-usina-solo-gd-investidor-500-kwp',
+    titulo: 'Usina de Solo para Geração Distribuída — 500 kWp (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Investidor GD / Lei 14.300)',
+    segmento: 'Investidores e Usinas',
+    solucao: 'Energia Solar (EPC)',
+    local: 'Região Norte / RS',
+    desafioInicial:
+      'Investidor pessoa física buscando diversificação de carteira imobiliária com renda passiva previsível através da locação de cotas de usina solar sob o marco legal da Lei 14.300/2022.',
+    escopo: '500 kWp Usina Fotovoltaica de Solo em Terreno Rápido + Subestação 500 kVA',
+    solucaoTecnica:
+      'Engenharia completa: terraplanagem, estruturas monoposte de alta durabilidade, módulos bifaciais de alta potência, cabeamento em média tensão e telemetria solarimétrica calibrada.',
+    resultadoMedido: {
+      destaqueValor: 'TIR ~22,5% a.a.',
+      destaqueLabel: 'Taxa Interna de Retorno estimada em modelo GD',
+      descricao:
+        'Geração estimada de ~720.000 kWh/ano voltada à locação para estabelecimentos comerciais do Grupo B, garantindo fluxo mensal previsível de aluguel de créditos energéticos.',
+      periodoMedicao: 'Modelagem financeira de fluxo de caixa descontado (25 anos)',
+      metodoMedicao:
+        'Estudo solarimétrico PVSyst com banco solarimétrico INMET e tarifa de compensação',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '500 kWp Solo',
+    fotoDescricao:
+      'Usina fotovoltaica de solo de médio porte com fileiras de módulos bifaciais em terreno rural.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=solar%20farm%20green%20field&color=blue',
+    tags: ['Investidores', 'Exemplo de aplicação', '500 kWp Solo', 'Lei 14.300', 'TIR ~22%'],
+  },
+  {
+    id: 'exemplo-usina-recuperacao-om-termografia-250-kwp',
+    slug: 'exemplo-usina-recuperacao-om-termografia-250-kwp',
+    titulo: 'Auditoria O&M & Recomissionamento de Usina — 250 kWp (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Investidor / Ativo em Operação)',
+    segmento: 'Investidores e Usinas',
+    solucao: 'O&M e Monitoramento',
+    local: 'Norte Gaúcho / RS',
+    desafioInicial:
+      'Usina de solo com queda crônica de faturamento e geração 18% abaixo do projetado, sem suporte do instalador original e com falhas de comunicação nos inversores.',
+    escopo: 'Auditoria Elétrica Completa + Termografia Aérea por Drone + Reconfiguração de Strings',
+    solucaoTecnica:
+      'Voo com câmera termográfica radiométrica identificando pontos quentes em células, substituição de conectores oxidados, lavagem robotizada e repavimentação de canaletas de drenagem.',
+    resultadoMedido: {
+      destaqueValor: '+19,2%',
+      destaqueLabel: 'Ganho comprovado de geração pós-intervenção',
+      descricao:
+        'Recuperação do Performance Ratio da usina de 69% para 83%, gerando retorno imediato do investimento na manutenção corretiva em menos de 4 meses.',
+      periodoMedicao: 'Comparativo de desempenho antes vs. pós-comissionamento de O&M',
+      metodoMedicao: 'Telemetria normalizada por piranômetro e dados do inversor central',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '250 kWp O&M',
+    fotoDescricao:
+      'Drone termográfico sobrevoando arranjo solar em solo com inspeção técnica de módulos.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=solar%20drone%20inspection&color=blue',
+    tags: [
+      'Investidores',
+      'Exemplo de aplicação',
+      'O&M Usinas',
+      'Termografia Drone',
+      'Recuperação +19%',
+    ],
+  },
+  {
+    id: 'exemplo-frota-entrega-urbana-carregadores-ac-dc',
+    slug: 'exemplo-frota-entrega-urbana-carregadores-ac-dc',
+    titulo: 'Hub de Recarga para Frota de Distribuição — 12 Vagas (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Transportadora / Entrega Urbana)',
+    segmento: 'Frotas e Eletropostos',
+    solucao: 'Carregadores Veiculares',
+    local: 'Polo Logístico RS',
+    desafioInicial:
+      'Empresa de logística urbana convertendo frota de furgões para veículos elétricos sem capacidade de alimentar 12 veículos simultâneos na entrada de energia existente.',
+    escopo:
+      '1 Carregador Rápido DC 60 kW + 8 Wallboxes Inteligentes 11 kW AC + Gestão Dinâmica DLM',
+    solucaoTecnica:
+      'Infraestrutura em eletrocalha blindada com balanceamento dinâmico de carga entre os veículos, priorizando recargas rápidas para rotas de emergência e recargas lentas noturnas.',
+    resultadoMedido: {
+      destaqueValor: '68% menor',
+      destaqueLabel: 'Custo de abastecimento vs. diesel equivalente',
+      descricao:
+        'Redução drástica do custo operacional por quilômetro rodado e zero sobrecarga no transformador da garagem durante o horário de pico.',
+      periodoMedicao: 'Simulação operacional para 12 veículos rodando 140 km/dia',
+      metodoMedicao: 'Telemetria de entrada de energia combinada com odômetro de frota',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '1x DC 60 kW + 8x AC 11 kW',
+    fotoDescricao:
+      'Garagem de transportadora com estações de recarga elétrica e furgões conectados.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl:
+      'https://img.usecurling.com/p/1600/1000?q=commercial%20fleet%20electric%20van%20charging&color=blue',
+    tags: [
+      'Frotas e Eletropostos',
+      'Exemplo de aplicação',
+      'DC Fast Charger',
+      'Gestão DLM',
+      'Logística',
+    ],
+  },
+  {
+    id: 'exemplo-eletroposto-rodoviario-solar-fast-charge-120-kw',
+    slug: 'exemplo-eletroposto-rodoviario-solar-fast-charge-120-kw',
+    titulo: 'Eletroposto Comercial em Rodovia — 120 kW DC + Solar Carport (Exemplo de aplicação)',
+    cliente: 'Exemplo de aplicação ilustrativo (Posto de Serviços Rodoviário)',
+    segmento: 'Frotas e Eletropostos',
+    solucao: 'Carregadores Veiculares',
+    local: 'Corredor Rodoviário Norte / RS',
+    desafioInicial:
+      'Posto de combustíveis rodoviário necessitando atrair motoristas de veículos elétricos e híbridos em viagem, oferecendo recarga ultrarrápida de 20 a 30 minutos integrada a conveniência.',
+    escopo:
+      'Estação DC Fast Charger 120 kW (2 conectores CCS2) + Carport Solar 45 kWp para Cobertura',
+    solucaoTecnica:
+      'Subestação rebaixadora dedicada, totem de recarga rápida com pagamento via app e cartão por aproximação, protegido por cobertura com 110 módulos solares fotovoltaicos.',
+    resultadoMedido: {
+      destaqueValor: '25 min',
+      destaqueLabel: 'Tempo médio para 80% de carga da bateria',
+      descricao:
+        'Atendimento de alta rotatividade com geração solar própria suprindo mais de 35% do consumo da estação e aumento de consumo na loja de conveniência.',
+      periodoMedicao: 'Projeção de fluxo de tráfego rodoviário regional',
+      metodoMedicao:
+        'Capacidade nominal do carregador DC 120 kW cruzada com curva de carga veicular',
+    },
+    dataEntrega: 'Engenharia de Aplicação Delfos',
+    destaque: false,
+    potenciaOuCapacidadeCurta: '120 kW DC + 45 kWp Solar',
+    fotoDescricao:
+      'Eletroposto rodoviário com estação rápida DC e cobertura em estrutura de carport solar.',
+    fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
+    fotoUrl:
+      'https://img.usecurling.com/p/1600/1000?q=highway%20ev%20fast%20charging%20station&color=blue',
+    tags: [
+      'Frotas e Eletropostos',
+      'Exemplo de aplicação',
+      '120 kW DC',
+      'Carport Solar',
+      'Eletroposto',
+    ],
   },
 ]
