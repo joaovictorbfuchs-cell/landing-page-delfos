@@ -63,9 +63,12 @@ export default function ProjetosResultados() {
   // Unifica os cases estáticos com os dinâmicos do PocketBase (apenas os com status "publicado")
   const todosCases = useMemo<CaseStudy[]>(() => {
     // 1. Converter cases do PocketBase usando versão leve (900px) para cards e versão grande (1600px) para modal/capas
+    const staticMap = new Map(CASES_DATA.map((item) => [item.slug, item]))
+
     const fromDb: CaseStudy[] = dynamicCases.map((c) => {
       const imageUrlLeve = getCaseImageUrl(c, 'leve')
       const imageUrlGrande = getCaseImageUrl(c, 'grande')
+      const staticMatch = staticMap.get(c.slug)
 
       // Mapeamento de fallback para fotos reais históricas caso ainda não haja arquivo binário uploaded no PB
       const fallbackPhotoMap: Record<string, string> = {
@@ -85,9 +88,35 @@ export default function ProjetosResultados() {
           'https://www.delfos.eng.br/site/wp-content/uploads/2019/07/1-3.jpg',
         'residencia-urbana-erechim-rs-6-48-kwp':
           'https://www.delfos.eng.br/site/wp-content/uploads/2020/06/DJI_0029-e1591648388934.jpg',
+        'system-desenvolvimento-software-erechim-rs-25-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/08/DJI_0001.jpg',
+        'ervateira-bazia-inacio-martins-pr-93-5-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/WhatsApp-Image-2022-08-12-at-12.40.04-1-e1660823625916.jpeg',
+        'aviario-erebango-rs-42-16-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2021/02/DJI_0005.jpg',
+        'dal-pra-moveis-erechim-rs-74-43-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/04/DJI_0003.jpg',
+        'arfes-refrigeracao-erechim-rs-30-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2019/10/DJI_0038.jpg',
+        'spazzini-tur-erechim-rs-32-16-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2021/08/DJI_0105.jpg',
+        'supermercado-cavassola-erechim-rs-20-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2020/12/DJI_0106.jpg',
+        'bem-estar-moveis-erechim-rs-25-41-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2018/11/1-1.jpg',
+        'condominio-residencial-lyon-erechim-rs-15-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2021/01/DJI_0001.jpg',
+        'indra-distribuidora-agropecuaria-erechim-rs-9-75-kwp':
+          'https://www.delfos.eng.br/site/wp-content/uploads/2024/10/Imagem-3-1.jpg',
       }
-      const finalPhotoUrlLeve = imageUrlLeve || fallbackPhotoMap[c.slug] || undefined
-      const finalPhotoUrlGrande = imageUrlGrande || fallbackPhotoMap[c.slug] || undefined
+      const finalPhotoUrlLeve =
+        imageUrlLeve || fallbackPhotoMap[c.slug] || staticMatch?.fotoUrl || undefined
+      const finalPhotoUrlGrande =
+        imageUrlGrande ||
+        fallbackPhotoMap[c.slug] ||
+        staticMatch?.fotoUrlGrande ||
+        staticMatch?.fotoUrl ||
+        undefined
 
       return {
         id: c.slug || c.id,
@@ -126,8 +155,14 @@ export default function ProjetosResultados() {
     return [...fromDb, ...fromStatic]
   }, [dynamicCases])
 
-  // Find featured case
+  // Find featured case: prioriza o case System Desenvolvimento de Software ou outro marcado com destaque
   const caseDestaque = useMemo(() => {
+    const systemCase = todosCases.find(
+      (c) =>
+        c.slug === 'system-desenvolvimento-software-erechim-rs-25-kwp' ||
+        c.id === 'system-desenvolvimento-software-erechim-rs-25-kwp',
+    )
+    if (systemCase) return systemCase
     return todosCases.find((c) => c.destaque) || todosCases[0]
   }, [todosCases])
 
