@@ -1,17 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-  Send,
-  CheckCircle2,
-  AlertCircle,
-  ArrowRight,
-  ArrowLeft,
-  Sun,
-  ShieldCheck,
-  Phone,
-  FileSpreadsheet,
-  Check,
-  MapPin,
-} from 'lucide-react'
+import { Send, CheckCircle2, AlertCircle, ArrowRight, ArrowLeft, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
@@ -38,8 +26,8 @@ export default function ContatoForm({
   initialOrigem = 'home-formulario',
   initialValorConta,
   initialConcessionaria = 'RGE (CPFL Energia)',
-  tituloSecao = 'Solicite uma avaliação técnica de engenharia',
-  subtituloSecao = 'Dimensionamento preciso e estudo preliminar sem custos. Em 2 etapas rápidas, roteamos seu projeto diretamente para o engenheiro especialista do seu setor.',
+  tituloSecao = 'Solicite uma avaliação técnica',
+  subtituloSecao = 'Em 2 etapas rápidas, seu pedido vai direto para o engenheiro especialista do seu setor.',
   textoBotaoFinal = 'Finalizar e Solicitar Avaliação',
   destaqueDark = false,
   qualificacaoEspecificaLabel,
@@ -296,15 +284,6 @@ export default function ContatoForm({
           {/* Left Column: Contextual reassurance */}
           <div className="lg:col-span-5 space-y-6">
             <div>
-              <div
-                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 ${
-                  destaqueDark
-                    ? 'bg-solar-500/20 text-solar-300 border border-solar-500/30'
-                    : 'bg-solar-100 text-solar-800'
-                }`}
-              >
-                Engenharia de Conversão Direta
-              </div>
               <h2
                 className={`text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight ${
                   destaqueDark ? 'text-white' : 'text-slate-900'
@@ -324,7 +303,7 @@ export default function ContatoForm({
             {/* Steps overview */}
             <div className="p-6 rounded-3xl bg-frost border border-slate-200/80 space-y-4">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                Como funciona a qualificação técnica:
+                Como funciona:
               </h3>
 
               <div className="flex items-start gap-3">
@@ -338,11 +317,9 @@ export default function ContatoForm({
                   1
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
-                    Etapa 1: Contato e Solução Desejada
-                  </h4>
+                  <h4 className="text-sm font-bold text-slate-900">Etapa 1: Seus dados</h4>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Nome, WhatsApp verificado, cidade e solução de interesse.
+                    nome, WhatsApp, cidade e o que você precisa.
                   </p>
                 </div>
               </div>
@@ -358,29 +335,11 @@ export default function ContatoForm({
                   2
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">
-                    Etapa 2: Parâmetros Elétricos
-                  </h4>
+                  <h4 className="text-sm font-bold text-slate-900">Etapa 2: Sobre o imóvel</h4>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Tipo de ligação (mono/bi/tri), valor da conta e titularidade do imóvel.
+                    valor da conta de luz e tipo de imóvel.
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Reassurance pills */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
-                <ShieldCheck className="w-4 h-4 text-solar-500 shrink-0" />
-                <span>Estudo preliminar elaborado por engenheiros com ART.</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
-                <Sun className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Equipe de campo com ART / CREA-RS em Erechim e todo Sul.</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-slate-600 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/60">
-                <MapPin className="w-4 h-4 text-solar-500 shrink-0" />
-                <span>Sede própria: Rua Espírito Santo, 275 — Erechim/RS</span>
               </div>
             </div>
 
@@ -895,7 +854,7 @@ export default function ContatoForm({
                   </div>
 
                   {/* Submit Button */}
-                  <div className="pt-3">
+                  <div className="pt-3 space-y-3">
                     <Button
                       type="submit"
                       disabled={isSubmitting}
@@ -910,6 +869,10 @@ export default function ContatoForm({
                         </>
                       )}
                     </Button>
+
+                    <p className="text-center text-xs text-slate-500 leading-normal">
+                      Estudo elaborado por engenheiros com ART · Sede própria em Erechim/RS
+                    </p>
                   </div>
                 </form>
               )}
