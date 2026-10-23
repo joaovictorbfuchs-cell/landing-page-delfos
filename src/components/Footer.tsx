@@ -115,6 +115,14 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  href="/faq"
+                  className="hover:text-solar-400 transition-colors block text-solar-300 font-medium"
+                >
+                  Perguntas Frequentes (FAQ Completo)
+                </a>
+              </li>
+              <li>
+                <a
                   href="/sobre"
                   className="hover:text-solar-400 transition-colors block text-solar-300"
                 >

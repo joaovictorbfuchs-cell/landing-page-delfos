@@ -491,7 +491,7 @@ export default function SolucaoBess() {
                         <strong className="text-emerald-400 block mb-1">Baterias Delfos</strong>
                         <ul className="space-y-1 text-slate-300 text-[11px]">
                           <li>• Acionamento instantâneo</li>
-                          <li>• Recarga solar gratuita</li>
+                          <li>• Recarga com geração solar própria</li>
                           <li>• Silêncio total</li>
                           <li>• Sem peças móveis ou queima</li>
                         </ul>

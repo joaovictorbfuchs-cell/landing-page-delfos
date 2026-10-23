@@ -243,6 +243,21 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             </Link>
 
             <Link
+              to="/faq"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                setSolucoesDropdownOpen(false)
+              }}
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                location.pathname === '/faq'
+                  ? 'text-solar-400 font-semibold'
+                  : 'text-slate-200 hover:text-solar-400'
+              }`}
+            >
+              FAQ
+            </Link>
+
+            <Link
               to="/sobre"
               onClick={() => {
                 setMobileMenuOpen(false)
@@ -384,6 +399,17 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   }`}
                 >
                   Conteúdos (Blog)
+                </Link>
+                <Link
+                  to="/faq"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                    location.pathname === '/faq'
+                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
+                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
+                  }`}
+                >
+                  FAQ (Dúvidas Técnicas)
                 </Link>
                 <Link
                   to="/sobre"

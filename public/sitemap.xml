@@ -38,16 +38,20 @@
 
   <!-- As 7 Portas de Entrada / Páginas de Segmento -->
   <url>
-    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/residencias</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://delfos.eng.br/conteudos</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/comercio-servicos</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://delfos.eng.br/faq</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://delfos.eng.br/sobre</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>  <url>
     <loc>https://landing-page-delfos-engenharia-672ab.goskip.app/segmentos/industria</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

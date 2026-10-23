@@ -155,14 +155,22 @@ export default function ProjetosResultados() {
     return [...fromDb, ...fromStatic]
   }, [dynamicCases])
 
-  // Find featured case: prioriza o case System Desenvolvimento de Software ou outro marcado com destaque
+  // Find featured case: seleciona entre os destaques ativos com foto real comprovada (ex: Cassul, Dal Pra, Panificadora Garcia)
   const caseDestaque = useMemo(() => {
-    const systemCase = todosCases.find(
+    // 1. Procurar case marcado como destaque que possua foto real
+    const destaqueComFoto = todosCases.find((c) => c.destaque && Boolean(c.fotoUrl))
+    if (destaqueComFoto) return destaqueComFoto
+
+    // 2. Fallbacks de cases fortes e homologados com fotos
+    const fallbackForte = todosCases.find(
       (c) =>
-        c.slug === 'system-desenvolvimento-software-erechim-rs-25-kwp' ||
-        c.id === 'system-desenvolvimento-software-erechim-rs-25-kwp',
+        (c.slug === 'cassul-erechim-rs-155-0-kwp' ||
+          c.slug === 'dal-pra-moveis-erechim-rs-74-43-kwp' ||
+          c.slug === 'panificadora-garcia-passo-fundo-rs-112-5-kwp') &&
+        Boolean(c.fotoUrl),
     )
-    if (systemCase) return systemCase
+    if (fallbackForte) return fallbackForte
+
     return todosCases.find((c) => c.destaque) || todosCases[0]
   }, [todosCases])
 

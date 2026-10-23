@@ -71,7 +71,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Economia de até 90% na conta de energia e proteção com baterias contra apagões na rede gaúcha.',
     descricaoHero:
-      'Soluções solares residenciais de engenharia de campo em telhados cerâmicos, metálicos e fibrocimento no RS. Projetos fotovoltaicos com microinversores, estética limpa e opção de BESS para backup contínuo.',
+      'A Delfos já executou dezenas de projetos residenciais com engenharia completa, inversores homologados e monitoramento pelo celular. Projetos com estética limpa, fixadores especiais e opção de baterias de energia para proteção contra quedas de luz.',
     ctaRecomendado: 'Simular projeto',
     dadoQualificacao: 'Cidade, concessionária e valor da conta',
     qualificacaoCampoLabel: 'Concessionária e detalhe da residência',
@@ -164,7 +164,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Engenharia sem paradas operacionais: corte custos fixos de eletricidade e blinde seu atendimento comercial.',
     descricaoHero:
-      'Soluções para supermercados, padarias, clínicas, academias, centros de distribuição e varejo. Montagem sem impacto no fluxo de clientes, eficiência tarifária, O&M contínuo e backup contra falhas na rede.',
+      'Com cases reais comprovados como Cassul Distribuidora (155 kWp) e Panificadora Garcia (112,5 kWp), a Delfos já entregou usinas comerciais de alta performance para supermercados, padarias, postos de combustíveis e varejo no RS, SC e PR sem paradas operacionais.',
     ctaRecomendado: 'Pedir estudo de viabilidade',
     dadoQualificacao: 'Conta, horário de consumo, necessidade de continuidade',
     qualificacaoCampoLabel: 'Horário de consumo e necessidade de continuidade',
@@ -256,7 +256,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Engenharia de alta tensão: solar de grande porte, baterias (BESS) para redução de demanda e otimização de faturas no Grupo A.',
     descricaoHero:
-      'Projetos industriais com análise de curva de carga, medição harmônica e integração com subestações abrigadas. Elimine multas por ultrapassagem de demanda, reduza custo no horário de ponta e garanta zero paradas de linha.',
+      'Com projetos reais homologados como Dal Pra Móveis (74,43 kWp), Clanel Confecções (123,5 kWp) e System Desenvolvimento de Software (25 kWp carport), a Delfos já executou usinas industriais de solo, cobertura e carport com análise de curva de carga, subestações abrigadas e otimização no Grupo A.',
     ctaRecomendado: 'Falar com engenharia',
     dadoQualificacao: 'Perfil de carga e demanda contratada',
     qualificacaoCampoLabel: 'Perfil de carga, demanda contratada (kW) e tensão',
@@ -351,7 +351,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Segurança energética para o campo: usinas de solo e telhado com baterias contra oscilações da rede rural.',
     descricaoHero:
-      'Proteção contra estresse térmico em aviários, perda de leite em tanques resfriadores, ordenhas e irrigação. Sistemas solares de alta robustez com linhas de financiamento Pronaf e Pronamp, aprovados junto à concessionária e para a realidade do Sul.',
+      'Com projetos reais homologados no campo como a Ervateira Bazia (93,5 kWp), aviários automatizados, pecuária de leite e silos de grãos, a Delfos já entregou usinas rurais com máxima robustez contra oscilações de rede e suporte às linhas de financiamento rurais (Pronaf e Inovagro).',
     ctaRecomendado: 'Avaliar unidade',
     dadoQualificacao: 'Local, atividade e qualidade da rede rural',
     qualificacaoCampoLabel: 'Local da propriedade, atividade e qualidade da rede rural',
@@ -443,7 +443,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     headlineComplemento:
       'Infraestrutura inteligente de recarga veicular com Gestão de Carga Inteligente e rateio por vaga.',
     descricaoHero:
-      'Acabe com os impasses em assembleia de condomínio: instalação coletiva segura conforme NBR 17019, sem necessidade de trocar o transformador da concessionária e com cobrança individual por RFID ou app.',
+      'Com experiência em condomínios residenciais e comerciais como Lyon e Notabile, a Delfos desenvolve laudos de viabilidade, usinas solares para redução da taxa condominial das áreas comuns e projetos coletivos de recarga veicular com rateio individualizado por vaga.',
     ctaRecomendado: 'Solicitar vistoria',
     dadoQualificacao: 'Número de vagas e infraestrutura existente',
     qualificacaoCampoLabel: 'Número de vagas, transformador e infraestrutura existente',

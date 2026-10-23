@@ -1,0 +1,2745 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ Delfos — Energia Solar, BESS e Mobilidade Elétrica</title>
+
+    <!-- Google Fonts: Inter -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- Basecoat CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/basecoat-css@1.0.2/dist/basecoat.cdn.min.css"
+    />
+
+    <!-- Shell CSS & JS -->
+    <style>
+      /* Skip artifact shell — fixed styles served beside every artifact.
+   Complements basecoat; artifacts override --accent for their own identity. */
+      :root {
+        color-scheme: light dark;
+        --accent: #2563eb;
+        --accent-contrast: #ffffff;
+        --accent-text: color-mix(in srgb, var(--accent) 72%, #000);
+        --bg: #f8f9fb;
+        --surface: #ffffff;
+        --text: #14171f;
+        --text-muted: #5b6472;
+        --border: rgba(20, 23, 31, 0.1);
+        --radius: 10px;
+        --shadow: 0 1px 3px rgba(20, 23, 31, 0.08);
+        --space: 16px;
+      }
+      /* Theme resolution. Without data-theme the viewer's system preference decides,
+   as it always did. With it, the artifact's own choice wins in BOTH directions:
+   a page that hardcodes one palette must not be handed the opposite set of
+   tokens by the machine it happens to be opened on. The dark values appear
+   twice because a media query cannot be folded into a selector list.
+   The attribute sits inside :where() so these blocks keep the specificity of a
+   bare :root — the page's own <style> is linked after this file and must go on
+   overriding any token it wants, exactly as it could before. */
+      @media (prefers-color-scheme: dark) {
+        :root:where(:not([data-theme='light'])) {
+          --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+          --bg: #101318;
+          --surface: #181c23;
+          --text: #eef1f6;
+          --text-muted: #9aa4b2;
+          --border: rgba(238, 241, 246, 0.12);
+          --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+      }
+      :root:where([data-theme='dark']) {
+        color-scheme: dark;
+        --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+        --bg: #101318;
+        --surface: #181c23;
+        --text: #eef1f6;
+        --text-muted: #9aa4b2;
+        --border: rgba(238, 241, 246, 0.12);
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+      :root:where([data-theme='light']) {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .shell-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .shell-section {
+        padding: calc(var(--space) * 2) 0;
+      }
+      .shell-grid {
+        display: grid;
+        gap: var(--space);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .shell-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: var(--space);
+      }
+      .shell-footer {
+        padding: 24px 0 40px;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .shell-hero {
+        padding: calc(var(--space) * 3) 0 calc(var(--space) * 2);
+      }
+      .shell-hero h1 {
+        font-size: clamp(26px, 4vw, 40px);
+        line-height: 1.15;
+        margin: 0 0 10px;
+        text-wrap: balance;
+      }
+      .shell-hero p {
+        color: var(--text-muted);
+        max-width: 60ch;
+        margin: 0;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: var(--space);
+      }
+
+      .kpi {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .kpi .kpi-value {
+        font-size: 28px;
+        font-weight: 650;
+        line-height: 1.1;
+      }
+      .kpi .kpi-label {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .kpi .kpi-delta {
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+      .kpi .kpi-delta.up {
+        color: #0a8f3c;
+      }
+      .kpi .kpi-delta.down {
+        color: #cf3131;
+      }
+
+      table.shell-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      table.shell-table th {
+        text-align: left;
+        font-size: 11.5px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+      table.shell-table th,
+      table.shell-table td {
+        padding: 9px 12px 9px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      table.shell-table td.num,
+      table.shell-table th.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      table.shell-table tbody tr:hover {
+        background: color-mix(in srgb, var(--accent) 6%, transparent);
+      }
+
+      .chart-box {
+        width: 100%;
+        min-height: 220px;
+      }
+      .chart-box svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .muted {
+        color: var(--text-muted);
+      }
+      .accent {
+        color: var(--accent-text);
+      }
+      .shell-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+        color: var(--accent-text);
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .shell-fade {
+          animation: shell-fade 400ms ease both;
+        }
+        @keyframes shell-fade {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: none;
+          }
+        }
+      }
+    </style>
+
+    <style>
+      :root {
+        --accent: #0b3d2e;
+        --accent-hover: #135541;
+        --solar-amber: #d97706;
+        --solar-amber-hover: #b45309;
+        --solar-amber-light: #fef3c7;
+        --quick-reply-bg: #eaf5ee;
+        --quick-reply-border: #166534;
+        --surface-subtle: #f8fafc;
+        --font-family-base:
+          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      body {
+        font-family: var(--font-family-base);
+        color: #1e293b;
+        background-color: #f8faf9;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Top Brand Bar */
+      .brand-header {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        backdrop-filter: blur(8px);
+        background-color: rgba(255, 255, 255, 0.96);
+      }
+      .brand-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        padding: 0 1.25rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .brand-logo-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        text-decoration: none;
+        color: #0b3d2e;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        font-size: 1.25rem;
+      }
+      .brand-logo-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #0b3d2e 0%, #166534 100%);
+        color: #f59e0b;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 6px rgba(11, 61, 46, 0.2);
+      }
+      .brand-tag {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        border-left: 1px solid #cbd5e1;
+        padding-left: 0.625rem;
+        display: none;
+      }
+      @media (min-width: 640px) {
+        .brand-tag {
+          display: inline-block;
+        }
+      }
+
+      /* Hero Section */
+      .faq-hero {
+        background: linear-gradient(180deg, #ffffff 0%, #edf4f0 100%);
+        padding: 3.5rem 1.25rem 3rem;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 9999px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        background-color: #e2ede6;
+        color: #0b3d2e;
+        border: 1px solid #cbdcd0;
+        margin-bottom: 1.25rem;
+      }
+      .hero-badge-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--solar-amber);
+        box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.25);
+      }
+      .faq-hero h1 {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #0b3d2e;
+        margin: 0 0 1rem;
+        line-height: 1.15;
+      }
+      .faq-hero p {
+        font-size: 1.1rem;
+        color: #475569;
+        max-width: 760px;
+        margin: 0 auto 1.75rem;
+        line-height: 1.6;
+      }
+
+      /* Controls Bar (Search + Quick Actions) */
+      .faq-toolbar-card {
+        max-width: 760px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 4px 16px -2px rgba(11, 61, 46, 0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+      .search-input-wrap {
+        flex: 1 1 260px;
+        position: relative;
+      }
+      .search-input-wrap svg {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        pointer-events: none;
+      }
+      .search-input {
+        width: 100%;
+        padding: 0.55rem 0.75rem 0.55rem 2.25rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #1e293b;
+        background: #f8fafc;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+      }
+      .search-input:focus {
+        outline: none;
+        border-color: #0b3d2e;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.15);
+      }
+      .toolbar-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .btn-toggle-all {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        padding: 0.55rem 0.85rem;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        color: #0b3d2e;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: all 0.2s;
+      }
+      .btn-toggle-all:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+      }
+
+      /* Main Layout with Sticky Navigation */
+      .faq-layout {
+        max-width: 1200px;
+        margin: 2.5rem auto;
+        padding: 0 1.25rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      @media (min-width: 992px) {
+        .faq-layout {
+          grid-template-columns: 290px 1fr;
+          align-items: start;
+        }
+      }
+
+      /* Sidebar / Quick Nav */
+      .quick-nav-wrapper {
+        position: relative;
+      }
+      @media (min-width: 992px) {
+        .quick-nav-card {
+          position: sticky;
+          top: 84px;
+          background: #ffffff;
+          border-radius: 14px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+          padding: 1.25rem;
+        }
+      }
+      .quick-nav-mobile-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.875rem 1.25rem;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-weight: 600;
+        color: #0b3d2e;
+        cursor: pointer;
+        margin-bottom: 0.75rem;
+      }
+      @media (min-width: 992px) {
+        .quick-nav-mobile-toggle {
+          display: none;
+        }
+      }
+      .quick-nav-title {
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        color: #0b3d2e;
+        margin: 0 0 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.5rem 0.65rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        color: #475569;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        line-height: 1.35;
+        font-weight: 500;
+      }
+      .nav-link:hover {
+        background-color: #f1f5f9;
+        color: #0b3d2e;
+      }
+      .nav-link.active {
+        background-color: #eaf5ee;
+        color: #0b3d2e;
+        font-weight: 600;
+        border-left: 3px solid #0b3d2e;
+      }
+      .nav-num {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        background-color: #f1f5f9;
+        color: #475569;
+        border-radius: 6px;
+      }
+      .nav-link.active .nav-num {
+        background-color: #0b3d2e;
+        color: #ffffff;
+      }
+
+      /* Accordion Area */
+      .faq-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1.15rem;
+      }
+      .faq-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+        scroll-margin-top: 86px;
+      }
+      .faq-card:hover {
+        border-color: #cbd5e1;
+      }
+      .faq-card.open {
+        border-color: #a7d3b9;
+        box-shadow: 0 6px 18px rgba(11, 61, 46, 0.06);
+      }
+
+      .faq-trigger {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 1.25rem 1.35rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        color: #0b3d2e;
+        transition: background-color 0.15s;
+      }
+      .faq-trigger:hover {
+        background-color: #fafcfb;
+      }
+      .faq-trigger:focus-visible {
+        outline: 2px solid #0b3d2e;
+        outline-offset: -2px;
+      }
+      .faq-title-wrap {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+      }
+      .faq-index {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background-color: #f1f5f9;
+        color: #0b3d2e;
+        font-weight: 700;
+        font-size: 0.8125rem;
+        margin-top: 2px;
+        transition: all 0.2s;
+      }
+      .faq-card.open .faq-index {
+        background-color: #0b3d2e;
+        color: #ffffff;
+      }
+      .faq-question-h3 {
+        margin: 0;
+        font-size: 1.075rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: #0b3d2e;
+        letter-spacing: -0.01em;
+      }
+      .faq-icon-chevron {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #475569;
+        margin-top: 2px;
+        transition:
+          transform 0.25s ease,
+          background-color 0.2s,
+          color 0.2s;
+      }
+      .faq-card.open .faq-icon-chevron {
+        transform: rotate(180deg);
+        background-color: #eaf5ee;
+        color: #0b3d2e;
+      }
+
+      /* Accordion Body */
+      .faq-content {
+        padding: 0 1.35rem 1.4rem;
+        display: none;
+        animation: fadeIn 0.25s ease-out forwards;
+      }
+      .faq-card.open .faq-content {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Resposta Rápida Box */
+      .quick-answer-box {
+        background-color: var(--quick-reply-bg);
+        border-left: 4px solid var(--quick-reply-border);
+        border-radius: 0 10px 10px 0;
+        padding: 1rem 1.2rem;
+        margin-bottom: 1.15rem;
+        position: relative;
+      }
+      .quick-answer-header {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.785rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #166534;
+        margin-bottom: 0.45rem;
+      }
+      .quick-answer-header svg {
+        width: 15px;
+        height: 15px;
+        color: var(--solar-amber);
+      }
+      .quick-answer-text {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #144937;
+        line-height: 1.55;
+      }
+
+      /* Detalhe Técnico */
+      .technical-detail-wrap {
+        padding: 0.25rem 0.25rem 0;
+      }
+      .technical-detail-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        margin-bottom: 0.45rem;
+      }
+      .technical-detail-text {
+        margin: 0;
+        font-size: 0.925rem;
+        color: #334155;
+        line-height: 1.65;
+      }
+
+      /* Accordion Footer with CTA and Copy Button */
+      .accordion-footer {
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+      .btn-cta-solar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #0b3d2e;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(11, 61, 46, 0.2);
+      }
+      .btn-cta-solar:hover {
+        background-color: var(--solar-amber);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+      }
+      .btn-cta-solar:focus-visible {
+        outline: 2px solid var(--solar-amber);
+        outline-offset: 2px;
+      }
+
+      .btn-copy-answer {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        font-size: 0.785rem;
+        font-weight: 600;
+        padding: 0.5rem 0.85rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .btn-copy-answer:hover {
+        background: #e2e8f0;
+        color: #0b3d2e;
+      }
+
+      /* Final Conversion Section */
+      .conversion-banner {
+        background: linear-gradient(135deg, #072a1f 0%, #0b3d2e 60%, #124d3b 100%);
+        color: #ffffff;
+        margin: 3.5rem auto 0;
+        padding: 3.5rem 1.25rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .conversion-banner::before {
+        content: '';
+        position: absolute;
+        top: -100px;
+        right: -100px;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(217, 119, 6, 0.25) 0%, rgba(217, 119, 6, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .conversion-inner {
+        max-width: 680px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+      .conversion-tag {
+        display: inline-block;
+        font-size: 0.785rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #fbbf24;
+        margin-bottom: 0.75rem;
+      }
+      .conversion-banner h2 {
+        font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 0 0 1rem;
+        color: #ffffff;
+      }
+      .conversion-banner p {
+        font-size: 1.075rem;
+        color: #d1fae5;
+        line-height: 1.6;
+        margin: 0 0 2rem;
+      }
+      .btn-conversion {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        background-color: var(--solar-amber);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 0.9rem 2.2rem;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      }
+      .btn-conversion:hover {
+        background-color: #f59e0b;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 22px rgba(245, 158, 11, 0.4);
+      }
+
+      /* Footer */
+      .faq-footer {
+        background-color: #061e16;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: #94a3b8;
+        padding: 2.5rem 1.25rem;
+        font-size: 0.85rem;
+        line-height: 1.65;
+      }
+      .footer-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .footer-disclaimer {
+        margin-bottom: 1rem;
+        color: #cbd5e1;
+      }
+      .footer-copy {
+        color: #64748b;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+
+      /* Toast notification for copy */
+      .toast-copy {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #0b3d2e;
+        color: #ffffff;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition: all 0.25s ease;
+        z-index: 999;
+      }
+      .toast-copy.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Empty search indicator */
+      .empty-search-state {
+        display: none;
+        text-align: center;
+        padding: 3rem 1rem;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px dashed #cbd5e1;
+      }
+
+      /* Print styles */
+      @media print {
+        .brand-header,
+        .toolbar-actions,
+        .quick-nav-wrapper,
+        .conversion-banner,
+        .btn-cta-solar,
+        .btn-copy-answer,
+        .search-input-wrap {
+          display: none !important;
+        }
+        .faq-layout {
+          display: block !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .faq-card {
+          border: none !important;
+          border-bottom: 1px solid #ccc !important;
+          box-shadow: none !important;
+          break-inside: avoid;
+          margin-bottom: 1.5rem;
+        }
+        .faq-content {
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Brand Navigation Header -->
+    <header class="brand-header">
+      <div class="brand-header-inner">
+        <a href="#" class="brand-logo-wrap" title="Delfos — Energia Solar e Mobilidade Elétrica">
+          <div class="brand-logo-icon">D</div>
+          <span>DELFOS</span>
+          <span class="brand-tag">Energia & Mobilidade</span>
+        </a>
+        <div>
+          <a
+            href="#contato"
+            class="btn-cta-solar"
+            style="padding: 0.45rem 1rem; font-size: 0.825rem"
+          >
+            Falar com Especialista
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero / Header Section -->
+    <section class="faq-hero">
+      <div class="shell-container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Conteúdo com revisão técnica — regulação ANEEL vigente</span>
+        </div>
+        <h1>Perguntas Frequentes</h1>
+        <p>
+          Tire suas dúvidas sobre energia solar, baterias (BESS), carregadores veiculares e
+          manutenção de usinas fotovoltaicas
+        </p>
+
+        <!-- Quick Search and Control Toolbar -->
+        <div class="faq-toolbar-card">
+          <div class="search-input-wrap">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="faqSearchInput"
+              class="search-input"
+              placeholder="Buscar por tema (ex.: BESS, payback, carro elétrico, Lei 14.300)..."
+              aria-label="Buscar perguntas frequentes"
+            />
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-toggle-all" id="btnToggleAll">
+              <svg
+                id="toggleAllIcon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+              </svg>
+              <span id="toggleAllText">Expandir todas</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Layout (Sidebar Anchor Nav + Accordions) -->
+    <main class="faq-layout">
+      <!-- Quick Navigation (Sticky on desktop, toggleable on mobile) -->
+      <aside class="quick-nav-wrapper">
+        <button
+          type="button"
+          class="quick-nav-mobile-toggle"
+          id="mobileNavToggle"
+          aria-expanded="false"
+        >
+          <span>Índice de Perguntas (10 tópicos)</span>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <nav class="quick-nav-card" id="quickNavCard" aria-label="Navegação rápida de perguntas">
+          <div class="quick-nav-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="color: var(--solar-amber)"
+            >
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            Navegação Rápida
+          </div>
+          <ul class="nav-list">
+            <li>
+              <a href="#pergunta-1" class="nav-link"
+                ><span class="nav-num">1</span> Quanto custa instalar?</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-2" class="nav-link"
+                ><span class="nav-num">2</span> Vale a pena e payback</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-3" class="nav-link"
+                ><span class="nav-num">3</span> Quantidade de placas</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-4" class="nav-link"
+                ><span class="nav-num">4</span> Zera a conta de luz?</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-5" class="nav-link"
+                ><span class="nav-num">5</span> Noite e dias nublados</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-6" class="nav-link"
+                ><span class="nav-num">6</span> Sistema no apagão</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-7" class="nav-link"
+                ><span class="nav-num">7</span> O que é BESS (baterias)</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-8" class="nav-link"
+                ><span class="nav-num">8</span> Recarga de carro elétrico</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-9" class="nav-link"
+                ><span class="nav-num">9</span> Solar + Carro elétrico</a
+              >
+            </li>
+            <li>
+              <a href="#pergunta-10" class="nav-link"
+                ><span class="nav-num">10</span> Limpeza e manutenção</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- FAQ Accordions Container -->
+      <section class="faq-items" id="faqAccordionList">
+        <!-- PERGUNTA 1 -->
+        <article class="faq-card open" id="pergunta-1" data-index="1">
+          <button type="button" class="faq-trigger" aria-expanded="true" aria-controls="answer-1">
+            <div class="faq-title-wrap">
+              <span class="faq-index">01</span>
+              <h3 class="faq-question-h3">Quanto custa instalar energia solar?</h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-1">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Não existe um preço único: o investimento depende do porte do sistema, dos
+                equipamentos escolhidos e das condições do imóvel. Cada projeto parte do seu consumo
+                e da avaliação técnica do local. Por isso, o caminho confiável é um estudo de
+                viabilidade personalizado — é ele que entrega o valor exato do seu sistema.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                Uma proposta séria separa três blocos de custo: equipamentos (módulos, inversor,
+                estrutura e cabeamento), instalação (mão de obra, projetos e homologação junto à
+                distribuidora) e custos recorrentes (manutenção e taxa mínima). Variáveis que movem
+                o preço: potência a instalar, tipo de telhado ou solo, distância até o quadro
+                elétrico, padrão de entrada e nível de tensão. Desconfie de orçamentos genéricos por
+                quilowatt: comparar propostas com premissas diferentes leva a decisões erradas. O
+                dimensionamento correto evita os dois erros clássicos — sistema subdimensionado
+                (economia abaixo do potencial) e superdimensionado (capital parado).
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Solicitar estudo de viabilidade</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-1"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 2 -->
+        <article class="faq-card" id="pergunta-2" data-index="2">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-2">
+            <div class="faq-title-wrap">
+              <span class="faq-index">02</span>
+              <h3 class="faq-question-h3">
+                Energia solar vale a pena? Em quanto tempo o investimento se paga?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-2">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Na grande maioria dos casos, sim. Um sistema bem dimensionado reduz de 85% a 95% da
+                despesa com energia e se paga, tipicamente, em 2 a 5 anos — com vida útil superior a
+                25 anos. O payback exato depende do seu consumo, tarifa, irradiação da região e das
+                regras de compensação vigentes.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                O cálculo é simples na lógica e rigoroso na execução: payback = investimento ÷
+                economia mensal líquida. As premissas devem considerar o histórico de 12 meses de
+                consumo, a tarifa vigente com projeção de reajuste, a irradiação local e o custo de
+                operação. Dois fatores aceleram o retorno: o reajuste anual da tarifa de energia,
+                que historicamente supera a inflação em boa parte do Brasil, e o financiamento com
+                parcela inferior à economia gerada. Exija sempre as premissas da simulação por
+                escrito — é o que separa uma proposta séria de uma estimativa genérica.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Quero uma simulação personalizada</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-2"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 3 -->
+        <article class="faq-card" id="pergunta-3" data-index="3">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-3">
+            <div class="faq-title-wrap">
+              <span class="faq-index">03</span>
+              <h3 class="faq-question-h3">
+                Quantas placas solares preciso para minha casa ou empresa?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-3">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Depende do seu consumo mensal em kWh, da potência dos módulos e da irradiação do
+                local. Como referência, uma residência que consome 500 kWh/mês normalmente precisa
+                de 8 a 12 módulos. O número exato só fecha com o histórico de consumo da fatura em
+                mãos.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                A fórmula de base: consumo médio mensal dividido pela geração esperada por módulo.
+                Na prática, um módulo de 550 Wp em região com boa irradiância gera em torno de 2,5 a
+                3 kWh por dia. Também entram na conta: área útil disponível, sombreamento,
+                orientação e inclinação do telhado, nível de tensão da rede e consumo futuro
+                projetado (ar-condicionado, carro elétrico). O Sistema de Compensação da ANEEL
+                permite ajuste fino — pequenos excedentes viram créditos que abatem consumos
+                futuros.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <div></div>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-3"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 4 -->
+        <article class="faq-card" id="pergunta-4" data-index="4">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-4">
+            <div class="faq-title-wrap">
+              <span class="faq-index">04</span>
+              <h3 class="faq-question-h3">
+                Energia solar zera a conta de luz? Como funcionam os créditos?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-4">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Quase. O sistema injeta o excedente na rede e recebe créditos de energia (em kWh)
+                que abatem o consumo dos meses seguintes. Mas algumas cobranças permanecem: o custo
+                de disponibilidade residencial (equivalente a 30, 50 ou 100 kWh conforme o padrão de
+                entrada) ou a demanda contratada, no caso de empresas. Os créditos têm validade de
+                60 meses.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                O mecanismo é o Sistema de Compensação de Energia Elétrica (SCEE), regulado pela
+                ANEEL. Três pontos que todo decisor precisa conhecer: (1) a Lei 14.300/2022
+                instituiu cobrança progressiva sobre o uso da rede (Fio B) para novos sistemas —
+                começa em 15% e chega a 90% a partir de 2029, o que reforça a vantagem de quem
+                instala antes; (2) o crédito é contábil, não físico: a energia gerada de dia abate o
+                consumo à noite por meio da distribuidora; (3) a economia real média fica em 90% ou
+                mais da conta — nunca 100%, pois permanecem as cobranças mínimas regulatórias.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Simular minha economia real</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-4"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 5 -->
+        <article class="faq-card" id="pergunta-5" data-index="5">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-5">
+            <div class="faq-title-wrap">
+              <span class="faq-index">05</span>
+              <h3 class="faq-question-h3">Energia solar funciona à noite ou em dias nublados?</h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-5">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Em dias nublados, sim — a geração cai, mas não para (em geral entre 10% e 25% da
+                capacidade). À noite não há geração: o imóvel é abastecido pela rede, abatendo os
+                créditos acumulados — ou por baterias, se o projeto incluir armazenamento.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                Os módulos respondem à luz (irradiância), não ao calor — por isso geram até em dias
+                frios e nublados. O sistema é dimensionado pela média anual de irradiação da região,
+                o que já contempla dias ruins e variações sazonais. À noite existem três caminhos:
+                (1) compensação de créditos via rede, o mais comum e sem custo adicional; (2)
+                baterias BESS, que armazenam o excedente do dia para uso noturno; (3) a combinação
+                dos dois, indicada para imóveis com cargas críticas ou regiões com apagões
+                frequentes.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <div></div>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-5"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 6 -->
+        <article class="faq-card" id="pergunta-6" data-index="6">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-6">
+            <div class="faq-title-wrap">
+              <span class="faq-index">06</span>
+              <h3 class="faq-question-h3">
+                O que acontece com meu sistema solar durante um apagão?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-6">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Sem baterias, o sistema desliga automaticamente durante a falta de energia. Isso é
+                uma proteção de segurança chamada anti-ilhamento, que impede o sistema de energizar
+                a rede onde equipes de manutenção podem estar trabalhando. Para ter energia no
+                apagão, o caminho é um sistema de backup com baterias (BESS).
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                Todo inversor on-grid cumpre a norma de anti-ilhamento: ao detectar a perda da rede,
+                desliga em segundos. A solução é o conjunto inversor híbrido + BESS, que em modo
+                backup isola os circuitos prioritários e retoma o fornecimento em poucos segundos —
+                luzes, geladeira, bomba d'água, internet, portão. O dimensionamento do backup parte
+                de duas perguntas: o que precisa continuar funcionando (cargas críticas em kW) e por
+                quanto tempo (autonomia em kWh). É a mesma lógica de um nobreak, mas com horas ou
+                dias de autonomia e integração plena com a geração solar.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Dimensionar backup para meu imóvel</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-6"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 7 -->
+        <article class="faq-card" id="pergunta-7" data-index="7">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-7">
+            <div class="faq-title-wrap">
+              <span class="faq-index">07</span>
+              <h3 class="faq-question-h3">
+                O que é BESS e como funciona o armazenamento de energia em baterias?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-7">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                BESS (Battery Energy Storage System) é um sistema de armazenamento que guarda
+                energia em baterias para uso posterior. Suas principais aplicações: backup contra
+                apagões, consumo noturno da própria geração solar, deslocamento de consumo para
+                horários de tarifa mais cara e redução de picos de demanda.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                Um BESS reúne baterias (dominantemente LFP — lítio-ferro-fosfato, pela segurança e
+                longa vida útil), um BMS de gerenciamento, inversor híbrido e sistema de
+                monitoramento. Dois números definem o projeto: potência (kW — quantas cargas
+                simultâneas atende) e capacidade (kWh — por quanto tempo). A tecnologia LFP suporta
+                milhares de ciclos de carga e descarga com degradação anual baixa. A segurança vem
+                do conjunto: certificação dos equipamentos, controle térmico, local ventilado e
+                proteções de projeto. Onde o BESS entrega mais valor: regiões com instabilidade de
+                rede, tarifas com horário de ponta e operações que não podem parar.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Avaliar armazenamento para meu perfil</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-7"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 8 -->
+        <article class="faq-card" id="pergunta-8" data-index="8">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-8">
+            <div class="faq-title-wrap">
+              <span class="faq-index">08</span>
+              <h3 class="faq-question-h3">
+                Quanto tempo demora para carregar um carro elétrico e quanto custa?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-8">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Em um carregador residencial (wallbox de 7,4 kW), a carga completa típica leva de 4
+                a 8 horas — a rotina ideal é carregar à noite. Em carregadores rápidos DC, o mesmo
+                veículo recarrega em 15 a 45 minutos. Rodar elétrico custa, em regra, de 4 a 6 vezes
+                menos por quilômetro que gasolina.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                O tempo se calcula dividindo a energia a repor pela potência efetiva de recarga: um
+                carro de 60 kWh indo de 20% a 100% precisa de 48 kWh, o que leva cerca de 6,5 horas
+                em um wallbox de 7,4 kW. O custo segue a mesma lógica: um elétrico urbano consome em
+                torno de 0,15 kWh/km; à tarifa residencial média, isso equivale a aproximadamente R$
+                0,12/km — contra cerca de R$ 0,60/km de um carro a gasolina. Com geração solar
+                própria, o custo por quilômetro tende a praticamente zero. A instalação exige
+                avaliação elétrica, circuito dedicado, proteções (DR e DPS) e aterramento.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Avaliar meu padrão elétrico para recarga</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-8"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 9 -->
+        <article class="faq-card" id="pergunta-9" data-index="9">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-9">
+            <div class="faq-title-wrap">
+              <span class="faq-index">09</span>
+              <h3 class="faq-question-h3">Posso carregar meu carro elétrico com energia solar?</h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-9">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Sim — e é uma das combinações mais inteligentes do ecossistema elétrico. A geração
+                solar do imóvel abastece o veículo diretamente no período diurno, ou via compensação
+                de créditos à noite. Com baterias, o carro roda com o próprio sol do dia, de
+                madrugada, a custo quase zero.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                Três arquiteturas de integração: (1) carregamento diurno simultâneo, usando a
+                geração no horário solar — máxima eficiência; (2) compensação — o carro carrega da
+                rede à noite e os créditos do dia abatem esse consumo; (3) BESS — armazena o
+                excedente solar e recarrega o veículo à noite. Um gerenciador de carga dinâmico
+                ajusta a potência do carregador conforme a geração e o padrão de entrada, evitando
+                sobrecarga. No projeto, o veículo entra como novo consumo: cerca de 150 kWh/mês para
+                quem roda 1.000 km/mês, o que corresponde a adicionar 2 a 3 módulos ao sistema
+                solar.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Projetar solar + carregador integrados</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-9"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PERGUNTA 10 -->
+        <article class="faq-card" id="pergunta-10" data-index="10">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="answer-10">
+            <div class="faq-title-wrap">
+              <span class="faq-index">10</span>
+              <h3 class="faq-question-h3">
+                Com que frequência devo limpar os painéis e fazer manutenção da usina?
+              </h3>
+            </div>
+            <div class="faq-icon-chevron" aria-hidden="true">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </button>
+          <div class="faq-content" id="answer-10">
+            <div class="quick-answer-box">
+              <div class="quick-answer-header">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <span>Resposta Rápida</span>
+              </div>
+              <p class="quick-answer-text">
+                Limpeza: em geral 1 a 2 vezes por ano, a depender do ambiente (poeira, folhas,
+                resíduos de pássaros, poluição). Manutenção preventiva completa: inspeção anual de
+                conexões, inversor e estrutura. A regra de ouro é orientar as intervenções pela
+                performance: geração caindo sem causa climática é sinal de ação.
+              </p>
+            </div>
+
+            <div class="technical-detail-wrap">
+              <div class="technical-detail-label">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Detalhe Técnico</span>
+              </div>
+              <p class="technical-detail-text">
+                A sujeira pode derrubar a geração de 5% a 15% ou mais em ambientes críticos — mas
+                limpar sem necessidade também gasta dinheiro sem retorno. Um plano de O&M
+                profissional inclui: inspeção visual e termográfica (hot spots e microfissuras),
+                aperto de conexões, teste de strings, checagem do inversor e das proteções,
+                atualização de firmware e análise contínua de dados. O KPI central é o Performance
+                Ratio (PR): sistemas saudáveis operam acima de 75-80%. O inversor é o componente com
+                maior probabilidade de falha ao longo da vida útil — monitorá-lo é prioridade. Um
+                contrato de O&M deve definir escopo, SLA de atendimento e relatórios periódicos.
+              </p>
+            </div>
+
+            <div class="accordion-footer">
+              <a href="#contato" class="btn-cta-solar">
+                <span>Solicitar diagnóstico da minha usina</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="btn-copy-answer"
+                data-copy-target="pergunta-10"
+                title="Copiar texto desta pergunta"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copiar resposta</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Empty state when searching has 0 matches -->
+        <div class="empty-search-state" id="emptySearchState">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#94a3b8"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="margin-bottom: 0.75rem"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="8.01"></line>
+          </svg>
+          <p style="font-weight: 600; color: #1e293b; margin: 0 0 0.25rem">
+            Nenhuma pergunta encontrada
+          </p>
+          <p style="color: #64748b; font-size: 0.9rem; margin: 0">
+            Tente outro termo ou fale diretamente com nossos engenheiros.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Final Conversion Section -->
+    <section class="conversion-banner" id="contato">
+      <div class="conversion-inner">
+        <span class="conversion-tag">Atendimento Consultivo</span>
+        <h2>Sua dúvida não está aqui?</h2>
+        <p>
+          Fale com nossos especialistas em energia. Respondemos com um estudo técnico personalizado
+          — sem compromisso.
+        </p>
+        <a
+          href="mailto:contato@delfosenergia.com.br?subject=Consulta%20T%C3%A9cnica%20Delfos%20-%20Energia%20Solar"
+          class="btn-conversion"
+        >
+          <span>Falar com um especialista</span>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer Disclaimer -->
+    <footer class="faq-footer">
+      <div class="footer-inner">
+        <p class="footer-disclaimer">
+          As respostas desta página têm caráter informativo e consideram a regulação vigente da
+          ANEEL (SCEE e Lei nº 14.300/2022). Faixas de valores, prazos e percentuais citados são
+          referências de mercado: o resultado exato depende do dimensionamento de cada projeto. ©
+          Delfos — Energia Solar e Mobilidade Elétrica.
+        </p>
+        <p class="footer-copy">
+          Todos os direitos reservados • Delfos Engenharia e Soluções Energéticas
+        </p>
+      </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast-copy" id="toastCopy">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#4ade80"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span id="toastMessage">Texto copiado para a área de transferência!</span>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.faq-card')
+        const triggers = document.querySelectorAll('.faq-trigger')
+        const searchInput = document.getElementById('faqSearchInput')
+        const btnToggleAll = document.getElementById('btnToggleAll')
+        const toggleAllText = document.getElementById('toggleAllText')
+        const toggleAllIcon = document.getElementById('toggleAllIcon')
+        const mobileNavToggle = document.getElementById('mobileNavToggle')
+        const quickNavCard = document.getElementById('quickNavCard')
+        const navLinks = document.querySelectorAll('.nav-link')
+        const toast = document.getElementById('toastCopy')
+        const toastMsg = document.getElementById('toastMessage')
+        const emptyState = document.getElementById('emptySearchState')
+        const copyButtons = document.querySelectorAll('.btn-copy-answer')
+
+        let allExpanded = false
+
+        // Accordion Click Handler
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', () => {
+            const card = trigger.closest('.faq-card')
+            const isCurrentlyOpen = card.classList.contains('open')
+
+            if (isCurrentlyOpen) {
+              card.classList.remove('open')
+              trigger.setAttribute('aria-expanded', 'false')
+            } else {
+              card.classList.add('open')
+              trigger.setAttribute('aria-expanded', 'true')
+            }
+            checkToggleState()
+          })
+        })
+
+        // Toggle All expand/collapse
+        btnToggleAll.addEventListener('click', () => {
+          allExpanded = !allExpanded
+          cards.forEach((card) => {
+            if (card.style.display !== 'none') {
+              const trigger = card.querySelector('.faq-trigger')
+              if (allExpanded) {
+                card.classList.add('open')
+                trigger.setAttribute('aria-expanded', 'true')
+              } else {
+                card.classList.remove('open')
+                trigger.setAttribute('aria-expanded', 'false')
+              }
+            }
+          })
+          updateToggleAllUI()
+        })
+
+        function updateToggleAllUI() {
+          if (allExpanded) {
+            toggleAllText.textContent = 'Recolher todas'
+            toggleAllIcon.innerHTML =
+              '<polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline>'
+          } else {
+            toggleAllText.textContent = 'Expandir todas'
+            toggleAllIcon.innerHTML =
+              '<polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline>'
+          }
+        }
+
+        function checkToggleState() {
+          const visibleCards = Array.from(cards).filter((c) => c.style.display !== 'none')
+          if (visibleCards.length === 0) return
+          const openCards = visibleCards.filter((c) => c.classList.contains('open'))
+          allExpanded = openCards.length === visibleCards.length
+          updateToggleAllUI()
+        }
+
+        // Live Search Filter
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim()
+          let matches = 0
+
+          cards.forEach((card) => {
+            const text = card.textContent.toLowerCase()
+            if (text.includes(query)) {
+              card.style.display = 'block'
+              matches++
+              // If user searches something specific, open match
+              if (query.length > 2) {
+                card.classList.add('open')
+                card.querySelector('.faq-trigger').setAttribute('aria-expanded', 'true')
+              }
+            } else {
+              card.style.display = 'none'
+            }
+          })
+
+          if (matches === 0) {
+            emptyState.style.display = 'block'
+          } else {
+            emptyState.style.display = 'none'
+          }
+
+          checkToggleState()
+        })
+
+        // Quick Nav active anchor state on scroll
+        const observerOptions = {
+          root: null,
+          rootMargin: '-80px 0px -70% 0px',
+          threshold: 0,
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.getAttribute('id')
+              navLinks.forEach((link) => {
+                if (link.getAttribute('href') === `#${id}`) {
+                  link.classList.add('active')
+                } else {
+                  link.classList.remove('active')
+                }
+              })
+            }
+          })
+        }, observerOptions)
+
+        cards.forEach((card) => observer.observe(card))
+
+        // Mobile Nav Toggle Drawer
+        mobileNavToggle.addEventListener('click', () => {
+          const isOpen = quickNavCard.style.display === 'block'
+          quickNavCard.style.display = isOpen ? 'none' : 'block'
+          mobileNavToggle.setAttribute('aria-expanded', !isOpen)
+        })
+
+        // Auto close mobile nav on link click & auto expand target card
+        navLinks.forEach((link) => {
+          link.addEventListener('click', (e) => {
+            if (window.innerWidth < 992) {
+              quickNavCard.style.display = 'none'
+              mobileNavToggle.setAttribute('aria-expanded', 'false')
+            }
+            const targetId = link.getAttribute('href').replace('#', '')
+            const targetCard = document.getElementById(targetId)
+            if (targetCard) {
+              targetCard.classList.add('open')
+              targetCard.querySelector('.faq-trigger').setAttribute('aria-expanded', 'true')
+            }
+          })
+        })
+
+        // Copy Answer functionality for easy copying to production
+        copyButtons.forEach((btn) => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation()
+            const targetId = btn.getAttribute('data-copy-target')
+            const card = document.getElementById(targetId)
+            if (!card) return
+
+            const questionText = card.querySelector('.faq-question-h3').innerText.trim()
+            const quickAnswer = card.querySelector('.quick-answer-text').innerText.trim()
+            const technicalDetail = card.querySelector('.technical-detail-text').innerText.trim()
+
+            const formattedContent = `${questionText}\n\n[RESPOSTA RÁPIDA]\n${quickAnswer}\n\n[DETALHE TÉCNICO]\n${technicalDetail}`
+
+            try {
+              await navigator.clipboard.writeText(formattedContent)
+              showToast('Pergunta e resposta copiadas com sucesso!')
+            } catch (err) {
+              // Fallback
+              const textarea = document.createElement('textarea')
+              textarea.value = formattedContent
+              document.body.appendChild(textarea)
+              textarea.select()
+              document.execCommand('copy')
+              document.body.removeChild(textarea)
+              showToast('Pergunta e resposta copiadas!')
+            }
+          })
+        })
+
+        function showToast(message) {
+          toastMsg.textContent = message
+          toast.classList.add('show')
+          setTimeout(() => {
+            toast.classList.remove('show')
+          }, 3200)
+        }
+      })
+    </script>
+    <script>
+      /* Skip artifact shell — fixed helpers served beside every artifact. */
+      ;(function () {
+        'use strict'
+
+        var fmt = {
+          num: function (v, opts) {
+            return new Intl.NumberFormat('pt-BR', opts || {}).format(v)
+          },
+          brl: function (v) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
+          },
+          pct: function (v) {
+            return new Intl.NumberFormat('pt-BR', {
+              style: 'percent',
+              maximumFractionDigits: 1,
+            }).format(v)
+          },
+        }
+
+        // axisFmt keeps axis tick labels short (compact notation) so long values
+        // (e.g. full BRL amounts) never clip against the plot edge.
+        function axisFmt(v) {
+          return fmt.num(v, { notation: 'compact', maximumFractionDigits: 1 })
+        }
+
+        // format accepts a function OR one of the fmt names ("num" | "brl" | "pct").
+        function coerceFormat(spec) {
+          if (typeof spec === 'function') return spec
+          if (typeof spec === 'string' && fmt[spec]) return fmt[spec]
+          return function (v) {
+            return fmt.num(v)
+          }
+        }
+
+        function accent() {
+          return (
+            getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() ||
+            '#2563eb'
+          )
+        }
+        function mutedColor() {
+          return (
+            getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() ||
+            '#5b6472'
+          )
+        }
+        function svgEl(tag, attrs) {
+          var el = document.createElementNS('http://www.w3.org/2000/svg', tag)
+          for (var k in attrs) el.setAttribute(k, attrs[k])
+          return el
+        }
+        function frame(el, w, h) {
+          var svg = svgEl('svg', { viewBox: '0 0 ' + w + ' ' + h, role: 'img' })
+          el.innerHTML = ''
+          el.appendChild(svg)
+          return svg
+        }
+
+        // maxOf guards the axis scale: empty values would give -Infinity (truthy,
+        // so "|| 1" can't catch it) and a non-positive max would flip the chart.
+        function maxOf(values) {
+          var m = values.length ? Math.max.apply(null, values) : 0
+          return m > 0 ? m : 1
+        }
+
+        // bar(el, {labels:[], values:[], color?, format?}) — vertical bar chart.
+        function bar(el, cfg) {
+          var W = 640,
+            H = 280,
+            padL = 46,
+            padB = 30,
+            padT = 12
+          var svg = frame(el, W, H)
+          var max = maxOf(cfg.values)
+          var n = cfg.values.length
+          var plotW = W - padL - 12,
+            plotH = H - padT - padB
+          var step = plotW / n,
+            bw = Math.min(step * 0.62, 64)
+          var color = cfg.color || accent()
+          var f = coerceFormat(cfg.format)
+          for (var g = 0; g <= 4; g++) {
+            var gy = padT + plotH - (plotH * g) / 4
+            svg.appendChild(
+              svgEl('line', {
+                x1: padL,
+                y1: gy,
+                x2: W - 12,
+                y2: gy,
+                stroke: 'currentColor',
+                'stroke-opacity': 0.08,
+              }),
+            )
+            var lbl = svgEl('text', {
+              x: padL - 8,
+              y: gy + 4,
+              'text-anchor': 'end',
+              'font-size': 10,
+              fill: mutedColor(),
+            })
+            lbl.textContent = axisFmt((max * g) / 4)
+            svg.appendChild(lbl)
+          }
+          cfg.values.forEach(function (v, i) {
+            var bh = Math.max(0, (v / max) * plotH)
+            var x = padL + i * step + (step - bw) / 2
+            var y = padT + plotH - bh
+            var r = svgEl('rect', { x: x, y: y, width: bw, height: bh, rx: 4, fill: color })
+            var t = svgEl('title', {})
+            t.textContent = cfg.labels[i] + ': ' + f(v)
+            r.appendChild(t)
+            svg.appendChild(r)
+            var tx = svgEl('text', {
+              x: x + bw / 2,
+              y: H - 10,
+              'text-anchor': 'middle',
+              'font-size': 11,
+              fill: mutedColor(),
+            })
+            tx.textContent = cfg.labels[i]
+            svg.appendChild(tx)
+          })
+        }
+
+        // line(el, {labels:[], values:[], color?, format?}) — single-series line.
+        function line(el, cfg) {
+          var W = 640,
+            H = 280,
+            padL = 46,
+            padB = 30,
+            padT = 12
+          var svg = frame(el, W, H)
+          var max = maxOf(cfg.values)
+          var n = cfg.values.length
+          var plotW = W - padL - 16,
+            plotH = H - padT - padB
+          var color = cfg.color || accent()
+          var f = coerceFormat(cfg.format)
+          for (var g = 0; g <= 4; g++) {
+            var gy = padT + plotH - (plotH * g) / 4
+            svg.appendChild(
+              svgEl('line', {
+                x1: padL,
+                y1: gy,
+                x2: W - 16,
+                y2: gy,
+                stroke: 'currentColor',
+                'stroke-opacity': 0.08,
+              }),
+            )
+            var lbl = svgEl('text', {
+              x: padL - 8,
+              y: gy + 4,
+              'text-anchor': 'end',
+              'font-size': 10,
+              fill: mutedColor(),
+            })
+            lbl.textContent = axisFmt((max * g) / 4)
+            svg.appendChild(lbl)
+          }
+          var pts = cfg.values.map(function (v, i) {
+            var x = padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1))
+            var y = padT + plotH - (v / max) * plotH
+            return [x, y]
+          })
+          var d = pts
+            .map(function (p, i) {
+              return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)
+            })
+            .join(' ')
+          svg.appendChild(
+            svgEl('path', {
+              d: d,
+              fill: 'none',
+              stroke: color,
+              'stroke-width': 2,
+              'stroke-linejoin': 'round',
+            }),
+          )
+          pts.forEach(function (p, i) {
+            var c = svgEl('circle', { cx: p[0], cy: p[1], r: 3.5, fill: color })
+            var t = svgEl('title', {})
+            t.textContent = cfg.labels[i] + ': ' + f(cfg.values[i])
+            c.appendChild(t)
+            svg.appendChild(c)
+            var tx = svgEl('text', {
+              x: p[0],
+              y: H - 10,
+              'text-anchor': 'middle',
+              'font-size': 11,
+              fill: mutedColor(),
+            })
+            tx.textContent = cfg.labels[i]
+            svg.appendChild(tx)
+          })
+        }
+
+        // donut(el, {labels:[], values:[], colors?}) — donut with center total.
+        function donut(el, cfg) {
+          var W = 320,
+            H = 280,
+            cx = W / 2,
+            cy = H / 2,
+            R = 92,
+            r = 58
+          var svg = frame(el, W, H)
+          var total =
+            cfg.values.reduce(function (a, b) {
+              return a + b
+            }, 0) || 1
+          var palette = cfg.colors || [
+            accent(),
+            '#1baf7a',
+            '#eda100',
+            '#e34948',
+            '#4a3aa7',
+            '#e87ba4',
+          ]
+          var a0 = -Math.PI / 2
+          cfg.values.forEach(function (v, i) {
+            var a1 = a0 + (v / total) * Math.PI * 2
+            var large = a1 - a0 > Math.PI ? 1 : 0
+            var p = [
+              'M',
+              cx + R * Math.cos(a0),
+              cy + R * Math.sin(a0),
+              'A',
+              R,
+              R,
+              0,
+              large,
+              1,
+              cx + R * Math.cos(a1),
+              cy + R * Math.sin(a1),
+              'L',
+              cx + r * Math.cos(a1),
+              cy + r * Math.sin(a1),
+              'A',
+              r,
+              r,
+              0,
+              large,
+              0,
+              cx + r * Math.cos(a0),
+              cy + r * Math.sin(a0),
+              'Z',
+            ].join(' ')
+            var path = svgEl('path', { d: p, fill: palette[i % palette.length] })
+            var t = svgEl('title', {})
+            t.textContent = cfg.labels[i] + ': ' + fmt.num(v) + ' (' + fmt.pct(v / total) + ')'
+            path.appendChild(t)
+            svg.appendChild(path)
+            a0 = a1
+          })
+          var center = svgEl('text', {
+            x: cx,
+            y: cy + 5,
+            'text-anchor': 'middle',
+            'font-size': 20,
+            'font-weight': 650,
+            fill: 'currentColor',
+          })
+          center.textContent = fmt.num(total)
+          svg.appendChild(center)
+        }
+
+        window.skipShell = { fmt: fmt }
+        window.skipChart = { bar: bar, line: line, donut: donut }
+      })()
+    </script>
+  </body>
+</html>

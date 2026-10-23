@@ -115,7 +115,7 @@ export const CASES_DATA: CaseStudy[] = [
       metodoMedicao: 'Telemetria de geração e faturas do Grupo A',
     },
     dataEntrega: 'Fevereiro / 2019 (Operação ativa)',
-    destaque: true,
+    destaque: false,
     potenciaOuCapacidadeCurta: '123,5 kWp',
     fotoDescricao:
       '390 módulos fotovoltaicos instalados sobre telhado industrial da Clanel em Erechim/RS.',
@@ -319,11 +319,11 @@ export const CASES_DATA: CaseStudy[] = [
       metodoMedicao: 'Telemetria do sistema e monitoramento da concessionária',
     },
     dataEntrega: 'Agosto / 2019 (Operação ativa)',
-    destaque: true,
+    destaque: false,
     potenciaOuCapacidadeCurta: '25,0 kWp Carport',
     fotoDescricao: 'Carport solar corporativo no estacionamento da System Software em Erechim/RS.',
     fotoPlaceholderNota: 'Foto real oficial',
-    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=solar%20carport%20parking&color=blue',
+    fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/08/DJI_0001.jpg',
     tags: ['Carport Solar', 'Indústria / Software', '25 kWp', 'Erechim/RS', 'Destaque Regional'],
   },
   {
@@ -348,11 +348,12 @@ export const CASES_DATA: CaseStudy[] = [
       metodoMedicao: 'Monitoramento remoto do arranjo industrial',
     },
     dataEntrega: 'Agosto / 2022 (Operação ativa)',
-    destaque: true,
+    destaque: false,
     potenciaOuCapacidadeCurta: '93,5 kWp',
     fotoDescricao: 'Cobertura agroindustrial com usina solar de 93,5 kWp na Ervateira Bazia.',
     fotoPlaceholderNota: 'Foto real oficial',
-    fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=industrial%20rooftop%20solar&color=blue',
+    fotoUrl:
+      'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/WhatsApp-Image-2022-08-12-at-12.40.04-1-e1660823625916.jpeg',
     tags: ['Agroindústria', 'Erva-mate', '93,5 kWp', 'Paraná', 'Grande Porte'],
   },
   {
@@ -586,10 +587,9 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '9,75 kWp',
     fotoDescricao:
-      'Vista aérea da instalação fotovoltaica na cobertura da Indra Distribuidora Agropecuária.',
+      'Instalação fotovoltaica na cobertura metálica da Indra Distribuidora Agropecuária em Erechim/RS.',
     fotoPlaceholderNota: 'Foto real oficial',
-    fotoUrl:
-      'https://img.usecurling.com/p/1600/1000?q=agricultural%20commercial%20solar&color=blue',
+    fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2024/10/Imagem-3-1.jpg',
     tags: ['Agronegócio', 'Insumos Agropecuários', '9,75 kWp', '13.865 kWh/ano', 'Erechim/RS'],
   },
   {

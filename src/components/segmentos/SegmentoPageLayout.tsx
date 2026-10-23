@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
@@ -21,6 +21,7 @@ import SeoMeta from '@/components/SeoMeta'
 import { Button } from '@/components/ui/button'
 import CaseModal from '@/components/cases/CaseModal'
 import { CASES_DATA, type CaseStudy } from '@/data/cases'
+import { listPublishedCases, getCaseImageUrl } from '@/services/content'
 import { SEGMENTOS_CONFIG, LISTA_SEGMENTOS_ORDEM, type SegmentoInfo } from '@/data/segmentos'
 
 interface SegmentoPageLayoutProps {
@@ -37,8 +38,61 @@ export default function SegmentoPageLayout({
   const seg: SegmentoInfo = SEGMENTOS_CONFIG[segmentoKey]
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null)
 
-  // Cases reais cadastrados vinculados a este segmento
-  const casesDoSegmento = CASES_DATA.filter((c) => c.segmento === seg.caseSegmentoKey)
+  // Carregar cases dinâmicos do PocketBase (se disponíveis) ou estáticos
+  const [dynamicCases, setDynamicCases] = useState<CaseStudy[]>([])
+
+  useEffect(() => {
+    let active = true
+    listPublishedCases()
+      .then((records) => {
+        if (!active || !records || records.length === 0) return
+        const mapped: CaseStudy[] = records.map((r) => ({
+          id: r.id,
+          slug: r.slug,
+          titulo: r.titulo,
+          cliente: r.cliente,
+          segmento: r.setor as any,
+          solucao: r.solucao as any,
+          local: r.local,
+          desafioInicial: r.descricao,
+          escopo: r.escopo,
+          solucaoTecnica: r.solucao_tecnica,
+          resultadoMedido: {
+            destaqueValor: r.resultado_valor,
+            destaqueLabel: r.resultado_label,
+            descricao: r.resultado,
+            periodoMedicao: r.data_entrega,
+            metodoMedicao: 'Monitoramento remoto e concessionária',
+          },
+          dataEntrega: r.data_entrega,
+          destaque: Boolean(r.destaque),
+          potenciaOuCapacidadeCurta: r.potencia_capacidade,
+          fotoDescricao: r.titulo,
+          fotoPlaceholderNota: 'Foto real oficial',
+          fotoUrl: getCaseImageUrl(r, 'large') || getCaseImageUrl(r),
+          tags: [r.setor, r.solucao, r.potencia_capacidade, r.local],
+        }))
+        setDynamicCases(mapped)
+      })
+      .catch(() => {
+        // Fallback silencioso usando CASES_DATA
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  // Mesclar cases reais priorizando fotos e dados do banco quando existirem
+  const todosCasesDoSegmento = useMemo(() => {
+    const list = dynamicCases.length > 0 ? dynamicCases : CASES_DATA
+    return list.filter((c) => c.segmento === seg.caseSegmentoKey)
+  }, [dynamicCases, seg.caseSegmentoKey])
+
+  // Primeiro case com foto para o bloco visual do hero
+  const primeiroCaseComFoto = useMemo(() => {
+    return todosCasesDoSegmento.find((c) => Boolean(c.fotoUrl))
+  }, [todosCasesDoSegmento])
 
   const scrollToContato = () => {
     const el = document.querySelector('#contato')
@@ -179,33 +233,81 @@ export default function SegmentoPageLayout({
 
               {/* Coluna Visual: Card de Foto Real Reservada + Snapshot de Qualificação */}
               <div className="lg:col-span-5 space-y-4">
-                {/* Placeholder de Foto Real marcado explicitamente (GOVERNANÇA DO DOC) */}
-                <div className="rounded-3xl border-2 border-dashed border-solar-400/40 bg-solar-950/20 p-6 backdrop-blur-md relative overflow-hidden group">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-solar-400/20 text-solar-300 border border-solar-400/30">
-                      Foto real — aguardando
-                    </span>
-                    <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-solar-400" />
-                      {fotoRealLocal}
-                    </span>
-                  </div>
-
-                  <div className="aspect-video rounded-2xl bg-slate-900/70 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-solar-400/10 border border-solar-400/30 flex items-center justify-center text-solar-400 mb-3 group-hover:scale-105 transition-transform">
-                      <IconeSegmento className="w-7 h-7" />
+                {/* Card de Foto Real: exibe a foto do case de destaque do segmento se houver */}
+                {primeiroCaseComFoto ? (
+                  <div
+                    onClick={() => setSelectedCase(primeiroCaseComFoto)}
+                    className="rounded-3xl border border-white/20 bg-solar-950/40 p-4 backdrop-blur-md relative overflow-hidden group cursor-pointer hover:border-solar-400 transition-all shadow-xl"
+                  >
+                    <div className="flex items-center justify-between mb-3 px-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Projeto Real em Operação
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-solar-400" />
+                        {primeiroCaseComFoto.local}
+                      </span>
                     </div>
-                    <h3 className="text-sm font-bold text-white">Obra Real Delfos em {seg.nome}</h3>
-                    <p className="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
-                      {fotoRealDescricao}
-                    </p>
-                  </div>
 
-                  <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
-                    <span>Sem banco de imagens genérico</span>
-                    <span className="text-solar-400 font-mono font-bold">Registro de Campo</span>
+                    <div className="aspect-video rounded-2xl overflow-hidden border border-white/10 bg-slate-950 relative">
+                      <img
+                        src={primeiroCaseComFoto.fotoUrl}
+                        alt={primeiroCaseComFoto.titulo}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+                        <div>
+                          <p className="text-white text-sm font-bold leading-tight">
+                            {primeiroCaseComFoto.cliente}
+                          </p>
+                          <p className="text-solar-300 text-xs font-mono">
+                            {primeiroCaseComFoto.potenciaOuCapacidadeCurta} •{' '}
+                            {primeiroCaseComFoto.local}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 px-1 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>{primeiroCaseComFoto.resultadoMedido.destaqueLabel}:</span>
+                      <span className="text-emerald-400 font-bold font-mono">
+                        {primeiroCaseComFoto.resultadoMedido.destaqueValor}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="rounded-3xl border border-white/15 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-solar-400/20 text-solar-300 border border-solar-400/30">
+                        Engenharia Consultiva
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-solar-400" />
+                        {fotoRealLocal}
+                      </span>
+                    </div>
+
+                    <div className="aspect-video rounded-2xl bg-slate-900/70 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+                      <div className="w-14 h-14 rounded-2xl bg-solar-400/10 border border-solar-400/30 flex items-center justify-center text-solar-400 mb-3">
+                        <IconeSegmento className="w-7 h-7" />
+                      </div>
+                      <h3 className="text-sm font-bold text-white">
+                        Engenharia Delfos em {seg.nome}
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
+                        {fotoRealDescricao}
+                      </p>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
+                      <span>Projetos com ART no CREA-RS</span>
+                      <span className="text-solar-400 font-mono font-bold">Atuação Regional</span>
+                    </div>
+                  </div>
+                )}
 
                 {/* Card de Qualificação Rápida com Callout */}
                 <div
@@ -409,161 +511,136 @@ export default function SegmentoPageLayout({
         </section>
 
         {/* PROVAS SOCIAIS E CASES REAIS DO SEGMENTO */}
-        <section
-          className={`py-20 border-b ${
-            isDark ? 'bg-[#060D17] border-white/10' : 'bg-frost border-slate-200/80'
-          }`}
-        >
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-solar-500 block mb-2">
-                  Provas Reais e Resultados Medidos
-                </span>
-                <h2
-                  className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
-                    isDark ? 'text-white' : 'text-slate-900'
-                  }`}
-                >
-                  Cases da Delfos em {seg.nome}
-                </h2>
-                <p
-                  className={`text-sm sm:text-base mt-2 ${
-                    isDark ? 'text-slate-300' : 'text-slate-600'
-                  }`}
-                >
-                  Projetos entregues com autorização para divulgação, monitoramento remoto conferido
-                  e dados auditados.
-                </p>
-              </div>
-
-              <Link
-                to="/projetos"
-                className="text-xs sm:text-sm font-bold text-solar-400 hover:underline flex items-center gap-1.5 shrink-0"
-              >
-                <span>Ver todos os cases de todos os segmentos</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Grid de Cases */}
-            {casesDoSegmento.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {casesDoSegmento.map((c) => (
-                  <div
-                    key={c.id}
-                    onClick={() => setSelectedCase(c)}
-                    className={`rounded-2xl p-6 border transition-all duration-300 cursor-pointer flex flex-col justify-between group ${
-                      isDark
-                        ? 'bg-white/5 border-white/10 hover:border-solar-400 hover:bg-white/10'
-                        : 'bg-white border-slate-200 shadow-sm hover:shadow-lg hover:border-solar-400 hover:-translate-y-1'
+        {todosCasesDoSegmento.length > 0 && (
+          <section
+            className={`py-20 border-b ${
+              isDark ? 'bg-[#060D17] border-white/10' : 'bg-frost border-slate-200/80'
+            }`}
+          >
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-solar-500 block mb-2">
+                    Provas Reais e Resultados Medidos
+                  </span>
+                  <h2
+                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-900'
                     }`}
                   >
-                    <div>
-                      {/* Top Badges */}
-                      <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-solar-500/15 text-solar-400 uppercase">
-                          {c.solucao}
-                        </span>
-                        <span className="text-[11px] font-mono text-slate-400">{c.local}</span>
-                      </div>
+                    Cases da Delfos em {seg.nome}
+                  </h2>
+                  <p
+                    className={`text-sm sm:text-base mt-2 ${
+                      isDark ? 'text-slate-300' : 'text-slate-600'
+                    }`}
+                  >
+                    Projetos entregues com autorização para divulgação, monitoramento remoto
+                    conferido e dados auditados.
+                  </p>
+                </div>
 
-                      <h3
-                        className={`text-lg font-bold mb-1 group-hover:text-solar-400 transition-colors ${
-                          isDark ? 'text-white' : 'text-slate-900'
-                        }`}
-                      >
-                        {c.titulo}
-                      </h3>
+                <Link
+                  to="/projetos"
+                  className="text-xs sm:text-sm font-bold text-solar-400 hover:underline flex items-center gap-1.5 shrink-0"
+                >
+                  <span>Ver todos os cases de todos os segmentos</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
 
-                      {c.fotoUrl && (
-                        <div className="my-3 rounded-xl overflow-hidden aspect-video border border-slate-200/20 bg-slate-900">
-                          <img
-                            src={c.fotoUrl}
-                            alt={c.titulo}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      )}
-
-                      <p
-                        className={`text-xs line-clamp-2 leading-relaxed mb-4 ${
-                          isDark ? 'text-slate-300' : 'text-slate-600'
-                        }`}
-                      >
-                        {c.desafioInicial}
-                      </p>
-
-                      {/* Métrica de destaque do Case */}
-                      <div
-                        className={`p-3.5 rounded-xl border mb-4 ${
-                          isDark
-                            ? 'bg-[#091322] border-white/10'
-                            : 'bg-solar-50/80 border-solar-200/60'
-                        }`}
-                      >
-                        <span className="text-[10px] font-mono uppercase text-slate-400 block mb-0.5">
-                          {c.resultadoMedido.destaqueLabel}
-                        </span>
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-emerald-500">
-                            {c.resultadoMedido.destaqueValor}
+              {/* Grid de Cases */}
+              {todosCasesDoSegmento.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {todosCasesDoSegmento.map((c) => (
+                    <div
+                      key={c.id}
+                      onClick={() => setSelectedCase(c)}
+                      className={`rounded-2xl p-6 border transition-all duration-300 cursor-pointer flex flex-col justify-between group ${
+                        isDark
+                          ? 'bg-white/5 border-white/10 hover:border-solar-400 hover:bg-white/10'
+                          : 'bg-white border-slate-200 shadow-sm hover:shadow-lg hover:border-solar-400 hover:-translate-y-1'
+                      }`}
+                    >
+                      <div>
+                        {/* Top Badges */}
+                        <div className="flex items-center justify-between gap-2 mb-3">
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-solar-500/15 text-solar-400 uppercase">
+                            {c.solucao}
                           </span>
-                          {c.resultadoMedido.dadoPendente && (
-                            <span className="text-[10px] font-mono text-amber-500">
-                              (a confirmar)
-                            </span>
-                          )}
+                          <span className="text-[11px] font-mono text-slate-400">{c.local}</span>
                         </div>
+
+                        <h3
+                          className={`text-lg font-bold mb-1 group-hover:text-solar-400 transition-colors ${
+                            isDark ? 'text-white' : 'text-slate-900'
+                          }`}
+                        >
+                          {c.titulo}
+                        </h3>
+
+                        {c.fotoUrl && (
+                          <div className="my-3 rounded-xl overflow-hidden aspect-video border border-slate-200/20 bg-slate-900">
+                            <img
+                              src={c.fotoUrl}
+                              alt={c.titulo}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        )}
+
                         <p
-                          className={`text-[11px] mt-1 leading-snug ${
+                          className={`text-xs line-clamp-2 leading-relaxed mb-4 ${
                             isDark ? 'text-slate-300' : 'text-slate-600'
                           }`}
                         >
-                          {c.resultadoMedido.descricao}
+                          {c.desafioInicial}
                         </p>
+
+                        {/* Métrica de destaque do Case */}
+                        <div
+                          className={`p-3.5 rounded-xl border mb-4 ${
+                            isDark
+                              ? 'bg-[#091322] border-white/10'
+                              : 'bg-solar-50/80 border-solar-200/60'
+                          }`}
+                        >
+                          <span className="text-[10px] font-mono uppercase text-slate-400 block mb-0.5">
+                            {c.resultadoMedido.destaqueLabel}
+                          </span>
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-2xl font-black text-emerald-500">
+                              {c.resultadoMedido.destaqueValor}
+                            </span>
+                            {c.resultadoMedido.dadoPendente && (
+                              <span className="text-[10px] font-mono text-amber-500">
+                                (a confirmar)
+                              </span>
+                            )}
+                          </div>
+                          <p
+                            className={`text-[11px] mt-1 leading-snug ${
+                              isDark ? 'text-slate-300' : 'text-slate-600'
+                            }`}
+                          >
+                            {c.resultadoMedido.descricao}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-200/20 flex items-center justify-between text-xs font-bold text-solar-400">
+                        <span>Ver ficha técnica completa</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
-
-                    <div className="pt-3 border-t border-slate-200/20 flex items-center justify-between text-xs font-bold text-solar-400">
-                      <span>Ver ficha técnica completa</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              /* Caso o segmento ainda não tenha case publicado em cases.ts */
-              <div
-                className={`rounded-2xl p-8 border text-center max-w-xl mx-auto space-y-3 ${
-                  isDark
-                    ? 'bg-white/5 border-white/10 text-slate-300'
-                    : 'bg-white border-slate-200 text-slate-600'
-                }`}
-              >
-                <div className="w-12 h-12 rounded-xl bg-solar-400/20 text-solar-400 flex items-center justify-center mx-auto">
-                  <FileCheck className="w-6 h-6" />
+                  ))}
                 </div>
-                <h3 className={`text-base font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Projetos em {seg.nome} em fase de auditoria oficial
-                </h3>
-                <p className="text-xs leading-relaxed">
-                  Conforme a governança da especificação Delfos, publicamos apenas cases com medição
-                  auditada de ciclo completo e autorização formal do cliente. Temos dezenas de
-                  instalações em operação neste perfil no Sul.
-                </p>
-                <Button
-                  onClick={scrollToContato}
-                  className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs"
-                >
-                  Solicitar referência técnica ao engenheiro
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
+              ) : null}
+            </div>
+          </section>
+        )}
 
         {/* FAQ CURTO ESPECÍFICO DO SEGMENTO */}
         <section

@@ -17,6 +17,7 @@ import ProjetosResultados from './pages/ProjetosResultados'
 import Sobre from './pages/Sobre'
 import Conteudos from './pages/Conteudos'
 import ConteudoPost from './pages/ConteudoPost'
+import { FaqPage } from './pages/FaqPage'
 import SegmentoResidencias from './pages/segmentos/SegmentoResidencias'
 import SegmentoComercio from './pages/segmentos/SegmentoComercio'
 import SegmentoIndustria from './pages/segmentos/SegmentoIndustria'
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/conteudos" element={<Conteudos />} />
           <Route path="/conteudos/:slug" element={<ConteudoPost />} />
+          <Route path="/faq" element={<FaqPage />} />
 
           {/* Fase 4: As 7 Páginas de Segmento ("Portas de Entrada") */}
           <Route path="/segmentos/residencias" element={<SegmentoResidencias />} />
