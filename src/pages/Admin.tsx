@@ -561,29 +561,61 @@ export default function Admin() {
                 onClick={async () => {
                   setImportingFotos(true)
                   try {
-                    const pbUrl = import.meta.env.VITE_POCKETBASE_URL
-                    const res = await fetch(`${pbUrl}/backend/v1/importar-fotos-delfos`, {
-                      method: 'POST',
-                    })
-                    const json = await res.json()
-                    if (res.ok) {
-                      toast({
-                        title: 'Fotos sincronizadas e otimizadas!',
-                        description: `${json.total || 10} fotos reais processadas com versões otimizadas: grande (~1600px para capas/modais) e leve (~900px para cards).`,
-                      })
-                      fetchMedia()
-                      fetchCases()
-                    } else {
-                      toast({
-                        variant: 'destructive',
-                        title: 'Erro na importação',
-                        description: json.error || 'Não foi possível importar as fotos.',
-                      })
+                    const pbUrl = import.meta.env.VITE_POCKETBASE_URL || ''
+                    // Processamento em lotes encadeados de no máximo 6 fotos por chamada
+                    // garantindo resposta ultra rápida e sem risco de 504 Gateway Timeout
+                    const limit = 6
+                    let currentOffset = 0
+                    let hasMore = true
+                    let totalFotosProcessadas = 0
+                    let totalSalvas = 0
+                    let totalExistentes = 0
+                    let casesAfetadosCount = 0
+
+                    while (hasMore) {
+                      const res = await fetch(
+                        `${pbUrl}/backend/v1/importar-fotos-delfos?offset=${currentOffset}&limit=${limit}`,
+                        {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                        },
+                      )
+
+                      if (!res.ok) {
+                        const errJson = await res.json().catch(() => ({}))
+                        throw new Error(
+                          errJson.error || `Erro HTTP ${res.status} ao processar lote de fotos.`,
+                        )
+                      }
+
+                      const json = await res.json()
+                      const batchSize = json.loteProcessado || 0
+                      totalFotosProcessadas += batchSize
+                      totalSalvas += json.fotosSalvas || 0
+                      totalExistentes += json.fotosPuladas || 0
+                      if (Array.isArray(json.casesAtualizados)) {
+                        casesAfetadosCount += json.casesAtualizados.length
+                      }
+
+                      if (json.temMais && json.proximoOffset !== null && batchSize > 0) {
+                        currentOffset = json.proximoOffset
+                      } else {
+                        hasMore = false
+                      }
                     }
+
+                    toast({
+                      title: 'Fotos sincronizadas e otimizadas!',
+                      description: `${totalFotosProcessadas} fotos processadas (${totalSalvas} novas salvas, ${totalExistentes} já existentes reaproveitadas). Versões otimizadas 1600px e 900px geradas.`,
+                    })
+                    fetchMedia()
+                    fetchCases()
                   } catch (err: unknown) {
                     toast({
                       variant: 'destructive',
-                      title: 'Erro de rede',
+                      title: 'Erro na sincronização',
                       description:
                         (err as Error)?.message || 'Falha ao acionar rotina de importação.',
                     })
@@ -594,7 +626,9 @@ export default function Admin() {
                 className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs rounded-xl shadow-md shrink-0 h-10 px-4"
               >
                 <RefreshCw className={`w-4 h-4 mr-1.5 ${importingFotos ? 'animate-spin' : ''}`} />
-                <span>{importingFotos ? 'Importando fotos...' : 'Sincronizar Fotos Delfos'}</span>
+                <span>
+                  {importingFotos ? 'Sincronizando fotos...' : 'Sincronizar Fotos Delfos'}
+                </span>
               </Button>
             </div>
 

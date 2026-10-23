@@ -215,13 +215,13 @@ const executarSincronizacaoFotos = (e) => {
       },
     ]
 
-    // Helper para fazer GET HTTP simples com User-Agent de navegador
-    const httpGet = (url) => {
+    // Helper para fazer GET HTTP simples com timeout curto e User-Agent de navegador
+    const httpGet = (url, timeoutSecs = 8) => {
       try {
         return $http.send({
           url: url,
           method: 'GET',
-          timeout: 25,
+          timeout: timeoutSecs,
           headers: {
             'User-Agent':
               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -235,40 +235,36 @@ const executarSincronizacaoFotos = (e) => {
       }
     }
 
-    // 1. Descobrir links de projetos a partir da listagem
+    // 1. Descobrir links de projetos a partir da listagem ou usar URLs conhecidas
+    // URLs diretas conhecidas das páginas de projetos do delfos.eng.br (para evitar múltiplos hops na listagem)
+    const KNOWN_PROJECT_URLS = [
+      'https://www.delfos.eng.br/site/projetos/cassul-distribuidora/',
+      'https://www.delfos.eng.br/site/projetos/clanel/',
+      'https://www.delfos.eng.br/site/projetos/panificadora-garcia/',
+      'https://www.delfos.eng.br/site/projetos/silo-erebango/',
+      'https://www.delfos.eng.br/site/projetos/posto-caminho-do-mercosul/',
+      'https://www.delfos.eng.br/site/projetos/usina-de-solo-erechim/',
+      'https://www.delfos.eng.br/site/projetos/condominio-notabile/',
+      'https://www.delfos.eng.br/site/projetos/pecuaria-de-leite-barao-de-cotegipe/',
+      'https://www.delfos.eng.br/site/projetos/residencia-urbana-erechim/',
+    ]
+
+    const projectLinksMap = {}
+    for (let u = 0; u < KNOWN_PROJECT_URLS.length; u++) {
+      projectLinksMap[KNOWN_PROJECT_URLS[u]] = true
+    }
+
+    // Tentar raspar apenas a primeira página de projetos do site delfos (com timeout curto) para descobrir novos links
     const urlBaseListagem = 'https://www.delfos.eng.br/site/projetos/'
-    const projectLinksMap = {} // url -> true
-    const urlsToScan = [urlBaseListagem]
-
-    // Varre a listagem inicial e busca paginação (ex.: /page/2/, etc.)
-    const visitadas = {}
-    while (urlsToScan.length > 0) {
-      const currentListUrl = urlsToScan.shift()
-      if (visitadas[currentListUrl]) continue
-      visitadas[currentListUrl] = true
-
-      console.log('Raspando listagem de projetos:', currentListUrl)
-      const resList = httpGet(currentListUrl)
-      if (!resList || resList.statusCode !== 200) {
-        console.log(
-          'Status diferente de 200 na listagem:',
-          currentListUrl,
-          resList ? resList.statusCode : 'sem resposta',
-        )
-        continue
-      }
-
+    const resList = httpGet(urlBaseListagem, 8)
+    if (resList && resList.statusCode === 200) {
       const html = resList.raw.toString()
-
-      // Encontrar links de projetos: href="https://www.delfos.eng.br/site/projetos/[^"]+"
       const regexLink =
         /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/([a-zA-Z0-9_-]+)\/?)["']/gi
       let match
       while ((match = regexLink.exec(html)) !== null) {
         const fullLink = match[1]
         const slug = match[2]
-
-        // Ignorar páginas de sistema, categorias ou a própria página principal
         if (
           !slug ||
           slug === 'projetos' ||
@@ -278,33 +274,28 @@ const executarSincronizacaoFotos = (e) => {
         ) {
           continue
         }
-
-        // Normalizar URL terminando com /
         const normalizedUrl = fullLink.endsWith('/') ? fullLink : fullLink + '/'
         projectLinksMap[normalizedUrl] = true
-      }
-
-      // Verificar se há links de paginação WordPress (ex: /site/projetos/page/2/)
-      const regexPagina =
-        /href=["'](https?:\/\/(?:www\.)?delfos\.eng\.br\/site\/projetos\/page\/([0-9]+)\/?)["']/gi
-      let matchPagina
-      while ((matchPagina = regexPagina.exec(html)) !== null) {
-        const paginaUrl = matchPagina[1].endsWith('/') ? matchPagina[1] : matchPagina[1] + '/'
-        if (!visitadas[paginaUrl] && !urlsToScan.includes(paginaUrl)) {
-          urlsToScan.push(paginaUrl)
-        }
       }
     }
 
     const discoveredUrls = Object.keys(projectLinksMap)
-    console.log(`Total de páginas de projetos descobertas no site antigo: ${discoveredUrls.length}`)
+    console.log(`Total de páginas de projetos para varredura: ${discoveredUrls.length}`)
 
     // 2. Extrair fotos reais de cada página de projeto
     // Estrutura: { url, titulo, descricao, caseSlug, nomeArquivo, categoria, destino_sugerido }
     const fotosParaProcessar = []
     const fotosJaAdicionadas = {}
 
+    // Limite de segurança: não gastar mais de 40 segundos raspando as páginas HTML
+    const startTimeScrape = Date.now()
     for (let i = 0; i < discoveredUrls.length; i++) {
+      // Se já passou 40 segundos raspando, encerra a busca de novas páginas para garantir tempo pro lote
+      if (Date.now() - startTimeScrape > 40000) {
+        console.log('Limite de tempo de varredura atingido. Prosseguindo com fotos coletadas.')
+        break
+      }
+
       const projUrl = discoveredUrls[i]
 
       // Identificar qual case casa com este link do projeto
@@ -320,10 +311,9 @@ const executarSincronizacaoFotos = (e) => {
         if (caseCorrespondente) break
       }
 
-      // Se a URL não casou diretamente, ainda faremos o fetch da página para verificar o título h1 / h2 ou conteúdo
       let resProj = null
       try {
-        resProj = httpGet(projUrl)
+        resProj = httpGet(projUrl, 8)
       } catch (fErr) {
         console.log('Erro ao buscar página de projeto:', projUrl, fErr)
         continue
@@ -349,14 +339,11 @@ const executarSincronizacaoFotos = (e) => {
         }
       }
 
-      // Se não casou com nenhum dos 9 cases, ignorar resiliente sem quebrar (requisito 4)
       if (!caseCorrespondente) {
         continue
       }
 
       // Extrair URLs de imagens da página do projeto
-      // Prioridade 1: links de imagem em tags <a> (como FooBox / lightbox: <a href="...wp-content/uploads/...")
-      // Prioridade 2: tags <img src="...wp-content/uploads/...">
       const imageUrlsFound = []
 
       // a) Links de lightbox para imagens em tamanho original (alta resolução)
@@ -376,12 +363,11 @@ const executarSincronizacaoFotos = (e) => {
         }
       }
 
-      // b) Se não achou em <a> ou se foram poucas, buscar nas próprias tags <img> (removendo tamanhos intermediários se possível)
+      // b) Tags <img>
       const regexImgTag = /<img[^>]+src=["']([^"']+\.(?:jpe?g|png|webp))["'][^>]*>/gi
       let matchTag
       while ((matchTag = regexImgTag.exec(projHtml)) !== null) {
         let imgUrl = matchTag[1]
-        // Ignorar ícones, mapas, logos
         if (
           imgUrl.includes('logo') ||
           imgUrl.includes('camadaTransparente') ||
@@ -392,9 +378,7 @@ const executarSincronizacaoFotos = (e) => {
           continue
         }
 
-        // Se for imagem de upload
         if (imgUrl.includes('/wp-content/uploads/')) {
-          // Se for versão de cache ou com sufixo de dimensão (ex: -300x225.jpg), tentar pegar a versão limpa
           const limpaUrl = imgUrl.replace(/-[0-9]{3,4}x[0-9]{3,4}(\.[a-zA-Z]{3,4})$/, '$1')
           if (!imageUrlsFound.includes(limpaUrl) && !imageUrlsFound.includes(imgUrl)) {
             imageUrlsFound.push(limpaUrl)
@@ -412,7 +396,6 @@ const executarSincronizacaoFotos = (e) => {
         if (fotosJaAdicionadas[rawImgUrl]) continue
         fotosJaAdicionadas[rawImgUrl] = true
 
-        // Gerar nome de arquivo limpo e sem caracteres especiais
         const urlParts = rawImgUrl.split('/')
         const originalFileName = urlParts[urlParts.length - 1].split('?')[0]
         const cleanBase = originalFileName
@@ -429,7 +412,7 @@ const executarSincronizacaoFotos = (e) => {
           categoria: caseCorrespondente.categoria,
           descricao: `Foto real da instalação do case ${caseCorrespondente.nomeAmigavel} (${originalFileName}).`,
           destino_sugerido: caseCorrespondente.destino,
-          caseSlug: isPrincipal ? caseCorrespondente.slug : null, // primeira foto vai como capa principal do case
+          caseSlug: isPrincipal ? caseCorrespondente.slug : null,
           fallbackCaseSlug: caseCorrespondente.slug,
           nomeArquivo: nomeArquivoFinal,
           ordem: imgIdx,
@@ -441,25 +424,82 @@ const executarSincronizacaoFotos = (e) => {
       `Total de fotos reais prontas para importação/sincronização: ${fotosParaProcessar.length}`,
     )
 
-    // 3. Processar download, gravação no banco e thumbs
+    // 3. Suporte a paginação/lotes via query param ou request body (ex: ?offset=0&limit=8)
+    let reqOffset = 0
+    let reqLimit = 8
+    try {
+      const qOffset = e.request.url.query().get('offset')
+      const qLimit = e.request.url.query().get('limit')
+      if (qOffset) reqOffset = parseInt(qOffset, 10) || 0
+      if (qLimit) reqLimit = parseInt(qLimit, 10) || 8
+    } catch (_) {}
+
+    // Limites seguros para evitar ultrapassar o timeout de 120s da cloud
+    if (reqLimit < 1) reqLimit = 1
+    if (reqLimit > 15) reqLimit = 15 // no máximo 15 fotos por requisição
+
+    const totalFotosTotal = fotosParaProcessar.length
+    const fotosLote = fotosParaProcessar.slice(reqOffset, reqOffset + reqLimit)
+    const proximoOffset = reqOffset + reqLimit < totalFotosTotal ? reqOffset + reqLimit : null
+
+    console.log(
+      `Processando lote de fotos: offset=${reqOffset}, limit=${reqLimit}, lote=${fotosLote.length}, total=${totalFotosTotal}`,
+    )
+
+    // 4. Processar download, gravação no banco e thumbs
     const resultados = []
     const casesAtualizados = {}
+    let fotosSalvas = 0
+    let fotosPuladas = 0
 
-    for (let i = 0; i < fotosParaProcessar.length; i++) {
-      const item = fotosParaProcessar[i]
+    for (let i = 0; i < fotosLote.length; i++) {
+      const item = fotosLote[i]
 
       try {
-        // Verificar se já existe registro em 'media' com mesmo título ou destino
+        // Verificar se já existe registro em 'media' com mesmo título
         let mediaRecord = null
         try {
           mediaRecord = $app.findFirstRecordByData('media', 'titulo', item.titulo)
         } catch (_) {}
 
-        // Download da imagem real com timeout
+        // Se já existe e já tem arquivo e não pedimos force, podemos reaproveitar sem re-baixar
+        const jaExisteArquivo = mediaRecord && mediaRecord.getString('arquivo')
+
+        // Também verificar se o case alvo já possui foto
+        const targetCaseSlug =
+          item.caseSlug || (!casesAtualizados[item.fallbackCaseSlug] ? item.fallbackCaseSlug : null)
+
+        let targetCaseRecord = null
+        if (targetCaseSlug) {
+          try {
+            targetCaseRecord = $app.findFirstRecordByData('cases', 'slug', targetCaseSlug)
+          } catch (_) {}
+        }
+
+        const caseJaTemFoto = targetCaseRecord && targetCaseRecord.getString('foto')
+
+        // Otimização de performance: se já temos a mídia e o case já tem foto, apenas garantimos thumbs e pulamos o re-download HTTP pesado
+        if (jaExisteArquivo && (caseJaTemFoto || !targetCaseSlug)) {
+          gerarThumbsOtimizados(mediaRecord, 'arquivo')
+          if (targetCaseRecord && caseJaTemFoto) {
+            gerarThumbsOtimizados(targetCaseRecord, 'foto')
+          }
+          fotosPuladas++
+          resultados.push({
+            item: item.titulo,
+            status: 'existente',
+            mediaId: mediaRecord.id,
+            caseVinculado: targetCaseSlug,
+            mensagem: 'Foto já sincronizada anteriormente (reaproveitada).',
+          })
+          continue
+        }
+
+        // Download da imagem real com timeout curto de 15s
         const res = $http.send({
           url: item.url,
           method: 'GET',
-          timeout: 25,
+          timeout: 15,
           headers: {
             'User-Agent':
               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -503,24 +543,20 @@ const executarSincronizacaoFotos = (e) => {
 
         // Pré-gerar thumbs otimizados (1600x0 e 900x0)
         gerarThumbsOtimizados(mediaRecord, 'arquivo')
+        fotosSalvas++
 
         // Vincular ao Case correspondente se for foto principal OU se o case ainda não tiver foto
-        const targetCaseSlug =
-          item.caseSlug || (!casesAtualizados[item.fallbackCaseSlug] ? item.fallbackCaseSlug : null)
-
-        if (targetCaseSlug) {
+        if (targetCaseRecord) {
           try {
-            const caseRec = $app.findFirstRecordByData('cases', 'slug', targetCaseSlug)
-            const currentFoto = caseRec.getString('foto')
-
+            const currentFoto = targetCaseRecord.getString('foto')
             // Atualiza se for a foto principal (item.ordem === 0) OU se o case não possuir foto ainda
             if (item.ordem === 0 || !currentFoto) {
               const caseFileObj = $filesystem.fileFromBytes(res.raw, item.nomeArquivo)
-              caseRec.set('foto', caseFileObj)
-              $app.save(caseRec)
+              targetCaseRecord.set('foto', caseFileObj)
+              $app.save(targetCaseRecord)
 
               // Pré-gerar thumbs da foto do case
-              gerarThumbsOtimizados(caseRec, 'foto')
+              gerarThumbsOtimizados(targetCaseRecord, 'foto')
               casesAtualizados[targetCaseSlug] = true
               console.log(
                 `Foto vinculada com sucesso ao case ${targetCaseSlug}: ${item.nomeArquivo}`,
@@ -544,20 +580,17 @@ const executarSincronizacaoFotos = (e) => {
       }
     }
 
-    // Varredura final de thumbs em cases existentes para garantir todos otimizados
-    try {
-      const allCasesWithPhoto = $app.findRecordsByFilter('cases', "foto != ''", '-created', 100, 0)
-      for (let j = 0; j < allCasesWithPhoto.length; j++) {
-        gerarThumbsOtimizados(allCasesWithPhoto[j], 'foto')
-      }
-    } catch (cScanErr) {
-      console.log('Varredura adicional de cases:', cScanErr)
-    }
-
     return e.json(200, {
       sucesso: true,
       paginasProjetosDescobertas: discoveredUrls.length,
-      totalFotosProcessadas: fotosParaProcessar.length,
+      totalGeralFotos: totalFotosTotal,
+      offset: reqOffset,
+      limit: reqLimit,
+      loteProcessado: fotosLote.length,
+      proximoOffset: proximoOffset,
+      temMais: proximoOffset !== null,
+      fotosSalvas: fotosSalvas,
+      fotosPuladas: fotosPuladas,
       casesAtualizados: Object.keys(casesAtualizados),
       otimizacao: {
         versaoGrande: '1600px de largura máxima (capas e modais expandidos)',
