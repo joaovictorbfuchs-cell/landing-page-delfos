@@ -23,6 +23,8 @@ import CaseModal from '@/components/cases/CaseModal'
 import { CASES_DATA, type CaseStudy } from '@/data/cases'
 import { listPublishedCases, getCaseImageUrl } from '@/services/content'
 import { SEGMENTOS_CONFIG, LISTA_SEGMENTOS_ORDEM, type SegmentoInfo } from '@/data/segmentos'
+import { FAQ_POR_SEGMENTO } from '@/data/faqSegmentos'
+import { FaqSegmentoSection } from './FaqSegmentoSection'
 
 interface SegmentoPageLayoutProps {
   segmentoKey: keyof typeof SEGMENTOS_CONFIG
@@ -642,54 +644,63 @@ export default function SegmentoPageLayout({
           </section>
         )}
 
-        {/* FAQ CURTO ESPECÍFICO DO SEGMENTO */}
-        <section
-          className={`py-20 border-b ${
-            isDark ? 'bg-[#081220] border-white/10' : 'bg-white border-slate-200/80'
-          }`}
-        >
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="text-center mb-12">
-              <span className="text-xs font-bold uppercase tracking-wider text-solar-500 block mb-2">
-                Dúvidas Frequentes
-              </span>
-              <h2
-                className={`text-3xl font-extrabold tracking-tight ${
-                  isDark ? 'text-white' : 'text-slate-900'
-                }`}
-              >
-                Perguntas comuns sobre {seg.nome}
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              {seg.faq.map((item, idx) => (
-                <div
-                  key={idx}
-                  className={`rounded-2xl p-6 border ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
+        {/* FAQ COMPLETO POR SEGMENTO — 5 PERGUNTAS EM ACCORDION COM DOIS NÍVEIS E CTAs */}
+        {FAQ_POR_SEGMENTO[seg.slug] ? (
+          <FaqSegmentoSection
+            segmentoNome={seg.nome}
+            itens={FAQ_POR_SEGMENTO[seg.slug].itens}
+            isDark={isDark}
+            descricao={FAQ_POR_SEGMENTO[seg.slug].descricao}
+          />
+        ) : (
+          <section
+            className={`py-20 border-b ${
+              isDark ? 'bg-[#081220] border-white/10' : 'bg-white border-slate-200/80'
+            }`}
+          >
+            <div className="max-w-4xl mx-auto px-6">
+              <div className="text-center mb-12">
+                <span className="text-xs font-bold uppercase tracking-wider text-solar-500 block mb-2">
+                  Dúvidas Frequentes
+                </span>
+                <h2
+                  className={`text-3xl font-extrabold tracking-tight ${
+                    isDark ? 'text-white' : 'text-slate-900'
                   }`}
                 >
-                  <h3
-                    className={`text-base font-bold mb-2 flex items-start gap-2.5 ${
-                      isDark ? 'text-white' : 'text-slate-900'
+                  Perguntas comuns sobre {seg.nome}
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {seg.faq.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`rounded-2xl p-6 border ${
+                      isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
                     }`}
                   >
-                    <HelpCircle className="w-5 h-5 text-solar-400 shrink-0 mt-0.5" />
-                    <span>{item.pergunta}</span>
-                  </h3>
-                  <p
-                    className={`text-xs sm:text-sm leading-relaxed pl-7.5 ${
-                      isDark ? 'text-slate-300' : 'text-slate-600'
-                    }`}
-                  >
-                    {item.resposta}
-                  </p>
-                </div>
-              ))}
+                    <h3
+                      className={`text-base font-bold mb-2 flex items-start gap-2.5 ${
+                        isDark ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      <HelpCircle className="w-5 h-5 text-solar-400 shrink-0 mt-0.5" />
+                      <span>{item.pergunta}</span>
+                    </h3>
+                    <p
+                      className={`text-xs sm:text-sm leading-relaxed pl-7.5 ${
+                        isDark ? 'text-slate-300' : 'text-slate-600'
+                      }`}
+                    >
+                      {item.resposta}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* OUTROS SEGMENTOS (ATALHOS CROSS-NAVIGATION ENTRE PORTAS DE ENTRADA) */}
         <section

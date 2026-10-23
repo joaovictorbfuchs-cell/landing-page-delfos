@@ -245,7 +245,10 @@ export default function SolucaoSolar() {
                 </div>
 
                 {/* Simulador rápido de economia conectado ao formulário */}
-                <div className="bg-white rounded-3xl p-6 text-slate-800 shadow-2xl border border-slate-100">
+                <div
+                  id="simulador"
+                  className="bg-white rounded-3xl p-6 text-slate-800 shadow-2xl border border-slate-100 scroll-mt-28"
+                >
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-solar-600">
                       Simulação Estimada

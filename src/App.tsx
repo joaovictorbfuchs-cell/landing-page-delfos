@@ -37,9 +37,13 @@ const App = () => (
           <Route path="/" element={<Index />} />
           {/* As 4 páginas de Solução da Fase 2 */}
           <Route path="/solucoes/energia-solar" element={<SolucaoSolar />} />
+          <Route path="/energia-solar" element={<SolucaoSolar />} />
           <Route path="/solucoes/bess" element={<SolucaoBess />} />
+          <Route path="/baterias" element={<SolucaoBess />} />
           <Route path="/solucoes/om" element={<SolucaoOm />} />
+          <Route path="/manutencao" element={<SolucaoOm />} />
           <Route path="/solucoes/carregadores" element={<SolucaoCarregadores />} />
+          <Route path="/recarga" element={<SolucaoCarregadores />} />
 
           {/* Fase 3: Projetos e Resultados */}
           <Route path="/projetos" element={<ProjetosResultados />} />
