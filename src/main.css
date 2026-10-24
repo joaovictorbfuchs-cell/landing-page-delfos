@@ -300,4 +300,33 @@
   .animate-spotlight {
     animation: spotlight 2s ease forwards;
   }
+
+  /* Marquee Contínuo de Avaliações Google */
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee-scroll {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 45s linear infinite;
+    will-change: transform;
+  }
+
+  .animate-marquee-scroll:hover,
+  .group-marquee:hover .animate-marquee-scroll {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee-scroll {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
 }
