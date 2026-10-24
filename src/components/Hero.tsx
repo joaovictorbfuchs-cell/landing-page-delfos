@@ -39,7 +39,7 @@ const CONCESSIONARIAS: ConcessionariaParam[] = [
   // RGE B1 residencial: tarifa R$ 0,945/kWh | Fio B R$ 0,30/kWh — jun/2026 ANEEL
   {
     id: 'rge',
-    nome: 'RGE Sul',
+    nome: 'CPFL RGE',
     tarifa: 0.945,
     fioB: 0.3,
     fonte: 'RGE B1 0,945 / Fio B 0,30 — jun/2026 ANEEL',
@@ -172,7 +172,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
 
   const handleSimularSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId)?.nome || 'RGE Sul'
+    const conc = CONCESSIONARIAS.find((c) => c.id === concessionariaId)?.nome || 'CPFL RGE'
     const lig = 'Bifásica'
     onSolicitarAvaliacao({
       origem: 'calculadora-hero',
