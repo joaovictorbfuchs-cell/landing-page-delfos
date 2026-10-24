@@ -23,46 +23,47 @@ export default function Faq() {
             <HelpCircle className="w-3.5 h-3.5 text-amber-500" />
             Tire suas Dúvidas
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Perguntas Frequentes
           </h2>
-          <p className="text-base text-slate-600 leading-relaxed">
-            Respostas diretas e detalhes técnicos com fundamentação regulatória da ANEEL (SCEE e Lei
-            nº 14.300/2022).
-          </p>
         </div>
 
         {/* Accordion com Resposta Rápida e Detalhe Técnico */}
-        <Accordion type="single" collapsible defaultValue="pergunta-1" className="w-full space-y-4">
-          {faqsHome.map((faq) => (
-            <AccordionItem
-              key={faq.id}
-              value={faq.id}
-              className="bg-slate-50 border border-slate-200/90 rounded-2xl px-6 py-1 data-[state=open]:border-emerald-500 data-[state=open]:bg-white transition-all shadow-sm"
-            >
-              <AccordionTrigger className="text-left font-bold text-slate-900 text-base sm:text-lg hover:text-emerald-800 hover:no-underline py-5">
-                <div className="flex items-center gap-3 pr-2">
-                  <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-900 text-xs font-extrabold flex items-center justify-center shrink-0">
-                    {faq.numero}
-                  </span>
-                  <span>{faq.pergunta}</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-sm sm:text-base text-slate-700 leading-relaxed pb-6 pt-2 border-t border-slate-100 space-y-3">
-                <div className="bg-emerald-50/80 border-l-4 border-emerald-600 rounded-r-xl p-3.5">
-                  <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-emerald-900 mb-1">
-                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    Resposta Rápida
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {faqsHome.map((faq, index) => {
+            const numeroFormatado = String(index + 1).padStart(2, '0')
+            return (
+              <AccordionItem
+                key={faq.id}
+                value={faq.id}
+                className="bg-slate-50 border border-slate-200/90 rounded-2xl px-6 py-1 data-[state=open]:border-emerald-500 data-[state=open]:bg-white transition-all shadow-sm"
+              >
+                <AccordionTrigger className="text-left font-bold text-slate-900 text-base sm:text-lg hover:text-emerald-800 hover:no-underline py-5">
+                  <div className="flex items-center gap-3 pr-2">
+                    <span className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-900 text-xs font-extrabold flex items-center justify-center shrink-0">
+                      {numeroFormatado}
+                    </span>
+                    <span>{faq.pergunta}</span>
                   </div>
-                  <p className="text-emerald-950 text-sm font-semibold leading-relaxed">
-                    {faq.respostaRapida}
-                  </p>
-                </div>
+                </AccordionTrigger>
+                <AccordionContent className="text-sm sm:text-base text-slate-700 leading-relaxed pb-6 pt-2 border-t border-slate-100 space-y-3">
+                  <div className="bg-emerald-50/80 border-l-4 border-emerald-600 rounded-r-xl p-3.5">
+                    <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-emerald-900 mb-1">
+                      <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      Resposta Rápida
+                    </div>
+                    <p className="text-emerald-950 text-sm font-semibold leading-relaxed">
+                      {faq.respostaRapida}
+                    </p>
+                  </div>
 
-                <p className="text-slate-600 text-sm leading-relaxed pt-1">{faq.detalheTecnico}</p>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
+                  <p className="text-slate-600 text-sm leading-relaxed pt-1">
+                    {faq.detalheTecnico}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
         </Accordion>
 
         {/* Rodapé com link para FAQ completo */}
