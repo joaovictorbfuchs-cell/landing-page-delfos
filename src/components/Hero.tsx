@@ -305,7 +305,6 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
                       id="sim-valor"
                       value={valorContaInput}
                       onChange={(e) => setValorContaInput(e.target.value)}
-                      placeholder="Ex: 650"
                       className="pl-11 bg-[#081B30] border-white/20 text-white font-bold text-base h-11 rounded-xl focus-visible:ring-solar-400"
                     />
                   </div>

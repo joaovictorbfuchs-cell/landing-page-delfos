@@ -34,7 +34,7 @@ export interface SegmentoInfo {
   ctaRecomendado: string // CTA exato da seção 6
   dadoQualificacao: string // Dado exato da tabela da seção 6
   qualificacaoCampoLabel: string
-  qualificacaoCampoPlaceholder: string
+  qualificacaoCampoPlaceholder?: string
   necessidadePadrao: string
   icone: LucideIcon
   corTema: {
@@ -75,7 +75,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Simular projeto',
     dadoQualificacao: 'Cidade, concessionária e valor da conta',
     qualificacaoCampoLabel: 'Concessionária e detalhe da residência',
-    qualificacaoCampoPlaceholder: 'Ex: RGE, telhado cerâmico, 3 pessoas na casa...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Energia Solar Fotovoltaica',
     icone: Home,
     corTema: {
@@ -168,8 +168,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Pedir estudo de viabilidade',
     dadoQualificacao: 'Conta, horário de consumo, necessidade de continuidade',
     qualificacaoCampoLabel: 'Horário de consumo e necessidade de continuidade',
-    qualificacaoCampoPlaceholder:
-      'Ex: Consumo diurno e noturno (câmaras frias), não pode parar por 30min...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Energia Solar Fotovoltaica',
     icone: Store,
     corTema: {
@@ -260,7 +259,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Falar com engenharia',
     dadoQualificacao: 'Perfil de carga e demanda contratada',
     qualificacaoCampoLabel: 'Perfil de carga, demanda contratada (kW) e tensão',
-    qualificacaoCampoPlaceholder: 'Ex: Demanda 250 kW, tarifa Verde, CNCs e motores pesados...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'BESS (Armazenamento)',
     icone: Factory,
     corTema: {
@@ -355,8 +354,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Avaliar unidade',
     dadoQualificacao: 'Local, atividade e qualidade da rede rural',
     qualificacaoCampoLabel: 'Local da propriedade, atividade e qualidade da rede rural',
-    qualificacaoCampoPlaceholder:
-      'Ex: Zona rural de Erechim, aviário 40k aves, rede monofásica instável...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Energia Solar Fotovoltaica',
     icone: Tractor,
     corTema: {
@@ -447,8 +445,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Solicitar vistoria',
     dadoQualificacao: 'Número de vagas e infraestrutura existente',
     qualificacaoCampoLabel: 'Número de vagas, transformador e infraestrutura existente',
-    qualificacaoCampoPlaceholder:
-      'Ex: Prédio com 36 vagas, transformador 75 kVA, 4 moradores já têm EV...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Carregadores Veiculares',
     icone: Building2,
     corTema: {
@@ -541,8 +538,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Solicitar diagnóstico',
     dadoQualificacao: 'Potência, local e etapa do projeto',
     qualificacaoCampoLabel: 'Potência prevista/instalada (kWp/MWp), local e etapa',
-    qualificacaoCampoPlaceholder:
-      'Ex: Usina de 300 kWp em solo, terreno próprio no RS, fase de viabilidade...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Energia Solar Fotovoltaica',
     icone: TrendingUp,
     corTema: {
@@ -637,8 +633,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     ctaRecomendado: 'Pedir estudo elétrico',
     dadoQualificacao: 'Número de veículos, local e padrão de uso',
     qualificacaoCampoLabel: 'Número de veículos elétricos, local e janela de recarga',
-    qualificacaoCampoPlaceholder:
-      'Ex: 10 furgões elétricos, recarga noturna das 22h às 06h na garagem...',
+    qualificacaoCampoPlaceholder: '',
     necessidadePadrao: 'Carregadores Veiculares',
     icone: Truck,
     corTema: {

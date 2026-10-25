@@ -43,7 +43,7 @@ export default function ContatoForm({
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
   const [email, setEmail] = useState('')
-  const [cidade, setCidade] = useState('Erechim/RS')
+  const [cidade, setCidade] = useState('')
   const [necessidade, setNecessidade] = useState(initialNecessidade)
 
   // Etapa 2 fields
@@ -470,7 +470,6 @@ export default function ContatoForm({
                         if (errorsEtapa1.nome)
                           setErrorsEtapa1((prev) => ({ ...prev, nome: undefined }))
                       }}
-                      placeholder="Ex: João da Silva"
                       className={`bg-white h-12 rounded-xl text-sm ${
                         errorsEtapa1.nome
                           ? 'border-red-500 focus-visible:ring-red-400'
@@ -498,7 +497,6 @@ export default function ContatoForm({
                         id="lead-tel-etapa1"
                         value={telefone}
                         onChange={handleTelefoneChange}
-                        placeholder="(54) 99129-2121"
                         maxLength={15}
                         className={`bg-white h-12 rounded-xl text-sm ${
                           errorsEtapa1.telefone
@@ -530,7 +528,6 @@ export default function ContatoForm({
                           if (errorsEtapa1.email)
                             setErrorsEtapa1((prev) => ({ ...prev, email: undefined }))
                         }}
-                        placeholder="contato@exemplo.com.br"
                         className={`bg-white h-12 rounded-xl text-sm ${
                           errorsEtapa1.email
                             ? 'border-red-500 focus-visible:ring-red-400'
@@ -563,7 +560,6 @@ export default function ContatoForm({
                           if (errorsEtapa1.cidade)
                             setErrorsEtapa1((prev) => ({ ...prev, cidade: undefined }))
                         }}
-                        placeholder="Ex: Erechim/RS, Passo Fundo/RS..."
                         className={`bg-white h-12 rounded-xl text-sm ${
                           errorsEtapa1.cidade
                             ? 'border-red-500 focus-visible:ring-red-400'
@@ -711,7 +707,6 @@ export default function ContatoForm({
                           if (errorsEtapa2.valorConta)
                             setErrorsEtapa2((prev) => ({ ...prev, valorConta: undefined }))
                         }}
-                        placeholder="Ex: 650,00"
                         className={`bg-white h-12 rounded-xl text-sm ${
                           errorsEtapa2.valorConta ? 'border-red-500' : 'border-slate-200'
                         }`}
@@ -772,10 +767,7 @@ export default function ContatoForm({
                             }))
                           }
                         }}
-                        placeholder={
-                          qualificacaoEspecificaPlaceholder ||
-                          'Informe os parâmetros do seu segmento...'
-                        }
+                        placeholder={qualificacaoEspecificaPlaceholder}
                         className={`bg-white h-12 rounded-xl text-sm ${
                           errorsEtapa2.qualificacaoEspecifica
                             ? 'border-red-500 focus-visible:ring-red-400'
@@ -822,7 +814,6 @@ export default function ContatoForm({
                       id="lead-msg-etapa2"
                       value={mensagem}
                       onChange={(e) => setMensagem(e.target.value)}
-                      placeholder="Ex: Telhado metálico, estrutura do imóvel..."
                       className="bg-white h-11 rounded-xl text-sm border-slate-200"
                     />
                   </div>
