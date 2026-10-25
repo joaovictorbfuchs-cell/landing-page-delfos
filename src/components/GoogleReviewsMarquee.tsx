@@ -131,9 +131,6 @@ export default function GoogleReviewsMarquee() {
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Avaliações reais no Google
             </h3>
-            <p className="text-xs sm:text-sm text-slate-600">
-              O que os clientes dizem sobre nossa engenharia, instalação e suporte pós-venda.
-            </p>
           </div>
         </div>
 

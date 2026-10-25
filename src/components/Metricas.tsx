@@ -1,14 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
-import { Calendar, CheckCircle2 } from 'lucide-react'
+import { Sun, Activity, Calendar, CheckCircle2 } from 'lucide-react'
 
 interface CounterProps {
   end: number
+  decimals?: number
   suffix?: string
   prefix?: string
   duration?: number
 }
 
-function Counter({ end, suffix = '', prefix = '', duration = 1800 }: CounterProps) {
+function Counter({ end, decimals = 0, suffix = '', prefix = '', duration = 1800 }: CounterProps) {
   const [count, setCount] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
@@ -44,17 +45,22 @@ function Counter({ end, suffix = '', prefix = '', duration = 1800 }: CounterProp
         setCount(end)
         clearInterval(timer)
       } else {
-        setCount(Math.floor(start))
+        setCount(start)
       }
     }, stepTime)
 
     return () => clearInterval(timer)
   }, [hasStarted, end, duration])
 
+  const formattedValue = count.toLocaleString('pt-BR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
+
   return (
     <span ref={ref}>
       {prefix}
-      {count.toLocaleString('pt-BR')}
+      {formattedValue}
       {suffix}
     </span>
   )
@@ -87,45 +93,97 @@ export default function Metricas() {
           </p>
         </div>
 
-        {/* 2 Stat Cards bem distribuídos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
-          {/* 1. Anos de Mercado */}
-          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-9 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-28 h-28 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
+        {/* 4 Stat Cards lado a lado: 4 colunas desktop, 2 colunas mobile */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          {/* Card 1: 12,05 MWp — Potência instalada (dourado) */}
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
             <div className="h-1.5 w-full bg-gradient-to-r from-solar-400 to-amber-500 absolute top-0 left-0" />
 
-            <div className="flex items-center gap-4 mb-5 pt-2">
-              <div className="w-14 h-14 shrink-0 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
-                <Calendar className="w-7 h-7" />
+            <div>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
+                  <Sun className="w-5 h-5 sm:w-7 sm:h-7" />
+                </div>
               </div>
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm">
-                <Counter end={12} suffix=" anos" />
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm mb-2">
+                <Counter end={12.05} decimals={2} suffix=" MWp" />
               </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 leading-snug">
+                Potência instalada
+              </h3>
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">de mercado contínuo</h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Pioneirismo em geração distribuída e engenharia de campo desde o início do marco legal
-              do setor elétrico.
+            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
+              Capacidade de geração limpa em operação contínua gerando economia real.
             </p>
           </div>
 
-          {/* 2. Projetos Entregues */}
-          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-9 border-2 border-emerald-400/30 shadow-xl hover:border-emerald-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
+          {/* Card 2: 468 — Usinas sob monitoramento (dourado) */}
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
+            <div className="h-1.5 w-full bg-gradient-to-r from-solar-400 to-amber-500 absolute top-0 left-0" />
+
+            <div>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
+                  <Activity className="w-5 h-5 sm:w-7 sm:h-7" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm mb-2">
+                <Counter end={468} suffix=" usinas" />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 leading-snug">
+                Usinas sob monitoramento
+              </h3>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
+              Supervisão em tempo real pela engenharia de O&amp;M para máxima disponibilidade.
+            </p>
+          </div>
+
+          {/* Card 3: 12 — Anos de mercado (verde) */}
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-2 border-emerald-400/30 shadow-xl hover:border-emerald-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
             <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 to-teal-500 absolute top-0 left-0" />
 
-            <div className="flex items-center gap-4 mb-5 pt-2">
-              <div className="w-14 h-14 shrink-0 rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                <CheckCircle2 className="w-7 h-7" />
+            <div>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                  <Calendar className="w-5 h-5 sm:w-7 sm:h-7" />
+                </div>
               </div>
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm mb-2">
+                <Counter end={12} suffix=" anos" />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 leading-snug">
+                Anos de mercado
+              </h3>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
+              Atuação técnica contínua no RS, SC e PR desde o início do marco legal elétrico.
+            </p>
+          </div>
+
+          {/* Card 4: 3.000+ — Projetos entregues (verde) */}
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-2 border-emerald-400/30 shadow-xl hover:border-emerald-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
+            <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 to-teal-500 absolute top-0 left-0" />
+
+            <div>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                  <CheckCircle2 className="w-5 h-5 sm:w-7 sm:h-7" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm mb-2">
                 <Counter end={3000} suffix="+" />
               </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 leading-snug">
+                Projetos entregues
+              </h3>
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">projetos entregues</h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Obras ativas e gerando economia em aplicações residenciais, comerciais, industriais e
-              rurais.
+            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
+              Sistemas homologados e gerando economia em diversos segmentos do Sul do Brasil.
             </p>
           </div>
         </div>
