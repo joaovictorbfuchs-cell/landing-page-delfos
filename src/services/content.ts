@@ -182,6 +182,7 @@ export async function createCase(payload: UpsertCasePayload): Promise<CaseRecord
   if (payload.data_entrega) formData.append('data_entrega', payload.data_entrega.trim())
   formData.append('status', payload.status)
   formData.append('destaque', payload.destaque ? 'true' : 'false')
+  formData.append('is_exemplo', payload.is_exemplo ? 'true' : 'false')
 
   if (payload.foto instanceof File) {
     formData.append('foto', payload.foto)
@@ -217,6 +218,8 @@ export async function updateCase(
   if (payload.status !== undefined) formData.append('status', payload.status)
   if (payload.destaque !== undefined)
     formData.append('destaque', payload.destaque ? 'true' : 'false')
+  if (payload.is_exemplo !== undefined)
+    formData.append('is_exemplo', payload.is_exemplo ? 'true' : 'false')
 
   if (payload.foto instanceof File) {
     formData.append('foto', payload.foto)

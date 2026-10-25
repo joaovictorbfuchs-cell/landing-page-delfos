@@ -140,18 +140,24 @@ export default function ProjetosResultados() {
           metodoMedicao: 'Auditoria cruzada com faturas RGE',
         },
         destaque: Boolean(c.destaque),
-        fotoDescricao: c.descricao || 'Case auditado pela Delfos Engenharia.',
-        fotoPlaceholderNota: 'Foto real oficial',
+        isExample: Boolean(c.is_exemplo),
+        fotoDescricao: c.is_exemplo
+          ? staticMatch?.fotoDescricao ||
+            `Exemplo de aplicação ilustrativo para ${c.cliente || 'setor ' + c.setor}.`
+          : c.descricao || 'Case auditado pela Delfos Engenharia.',
+        fotoPlaceholderNota: c.is_exemplo
+          ? 'Exemplo de aplicação ilustrativo'
+          : 'Foto real oficial',
         potenciaOuCapacidadeCurta: c.potencia_capacidade || 'Não informado',
         fotoUrl: finalPhotoUrlLeve,
         fotoUrlGrande: finalPhotoUrlGrande,
       }
     })
 
-    // 2. Cases estáticos evitando duplicar por id/slug
+    // 2. Cases estáticos evitando duplicar por id/slug e excluindo os de exemplo (que agora vêm do banco PB)
     const existingIds = new Set(fromDb.map((c) => c.id))
     const fromStatic: CaseStudy[] = CASES_DATA.filter(
-      (c) => !existingIds.has(c.id) && !existingIds.has(c.slug),
+      (c) => !c.isExample && !existingIds.has(c.id) && !existingIds.has(c.slug),
     )
 
     return [...fromDb, ...fromStatic]

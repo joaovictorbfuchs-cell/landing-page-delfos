@@ -78,6 +78,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
   const [dataEntrega, setDataEntrega] = useState('Novembro / 2024')
   const [status, setStatus] = useState<CaseStatus>('publicado')
   const [destaque, setDestaque] = useState(false)
+  const [isExemplo, setIsExemplo] = useState(false)
   const [fotoFile, setFotoFile] = useState<File | null>(null)
   const [fotoPreview, setFotoPreview] = useState<string | null>(null)
 
@@ -99,6 +100,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setDataEntrega(new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }))
     setStatus('publicado')
     setDestaque(false)
+    setIsExemplo(false)
     setFotoFile(null)
     setFotoPreview(null)
     setModalOpen(true)
@@ -122,6 +124,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setDataEntrega(caseItem.data_entrega || '')
     setStatus(caseItem.status)
     setDestaque(Boolean(caseItem.destaque))
+    setIsExemplo(Boolean(caseItem.is_exemplo))
     setFotoFile(null)
     setFotoPreview(getCaseImageUrl(caseItem) || null)
     setModalOpen(true)
@@ -178,6 +181,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
         data_entrega: dataEntrega.trim(),
         status,
         destaque,
+        is_exemplo: isExemplo,
         foto: fotoFile,
       }
 
@@ -350,6 +354,11 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                             <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-800">
                               {caseItem.setor}
                             </span>
+                            {caseItem.is_exemplo && (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200">
+                                Exemplo de aplicação
+                              </span>
+                            )}
                             {caseItem.destaque && (
                               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 flex items-center gap-0.5">
                                 <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
@@ -705,6 +714,30 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                   >
                     Marcar como Destaque
                   </label>
+                </div>
+              </div>
+
+              {/* Opção para Case Exemplo de Aplicação */}
+              <div className="p-3 rounded-xl bg-cyan-50/60 border border-cyan-200/80 flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="exemplo-check"
+                  checked={isExemplo}
+                  onChange={(e) => setIsExemplo(e.target.checked)}
+                  className="w-4 h-4 mt-0.5 rounded text-cyan-600 focus:ring-cyan-500"
+                />
+                <div>
+                  <label
+                    htmlFor="exemplo-check"
+                    className="text-xs font-bold text-cyan-950 cursor-pointer block"
+                  >
+                    Marcar como Exemplo de Aplicação (ilustrativo)
+                  </label>
+                  <p className="text-[11px] text-cyan-800 leading-relaxed mt-0.5">
+                    Exibe a badge &ldquo;Exemplo de aplicação&rdquo; nos cards e modais para fins
+                    educativos/referenciais. Desmarque para converter em case real com métricas
+                    oficiais.
+                  </p>
                 </div>
               </div>
 

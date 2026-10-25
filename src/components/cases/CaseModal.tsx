@@ -79,6 +79,16 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
             <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-white/10 text-slate-200 border border-white/15">
               {caseStudy.segmento}
             </span>
+            {caseStudy.isExample && (
+              <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                Exemplo de aplicação
+              </span>
+            )}
+            {caseStudy.destaque && (
+              <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                ★ Destaque
+              </span>
+            )}
           </div>
 
           <h2

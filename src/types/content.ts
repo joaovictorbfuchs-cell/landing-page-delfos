@@ -78,6 +78,7 @@ export interface CaseRecord {
   foto?: string
   status: CaseStatus
   destaque?: boolean
+  is_exemplo?: boolean
   created: string
   updated: string
 }
@@ -100,6 +101,7 @@ export interface UpsertCasePayload {
   foto?: File | null
   status: CaseStatus
   destaque?: boolean
+  is_exemplo?: boolean
 }
 
 export type MediaCategoria =

@@ -85,13 +85,25 @@ export default function SegmentoPageLayout({
             },
             dataEntrega: r.data_entrega || staticMatch?.dataEntrega || 'Comissionado',
             destaque: Boolean(r.destaque),
+            isExample: Boolean(r.is_exemplo),
             potenciaOuCapacidadeCurta:
               r.potencia_capacidade || staticMatch?.potenciaOuCapacidadeCurta || '',
-            fotoDescricao: r.titulo,
-            fotoPlaceholderNota: staticMatch?.fotoPlaceholderNota || 'Foto real oficial',
+            fotoDescricao: r.is_exemplo
+              ? staticMatch?.fotoDescricao ||
+                `Exemplo de aplicação ilustrativo para ${r.cliente || 'setor ' + r.setor}.`
+              : r.titulo,
+            fotoPlaceholderNota: r.is_exemplo
+              ? 'Exemplo de aplicação ilustrativo'
+              : staticMatch?.fotoPlaceholderNota || 'Foto real oficial',
             fotoUrl: pbPhoto || staticMatch?.fotoUrl,
             fotoUrlGrande: pbPhoto || staticMatch?.fotoUrlGrande || staticMatch?.fotoUrl,
-            tags: [r.setor, r.solucao, r.potencia_capacidade, r.local].filter(Boolean) as string[],
+            tags: [
+              r.setor,
+              r.solucao,
+              r.potencia_capacidade,
+              r.local,
+              ...(r.is_exemplo ? ['Exemplo de aplicação'] : []),
+            ].filter(Boolean) as string[],
           }
         })
         setDynamicCases(mapped)
@@ -105,12 +117,12 @@ export default function SegmentoPageLayout({
     }
   }, [])
 
-  // Mesclar cases do PocketBase com CASES_DATA sem duplicar por slug/id
+  // Mesclar cases do PocketBase com CASES_DATA sem duplicar por slug/id (excluindo exemplos estáticos, que já vêm do PB)
   const todosCasesDoSegmento = useMemo(() => {
     const existingSlugs = new Set(dynamicCases.map((c) => c.slug))
     const existingIds = new Set(dynamicCases.map((c) => c.id))
     const fromStatic = CASES_DATA.filter(
-      (c) => !existingSlugs.has(c.slug) && !existingIds.has(c.id),
+      (c) => !c.isExample && !existingSlugs.has(c.slug) && !existingIds.has(c.id),
     )
     const combined = [...dynamicCases, ...fromStatic]
     return combined.filter((c) => c.segmento === seg.caseSegmentoKey)

@@ -35,6 +35,7 @@ export interface CaseStudy {
   }
   dataEntrega: string // Ex: "Novembro/2023 (Homologado RGE)"
   destaque?: boolean // Case principal (ex: Indra)
+  isExample?: boolean // Case ilustrativo ("Exemplo de aplicação")
   fotoDescricao: string // Descrição do placeholder técnico
   fotoPlaceholderNota: string // "Foto real — aguardando" ou nota de autorização
   fotoUrl?: string
@@ -916,6 +917,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '65,0 kWp',
     fotoDescricao: 'Exemplo de cobertura fotovoltaica em condomínio horizontal residencial.',
     fotoPlaceholderNota: 'Exemplo de aplicação ilustrativo',
@@ -945,6 +947,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '40 kWh BESS',
     fotoDescricao:
       'Banco de baterias LiFePO4 para contingência e segurança em edifício corporativo.',
@@ -976,6 +979,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '10 kWp + 15 kWh',
     fotoDescricao:
       'Residência contemporânea com telhado solar e gabinete discreto de baterias de lítio.',
@@ -1006,6 +1010,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '8,2 kWp + Wallbox',
     fotoDescricao:
       'Garagem residencial com estação Wallbox conectada a veículo elétrico e telhado solar.',
@@ -1043,6 +1048,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '500 kWp Solo',
     fotoDescricao:
       'Usina fotovoltaica de solo de médio porte com fileiras de módulos bifaciais em terreno rural.',
@@ -1073,6 +1079,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '250 kWp O&M',
     fotoDescricao:
       'Drone termográfico sobrevoando arranjo solar em solo com inspeção técnica de módulos.',
@@ -1110,6 +1117,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '1x DC 60 kW + 8x AC 11 kW',
     fotoDescricao:
       'Garagem de transportadora com estações de recarga elétrica e furgões conectados.',
@@ -1149,6 +1157,7 @@ export const CASES_DATA: CaseStudy[] = [
     },
     dataEntrega: 'Engenharia de Aplicação Delfos',
     destaque: false,
+    isExample: true,
     potenciaOuCapacidadeCurta: '120 kW DC + 45 kWp Solar',
     fotoDescricao:
       'Eletroposto rodoviário com estação rápida DC e cobertura em estrutura de carport solar.',
