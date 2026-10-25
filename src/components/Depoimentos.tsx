@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import GoogleReviewsMarquee from '@/components/GoogleReviewsMarquee'
 
 interface Testimonial {
   name: string
@@ -196,6 +197,9 @@ export default function Depoimentos() {
             </Button>
           </div>
         </div>
+
+        {/* Faixa animada de avaliações do Google Meu Negócio */}
+        <GoogleReviewsMarquee />
       </div>
     </section>
   )
