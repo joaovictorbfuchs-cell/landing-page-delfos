@@ -329,4 +329,75 @@
       transform: none !important;
     }
   }
+
+  /* Micro-animações dos ícones da seção Nossos Números */
+  @keyframes metric-sun-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes metric-activity-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+
+  @keyframes metric-halo-glow {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.14);
+    }
+  }
+
+  /* Rotação lentíssima do Sol (20s normal, 8s no hover) */
+  .animate-metric-sun {
+    animation: metric-sun-spin 20s linear infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+  .group:hover .animate-metric-sun {
+    animation-duration: 8s;
+  }
+
+  /* Pulso suave de batimento/radar da Atividade (3s normal, 1.4s no hover) */
+  .animate-metric-activity {
+    animation: metric-activity-pulse 3s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+  .group:hover .animate-metric-activity {
+    animation-duration: 1.4s;
+  }
+
+  /* Halo com brilho pulsante discreto para os cards verdes (3.5s normal, 1.6s no hover) */
+  .animate-metric-halo {
+    animation: metric-halo-glow 3.5s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+  .group:hover .animate-metric-halo {
+    animation-duration: 1.6s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-metric-sun,
+    .animate-metric-activity,
+    .animate-metric-halo {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
 }

@@ -103,7 +103,7 @@ export default function Metricas() {
             <div>
               <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
                 <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
-                  <Sun className="w-5 h-5 sm:w-7 sm:h-7" />
+                  <Sun className="w-5 h-5 sm:w-7 sm:h-7 animate-metric-sun" />
                 </div>
               </div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm mb-2">
@@ -126,7 +126,7 @@ export default function Metricas() {
             <div>
               <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
                 <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
-                  <Activity className="w-5 h-5 sm:w-7 sm:h-7" />
+                  <Activity className="w-5 h-5 sm:w-7 sm:h-7 animate-metric-activity" />
                 </div>
               </div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm mb-2">
@@ -148,8 +148,11 @@ export default function Metricas() {
 
             <div>
               <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                  <Calendar className="w-5 h-5 sm:w-7 sm:h-7" />
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute -inset-1 rounded-2xl bg-emerald-400/40 blur-md pointer-events-none animate-metric-halo" />
+                  <div className="relative w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                    <Calendar className="w-5 h-5 sm:w-7 sm:h-7" />
+                  </div>
                 </div>
               </div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm mb-2">
@@ -171,8 +174,11 @@ export default function Metricas() {
 
             <div>
               <div className="flex items-center gap-3 sm:gap-4 mb-4 pt-1 sm:pt-2">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                  <CheckCircle2 className="w-5 h-5 sm:w-7 sm:h-7" />
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute -inset-1 rounded-2xl bg-emerald-400/40 blur-md pointer-events-none animate-metric-halo" />
+                  <div className="relative w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-xl sm:rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                    <CheckCircle2 className="w-5 h-5 sm:w-7 sm:h-7" />
+                  </div>
                 </div>
               </div>
               <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm mb-2">
