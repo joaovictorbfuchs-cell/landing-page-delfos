@@ -103,7 +103,7 @@ export default function GoogleReviewsMarquee() {
   const displayReviews = [...GOOGLE_REVIEWS, ...GOOGLE_REVIEWS]
 
   return (
-    <div className="mt-20 pt-16 border-t border-slate-100">
+    <div className="w-full">
       {/* Cabeçalho da Faixa */}
       <div className="max-w-[1200px] mx-auto px-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div className="flex flex-col sm:flex-row items-center gap-4">

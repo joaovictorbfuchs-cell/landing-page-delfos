@@ -118,14 +118,11 @@ export default function Pilares() {
                 </div>
 
                 {/* Footer Action */}
-                <div className="px-7 sm:px-9 pb-7 sm:pb-9 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div className="px-7 sm:px-9 pb-7 sm:pb-9 pt-4 border-t border-slate-100 flex items-center">
                   <div className="inline-flex items-center gap-2 bg-solar-400 group-hover:bg-solar-500 text-midnight-950 font-bold px-6 py-3 rounded-xl text-sm shadow-md transition-all group-hover:scale-[1.02]">
                     <span>{p.textoBotao}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-600 transition-colors hidden sm:inline-block">
-                    Conhecer solução →
-                  </span>
                 </div>
               </Link>
             )
