@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Calendar, CheckCircle2, Star } from 'lucide-react'
+import { Calendar, CheckCircle2 } from 'lucide-react'
 
 interface CounterProps {
   end: number
@@ -82,70 +82,50 @@ export default function Metricas() {
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed">
-            Resultados construídos com dedicação e engenharia de ponta no Rio Grande do Sul e em
-            todo o Sul do Brasil.
+            Resultados consolidados com dedicação técnica, conformidade de normas e engenharia de
+            ciclo completo.
           </p>
         </div>
 
-        {/* 3 Stat Cards com alto destaque */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* 2 Stat Cards bem distribuídos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
           {/* 1. Anos de Mercado */}
-          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-8 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-9 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
+            <div className="absolute top-0 right-0 w-28 h-28 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
             <div className="h-1.5 w-full bg-gradient-to-r from-solar-400 to-amber-500 absolute top-0 left-0" />
 
-            <div className="flex items-center gap-3.5 mb-5 pt-2">
-              <div className="w-12 h-12 shrink-0 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
-                <Calendar className="w-6 h-6" />
+            <div className="flex items-center gap-4 mb-5 pt-2">
+              <div className="w-14 h-14 shrink-0 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
+                <Calendar className="w-7 h-7" />
               </div>
               <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-solar-400 tracking-tight leading-none drop-shadow-sm">
                 <Counter end={12} suffix=" anos" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">de mercado contínuo</h3>
+            <h3 className="text-xl font-bold text-white mb-2">de mercado contínuo</h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Pioneirismo em geração distribuída e engenharia de campo desde o início do marco
-              legal.
+              Pioneirismo em geração distribuída e engenharia de campo desde o início do marco legal
+              do setor elétrico.
             </p>
           </div>
 
           {/* 2. Projetos Entregues */}
-          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-8 border-2 border-emerald-400/30 shadow-xl hover:border-emerald-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
+          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-9 border-2 border-emerald-400/30 shadow-xl hover:border-emerald-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
+            <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-emerald-400/20 transition-all" />
             <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 to-teal-500 absolute top-0 left-0" />
 
-            <div className="flex items-center gap-3.5 mb-5 pt-2">
-              <div className="w-12 h-12 shrink-0 rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                <CheckCircle2 className="w-6 h-6" />
+            <div className="flex items-center gap-4 mb-5 pt-2">
+              <div className="w-14 h-14 shrink-0 rounded-2xl bg-emerald-500 text-midnight-950 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                <CheckCircle2 className="w-7 h-7" />
               </div>
               <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400 tracking-tight leading-none drop-shadow-sm">
                 <Counter end={3000} suffix="+" />
               </div>
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">projetos entregues</h3>
+            <h3 className="text-xl font-bold text-white mb-2">projetos entregues</h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Obras residenciais, comerciais, industriais e rurais ativas no Sul do país.
-            </p>
-          </div>
-
-          {/* 3. Avaliação Google */}
-          <div className="bg-gradient-to-br from-[#0D2545] to-[#08182D] rounded-3xl p-7 lg:p-8 border-2 border-solar-400/30 shadow-xl hover:border-solar-400/60 hover:-translate-y-1.5 transition-all duration-300 relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-solar-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-solar-400/20 transition-all" />
-            <div className="h-1.5 w-full bg-gradient-to-r from-amber-400 to-solar-500 absolute top-0 left-0" />
-
-            <div className="flex items-center gap-3.5 mb-5 pt-2">
-              <div className="w-12 h-12 shrink-0 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center shadow-lg shadow-solar-500/20 group-hover:scale-105 transition-transform">
-                <Star className="w-6 h-6 fill-midnight-950 text-midnight-950" />
-              </div>
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-solar-400 tracking-tight leading-none flex items-baseline gap-1 drop-shadow-sm">
-                <span>4.9</span>
-                <span className="text-lg sm:text-xl font-bold text-slate-400">/ 5.0</span>
-              </div>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">avaliação no Google</h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Índice máximo de satisfação e recomendação comprovada por clientes reais de Erechim e
-              região.
+              Obras ativas e gerando economia em aplicações residenciais, comerciais, industriais e
+              rurais.
             </p>
           </div>
         </div>

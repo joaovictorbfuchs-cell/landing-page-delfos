@@ -13,8 +13,8 @@ export default function Depoimentos() {
             O que nossos clientes dizem
           </h2>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Mais de 3.000 projetos entregues em Erechim e região — projetos executados por
-            engenheiros, com responsabilidade técnica e ART.
+            Atendimento próximo e acompanhamento do início ao fim — o resultado está nas avaliações
+            reais dos nossos clientes no Google.
           </p>
         </div>
       </div>

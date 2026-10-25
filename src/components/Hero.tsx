@@ -1,16 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import {
-  ArrowRight,
-  ShieldCheck,
-  Calculator,
-  ChevronDown,
-  Sparkles,
-  Sun,
-  BatteryCharging,
-  Wrench,
-  Car,
-} from 'lucide-react'
+import { ArrowRight, ShieldCheck, Calculator, ChevronDown, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -216,8 +205,9 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl">
-                A Delfos Engenharia cuida da sua energia de ponta a ponta: projeto e instalação de
-                energia solar, baterias e recarga veicular — com redução real na sua conta de luz.
+                Economia real na conta de luz com a segurança de uma engenharia de ciclo completo:
+                equipe própria, homologação sem dor de cabeça e suporte contínuo para sua
+                tranquilidade.
               </p>
             </div>
 
@@ -240,45 +230,8 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
               </a>
             </div>
 
-            {/* Atalhos Rápidos para Soluções */}
-            <div className="pt-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <Link
-                  to="/solucoes/energia-solar"
-                  className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-solar-400/50 text-slate-200 hover:text-white transition-all text-xs font-medium backdrop-blur-sm"
-                >
-                  <Sun className="w-3.5 h-3.5 text-solar-400 group-hover:scale-110 transition-transform shrink-0" />
-                  <span>Energia Solar</span>
-                </Link>
-
-                <Link
-                  to="/solucoes/bess"
-                  className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-emerald-400/50 text-slate-200 hover:text-white transition-all text-xs font-medium backdrop-blur-sm"
-                >
-                  <BatteryCharging className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
-                  <span>Baterias</span>
-                </Link>
-
-                <Link
-                  to="/solucoes/om"
-                  className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-blue-400/50 text-slate-200 hover:text-white transition-all text-xs font-medium backdrop-blur-sm"
-                >
-                  <Wrench className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform shrink-0" />
-                  <span>Operação &amp; Manutenção</span>
-                </Link>
-
-                <Link
-                  to="/solucoes/carregadores"
-                  className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 hover:border-indigo-400/50 text-slate-200 hover:text-white transition-all text-xs font-medium backdrop-blur-sm"
-                >
-                  <Car className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform shrink-0" />
-                  <span>Recarga Veicular</span>
-                </Link>
-              </div>
-            </div>
-
             {/* Micro trust row */}
-            <div className="pt-3 flex flex-wrap items-center gap-4 text-xs text-slate-300">
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-300">
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span>Engenharia própria com ART / CREA-RS</span>
@@ -286,7 +239,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
               <span className="hidden sm:inline-block text-slate-600">•</span>
               <div className="flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-solar-400" />
-                <span>Atendimento regional Erechim e todo Sul</span>
+                <span>Atendimento regional em Erechim e todo o Sul</span>
               </div>
             </div>
           </div>
