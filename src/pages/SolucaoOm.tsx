@@ -361,12 +361,6 @@ export default function SolucaoOm() {
                 </h2>
 
                 <p className="text-slate-600 text-base leading-relaxed">
-                  Em centenas ou milhares de placas solares instaladas em telhados íngremes ou
-                  usinas de solo, inspecionar módulo por módulo manualmente é lento, perigoso e
-                  incompleto.
-                </p>
-
-                <p className="text-slate-600 text-base leading-relaxed">
                   A Delfos utiliza <strong>drones com câmeras termográficas radiométricas</strong>.
                   O drone voa de forma autônoma sobre toda a usina, capturando o perfil térmico de
                   cada célula solar. Células danificadas operam com temperatura até 40°C superior às
