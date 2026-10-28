@@ -55,7 +55,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
       'Uma análise técnica completa com calculadora interativa de perda financeira, os cinco pilares de degradação, impacto nas garantias e seguradoras, e checklist prático de 8 sinais de alerta.',
     categoria: 'Operação & Manutenção',
     tempoLeitura: '8 min de leitura',
-    dataPublicacao: '14 de Março de 2025',
+    dataPublicacao: '27 de Outubro de 2026',
     autor: {
       nome: 'Eng. Eletricista João Victor Bagetti Fuchs',
       cargo: 'Engenheiro Eletricista · Responsável Técnico — Delfos Engenharia · CREA-RS 151894',

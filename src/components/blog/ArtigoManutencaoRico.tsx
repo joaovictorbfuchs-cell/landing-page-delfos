@@ -39,10 +39,10 @@ export default function ArtigoManutencaoRico({
 }: ArtigoManutencaoRicoProps) {
   const { toast } = useToast()
 
-  // Calculadora state
-  const [kwp, setKwp] = useState<number>(8)
-  const [tarifa, setTarifa] = useState<number>(0.9)
-  const [hsp, setHsp] = useState<number>(4.5)
+  // Calculadora state (HSP fixo padrão RS = 4,2 kWh/m²/dia conforme simulador)
+  const HSP_FIXO_RS = 4.2
+  const [kwp, setKwp] = useState<number>(12)
+  const [tarifa, setTarifa] = useState<number>(1.2)
   const [meses, setMeses] = useState<number>(12)
 
   // Checklist state
@@ -66,55 +66,56 @@ export default function ArtigoManutencaoRico({
   // Bars hover state
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
 
-  // Faixas técnicas de perda
+  // Faixas técnicas de perda recalibradas conforme histórico de campo no Sul/RS:
+  // Em 12 meses (7–12 meses), perda média de 15% a 25% (padrão de cálculo ~20%)
   const percentFor = (m: number) => {
     if (m <= 6)
       return {
-        p: 0.03,
-        faixa: 'Faixa 0–6 meses',
+        p: 0.08,
+        faixa: 'Faixa 0–6 meses (5–10%)',
         d: 'ok',
-        msg: 'Perda moderada (aprox. 3%). Mantenha o monitoramento ativo.',
+        msg: 'Perda inicial leve (aprox. 8%). Mantenha o monitoramento contínuo e acompanhe a curva de geração.',
       }
     if (m <= 12)
       return {
-        p: 0.06,
-        faixa: 'Faixa 7–12 meses',
-        d: 'ok',
-        msg: 'Perda moderada (aprox. 6%). Recomendamos agendar limpeza técnica e inspeção visual.',
+        p: 0.2,
+        faixa: 'Faixa 7–12 meses (15–25%)',
+        d: 'warn',
+        msg: 'Perda severa por sujeira (em média 15% a 25%). Recomendamos agendar limpeza técnica e inspeção preventiva.',
       }
     if (m <= 18)
       return {
-        p: 0.1,
-        faixa: 'Faixa 13–18 meses',
+        p: 0.25,
+        faixa: 'Faixa 13–18 meses (~25%)',
         d: 'warn',
-        msg: 'Perda relevante (aprox. 10%). Sua usina necessita de inspeção termográfica.',
+        msg: 'Perda elevada (aprox. 25%). Risco iminente de descompasso de strings e surgimento de pontos quentes.',
       }
     if (m <= 24)
       return {
-        p: 0.15,
-        faixa: 'Faixa 19–24 meses',
-        d: 'warn',
-        msg: 'Perda relevante e crescente (aprox. 15%). Priorize inspeção termográfica e elétrica.',
+        p: 0.3,
+        faixa: 'Faixa 19–24 meses (25–35%)',
+        d: 'bad',
+        msg: 'Perda crítica (aprox. 30%). Sujeira severa associada a provável ponto quente. Solicite inspeção termográfica.',
       }
     if (m <= 30)
       return {
-        p: 0.2,
-        faixa: 'Faixa 25–30 meses',
+        p: 0.35,
+        faixa: 'Faixa 25–30 meses (30–35%+)',
         d: 'bad',
-        msg: 'Perda alta (aprox. 20%). Solicite diagnóstico técnico de engenharia com urgência.',
+        msg: 'Perda alarmante (aprox. 35%). Operação degradada com risco de arco elétrico e perda de garantias.',
       }
     return {
-      p: 0.25,
-      faixa: 'Faixa 31–36 meses',
+      p: 0.4,
+      faixa: 'Faixa 31–36 meses (acima de 35%)',
       d: 'bad',
-      msg: 'Perda severa (aprox. 25%). Sua usina está destruindo retorno financeiro.',
+      msg: 'Perda extrema (acima de 35%). Cenário de falha elétrica ou módulo danificado. Diagnóstico técnico urgente.',
     }
   }
 
   const calcResults = useMemo(() => {
-    const validKwp = Math.max(2, kwp || 0)
+    const validKwp = Math.max(2, Math.min(200, kwp || 0))
     const validTar = Math.max(0.4, tarifa || 0)
-    const validHsp = Math.max(3.5, hsp || 0)
+    const validHsp = HSP_FIXO_RS
     const validMeses = Math.max(0, Math.min(36, meses || 0))
 
     const geracaoMensal = validKwp * validHsp * 30
@@ -140,7 +141,7 @@ export default function ArtigoManutencaoRico({
       anos,
       info,
     }
-  }, [kwp, tarifa, hsp, meses])
+  }, [kwp, tarifa, meses])
 
   const fmtBRL = (val: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -151,13 +152,13 @@ export default function ArtigoManutencaoRico({
   }
 
   const handleResetCalc = () => {
-    setKwp(8)
-    setTarifa(0.9)
-    setHsp(4.5)
+    setKwp(12)
+    setTarifa(1.2)
     setMeses(12)
     toast({
       title: 'Padrões restaurados',
-      description: 'Valores da calculadora retornados para 8 kWp e 12 meses.',
+      description:
+        'Valores da calculadora retornados para 12 kWp e tarifa padrão CPFL RGE (R$ 1,20).',
     })
   }
 
@@ -314,12 +315,7 @@ export default function ArtigoManutencaoRico({
               <span>•</span>
               <span className="flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5 text-solar-400" />
-                Publicado: 14 de Março de 2025
-              </span>
-              <span>•</span>
-              <span className="text-emerald-300 font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Atualizado: Março/2025
+                Publicado: 27 de Outubro de 2026
               </span>
             </div>
           </div>
@@ -500,105 +496,127 @@ export default function ArtigoManutencaoRico({
           </div>
 
           <div className="p-8 sm:p-10 rounded-3xl bg-[#081B30] text-white shadow-2xl border border-white/10 space-y-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Controles da esquerda */}
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-center justify-between text-sm font-semibold mb-2">
-                    <label htmlFor="input-kwp" className="text-slate-200">
-                      Potência da usina (kWp)
-                    </label>
-                    <span className="text-solar-400 font-bold font-mono text-base">{kwp} kWp</span>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Campo 1: Potência (kWp) com slider, número e equivalente em placas de 550 Wp */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm font-semibold mb-1">
+                  <label htmlFor="input-kwp" className="text-slate-200">
+                    Potência da usina (kWp)
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      id="input-kwp-num"
+                      type="number"
+                      min={2}
+                      max={200}
+                      step={1}
+                      value={kwp}
+                      onChange={(e) => {
+                        const val = Number(e.target.value)
+                        handleKwpChange(Math.max(2, Math.min(200, val || 2)))
+                      }}
+                      className="w-20 px-2 py-1 text-right font-mono font-bold text-sm bg-slate-800 border border-slate-700 rounded-md text-solar-400 focus:outline-hidden focus:border-solar-400"
+                      aria-label="Digitar potência da usina em kWp"
+                    />
+                    <span className="text-slate-400 text-xs font-mono">kWp</span>
                   </div>
-                  <input
-                    id="input-kwp"
-                    type="range"
-                    min={2}
-                    max={500}
-                    step={1}
-                    value={kwp}
-                    onChange={(e) => handleKwpChange(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  />
-                  <span className="text-[11px] text-slate-400 block mt-1">
-                    Potência nominal instalada dos módulos (2 a 500 kWp).
-                  </span>
                 </div>
-
-                <div>
-                  <div className="flex items-center justify-between text-sm font-semibold mb-2">
-                    <label htmlFor="input-tarifa" className="text-slate-200">
-                      Tarifa de energia (R$/kWh)
-                    </label>
-                    <span className="text-solar-400 font-bold font-mono text-base">
-                      R$ {tarifa.toFixed(2).replace('.', ',')}
-                    </span>
-                  </div>
-                  <input
-                    id="input-tarifa"
-                    type="range"
-                    min={0.4}
-                    max={1.4}
-                    step={0.05}
-                    value={tarifa}
-                    onChange={(e) => setTarifa(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  />
-                  <span className="text-[11px] text-slate-400 block mt-1">
-                    Valor médio da tarifa cheia com tributos (RGE/concessionária local).
+                <input
+                  id="input-kwp"
+                  type="range"
+                  min={2}
+                  max={200}
+                  step={1}
+                  value={kwp}
+                  onChange={(e) => handleKwpChange(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
+                  aria-label="Deslizante de potência da usina"
+                />
+                {/* Equivalente dinâmico em placas de 550 Wp */}
+                <div className="flex items-center justify-between pt-1">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-solar-500/15 border border-solar-400/30 text-solar-300 font-semibold text-xs">
+                    ≈ {Math.round((kwp * 1000) / 550)} placas de 550 Wp
                   </span>
+                  <span className="text-[11px] text-slate-400">2 a 200 kWp</span>
                 </div>
               </div>
 
-              {/* Controles da direita */}
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-center justify-between text-sm font-semibold mb-2">
-                    <label htmlFor="input-hsp" className="text-slate-200">
-                      HSP — Horas de Sol Pleno diárias
-                    </label>
-                    <span className="text-solar-400 font-bold font-mono text-base">
-                      {hsp.toFixed(1)} h/dia
-                    </span>
+              {/* Campo 2: Tarifa (R$/kWh) — padrão 1,20 com helper CPFL RGE editável */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm font-semibold mb-1">
+                  <label htmlFor="input-tarifa" className="text-slate-200">
+                    Tarifa de energia (R$/kWh)
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-slate-400 text-xs font-mono">R$</span>
+                    <input
+                      id="input-tarifa-num"
+                      type="number"
+                      min={0.4}
+                      max={2.0}
+                      step={0.01}
+                      value={tarifa}
+                      onChange={(e) => setTarifa(Number(e.target.value))}
+                      className="w-20 px-2 py-1 text-right font-mono font-bold text-sm bg-slate-800 border border-slate-700 rounded-md text-solar-400 focus:outline-hidden focus:border-solar-400"
+                      aria-label="Digitar tarifa em reais por kWh"
+                    />
                   </div>
-                  <input
-                    id="input-hsp"
-                    type="range"
-                    min={3.5}
-                    max={6.0}
-                    step={0.1}
-                    value={hsp}
-                    onChange={(e) => setHsp(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  />
-                  <span className="text-[11px] text-slate-400 block mt-1">
-                    Média no RS: 4,2 a 4,7 kWh/m² por dia.
-                  </span>
                 </div>
+                <input
+                  id="input-tarifa"
+                  type="range"
+                  min={0.4}
+                  max={2.0}
+                  step={0.05}
+                  value={tarifa}
+                  onChange={(e) => setTarifa(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
+                  aria-label="Deslizante de tarifa em reais por kWh"
+                />
+                <span className="text-[11px] text-slate-400 block pt-1">
+                  Tarifa padrão CPFL RGE (R$ 1,20/kWh com tributos). Você pode ajustar para outra
+                  concessionária.
+                </span>
+              </div>
 
-                <div>
-                  <div className="flex items-center justify-between text-sm font-semibold mb-2">
-                    <label htmlFor="input-meses" className="text-slate-200">
-                      Tempo sem limpeza ou manutenção
-                    </label>
-                    <span className="text-solar-400 font-bold font-mono text-base">
-                      {meses} meses
-                    </span>
+              {/* Campo 3: Tempo sem limpeza ou manutenção (meses) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm font-semibold mb-1">
+                  <label htmlFor="input-meses" className="text-slate-200">
+                    Tempo sem limpeza/manutenção
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      id="input-meses-num"
+                      type="number"
+                      min={0}
+                      max={36}
+                      step={1}
+                      value={meses}
+                      onChange={(e) => {
+                        const val = Number(e.target.value)
+                        handleMesesChange(Math.max(0, Math.min(36, val || 0)))
+                      }}
+                      className="w-16 px-2 py-1 text-right font-mono font-bold text-sm bg-slate-800 border border-slate-700 rounded-md text-solar-400 focus:outline-hidden focus:border-solar-400"
+                      aria-label="Digitar tempo em meses sem limpeza"
+                    />
+                    <span className="text-slate-400 text-xs font-mono">meses</span>
                   </div>
-                  <input
-                    id="input-meses"
-                    type="range"
-                    min={0}
-                    max={36}
-                    step={1}
-                    value={meses}
-                    onChange={(e) => handleMesesChange(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  />
-                  <span className="text-[11px] text-slate-400 block mt-1">
-                    Meses desde a última limpeza técnica especializada ou inspeção.
-                  </span>
                 </div>
+                <input
+                  id="input-meses"
+                  type="range"
+                  min={0}
+                  max={36}
+                  step={1}
+                  value={meses}
+                  onChange={(e) => handleMesesChange(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
+                  aria-label="Deslizante de meses sem manutenção"
+                />
+                <span className="text-[11px] text-slate-400 block pt-1">
+                  Meses desde a última limpeza técnica especializada ou vistoria.
+                </span>
               </div>
             </div>
 

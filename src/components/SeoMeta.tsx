@@ -10,6 +10,9 @@ export interface SeoMetaProps {
   ogLocale?: string
   robots?: string
   schemaJsonLd?: object | object[]
+  articlePublishedTime?: string
+  articleModifiedTime?: string
+  articleAuthor?: string
 }
 
 export default function SeoMeta({
@@ -22,6 +25,9 @@ export default function SeoMeta({
   ogLocale = 'pt_BR',
   robots = 'index, follow',
   schemaJsonLd,
+  articlePublishedTime,
+  articleModifiedTime,
+  articleAuthor,
 }: SeoMetaProps) {
   useEffect(() => {
     // 1. Title Tag
@@ -178,6 +184,26 @@ export default function SeoMeta({
     }
     ogUrl.setAttribute('content', absoluteCanonical)
 
+    // 13b. Article Meta tags (apenas quando ogType === 'article')
+    const articleTags = [
+      { property: 'article:published_time', value: articlePublishedTime },
+      { property: 'article:modified_time', value: articleModifiedTime },
+      { property: 'article:author', value: articleAuthor },
+    ]
+    articleTags.forEach(({ property, value }) => {
+      let el = document.querySelector(`meta[property="${property}"]`)
+      if (value && ogType === 'article') {
+        if (!el) {
+          el = document.createElement('meta')
+          el.setAttribute('property', property)
+          document.head.appendChild(el)
+        }
+        el.setAttribute('content', value)
+      } else if (el) {
+        el.remove()
+      }
+    })
+
     // 14. Inserção de Schemas JSON-LD
     // Remove scripts antigos inseridos por esta rota
     const oldScripts = document.querySelectorAll('script[data-seo-meta-schema="true"]')
@@ -212,6 +238,9 @@ export default function SeoMeta({
     ogLocale,
     robots,
     schemaJsonLd,
+    articlePublishedTime,
+    articleModifiedTime,
+    articleAuthor,
   ])
 
   return null

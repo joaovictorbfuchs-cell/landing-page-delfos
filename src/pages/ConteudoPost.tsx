@@ -87,8 +87,8 @@ export default function ConteudoPost() {
       description:
         'Usina sem limpeza pode perder até 25% da geração. Veja a escala real de perda, o custo em contas de luz e como proteger sua usina.',
       image: `${BASE_URL}/og-artigo-manutencao.svg`,
-      datePublished: '2025-03-14T08:00:00-03:00',
-      dateModified: '2025-03-14T10:00:00-03:00',
+      datePublished: '2026-10-27T08:00:00-03:00',
+      dateModified: '2026-10-27T08:00:00-03:00',
       mainEntityOfPage: {
         '@type': 'WebPage',
         '@id': `${BASE_URL}/conteudos/manutencao-de-placa-solar-perda-geracao`,
@@ -296,6 +296,9 @@ export default function ConteudoPost() {
         schemaJsonLd={
           isManutencaoRichPost && schemasArtigoManutencao ? schemasArtigoManutencao : undefined
         }
+        articlePublishedTime={isManutencaoRichPost ? '2026-10-27T08:00:00-03:00' : undefined}
+        articleModifiedTime={isManutencaoRichPost ? '2026-10-27T08:00:00-03:00' : undefined}
+        articleAuthor={isManutencaoRichPost ? 'João Victor Bagetti Fuchs' : autorNome || undefined}
       />
 
       {/* Header Institucional Global do Site */}
