@@ -27,6 +27,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
+import fotoInspecaoTermografica from '@/assets/image-789e8.png'
 
 export default function SolucaoOm() {
   const [formNecessidade, setFormNecessidade] = useState<string>('Manutenção')
@@ -405,24 +406,24 @@ export default function SolucaoOm() {
                     </span>
                   </div>
 
-                  {/* Ilustração da Análise Termográfica */}
-                  <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <span className="w-3 h-3 rounded-full bg-blue-500" />
-                      <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <span className="w-3 h-3 rounded-full bg-red-500" />
-                      <span className="text-xs text-slate-300 ml-1">
-                        Inspeção Térmica por Infravermelho
-                      </span>
+                  {/* Registro Visual Real da Análise Termográfica */}
+                  <div className="space-y-2">
+                    <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-inner bg-slate-950 group">
+                      <img
+                        src={fotoInspecaoTermografica}
+                        alt="Inspeção termográfica real e foto RGB lado a lado de usina fotovoltaica de produtor rural com detecção de 4 módulos anômalos"
+                        loading="lazy"
+                        className="w-full h-auto object-cover block select-none"
+                      />
+                      {/* Selo discreto sobreposto identificando os dois canais ópticos */}
+                      <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/75 backdrop-blur-md border border-white/20 text-white text-[10px] font-semibold tracking-wide">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                        <span>Termografia + RGB</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-slate-300 mt-1">
-                      Identificação precisa de módulos aquecidos e conexões com defeito
+                    <p className="text-[11px] text-slate-500 italic text-center">
+                      Inspeção termográfica real — usina fotovoltaica de produtor rural
                     </p>
-                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 text-xs text-solar-300">
-                      <span>
-                        Módulo identificado com anomalia térmica de +28°C em relação à média
-                      </span>
-                    </div>
                   </div>
 
                   {/* Resumo do Relatório */}
@@ -436,7 +437,7 @@ export default function SolucaoOm() {
                     <div className="flex justify-between py-1.5 border-b border-slate-100">
                       <span className="text-slate-500">Módulos com anomalia identificada:</span>
                       <strong className="text-amber-600 font-bold">
-                        2 módulos (elegíveis para garantia do fabricante)
+                        4 módulos (elegíveis para garantia do fabricante)
                       </strong>
                     </div>
                     <div className="flex justify-between py-1.5 border-b border-slate-100">
