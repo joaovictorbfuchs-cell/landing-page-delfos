@@ -4,8 +4,9 @@ import {
   Mail,
   Instagram,
   Linkedin,
+  Facebook,
   ArrowUp,
-  AlertCircle,
+  ExternalLink,
   ShieldCheck,
 } from 'lucide-react'
 import DelfosLogo from '@/components/DelfosLogo'
@@ -45,22 +46,44 @@ export default function Footer() {
 
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/delfosenergia"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram Delfos"
+                aria-label="Instagram @delfosenergia"
+                title="Instagram @delfosenergia"
                 className="w-9 h-9 rounded-xl bg-white/5 hover:bg-solar-400 hover:text-midnight-950 text-slate-300 flex items-center justify-center transition-colors"
               >
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/company/9211385"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn Delfos"
+                aria-label="LinkedIn Delfos Engenharia"
+                title="LinkedIn Delfos Engenharia"
                 className="w-9 h-9 rounded-xl bg-white/5 hover:bg-solar-400 hover:text-midnight-950 text-slate-300 flex items-center justify-center transition-colors"
               >
                 <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.facebook.com/DelfosEnergiaSolar"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook Delfos Energia Solar"
+                title="Facebook Delfos Energia Solar"
+                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-solar-400 hover:text-midnight-950 text-slate-300 flex items-center justify-center transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://wa.me/5554991292121"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Delfos (54) 99129-2121"
+                title="WhatsApp (54) 99129-2121"
+                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-emerald-400 hover:text-midnight-950 text-slate-300 flex items-center justify-center transition-colors"
+              >
+                <Phone className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -211,7 +234,7 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-solar-400 shrink-0" />
                 <a
-                  href="mailto:contato@delfosengenharia.com.br"
+                  href="mailto:contato@delfos.eng.br"
                   className="hover:text-solar-400 transition-colors"
                 >
                   contato@delfos.eng.br
@@ -238,27 +261,68 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* NOTA DE DIFERENCIAÇÃO DA MARCA (Obrigatória pela especificação) */}
-        <div className="py-6 border-b border-white/10"></div>
+        {/* Bloco Google Meu Negócio / Google Business Profile */}
+        <div className="py-6 border-b border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path
+                    fill="#EA4335"
+                    d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.6 14.8c-.2-.7-.4-1.4-.4-2.2s.2-1.5.4-2.2L1.9 7.5C.7 9.8 0 12.4 0 15.2s.7 5.4 1.9 7.7l3.7-2.9z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16.5C3.7 20.2 7.5 22.8 12 22.8z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white flex items-center gap-2">
+                  Delfos Engenharia no Google
+                  <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    Perfil Oficial Verificado
+                  </span>
+                </p>
+                <p className="text-xs text-slate-400">
+                  Sede em Erechim - RS • Consulte nossa localização oficial e avaliações de clientes
+                </p>
+              </div>
+            </div>
+
+            <a
+              href="https://share.google/kjuaSjNM7WOz3bVZq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-solar-400 hover:text-midnight-950 text-slate-200 text-xs font-semibold border border-white/10 hover:border-solar-400 transition-all shrink-0"
+            >
+              <span>Ver perfil e avaliar no Google</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>
             © {new Date().getFullYear()} Delfos Engenharia • CNPJ 21.379.952/0001-38. Todos os
             direitos reservados.
           </p>
-          <div className="flex items-center gap-5">
-            <a href="/login" className="hover:text-solar-400 transition-colors font-medium">
-              Acesso Administrativo
-            </a>
-            <button
-              onClick={scrollToTop}
-              className="flex items-center gap-1.5 hover:text-solar-400 transition-colors cursor-pointer"
-            >
-              <span>Voltar ao topo</span>
-              <ArrowUp className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          <button
+            onClick={scrollToTop}
+            className="flex items-center gap-1.5 text-slate-400 hover:text-solar-400 transition-colors cursor-pointer"
+          >
+            <span>Voltar ao topo</span>
+            <ArrowUp className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </footer>

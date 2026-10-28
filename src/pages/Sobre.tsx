@@ -47,7 +47,7 @@ export default function Sobre() {
       'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
     url: 'https://landing-page-delfos-engenharia-672ab.goskip.app/sobre',
     telephone: '+55-54-99129-2121',
-    email: 'contato@delfosengenharia.com.br',
+    email: 'contato@delfos.eng.br',
     foundingDate: '2014',
     address: {
       '@type': 'PostalAddress',
