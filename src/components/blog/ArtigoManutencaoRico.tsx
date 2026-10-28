@@ -41,9 +41,38 @@ export default function ArtigoManutencaoRico({
 
   // Calculadora state (HSP fixo padrão RS = 4,2 kWh/m²/dia conforme simulador)
   const HSP_FIXO_RS = 4.2
+  const TARIFA_MAX_RGE = 1.2
   const [kwp, setKwp] = useState<number>(12)
   const [tarifa, setTarifa] = useState<number>(1.2)
   const [meses, setMeses] = useState<number>(12)
+
+  // Mapeamento não-linear do slider de potência (0 a 100 no slider -> 2 a 200 kWp reais)
+  // Faixa 2–60 kWp ocupa 70% do curso do slider (ajuste fino no mobile)
+  // Faixa 60–200 kWp ocupa os 30% restantes
+  const kwpToSliderPos = (val: number): number => {
+    const clamped = Math.max(2, Math.min(200, val))
+    if (clamped <= 60) {
+      // 2..60 mapeado em 0..70
+      return ((clamped - 2) / (60 - 2)) * 70
+    }
+    // 60..200 mapeado em 70..100
+    return 70 + ((clamped - 60) / (200 - 60)) * 30
+  }
+
+  const sliderPosToKwp = (pos: number): number => {
+    const clamped = Math.max(0, Math.min(100, pos))
+    if (clamped <= 70) {
+      const raw = 2 + (clamped / 70) * (60 - 2)
+      // Ajuste fino: de 2 a 10 kWp passo de 0,5 kWp; de 10 a 60 kWp passo de 1 kWp
+      if (raw <= 10) {
+        return Math.round(raw * 2) / 2
+      }
+      return Math.round(raw)
+    }
+    const raw = 60 + ((clamped - 70) / 30) * (200 - 60)
+    // De 60 a 200 kWp passo de 5 kWp
+    return Math.round(raw / 5) * 5
+  }
 
   // Checklist state
   const checklistItems = [
@@ -68,64 +97,88 @@ export default function ArtigoManutencaoRico({
 
   // Faixas técnicas de perda recalibradas conforme histórico de campo no Sul/RS:
   // Em 12 meses (7–12 meses), perda média de 15% a 25% (padrão de cálculo ~20%)
-  const percentFor = (m: number) => {
+  const percentFor = (m: number, pKwp: number, pPerdaAnual: number) => {
+    const perdaFmt = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      maximumFractionDigits: 0,
+    }).format(Math.round(pPerdaAnual))
+
     if (m <= 6)
       return {
         p: 0.08,
         faixa: 'Faixa 0–6 meses (5–10%)',
         d: 'ok',
-        msg: 'Perda inicial leve (aprox. 8%). Mantenha o monitoramento contínuo e acompanhe a curva de geração.',
+        msg: `Sua usina de ${pKwp} kWp está em perda inicial leve (~8%, cerca de ${perdaFmt}/ano). Mantenha o monitoramento contínuo e acompanhe a curva de geração.`,
       }
     if (m <= 12)
       return {
         p: 0.2,
         faixa: 'Faixa 7–12 meses (15–25%)',
         d: 'warn',
-        msg: 'Perda severa por sujeira (em média 15% a 25%). Recomendamos agendar limpeza técnica e inspeção preventiva.',
+        msg: `Atenção: sua usina de ${pKwp} kWp pode estar perdendo cerca de ${perdaFmt}/ano (~20%). Recomendamos agendar limpeza técnica e inspeção preventiva.`,
       }
     if (m <= 18)
       return {
         p: 0.25,
         faixa: 'Faixa 13–18 meses (~25%)',
         d: 'warn',
-        msg: 'Perda elevada (aprox. 25%). Risco iminente de descompasso de strings e surgimento de pontos quentes.',
+        msg: `Perda elevada na usina de ${pKwp} kWp: estimativa de ${perdaFmt}/ano evaporando (~25%). Risco iminente de descompasso de strings e surgimento de pontos quentes.`,
       }
     if (m <= 24)
       return {
         p: 0.3,
         faixa: 'Faixa 19–24 meses (25–35%)',
         d: 'bad',
-        msg: 'Perda crítica (aprox. 30%). Sujeira severa associada a provável ponto quente. Solicite inspeção termográfica.',
+        msg: `Perda crítica na sua usina de ${pKwp} kWp: aproximadamente ${perdaFmt}/ano jogados fora (~30%). Sujeira severa associada a provável ponto quente. Solicite inspeção termográfica.`,
       }
     if (m <= 30)
       return {
         p: 0.35,
         faixa: 'Faixa 25–30 meses (30–35%+)',
         d: 'bad',
-        msg: 'Perda alarmante (aprox. 35%). Operação degradada com risco de arco elétrico e perda de garantias.',
+        msg: `Perda alarmante na usina de ${pKwp} kWp: cerca de ${perdaFmt}/ano em prejuízo direto (~35%). Operação degradada com risco de arco elétrico e perda de garantias.`,
       }
     return {
       p: 0.4,
       faixa: 'Faixa 31–36 meses (acima de 35%)',
       d: 'bad',
-      msg: 'Perda extrema (acima de 35%). Cenário de falha elétrica ou módulo danificado. Diagnóstico técnico urgente.',
+      msg: `Perda extrema em ${pKwp} kWp: mais de ${perdaFmt}/ano não compensados (>35%). Cenário de falha elétrica ou módulo danificado. Diagnóstico técnico urgente recomendado.`,
     }
   }
 
   const calcResults = useMemo(() => {
     const validKwp = Math.max(2, Math.min(200, kwp || 0))
-    const validTar = Math.max(0.4, tarifa || 0)
+    const validTar = Math.max(0.4, Math.min(TARIFA_MAX_RGE, tarifa || 0))
     const validHsp = HSP_FIXO_RS
     const validMeses = Math.max(0, Math.min(36, meses || 0))
 
     const geracaoMensal = validKwp * validHsp * 30
     const geracaoAnual = validKwp * validHsp * 365
-    const info = percentFor(validMeses)
-    const perdaAnual = geracaoAnual * validTar * info.p
+    const valorMensalCompensado = geracaoMensal * validTar
+    const valorAnualCompensado = geracaoAnual * validTar
+
+    // Obter percentual e calcular perda anual
+    // 0-6m: 8%; 7-12m: 20%; 13-18m: 25%; 19-24m: 30%; 25-30m: 35%; 31-36m: 40%
+    const baseP =
+      validMeses <= 6
+        ? 0.08
+        : validMeses <= 12
+          ? 0.2
+          : validMeses <= 18
+            ? 0.25
+            : validMeses <= 24
+              ? 0.3
+              : validMeses <= 30
+                ? 0.35
+                : 0.4
+
+    const perdaAnual = geracaoAnual * validTar * baseP
     const perdaMensal = perdaAnual / 12
-    const contas = geracaoMensal * validTar > 0 ? perdaAnual / (geracaoMensal * validTar) : 0
+    const contas = valorMensalCompensado > 0 ? perdaAnual / valorMensalCompensado : 0
     const anos = Math.max(1, Math.round(validMeses / 12))
     const acumulado = perdaAnual * anos
+    const info = percentFor(validMeses, validKwp, perdaAnual)
 
     return {
       validKwp,
@@ -134,6 +187,8 @@ export default function ArtigoManutencaoRico({
       validMeses,
       geracaoAnual,
       geracaoMensal,
+      valorMensalCompensado,
+      valorAnualCompensado,
       perdaAnual,
       perdaMensal,
       contas,
@@ -181,6 +236,17 @@ export default function ArtigoManutencaoRico({
       kwp: newKwp,
       meses,
       tarifa,
+      perdaEstimadaAnual: calcResults.perdaAnual,
+    })
+  }
+
+  const handleTarifaChange = (newTarifa: number) => {
+    const clamped = Math.max(0.4, Math.min(TARIFA_MAX_RGE, Number(newTarifa.toFixed(2))))
+    setTarifa(clamped)
+    trackCalculatorUsed({
+      kwp,
+      meses,
+      tarifa: clamped,
       perdaEstimadaAnual: calcResults.perdaAnual,
     })
   }
@@ -497,10 +563,10 @@ export default function ArtigoManutencaoRico({
 
           <div className="p-8 sm:p-10 rounded-3xl bg-[#081B30] text-white shadow-2xl border border-white/10 space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Campo 1: Potência (kWp) com slider, número e equivalente em placas de 550 Wp */}
+              {/* Campo 1: Potência (kWp) com slider não-linear (sensível para sistemas menores), número e equivalente em placas de 550 Wp */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm font-semibold mb-1">
-                  <label htmlFor="input-kwp" className="text-slate-200">
+                  <label htmlFor="input-kwp-range" className="text-slate-200">
                     Potência da usina (kWp)
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -509,11 +575,13 @@ export default function ArtigoManutencaoRico({
                       type="number"
                       min={2}
                       max={200}
-                      step={1}
+                      step={kwp <= 10 ? 0.5 : 1}
                       value={kwp}
                       onChange={(e) => {
-                        const val = Number(e.target.value)
-                        handleKwpChange(Math.max(2, Math.min(200, val || 2)))
+                        const val = parseFloat(e.target.value)
+                        if (!isNaN(val)) {
+                          handleKwpChange(Math.max(2, Math.min(200, val)))
+                        }
                       }}
                       className="w-20 px-2 py-1 text-right font-mono font-bold text-sm bg-slate-800 border border-slate-700 rounded-md text-solar-400 focus:outline-hidden focus:border-solar-400"
                       aria-label="Digitar potência da usina em kWp"
@@ -522,29 +590,31 @@ export default function ArtigoManutencaoRico({
                   </div>
                 </div>
                 <input
-                  id="input-kwp"
+                  id="input-kwp-range"
                   type="range"
-                  min={2}
-                  max={200}
-                  step={1}
-                  value={kwp}
-                  onChange={(e) => handleKwpChange(Number(e.target.value))}
+                  min={0}
+                  max={100}
+                  step={0.5}
+                  value={kwpToSliderPos(kwp)}
+                  onChange={(e) => handleKwpChange(sliderPosToKwp(Number(e.target.value)))}
                   className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  aria-label="Deslizante de potência da usina"
+                  aria-label="Deslizante de potência da usina com escala expandida para pequenos sistemas"
                 />
-                {/* Equivalente dinâmico em placas de 550 Wp */}
+                {/* Equivalente dinâmico em placas de 550 Wp e marcadores da escala */}
                 <div className="flex items-center justify-between pt-1">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-solar-500/15 border border-solar-400/30 text-solar-300 font-semibold text-xs">
                     ≈ {Math.round((kwp * 1000) / 550)} placas de 550 Wp
                   </span>
-                  <span className="text-[11px] text-slate-400">2 a 200 kWp</span>
+                  <span className="text-[11px] text-slate-400 font-mono">
+                    2 a 60 kWp (fino) · até 200
+                  </span>
                 </div>
               </div>
 
-              {/* Campo 2: Tarifa (R$/kWh) — padrão 1,20 com helper CPFL RGE editável */}
+              {/* Campo 2: Tarifa (R$/kWh) — teto R$ 1,20 (CPFL RGE), ajustável para menos */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm font-semibold mb-1">
-                  <label htmlFor="input-tarifa" className="text-slate-200">
+                  <label htmlFor="input-tarifa-range" className="text-slate-200">
                     Tarifa de energia (R$/kWh)
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -553,29 +623,34 @@ export default function ArtigoManutencaoRico({
                       id="input-tarifa-num"
                       type="number"
                       min={0.4}
-                      max={2.0}
+                      max={TARIFA_MAX_RGE}
                       step={0.01}
                       value={tarifa}
-                      onChange={(e) => setTarifa(Number(e.target.value))}
+                      onChange={(e) => {
+                        const val = parseFloat(e.target.value)
+                        if (!isNaN(val)) {
+                          handleTarifaChange(Math.max(0.4, Math.min(TARIFA_MAX_RGE, val)))
+                        }
+                      }}
                       className="w-20 px-2 py-1 text-right font-mono font-bold text-sm bg-slate-800 border border-slate-700 rounded-md text-solar-400 focus:outline-hidden focus:border-solar-400"
                       aria-label="Digitar tarifa em reais por kWh"
                     />
                   </div>
                 </div>
                 <input
-                  id="input-tarifa"
+                  id="input-tarifa-range"
                   type="range"
                   min={0.4}
-                  max={2.0}
-                  step={0.05}
+                  max={TARIFA_MAX_RGE}
+                  step={0.01}
                   value={tarifa}
-                  onChange={(e) => setTarifa(Number(e.target.value))}
+                  onChange={(e) => handleTarifaChange(Number(e.target.value))}
                   className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
-                  aria-label="Deslizante de tarifa em reais por kWh"
+                  aria-label="Deslizante de tarifa em reais por kWh até o limite de R$ 1,20"
                 />
                 <span className="text-[11px] text-slate-400 block pt-1">
-                  Tarifa padrão CPFL RGE (R$ 1,20/kWh com tributos). Você pode ajustar para outra
-                  concessionária.
+                  Limite em R$ 1,20/kWh (tarifa média CPFL RGE com tributos), ajustável para tarifas
+                  menores (ex.: R$ 0,70–0,95 sem bandeira ou rural).
                 </span>
               </div>
 
@@ -726,90 +801,226 @@ export default function ArtigoManutencaoRico({
         </div>
       </section>
 
-      {/* 4. ESCALA REAL DE PERDA - BARRAS INTERATIVAS */}
-      <section id="escala" className="py-16 max-w-4xl mx-auto px-6 space-y-8">
+      {/* 4. ESCALA REAL DE PERDA - BARRAS INTERATIVAS RECALCULADAS DINAMICAMENTE */}
+      <section id="escala" className="py-16 max-w-4xl mx-auto px-6 space-y-10">
         <div className="space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
             Escala Real de Perda
           </span>
           <h2 className="text-3xl font-extrabold text-slate-900">
-            Quanto custa cada nível de degradação
+            Quanto custa cada nível de degradação na sua usina
           </h2>
-          <p className="text-slate-600 text-base">
-            Cinco cenários simulados para a usina de referência de 8 kWp com tarifa de R$ 0,90/kWh:
+          <p className="text-slate-600 text-base leading-relaxed">
+            Cenários recalculados <strong>em tempo real</strong> para a sua potência de{' '}
+            <strong className="text-slate-900 font-mono">{calcResults.validKwp} kWp</strong> com
+            tarifa de{' '}
+            <strong className="text-slate-900 font-mono">
+              R$ {calcResults.validTar.toFixed(2).replace('.', ',')}/kWh
+            </strong>{' '}
+            (geração total de ~{Math.round(calcResults.geracaoAnual).toLocaleString('pt-BR')}{' '}
+            kWh/ano = {fmtBRL(calcResults.valorAnualCompensado)}/ano em energia):
           </p>
         </div>
 
+        {/* Barras dinâmicas proporcionais aos valores ajustados pelo usuário */}
         <div className="space-y-4">
           {[
             {
               cenario: 'Cenário 1 — Sujeira leve',
-              desc: 'Chuva regular, poeira urbana leve sem acúmulo',
+              desc: 'Chuva regular, poeira urbana leve sem acúmulo (2% a 5%)',
               pct: '2% a 5%',
-              reais: 'R$ 237 a R$ 591/ano',
+              minP: 0.02,
+              maxP: 0.05,
               width: '18%',
               color: 'from-emerald-400 to-emerald-600',
             },
             {
               cenario: 'Cenário 2 — Sujeira moderada',
-              desc: '12+ meses sem limpeza, fuligem ou pó agrícola',
+              desc: '12+ meses sem limpeza técnica, fuligem ou pó agrícola (6% a 12%)',
               pct: '6% a 12%',
-              reais: 'R$ 710 a R$ 1.419/ano',
+              minP: 0.06,
+              maxP: 0.12,
               width: '38%',
               color: 'from-amber-400 to-amber-600',
             },
             {
               cenario: 'Cenário 3 — Sujeira severa',
-              desc: '24+ meses, poeira pesada, estiagem ou dejetos',
+              desc: '24+ meses, poeira pesada, estiagem ou dejetos de aves (15% a 25%)',
               pct: '15% a 25%',
-              reais: 'R$ 1.774 a R$ 2.957/ano',
+              minP: 0.15,
+              maxP: 0.25,
               width: '62%',
               color: 'from-orange-500 to-rose-500',
             },
             {
               cenario: 'Cenário 4 — Severa + Ponto Quente',
-              desc: 'String prejudicada somada à sujeira acumulada',
+              desc: 'String prejudicada somada à sujeira acumulada (25% a 35%)',
               pct: '25% a 35%',
-              reais: 'R$ 2.957 a R$ 4.139/ano',
+              minP: 0.25,
+              maxP: 0.35,
               width: '82%',
               color: 'from-rose-500 to-red-600',
             },
             {
               cenario: 'Cenário 5 — Sem manutenção 3+ anos',
-              desc: 'Múltiplos pontos quentes e conector em falha elétrica',
+              desc: 'Múltiplos pontos quentes e conector em falha elétrica (acima de 35%)',
               pct: 'Acima de 35%',
-              reais: 'Mais de R$ 4.139/ano',
+              minP: 0.35,
+              maxP: 0.45,
               width: '100%',
               color: 'from-red-600 to-red-800',
             },
-          ].map((bar, idx) => (
-            <div
-              key={idx}
-              onMouseEnter={() => setHoveredBar(idx)}
-              onMouseLeave={() => setHoveredBar(null)}
-              className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md transition-all space-y-2"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-sm">
-                <div>
-                  <strong className="text-slate-900 block">{bar.cenario}</strong>
-                  <span className="text-xs text-slate-500">{bar.desc}</span>
-                </div>
-                <div className="text-right shrink-0">
-                  <span className="text-xs font-bold text-slate-900 block">{bar.pct}</span>
-                  <span className="text-xs text-rose-600 font-semibold">{bar.reais}</span>
-                </div>
-              </div>
+          ].map((bar, idx) => {
+            const minReais = calcResults.valorAnualCompensado * bar.minP
+            const maxReais = calcResults.valorAnualCompensado * bar.maxP
+            const textoReais =
+              idx === 4
+                ? `Mais de ${fmtBRL(minReais)}/ano`
+                : `${fmtBRL(minReais)} a ${fmtBRL(maxReais)}/ano`
 
-              <div className="w-full h-5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
-                <div
-                  className={`h-full rounded-full bg-gradient-to-r ${bar.color} transition-all duration-700 flex items-center justify-end pr-2 text-[10px] font-bold text-white shadow-xs`}
-                  style={{ width: bar.width }}
-                >
-                  {hoveredBar === idx && <span className="drop-shadow-xs">{bar.pct}</span>}
+            return (
+              <div
+                key={idx}
+                onMouseEnter={() => setHoveredBar(idx)}
+                onMouseLeave={() => setHoveredBar(null)}
+                className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md transition-all space-y-2"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-sm">
+                  <div>
+                    <strong className="text-slate-900 block">{bar.cenario}</strong>
+                    <span className="text-xs text-slate-500">{bar.desc}</span>
+                  </div>
+                  <div className="text-left sm:text-right shrink-0">
+                    <span className="text-xs font-bold text-slate-900 block">{bar.pct}</span>
+                    <span className="text-xs text-rose-600 font-bold font-mono">{textoReais}</span>
+                  </div>
+                </div>
+
+                <div className="w-full h-5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
+                  <div
+                    className={`h-full rounded-full bg-gradient-to-r ${bar.color} transition-all duration-700 flex items-center justify-end pr-2 text-[10px] font-bold text-white shadow-xs`}
+                    style={{ width: bar.width }}
+                  >
+                    {hoveredBar === idx && <span className="drop-shadow-xs">{bar.pct}</span>}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
+        </div>
+
+        {/* Exemplos para sistemas maiores (comerciais, agro e industriais) conforme solicitado */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#081B30] text-white border border-white/10 shadow-xl space-y-6">
+          <div className="space-y-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-solar-400 block">
+              Escala Comercial, Agro e Industrial
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-white">
+              E em sistemas maiores? Veja o impacto em 50, 120 e 200 kWp
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300">
+              Com a mesma tarifa de{' '}
+              <strong className="text-solar-300 font-mono">
+                R$ {calcResults.validTar.toFixed(2).replace('.', ',')}/kWh
+              </strong>{' '}
+              e perda de referência em 12 meses (~20%), o volume financeiro não compensado escala
+              rapidamente:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              {
+                porte: 'Comercial / Supermercado',
+                kwp: 50,
+                placas: Math.round((50 * 1000) / 550),
+                geracaoAnual: 50 * HSP_FIXO_RS * 365,
+                perdaPct: 0.2,
+                destaque: 'Perda anual típica de 1 ano',
+              },
+              {
+                porte: 'Agroindústria / Armazém',
+                kwp: 120,
+                placas: Math.round((120 * 1000) / 550),
+                geracaoAnual: 120 * HSP_FIXO_RS * 365,
+                perdaPct: 0.2,
+                destaque: 'Porte médio corporativo',
+                popular: true,
+              },
+              {
+                porte: 'Indústria / Geração Distribuída',
+                kwp: 200,
+                placas: Math.round((200 * 1000) / 550),
+                geracaoAnual: 200 * HSP_FIXO_RS * 365,
+                perdaPct: 0.2,
+                destaque: 'Teto da calculadora',
+              },
+            ].map((cenario, i) => {
+              const valorAnualTotal = cenario.geracaoAnual * calcResults.validTar
+              const perdaEstimada = valorAnualTotal * cenario.perdaPct
+              const perdaMensalCenario = perdaEstimada / 12
+
+              return (
+                <div
+                  key={i}
+                  className={`p-5 rounded-2xl flex flex-col justify-between transition-all ${
+                    cenario.popular
+                      ? 'bg-gradient-to-b from-solar-500/20 to-white/5 border-2 border-solar-400/50 shadow-lg'
+                      : 'bg-white/5 border border-white/10'
+                  }`}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-solar-400 px-2 py-0.5 rounded-full bg-solar-500/20 border border-solar-400/30">
+                        {cenario.kwp} kWp
+                      </span>
+                      <span className="text-[11px] text-slate-400">≈ {cenario.placas} placas</span>
+                    </div>
+
+                    <div>
+                      <strong className="text-white text-base block font-bold">
+                        {cenario.porte}
+                      </strong>
+                      <span className="text-xs text-slate-300">{cenario.destaque}</span>
+                    </div>
+
+                    <div className="pt-2 border-t border-white/10 space-y-1">
+                      <span className="text-[11px] uppercase tracking-wider text-rose-300 block font-semibold">
+                        Perda estimada em 1 ano (20%)
+                      </span>
+                      <div className="text-2xl font-black text-rose-400 font-mono">
+                        {fmtBRL(perdaEstimada)}
+                      </div>
+                      <span className="text-xs text-slate-300 block font-mono">
+                        ou ~{fmtBRL(perdaMensalCenario)}/mês
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 mt-4 border-t border-white/10 text-[11px] text-slate-400">
+                    Produção anual: ~{Math.round(cenario.geracaoAnual).toLocaleString('pt-BR')}{' '}
+                    kWh/ano ({fmtBRL(valorAnualTotal)})
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span>
+              💡 <strong>Regra de ouro O&amp;M da Delfos:</strong> Em sistemas acima de 50 kWp, o
+              custo de um plano semestral de limpeza técnica e termografia se paga já no primeiro
+              mês de eficiência recuperada.
+            </span>
+            <Button
+              onClick={() => handleCtaIntermediario('cta_exemplos_maiores')}
+              size="sm"
+              className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-4 py-2 rounded-lg text-xs shrink-0 cursor-pointer"
+            >
+              Consultar plano para{' '}
+              {calcResults.validKwp >= 50 ? `${calcResults.validKwp} kWp` : 'grande porte'}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -929,18 +1140,36 @@ export default function ArtigoManutencaoRico({
               (colheita e dessecação), estradas de terra, polo industrial ou áreas litorâneas, o
               particulado forma uma película pegajosa que a chuva não lava.
             </p>
-            <div className="p-4 rounded-xl bg-amber-50/70 border border-solar-200 text-xs sm:text-sm text-slate-800 space-y-1">
-              <strong className="text-solar-900 block font-bold">
-                Traduzindo em valores reais:
-              </strong>
-              <div>
-                • 6% de perda em 8 kWp = <strong>R$ 710/ano</strong> jogados fora.
+            <div className="p-4 rounded-xl bg-amber-50/70 border border-solar-200 text-xs sm:text-sm text-slate-800 space-y-1.5">
+              <div className="flex flex-wrap items-center justify-between gap-1">
+                <strong className="text-solar-900 font-bold">
+                  Traduzindo em valores reais para a sua usina ({calcResults.validKwp} kWp a R${' '}
+                  {calcResults.validTar.toFixed(2).replace('.', ',')}/kWh):
+                </strong>
+                <span className="text-[11px] text-solar-700 font-mono font-semibold">
+                  Geração total: {fmtBRL(calcResults.valorAnualCompensado)}/ano
+                </span>
               </div>
               <div>
-                • 18% de perda em 8 kWp = <strong>R$ 2.129/ano</strong> de prejuízo.
+                • <strong>6% de perda</strong> na sua usina ={' '}
+                <strong className="text-amber-800">
+                  {fmtBRL(calcResults.valorAnualCompensado * 0.06)}/ano
+                </strong>{' '}
+                jogados fora (~{fmtBRL((calcResults.valorAnualCompensado * 0.06) / 12)}/mês).
               </div>
               <div>
-                • 18% de perda em usina de 75 kWp = <strong>R$ 19.970/ano</strong> evaporando.
+                • <strong>18% de perda</strong> na sua usina ={' '}
+                <strong className="text-amber-900">
+                  {fmtBRL(calcResults.valorAnualCompensado * 0.18)}/ano
+                </strong>{' '}
+                de prejuízo acumulado.
+              </div>
+              <div className="pt-1 border-t border-amber-200/60 text-slate-600 text-xs">
+                • <em>Em escala comparativa comercial/industrial:</em> 18% de perda em 75 kWp ={' '}
+                <strong>{fmtBRL(75 * HSP_FIXO_RS * 365 * calcResults.validTar * 0.18)}/ano</strong>;
+                em 120 kWp ={' '}
+                <strong>{fmtBRL(120 * HSP_FIXO_RS * 365 * calcResults.validTar * 0.18)}/ano</strong>{' '}
+                evaporando.
               </div>
             </div>
 
@@ -1158,12 +1387,20 @@ export default function ArtigoManutencaoRico({
               deformação eleva ainda mais a resistência até a fusão completa. Se uma string com 15
               módulos desconectar, um terço de toda a sua geração para imediatamente.
             </p>
-            <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-xs sm:text-sm text-slate-800 space-y-1">
+            <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-xs sm:text-sm text-slate-800 space-y-1.5">
               <div>
-                • Em 8 kWp: perda de <strong>R$ 3.900/ano</strong> por string aberta.
+                • Na sua usina ({calcResults.validKwp} kWp): perda de cerca de{' '}
+                <strong className="text-amber-900">
+                  {fmtBRL(calcResults.valorAnualCompensado * 0.33)}/ano
+                </strong>{' '}
+                se uma string de 1/3 da potência for desconectada.
               </div>
-              <div>
-                • Em usina de 500 kWp: prejuízo de <strong>R$ 23.600/ano</strong>.
+              <div className="text-xs text-slate-600">
+                • Em usinas maiores de referência: 1/3 de perda em 75 kWp ={' '}
+                <strong>{fmtBRL(75 * HSP_FIXO_RS * 365 * calcResults.validTar * 0.33)}/ano</strong>;
+                em 200 kWp ={' '}
+                <strong>{fmtBRL(200 * HSP_FIXO_RS * 365 * calcResults.validTar * 0.33)}/ano</strong>
+                .
               </div>
             </div>
 
