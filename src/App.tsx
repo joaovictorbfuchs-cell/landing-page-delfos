@@ -33,6 +33,7 @@ const SegmentoInvestidores = lazy(() => import('./pages/segmentos/SegmentoInvest
 const SegmentoFrotasEletropostos = lazy(
   () => import('./pages/segmentos/SegmentoFrotasEletropostos'),
 )
+const RedirectsLegado = lazy(() => import('./components/RedirectsLegado'))
 
 const App = () => {
   useEffect(() => {
@@ -87,6 +88,8 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/admin" element={<Admin />} />
             </Route>
+            {/* Redirecionamento das URLs do site antigo (WordPress /site/) */}
+            <Route path="/site/*" element={<RedirectsLegado />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
