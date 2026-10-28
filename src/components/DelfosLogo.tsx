@@ -87,17 +87,7 @@ export default function DelfosLogo({
         className="block object-contain select-none pointer-events-none drop-shadow-xs"
       />
 
-      {showSubtitle && (
-        <span
-          className={`hidden sm:inline-block text-[10px] font-bold tracking-widest uppercase pl-2 border-l ${
-            variant === 'dark-bg'
-              ? 'text-solar-400 border-white/20'
-              : 'text-slate-600 border-slate-300'
-          }`}
-        >
-          Engenharia
-        </span>
-      )}
+      {showSubtitle && null}
     </div>
   )
 }
