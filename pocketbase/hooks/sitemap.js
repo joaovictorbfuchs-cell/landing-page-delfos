@@ -35,6 +35,12 @@ routerAdd('GET', '/sitemap.xml', (e) => {
     { loc: '/conteudos', changefreq: 'weekly', priority: '0.8', lastmod: today },
     // Posts do acervo técnico estático
     {
+      loc: '/conteudos/manutencao-de-placa-solar-perda-geracao',
+      changefreq: 'monthly',
+      priority: '0.8',
+      lastmod: '2025-03-14',
+    },
+    {
       loc: '/conteudos/energia-solar-erechim-guia-completo',
       changefreq: 'monthly',
       priority: '0.7',
@@ -61,6 +67,7 @@ routerAdd('GET', '/sitemap.xml', (e) => {
   ]
 
   const knownSlugs = new Set([
+    'manutencao-de-placa-solar-perda-geracao',
     'energia-solar-erechim-guia-completo',
     'bess-industrial-armazenamento-baterias-guia-viabilidade',
     'manutencao-usina-solar-om-monitoramento-dicas',

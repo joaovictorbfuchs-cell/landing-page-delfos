@@ -40,9 +40,57 @@ export interface ArtigoBlog {
     pergunta: string
     resposta: string
   }[]
+  isRichArticle?: boolean
 }
 
 export const ARTIGOS_BLOG: ArtigoBlog[] = [
+  {
+    slug: 'manutencao-de-placa-solar-perda-geracao',
+    titulo:
+      'Manutenção de placa solar: até 25% da sua geração pode estar indo embora sem você saber',
+    subtitulo:
+      'Sujeira, ponto quente e conector frouxo custam até três contas de luz por ano — e o aplicativo não avisa.',
+    resumo:
+      'Uma análise técnica completa com calculadora interativa de perda financeira, os cinco pilares de degradação, impacto nas garantias e seguradoras, e checklist prático de 8 sinais de alerta.',
+    categoria: 'Operação & Manutenção',
+    tempoLeitura: '8 min de leitura',
+    dataPublicacao: '14 de Março de 2025',
+    autor: {
+      nome: 'Eng. Eletricista João Victor Bagetti Fuchs',
+      cargo: 'Engenheiro Eletricista · Responsável Técnico — Delfos Engenharia · CREA-RS 151894',
+    },
+    palavraChavePrincipal: 'manutenção de placa solar',
+    palavrasChaveSecundarias: [
+      'limpeza de módulos solares',
+      'termografia fotovoltaica',
+      'perda de geração solar',
+      'O&M solar RS',
+    ],
+    metaDescription:
+      'Manutenção de placa solar: até 25% da geração pode ser perdida por sujeira e pontos quentes. Use a calculadora interativa e entenda os 5 pilares de O&M com a Delfos Engenharia.',
+    origemLead: 'blog-manutencao-placa-solar',
+    solucaoRelacionada: {
+      nome: 'Manutenção O&M e Monitoramento de Usinas Solares',
+      url: '/solucoes/om',
+      ctaTexto: 'Solicitar diagnóstico técnico da usina',
+      necessidadeForm: 'O&M e Monitoramento',
+    },
+    isRichArticle: true,
+    secoes: [
+      {
+        tituloH2: 'O Custo Real da Falta de Manutenção em Usinas Solares',
+        conteudo: [
+          'Uma usina de 8 kWp gera cerca de 1.095 kWh por mês. Com tarifa de R$ 0,90/kWh, são aproximadamente R$ 985 em energia compensada todo mês — R$ 11.826 ao ano.',
+          'Um sistema sem limpeza e sem manutenção preventiva pode perder até 25% da geração total, custando até três contas de luz inteiras sem consumo real.',
+        ],
+      },
+    ],
+    conclusao: {
+      texto:
+        'A manutenção preventiva e a inspeção termográfica segundo as normas ABNT NBR 16274 e IEC 62446-3 protegem o patrimônio e recuperam a geração antes de danos irreversíveis.',
+      destaque: 'O monitoramento avisa quando o sistema para. A manutenção evita que ele pare.',
+    },
+  },
   {
     slug: 'energia-solar-erechim-guia-completo',
     titulo:
