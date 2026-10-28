@@ -109,11 +109,11 @@ export default function Sobre() {
               </h1>
 
               <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
-                Nascida em Erechim/RS, a <strong>Delfos Engenharia Solar</strong> é uma integradora
-                gaúcha de ciclo completo: projetamos, instalamos, garantimos aprovação junto à
-                concessionária (homologação), operamos e mantemos ativos energéticos. São mais de
-                3.000 projetos em campo, com respaldo de engenharia registrada no CREA-RS e índice
-                de satisfação 4.9/5 e 5.0/5 no Google.
+                Nascida em Erechim/RS, a <strong>Delfos Solar</strong> é uma integradora gaúcha de
+                ciclo completo: projetamos, instalamos, garantimos aprovação junto à concessionária
+                (homologação), operamos e mantemos ativos energéticos. São mais de 3.000 projetos em
+                campo, com respaldo de engenharia registrada no CREA-RS e índice de satisfação 4.9/5
+                e 5.0/5 no Google.
               </p>
 
               {/* Métricas-chave em linha */}
