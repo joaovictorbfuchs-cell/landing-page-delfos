@@ -37,6 +37,12 @@ routerAdd('GET', '/sitemap.xml', (e) => {
     {
       loc: '/conteudos/manutencao-de-placa-solar-perda-geracao',
       changefreq: 'monthly',
+      priority: '0.9',
+      lastmod: '2025-03-14',
+    },
+    {
+      loc: '/conteudos/autor/joao-victor-bagetti-fuchs',
+      changefreq: 'monthly',
       priority: '0.8',
       lastmod: '2025-03-14',
     },

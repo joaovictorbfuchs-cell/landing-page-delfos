@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
 
-interface SeoMetaProps {
+export interface SeoMetaProps {
   title: string
   description: string
   canonicalPath?: string
   ogType?: 'website' | 'article'
   ogImage?: string
-  schemaJsonLd?: object
+  ogSiteName?: string
+  ogLocale?: string
+  robots?: string
+  schemaJsonLd?: object | object[]
 }
 
 export default function SeoMeta({
@@ -15,14 +18,20 @@ export default function SeoMeta({
   canonicalPath,
   ogType = 'website',
   ogImage = '/og-image.png',
+  ogSiteName = 'Delfos Engenharia',
+  ogLocale = 'pt_BR',
+  robots = 'index, follow',
   schemaJsonLd,
 }: SeoMetaProps) {
   useEffect(() => {
-    // Title
-    const formattedTitle = title.includes('Delfos') ? title : `${title} | Delfos Engenharia Solar`
+    // 1. Title Tag
+    const formattedTitle = title.includes('Delfos') ? title : `${title} | Delfos Engenharia`
     document.title = formattedTitle
 
-    // Meta Description
+    // 2. Lang no html
+    document.documentElement.lang = 'pt-BR'
+
+    // 3. Meta Description
     let metaDesc = document.querySelector('meta[name="description"]')
     if (!metaDesc) {
       metaDesc = document.createElement('meta')
@@ -31,7 +40,16 @@ export default function SeoMeta({
     }
     metaDesc.setAttribute('content', description)
 
-    // Meta Keywords
+    // 4. Meta Robots
+    let metaRobots = document.querySelector('meta[name="robots"]')
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta')
+      metaRobots.setAttribute('name', 'robots')
+      document.head.appendChild(metaRobots)
+    }
+    metaRobots.setAttribute('content', robots)
+
+    // 5. Meta Keywords
     let metaKeywords = document.querySelector('meta[name="keywords"]')
     if (!metaKeywords) {
       metaKeywords = document.createElement('meta')
@@ -40,12 +58,12 @@ export default function SeoMeta({
     }
     metaKeywords.setAttribute(
       'content',
-      'energia solar Erechim, BESS industrial, manutencao de usina solar, carregador veicular condominio, Delfos Solar RS, engenharia fotovoltaica, armazenamento baterias',
+      'energia solar Erechim, BESS industrial, manutencao de usina solar, Delfos Engenharia RS, engenharia fotovoltaica, O&M solar',
     )
 
     const BASE_URL = 'https://landing-page-delfos-engenharia-672ab.goskip.app'
 
-    // OpenGraph Title & Description
+    // 6. OpenGraph Title
     let ogTitle = document.querySelector('meta[property="og:title"]')
     if (!ogTitle) {
       ogTitle = document.createElement('meta')
@@ -54,6 +72,7 @@ export default function SeoMeta({
     }
     ogTitle.setAttribute('content', formattedTitle)
 
+    // 7. OpenGraph Description
     let ogDesc = document.querySelector('meta[property="og:description"]')
     if (!ogDesc) {
       ogDesc = document.createElement('meta')
@@ -62,6 +81,7 @@ export default function SeoMeta({
     }
     ogDesc.setAttribute('content', description)
 
+    // 8. OpenGraph Type
     let ogTypeEl = document.querySelector('meta[property="og:type"]')
     if (!ogTypeEl) {
       ogTypeEl = document.createElement('meta')
@@ -70,6 +90,25 @@ export default function SeoMeta({
     }
     ogTypeEl.setAttribute('content', ogType)
 
+    // 9. OpenGraph Site Name
+    let ogSiteNameEl = document.querySelector('meta[property="og:site_name"]')
+    if (!ogSiteNameEl) {
+      ogSiteNameEl = document.createElement('meta')
+      ogSiteNameEl.setAttribute('property', 'og:site_name')
+      document.head.appendChild(ogSiteNameEl)
+    }
+    ogSiteNameEl.setAttribute('content', ogSiteName)
+
+    // 10. OpenGraph Locale
+    let ogLocaleEl = document.querySelector('meta[property="og:locale"]')
+    if (!ogLocaleEl) {
+      ogLocaleEl = document.createElement('meta')
+      ogLocaleEl.setAttribute('property', 'og:locale')
+      document.head.appendChild(ogLocaleEl)
+    }
+    ogLocaleEl.setAttribute('content', ogLocale)
+
+    // 11. OpenGraph Image
     const fullImageUrl = ogImage.startsWith('http')
       ? ogImage
       : `${BASE_URL}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`
@@ -82,7 +121,7 @@ export default function SeoMeta({
     }
     ogImgEl.setAttribute('content', fullImageUrl)
 
-    // Twitter Card tags
+    // 12. Twitter Card tags
     let twitterCard = document.querySelector('meta[name="twitter:card"]')
     if (!twitterCard) {
       twitterCard = document.createElement('meta')
@@ -115,20 +154,21 @@ export default function SeoMeta({
     }
     twitterImg.setAttribute('content', fullImageUrl)
 
-    // Canonical link
-    const normalizedPath = canonicalPath || window.location.pathname
+    // 13. Canonical link (sempre URL absoluta definitiva, sem parâmetros)
+    const rawPath = canonicalPath || window.location.pathname
+    // Remove query params ou hashes se houver
+    const cleanPath = rawPath.split('?')[0].split('#')[0]
+    const absoluteCanonical = cleanPath.startsWith('http')
+      ? cleanPath
+      : `${BASE_URL}${cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`}`
+
     let canonical = document.querySelector('link[rel="canonical"]')
     if (!canonical) {
       canonical = document.createElement('link')
       canonical.setAttribute('rel', 'canonical')
       document.head.appendChild(canonical)
     }
-    canonical.setAttribute(
-      'href',
-      normalizedPath.startsWith('http')
-        ? normalizedPath
-        : `${BASE_URL}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`,
-    )
+    canonical.setAttribute('href', absoluteCanonical)
 
     let ogUrl = document.querySelector('meta[property="og:url"]')
     if (!ogUrl) {
@@ -136,32 +176,43 @@ export default function SeoMeta({
       ogUrl.setAttribute('property', 'og:url')
       document.head.appendChild(ogUrl)
     }
-    ogUrl.setAttribute(
-      'content',
-      `${BASE_URL}${normalizedPath.startsWith('/') ? normalizedPath : `/${normalizedPath}`}`,
-    )
+    ogUrl.setAttribute('content', absoluteCanonical)
 
-    // Optional dynamic Schema.org JSON-LD
-    let scriptJsonLd: HTMLScriptElement | null = null
+    // 14. Inserção de Schemas JSON-LD
+    // Remove scripts antigos inseridos por esta rota
+    const oldScripts = document.querySelectorAll('script[data-seo-meta-schema="true"]')
+    oldScripts.forEach((sc) => sc.remove())
+
+    const scriptsCreated: HTMLScriptElement[] = []
+
     if (schemaJsonLd) {
-      scriptJsonLd = document.querySelector(
-        'script[data-page-schema="true"]',
-      ) as HTMLScriptElement | null
-      if (!scriptJsonLd) {
-        scriptJsonLd = document.createElement('script')
-        scriptJsonLd.type = 'application/ld+json'
-        scriptJsonLd.setAttribute('data-page-schema', 'true')
-        document.head.appendChild(scriptJsonLd)
-      }
-      scriptJsonLd.textContent = JSON.stringify(schemaJsonLd)
+      const schemas = Array.isArray(schemaJsonLd) ? schemaJsonLd : [schemaJsonLd]
+      schemas.forEach((schema) => {
+        const script = document.createElement('script')
+        script.type = 'application/ld+json'
+        script.setAttribute('data-seo-meta-schema', 'true')
+        script.textContent = JSON.stringify(schema)
+        document.head.appendChild(script)
+        scriptsCreated.push(script)
+      })
     }
 
     return () => {
-      if (scriptJsonLd && scriptJsonLd.parentNode) {
-        scriptJsonLd.parentNode.removeChild(scriptJsonLd)
-      }
+      scriptsCreated.forEach((sc) => {
+        if (sc.parentNode) sc.parentNode.removeChild(sc)
+      })
     }
-  }, [title, description, canonicalPath, ogType, ogImage, schemaJsonLd])
+  }, [
+    title,
+    description,
+    canonicalPath,
+    ogType,
+    ogImage,
+    ogSiteName,
+    ogLocale,
+    robots,
+    schemaJsonLd,
+  ])
 
   return null
 }

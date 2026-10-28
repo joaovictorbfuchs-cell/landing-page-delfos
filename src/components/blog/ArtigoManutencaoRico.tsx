@@ -1,10 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Calendar,
   Clock,
   ArrowRight,
-  Share2,
   ShieldCheck,
   CheckCircle2,
   ChevronRight,
@@ -12,20 +11,24 @@ import {
   Calculator,
   AlertTriangle,
   Flame,
-  TrendingDown,
-  Layers,
-  Cpu,
-  FileCheck,
-  Zap,
   Activity,
   Award,
   ChevronDown,
   Copy,
   RotateCcw,
   Sparkles,
+  Phone,
+  Layers,
+  FileCheck,
+  Zap,
+  UserCheck,
+  ExternalLink,
+  MessageCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import FormCapturaArtigo from '@/components/blog/FormCapturaArtigo'
+import { trackCtaClick, trackCalculatorUsed, trackWhatsappClick } from '@/lib/analytics'
 
 interface ArtigoManutencaoRicoProps {
   onSolicitarDiagnostico: () => void
@@ -47,10 +50,10 @@ export default function ArtigoManutencaoRico({
     'Conta de luz parou de cair ou subiu sem mudança de consumo',
     'Geração abaixo do mesmo mês do ano anterior',
     'Inversor ou string zerado, intermitente ou alarmando',
-    'Manchas ou pontos queimados nos módulos',
-    'Sombra nova sobre os módulos (construção, árvore, antenas)',
-    'Sujeira aderida que a chuva não remove',
-    'Vibração ou ruído na estrutura em vento forte',
+    'Manchas ou pontos queimados nos módulos fotovoltaicos',
+    'Sombra nova sobre os módulos (construção vizinha, árvore, antenas)',
+    'Sujeira aderida que a chuva não remove do vidro',
+    'Vibração ou ruído na estrutura de fixação em vento forte',
     'Oxidação visível em parafusos e conectores elétricos',
   ]
   const [checkedAlerts, setCheckedAlerts] = useState<boolean[]>(
@@ -63,7 +66,7 @@ export default function ArtigoManutencaoRico({
   // Bars hover state
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
 
-  // Cálculo de perdas interativas
+  // Faixas técnicas de perda
   const percentFor = (m: number) => {
     if (m <= 6)
       return {
@@ -171,6 +174,26 @@ export default function ArtigoManutencaoRico({
     })
   }
 
+  const handleKwpChange = (newKwp: number) => {
+    setKwp(newKwp)
+    trackCalculatorUsed({
+      kwp: newKwp,
+      meses,
+      tarifa,
+      perdaEstimadaAnual: calcResults.perdaAnual,
+    })
+  }
+
+  const handleMesesChange = (newMeses: number) => {
+    setMeses(newMeses)
+    trackCalculatorUsed({
+      kwp,
+      meses: newMeses,
+      tarifa,
+      perdaEstimadaAnual: calcResults.perdaAnual,
+    })
+  }
+
   const handleToggleCheck = (index: number) => {
     const updated = [...checkedAlerts]
     updated[index] = !updated[index]
@@ -201,60 +224,85 @@ export default function ArtigoManutencaoRico({
     }
   }, [totalChecks])
 
-  const openWhatsApp = (msg: string) => {
+  const openWhatsAppArtigo = (origemCta: string) => {
+    const msg =
+      'Olá! Li o artigo sobre manutenção de placas solares e quero saber mais sobre o diagnóstico da minha usina.'
+    trackWhatsappClick(origemCta, msg)
     const cleanPhone = '5554991292121'
     const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
+  const handleCtaIntermediario = (origemCta: string) => {
+    trackCtaClick('cta_intermediario_diagnostico', origemCta, 'contato')
+    onSolicitarDiagnostico()
+  }
+
   return (
-    <div className="w-full text-slate-800 antialiased">
-      {/* 1. HERO EDITORIAL DA DELFOS */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#081B30] via-[#0F2A47] to-[#15395F] text-white pt-10 pb-16 lg:pb-24 rounded-3xl border border-white/10 shadow-2xl">
+    <article className="w-full text-slate-800 antialiased">
+      {/* 1. HERO EDITORIAL LEVE (GRADIENTE CSS PURO, SEM IMAGEM PESADA, LCP OTIMIZADO) */}
+      <header className="relative overflow-hidden bg-gradient-to-br from-[#081B30] via-[#0F2A47] to-[#15395F] text-white pt-10 pb-14 lg:pb-20 rounded-3xl border border-white/10 shadow-2xl">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] bg-[size:32px_32px] pointer-events-none" />
         <div className="absolute -right-24 -top-24 w-96 h-96 bg-solar-500/15 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="relative max-w-5xl mx-auto px-6 space-y-6">
-          {/* Breadcrumb e Tag */}
-          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300">
+        <div className="relative max-w-4xl mx-auto px-6 space-y-6">
+          {/* Breadcrumb Semântico do Post */}
+          <nav
+            aria-label="Breadcrumb"
+            className="flex flex-wrap items-center gap-2 text-xs text-slate-300"
+          >
             <Link to="/conteudos" className="hover:text-solar-400 transition-colors">
-              Blog & Conteúdos
+              Conteúdos &amp; Blog
             </Link>
             <span>/</span>
             <Link to="/solucoes/om" className="hover:text-solar-400 transition-colors">
               Manutenção O&amp;M
             </Link>
             <span>/</span>
-            <span className="text-white font-medium">Manutenção de placa solar</span>
-          </div>
+            <span className="text-white font-medium truncate max-w-xs sm:max-w-md">
+              Manutenção de placa solar
+            </span>
+          </nav>
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-solar-500/20 text-solar-300 border border-solar-400/30 text-xs font-bold uppercase tracking-wider">
             <Wrench className="w-3.5 h-3.5 text-solar-400" />
-            Manutenção O&amp;M Fotovoltaica
+            Operação &amp; Manutenção Fotovoltaica
           </div>
 
+          {/* ÚNICO H1 DA PÁGINA */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15]">
             Manutenção de placa solar: até 25% da sua geração pode estar indo embora sem você saber
           </h1>
 
           <p className="text-lg sm:text-xl text-slate-200 leading-relaxed font-normal max-w-3xl">
             Sujeira, ponto quente e conector frouxo custam até três contas de luz por ano — e o
-            aplicativo de monitoramento não avisa.
+            aplicativo de monitoramento do inversor não avisa.
           </p>
 
-          {/* Ficha técnica do autor oficial */}
+          {/* FICHA TÉCNICA DO AUTOR OFICIAL COM CREA E LINK DEDICADO */}
           <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-solar-400 to-amber-500 text-midnight-950 font-black flex items-center justify-center text-base shadow-md">
+              <Link
+                to="/conteudos/autor/joao-victor-bagetti-fuchs"
+                title="Ver perfil completo do autor"
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-solar-400 to-amber-500 text-midnight-950 font-black flex items-center justify-center text-base shadow-md shrink-0 hover:scale-105 transition-transform"
+              >
                 JV
-              </div>
+              </Link>
               <div>
-                <span className="text-sm font-bold text-white block">
-                  Eng. Eletricista João Victor Bagetti Fuchs
-                </span>
-                <span className="text-xs text-slate-300 block leading-tight">
-                  Engenheiro Eletricista · Responsável Técnico — Delfos Engenharia ·{' '}
-                  <strong>CREA-RS 151894</strong>
+                <Link
+                  to="/conteudos/autor/joao-victor-bagetti-fuchs"
+                  className="text-sm font-bold text-white hover:text-solar-300 transition-colors flex items-center gap-1.5 group"
+                >
+                  <span>Eng. Eletricista João Victor Bagetti Fuchs</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
+                </Link>
+                <span className="text-xs text-slate-300 block leading-tight mt-0.5">
+                  Responsável Técnico —{' '}
+                  <Link to="/sobre" className="hover:text-solar-300 underline underline-offset-2">
+                    Delfos Engenharia
+                  </Link>{' '}
+                  · <strong>CREA-RS 151894</strong>
                 </span>
               </div>
             </div>
@@ -264,16 +312,19 @@ export default function ArtigoManutencaoRico({
                 8 min de leitura
               </span>
               <span>•</span>
-              <span>14 de Março de 2025</span>
+              <span className="flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-solar-400" />
+                Publicado: 14 de Março de 2025
+              </span>
               <span>•</span>
               <span className="text-emerald-300 font-semibold flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Revisão Técnica
+                Atualizado: Março/2025
               </span>
             </div>
           </div>
 
-          {/* Float cards com números de impacto */}
+          {/* NÚMEROS OFICIAIS DE IMPACTO */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
             <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
               <div className="text-2xl sm:text-3xl font-black text-rose-400">Até 25%</div>
@@ -289,7 +340,7 @@ export default function ArtigoManutencaoRico({
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
       {/* 2. SUMÁRIO EDITORIAL E INTRODUÇÃO */}
       <section className="py-12 max-w-4xl mx-auto px-6 space-y-8">
@@ -396,6 +447,39 @@ export default function ArtigoManutencaoRico({
             o estado da sua usina e proteger seu patrimônio fotovoltaico.
           </p>
         </div>
+
+        {/* CTA 1: APÓS A INTRODUÇÃO */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-slate-50 border-2 border-solar-300/80 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-solar-800 block">
+              Diagnóstico de Engenharia
+            </span>
+            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
+              Quer saber a eficiência real da sua usina fotovoltaica?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
+              Nossa equipe de engenheiros em Erechim/RS conduz levantamento técnico com laudo
+              assinado pelo Eng. João Victor (CREA-RS 151894).
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
+            <Button
+              onClick={() => handleCtaIntermediario('cta_intro_artigo')}
+              className="w-full sm:w-auto bg-solar-500 hover:bg-solar-600 text-midnight-950 font-extrabold px-6 py-5 rounded-xl text-xs sm:text-sm shadow-sm cursor-pointer"
+            >
+              Solicitar diagnóstico técnico
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => openWhatsAppArtigo('cta_intro_whatsapp')}
+              className="w-full sm:w-auto border-emerald-600 text-emerald-700 hover:bg-emerald-50 px-4 py-5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5"
+            >
+              <Phone className="w-3.5 h-3.5 text-emerald-600" />
+              <span>WhatsApp direto</span>
+            </Button>
+          </div>
+        </div>
       </section>
 
       {/* 3. CALCULADORA INTERATIVA DE PERDA DE GERAÇÃO */}
@@ -433,7 +517,7 @@ export default function ArtigoManutencaoRico({
                     max={500}
                     step={1}
                     value={kwp}
-                    onChange={(e) => setKwp(Number(e.target.value))}
+                    onChange={(e) => handleKwpChange(Number(e.target.value))}
                     className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
                   />
                   <span className="text-[11px] text-slate-400 block mt-1">
@@ -508,7 +592,7 @@ export default function ArtigoManutencaoRico({
                     max={36}
                     step={1}
                     value={meses}
-                    onChange={(e) => setMeses(Number(e.target.value))}
+                    onChange={(e) => handleMesesChange(Number(e.target.value))}
                     className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-solar-400"
                   />
                   <span className="text-[11px] text-slate-400 block mt-1">
@@ -592,7 +676,7 @@ export default function ArtigoManutencaoRico({
             {/* Ações da Calculadora */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Button
-                onClick={onSolicitarDiagnostico}
+                onClick={() => handleCtaIntermediario('calculadora_diagnostico_btn')}
                 className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-5 rounded-xl text-sm shadow-lg cursor-pointer"
               >
                 Quero o diagnóstico técnico da Delfos
@@ -616,9 +700,9 @@ export default function ArtigoManutencaoRico({
             </div>
 
             <p className="text-[11px] text-slate-400 pt-2 border-t border-white/10">
-              * Nota de transparência: Os valores calculados são estimativas técnicas com base em
-              modelos de O&amp;M e dados médios da região Sul. Não substituem vistoria presencial e
-              laudo assinado com ART.
+              * Nota de transparência técnica: Os valores calculados são estimativas fundamentadas
+              em modelos de O&amp;M e dados de irradiação solar do Sul do Brasil. Não substituem
+              vistoria presencial e laudo assinado com ART.
             </p>
           </div>
         </div>
@@ -803,21 +887,25 @@ export default function ArtigoManutencaoRico({
         </div>
 
         <div className="space-y-8">
-          {/* Pilar 1 */}
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+          {/* Pilar 1 (H2 semântico conforme item 3 da orientação) */}
+          <section className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-solar-100 text-solar-800 flex items-center justify-center font-black">
                 01
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Sujeira nas placas (Soiling) — A perda que chega a 25%
-                </h3>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Pilar 1: Sujeira nas placas (Soiling) — A perda que chega a 25%
+                </h2>
                 <span className="text-xs text-slate-500">
                   Mecanismo óptico de atenuação de irradiação
                 </span>
               </div>
             </div>
+
+            <h3 className="text-base font-semibold text-slate-800">
+              Película de poeira e fuligem sobre o vidro temperado
+            </h3>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               A poeira cria uma barreira opaca sobre o vidro temperado. Em regiões com lavouras
               (colheita e dessecação), estradas de terra, polo industrial ou áreas litorâneas, o
@@ -837,27 +925,40 @@ export default function ArtigoManutencaoRico({
                 • 18% de perda em usina de 75 kWp = <strong>R$ 19.970/ano</strong> evaporando.
               </div>
             </div>
-            <p className="text-xs text-slate-500">
-              <em>Regra de ouro:</em> Nunca use jato de alta pressão, esponjas de aço ou detergentes
-              alcalinos abrasivos que arrancam o revestimento antirreflexo (ARC) dos módulos.
-            </p>
-          </div>
+
+            {/* Espaço preparado para futuro artigo satélite do Pilar 1 */}
+            <div className="pt-2 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between">
+              <span>
+                Artigo satélite: <em>Guia de Limpeza de Módulos Solares no Sul</em> (em breve)
+              </span>
+              <Link
+                to="/solucoes/om"
+                className="text-solar-700 hover:text-solar-900 font-semibold flex items-center gap-1"
+              >
+                Conhecer protocolo de limpeza <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </section>
 
           {/* Pilar 2 */}
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+          <section className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center font-black">
                 02
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Ponto Quente (Hot Spot) — O perigo invisível ao aplicativo
-                </h3>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Pilar 2: Ponto Quente (Hot Spot) — O perigo invisível ao aplicativo
+                </h2>
                 <span className="text-xs text-slate-500">
                   Mecanismo elétrico de polarização reversa
                 </span>
               </div>
             </div>
+
+            <h3 className="text-base font-semibold text-slate-800">
+              Superaquecimento localizado e risco de arco elétrico
+            </h3>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               Quando uma célula sofre microfissura interna, sombreamento de folhas ou dejetos secos,
               ela para de gerar energia e começa a se comportar como uma resistência pura,
@@ -867,8 +968,8 @@ export default function ArtigoManutencaoRico({
             <div className="p-4 rounded-xl bg-rose-50/70 border border-rose-200 text-xs sm:text-sm text-slate-800 space-y-1">
               <strong className="text-rose-900 block font-bold">Risco real ao investidor:</strong>
               <div>• Perda contínua de geração: R$ 525 a R$ 1.200/ano.</div>
-              <div>• Degradação do encapsulante EVA e risco de quebra de vidro.</div>
-              <div>• Risco iminente de arco elétrico e incêndio no telhado.</div>
+              <div>• Degradação do encapsulante EVA e risco de quebra de vidro temperado.</div>
+              <div>• Risco iminente de arco elétrico e incêndio na cobertura.</div>
             </div>
             <p className="text-xs text-slate-500">
               Detecção oficial: Apenas a{' '}
@@ -877,21 +978,39 @@ export default function ArtigoManutencaoRico({
               </strong>{' '}
               revela a anomalia em minutos.
             </p>
-          </div>
+
+            {/* Espaço preparado para futuro artigo satélite do Pilar 2 */}
+            <div className="pt-2 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between">
+              <span>
+                Artigo satélite: <em>Termografia Fotovoltaica com Drone: Guia IEC 62446-3</em> (em
+                breve)
+              </span>
+              <Link
+                to="/solucoes/om"
+                className="text-solar-700 hover:text-solar-900 font-semibold flex items-center gap-1"
+              >
+                Laudo termográfico <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </section>
 
           {/* Pilar 3 */}
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+          <section className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-black">
                 03
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Degradação Acelerada (PID, LeTID e Delaminação)
-                </h3>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Pilar 3: Degradação Acelerada (PID, LeTID e Delaminação)
+                </h2>
                 <span className="text-xs text-slate-500">Mecanismo físico-químico celular</span>
               </div>
             </div>
+
+            <h3 className="text-base font-semibold text-slate-800">
+              Perdas moleculares e correntes de fuga induzidas
+            </h3>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               A degradação natural de um módulo fotovoltaico é de cerca de 0,5% a 0,7% ao ano. No
               entanto, correntes de fuga (PID — degradação induzida por potencial) e falhas no
@@ -903,23 +1022,74 @@ export default function ArtigoManutencaoRico({
               proprietário não consegue comprovar a perda para acionar a garantia junto ao
               fabricante.
             </div>
+
+            {/* Espaço preparado para futuro artigo satélite do Pilar 3 */}
+            <div className="pt-2 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between">
+              <span>
+                Artigo satélite: <em>Degradação PID e Como Acionar a Garantia do Fabricante</em> (em
+                breve)
+              </span>
+              <Link
+                to="/solucoes/om"
+                className="text-solar-700 hover:text-solar-900 font-semibold flex items-center gap-1"
+              >
+                Curva I-V e comissionamento <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </section>
+
+          {/* CTA 2: APÓS O PILAR 3 (CONFORME ORIENTAÇÃO DE CONVERSÃO DO USUÁRIO) */}
+          <div className="my-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#081B30] to-[#123154] text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl border border-white/10">
+            <div className="space-y-1.5 text-center sm:text-left">
+              <span className="text-xs font-bold uppercase tracking-wider text-solar-400 block">
+                Engenharia de Precisão
+              </span>
+              <h3 className="text-xl font-extrabold text-white">
+                Sua usina já passou por ensaio de curva I-V ou termografia?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-lg">
+                Identifique desvios em minutos antes que o rendimento da sua instalação caia de
+                forma irreversível.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
+              <Button
+                onClick={() => handleCtaIntermediario('cta_pos_pilar3')}
+                className="w-full sm:w-auto bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-6 py-5 rounded-xl text-xs sm:text-sm shadow-md cursor-pointer"
+              >
+                Solicitar vistoria técnica
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => openWhatsAppArtigo('cta_pos_pilar3_whatsapp')}
+                className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10 px-4 py-5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                <span>WhatsApp</span>
+              </Button>
+            </div>
           </div>
 
           {/* Pilar 4 */}
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+          <section className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-black">
                 04
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Estrutura e Fixadores — O risco que ameaça a cobertura
-                </h3>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Pilar 4: Estrutura e Fixadores — O risco que ameaça a cobertura
+                </h2>
                 <span className="text-xs text-slate-500">
                   Mecanismo mecânico e dilatação térmica
                 </span>
               </div>
             </div>
+
+            <h3 className="text-base font-semibold text-slate-800">
+              Vibração por vendavais e perda de torque nos grampos
+            </h3>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               No Sul do Brasil, as variações térmicas drásticas (dias de 35°C e noites frias),
               somadas a rajadas de vento frequentes, provocam afrouxamento gradual dos grampos
@@ -930,23 +1100,40 @@ export default function ArtigoManutencaoRico({
               Inspeção preventiva: Reaperto anual com <strong>torquímetro aferido</strong> em todos
               os parafusos estruturais.
             </p>
-          </div>
+
+            {/* Espaço preparado para futuro artigo satélite do Pilar 4 */}
+            <div className="pt-2 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between">
+              <span>
+                Artigo satélite: <em>Inspeção Estrutural de Telhados Solares no Sul</em> (em breve)
+              </span>
+              <Link
+                to="/solucoes/om"
+                className="text-solar-700 hover:text-solar-900 font-semibold flex items-center gap-1"
+              >
+                Laudo estrutural <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </section>
 
           {/* Pilar 5 */}
-          <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
+          <section className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center font-black">
                 05
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Sistema Elétrico — O pilar de maior impacto financeiro
-                </h3>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Pilar 5: Sistema Elétrico — O pilar de maior impacto financeiro
+                </h2>
                 <span className="text-xs text-slate-500">
                   Conectores MC4, string boxes, DPS e aterramento
                 </span>
               </div>
             </div>
+
+            <h3 className="text-base font-semibold text-slate-800">
+              Degradação de conectores e abertura de strings completas
+            </h3>
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               Conectores mal crimpados ou de marcas incompatíveis sofrem resistência de contato
               elevada. A resistência gera aquecimento; o aquecimento deforma o plástico; a
@@ -961,7 +1148,20 @@ export default function ArtigoManutencaoRico({
                 • Em usina de 500 kWp: prejuízo de <strong>R$ 23.600/ano</strong>.
               </div>
             </div>
-          </div>
+
+            {/* Espaço preparado para futuro artigo satélite do Pilar 5 */}
+            <div className="pt-2 text-xs text-slate-500 border-t border-slate-100 flex items-center justify-between">
+              <span>
+                Artigo satélite: <em>Conectores MC4 e Riscos de Arco Elétrico</em> (em breve)
+              </span>
+              <Link
+                to="/solucoes/om"
+                className="text-solar-700 hover:text-solar-900 font-semibold flex items-center gap-1"
+              >
+                Inspeção elétrica O&amp;M <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -989,12 +1189,12 @@ export default function ArtigoManutencaoRico({
             </p>
           </div>
 
-          {/* Diagrama SVG */}
+          {/* Diagrama SVG Semântico */}
           <div className="p-6 rounded-2xl bg-white/5 border border-white/10 overflow-x-auto">
             <svg
               viewBox="0 0 720 220"
               className="w-full min-w-[580px] h-auto block"
-              aria-label="Diagrama de string solar onde um módulo sombreado limita a corrente total"
+              aria-label="Módulo fotovoltaico com sujeira acumulada comparado a módulo limpo em fileira em série"
             >
               <defs>
                 <linearGradient id="delfosModNormal" x1="0" y1="0" x2="1" y2="1">
@@ -1259,13 +1459,13 @@ export default function ArtigoManutencaoRico({
             <p className="text-slate-700 text-sm leading-relaxed">
               As principais companhias seguradoras de usinas solares comerciais e industriais exigem
               a comprovação de{' '}
-              <strong>manutenção preventiva periódica e laudo técnico com ART do CREA</strong>. Em
-              caso de sinistro por incêndio ou destelhamento em vendaval, a ausência do histórico de
-              manutenção é o motivo mais frequente de recusa de indenização.
+              <strong>manutenção preventiva periódica e laudo técnico com ART do CREA-RS</strong>.
+              Em caso de sinistro por incêndio ou destelhamento em vendaval, a ausência do histórico
+              de manutenção é o motivo mais frequente de recusa de indenização.
             </p>
             <div className="pt-2 text-sm font-bold text-solar-900 italic">
-              "O plano de manutenção da Delfos é a documentação formal que garante o funcionamento
-              da sua apólice de seguro."
+              "O plano de manutenção da Delfos Engenharia é a documentação formal que garante o
+              funcionamento da sua apólice de seguro."
             </div>
           </div>
         </div>
@@ -1396,6 +1596,27 @@ export default function ArtigoManutencaoRico({
             em rotinas de campo no Rio Grande do Sul e Santa Catarina.
           </p>
         </div>
+
+        {/* CTA 3: APÓS O ESTUDO DE CASO (CONFORME ORIENTAÇÃO DE CONVERSÃO) */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-slate-100 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              Sua empresa possui usina comercial ou industrial no Sul?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600">
+              Solicite uma análise preliminar da curva de geração com a engenharia da Delfos.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <Button
+              onClick={() => handleCtaIntermediario('cta_pos_caso_campo')}
+              className="w-full sm:w-auto bg-[#081B30] hover:bg-[#0E2E52] text-solar-400 font-bold px-6 py-5 rounded-xl text-xs sm:text-sm cursor-pointer"
+            >
+              Pedir diagnóstico da usina
+            </Button>
+          </div>
+        </div>
       </section>
 
       {/* 11. OS TRÊS PLANOS DELFOS */}
@@ -1410,7 +1631,7 @@ export default function ArtigoManutencaoRico({
             </h2>
             <p className="text-slate-600 text-sm">
               Engenharia preventiva para usinas residenciais, comerciais, industriais e de
-              investimento:
+              investimento no Rio Grande do Sul e Santa Catarina:
             </p>
           </div>
 
@@ -1448,11 +1669,14 @@ export default function ArtigoManutencaoRico({
               </div>
 
               <div className="space-y-3 pt-4 border-t border-slate-100">
-                <div className="text-xs text-slate-500 text-center py-2 px-3 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                  Sob consulta conforme kWp da usina
-                </div>
+                <Link
+                  to="/solucoes/om"
+                  className="text-xs text-solar-700 hover:text-solar-900 font-semibold block text-center"
+                >
+                  Ver detalhes na página O&amp;M &rarr;
+                </Link>
                 <Button
-                  onClick={onSolicitarDiagnostico}
+                  onClick={() => handleCtaIntermediario('plano_monitoramento_btn')}
                   variant="outline"
                   className="w-full border-slate-300 text-slate-800 hover:bg-slate-100 text-xs font-bold rounded-xl py-5"
                 >
@@ -1492,7 +1716,7 @@ export default function ArtigoManutencaoRico({
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Reaperto com torquímetro e laudo de garantia para seguradoras</span>
+                    <span>Reaperto com torquímetro e laudo com ART para seguradoras</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
@@ -1502,11 +1726,14 @@ export default function ArtigoManutencaoRico({
               </div>
 
               <div className="space-y-3 pt-4 border-t border-white/10">
-                <div className="text-xs text-slate-300 text-center py-2 px-3 bg-white/10 rounded-xl border border-dashed border-white/20">
-                  Condições sob medida com SLA contratual
-                </div>
+                <Link
+                  to="/solucoes/om"
+                  className="text-xs text-solar-300 hover:text-white font-semibold block text-center"
+                >
+                  Conhecer o programa de O&amp;M &rarr;
+                </Link>
                 <Button
-                  onClick={onSolicitarDiagnostico}
+                  onClick={() => handleCtaIntermediario('plano_completo_btn')}
                   className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black text-xs rounded-xl py-5 shadow-lg"
                 >
                   Quero o plano completo
@@ -1541,17 +1768,20 @@ export default function ArtigoManutencaoRico({
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Laudo formal assinado por engenheiro eletricista com ART</span>
+                    <span>Laudo formal assinado por engenheiro com ART (CREA-RS 151894)</span>
                   </li>
                 </ul>
               </div>
 
               <div className="space-y-3 pt-4 border-t border-slate-100">
-                <div className="text-xs text-slate-500 text-center py-2 px-3 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                  Laudo pontual sob demanda
-                </div>
+                <Link
+                  to="/solucoes/om"
+                  className="text-xs text-solar-700 hover:text-solar-900 font-semibold block text-center"
+                >
+                  Ver escopo de inspeção &rarr;
+                </Link>
                 <Button
-                  onClick={onSolicitarDiagnostico}
+                  onClick={() => handleCtaIntermediario('plano_inspecao_btn')}
                   variant="outline"
                   className="w-full border-slate-300 text-slate-800 hover:bg-slate-100 text-xs font-bold rounded-xl py-5"
                 >
@@ -1582,7 +1812,7 @@ export default function ArtigoManutencaoRico({
           {[
             {
               titulo: 'Relatório Técnico Fotográfico e Termográfico',
-              desc: 'Imagens no espectro visível e infravermelho de todos os pontos com aquecimento.',
+              desc: 'Imagens no espectro visível e infravermelho de todos os pontos com aquecimento anômalo.',
             },
             {
               titulo: 'Mapa Georreferenciado de Módulos',
@@ -1590,7 +1820,7 @@ export default function ArtigoManutencaoRico({
             },
             {
               titulo: 'Comparativo de Curva de Geração Real vs. Esperada',
-              desc: 'Gráfico de desempenho comprovando o ganho de potência após a intervenção.',
+              desc: 'Gráfico de desempenho comprovando o ganho de potência após a intervenção técnica.',
             },
             {
               titulo: 'Checklist Estrutural com Torque Medido',
@@ -1602,7 +1832,7 @@ export default function ArtigoManutencaoRico({
             },
             {
               titulo: 'ART / CREA-RS e Documentação para Seguradora',
-              desc: 'Dossiê técnico válido para acionamento de apólices e garantias de fabricantes.',
+              desc: 'Dossiê técnico assinado formalmente válido para acionamento de apólices e garantias.',
             },
           ].map((item, idx) => (
             <div
@@ -1697,8 +1927,8 @@ export default function ArtigoManutencaoRico({
 
               <div className="space-y-2 pt-2">
                 <Button
-                  onClick={onSolicitarDiagnostico}
-                  className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs py-5 rounded-xl shadow-md"
+                  onClick={() => handleCtaIntermediario('checklist_score_btn')}
+                  className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs py-5 rounded-xl shadow-md cursor-pointer"
                 >
                   Agendar vistoria da usina
                 </Button>
@@ -1725,7 +1955,7 @@ export default function ArtigoManutencaoRico({
             Perguntas frequentes sobre manutenção solar
           </h2>
           <p className="text-slate-600 text-sm">
-            Respostas práticas da equipe de engenharia elétrica da Delfos:
+            Respostas práticas da equipe de engenharia elétrica da Delfos Engenharia:
           </p>
         </div>
 
@@ -1785,9 +2015,14 @@ export default function ArtigoManutencaoRico({
         </div>
       </section>
 
-      {/* 15. CTA FINAL DO ARTIGO EDITORIAL */}
+      {/* 15. FORMULÁRIO DE CAPTURA DE 4 CAMPOS (ITEM 5 DA ORIENTAÇÃO) */}
+      <section className="py-12 max-w-4xl mx-auto px-6">
+        <FormCapturaArtigo origem="artigo-manutencao-placa-solar" potenciaInicialKwp={kwp} />
+      </section>
+
+      {/* 16. CTA FINAL COM BLOCO DE PROVA SOCIAL OFICIAL */}
       <section className="py-16 max-w-4xl mx-auto px-6">
-        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0F2A47] to-[#1a446c] text-white shadow-2xl border border-white/15 relative overflow-hidden space-y-6">
+        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0F2A47] to-[#1a446c] text-white shadow-2xl border border-white/15 relative overflow-hidden space-y-8">
           <div className="absolute top-0 right-0 w-80 h-80 bg-solar-500/15 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="space-y-3 relative z-10">
@@ -1798,16 +2033,54 @@ export default function ArtigoManutencaoRico({
               Sua usina está gerando exatamente o que foi projetada para gerar?
             </h2>
             <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-2xl">
-              O diagnóstico técnico de O&amp;M da Delfos Engenharia tem escopo formal: inspeção
-              presencial, termografia calibrada, medição de resistência e laudo com ART assinado
-              pelo responsável técnico{' '}
-              <strong>Eng. João Victor Bagetti Fuchs (CREA-RS 151894)</strong>.
+              O diagnóstico técnico de O&amp;M da <strong>Delfos Engenharia</strong> tem escopo
+              formal: inspeção presencial, termografia calibrada, medição de resistência e laudo com
+              ART assinado pelo responsável técnico{' '}
+              <Link
+                to="/conteudos/autor/joao-victor-bagetti-fuchs"
+                className="text-solar-300 font-bold underline underline-offset-2 hover:text-white"
+              >
+                Eng. João Victor Bagetti Fuchs (CREA-RS 151894)
+              </Link>
+              .
             </p>
           </div>
 
+          {/* BLOCO DE PROVA SOCIAL COM NÚMEROS OFICIAIS DO SITE */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 relative z-10">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs text-center">
+              <span className="text-2xl sm:text-3xl font-black text-solar-400 block font-mono">
+                12,05 MWp
+              </span>
+              <span className="text-[11px] text-slate-300 font-medium">Potência instalada</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs text-center">
+              <span className="text-2xl sm:text-3xl font-black text-emerald-400 block font-mono">
+                468 usinas
+              </span>
+              <span className="text-[11px] text-slate-300 font-medium">Sob monitoramento</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs text-center">
+              <span className="text-2xl sm:text-3xl font-black text-white block font-mono">
+                12 anos
+              </span>
+              <span className="text-[11px] text-slate-300 font-medium">De engenharia de campo</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs text-center">
+              <span className="text-2xl sm:text-3xl font-black text-amber-300 block font-mono">
+                4.9 / 5
+              </span>
+              <span className="text-[11px] text-slate-300 font-medium">Nota Google Reviews</span>
+            </div>
+          </div>
+
+          {/* AÇÕES FINAIS (SEM 'sem compromisso' OU 'avaliação gratuita') */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2 relative z-10">
             <Button
-              onClick={onSolicitarDiagnostico}
+              onClick={() => handleCtaIntermediario('cta_final_artigo')}
               className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black px-8 py-6 rounded-xl text-sm sm:text-base shadow-xl cursor-pointer flex items-center justify-center gap-2"
             >
               <span>Solicitar diagnóstico técnico</span>
@@ -1816,23 +2089,26 @@ export default function ArtigoManutencaoRico({
 
             <Button
               variant="outline"
-              onClick={() =>
-                openWhatsApp(
-                  'Olá, li o artigo sobre manutenção de placa solar e gostaria de solicitar um diagnóstico técnico da minha usina com a equipe da Delfos Engenharia.',
-                )
-              }
-              className="border-white/30 text-white hover:bg-white/10 px-6 py-6 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+              onClick={() => openWhatsAppArtigo('cta_final_whatsapp')}
+              className="border-white/30 text-white hover:bg-white/10 px-6 py-6 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
             >
+              <Phone className="w-4 h-4 text-emerald-400" />
               <span>Falar com o engenheiro no WhatsApp</span>
             </Button>
           </div>
 
-          <div className="pt-4 border-t border-white/10 text-xs text-slate-300 flex flex-wrap items-center gap-4 relative z-10">
+          <div className="pt-4 border-t border-white/10 text-xs text-slate-300 flex flex-wrap items-center justify-between gap-4 relative z-10">
             <span>• Atendimento em todo o Rio Grande do Sul e Santa Catarina</span>
             <span>• Equipe técnica própria credenciada no CREA-RS</span>
+            <Link
+              to="/sobre"
+              className="text-solar-300 hover:text-white underline underline-offset-2"
+            >
+              Conhecer a Delfos Engenharia &rarr;
+            </Link>
           </div>
         </div>
       </section>
-    </div>
+    </article>
   )
 }

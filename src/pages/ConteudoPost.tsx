@@ -70,6 +70,159 @@ export default function ConteudoPost() {
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const isManutencaoRichPost = slug === 'manutencao-de-placa-solar-perda-geracao'
+
+  const BASE_URL = 'https://landing-page-delfos-engenharia-672ab.goskip.app'
+
+  // Schemas dedicados para o artigo de manutenção (chamado incondicionalmente antes de qualquer return)
+  const schemasArtigoManutencao = useMemo(() => {
+    if (!isManutencaoRichPost) return null
+
+    // 1. Article Schema
+    const articleSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline:
+        'Manutenção de placa solar: até 25% da sua geração pode estar indo embora sem você saber',
+      description:
+        'Usina sem limpeza pode perder até 25% da geração. Veja a escala real de perda, o custo em contas de luz e como proteger sua usina.',
+      image: `${BASE_URL}/og-artigo-manutencao.svg`,
+      datePublished: '2025-03-14T08:00:00-03:00',
+      dateModified: '2025-03-14T10:00:00-03:00',
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${BASE_URL}/conteudos/manutencao-de-placa-solar-perda-geracao`,
+      },
+      author: {
+        '@type': 'Person',
+        name: 'João Victor Bagetti Fuchs',
+        jobTitle: 'Engenheiro Eletricista',
+        identifier: 'CREA-RS 151894',
+        url: `${BASE_URL}/conteudos/autor/joao-victor-bagetti-fuchs`,
+        worksFor: {
+          '@type': 'Organization',
+          name: 'Delfos Engenharia',
+          url: BASE_URL,
+        },
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Delfos Engenharia',
+        url: BASE_URL,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${BASE_URL}/og-artigo-manutencao.svg`,
+        },
+      },
+    }
+
+    // 2. FAQPage Schema
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'De quanto em quanto tempo devo limpar os painéis solares no Sul?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Recomenda-se a limpeza técnica entre 2 e 4 vezes por ano. A frequência ideal varia com a proximidade de lavouras em época de plantio/colheita, estradas de chão batido, presença de aves e áreas com maresia no litoral gaúcho e catarinense.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Lavar as placas com mangueira ou lavadora de alta pressão resolve?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Não é recomendado. Água comum da rede ou de poço artesiano contém calcário e sais que mancham o vidro. Lavadoras de alta pressão danificam o revestimento antirreflexo (ARC) e podem descolar a vedação de silicone dos módulos. O protocolo exige água tratada ou desmineralizada e escovas rotativas especiais com cerdas macias.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'O aplicativo do inversor diz que está tudo normal. Posso confiar 100%?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Não. O monitoramento mede a geração acumulada do inversor, mas não tem como identificar pontos quentes pontuais, diodos de bypass avariados ou parafusos soltos pela vibração do vento. Apenas a inspeção física e a câmera termográfica revelam esses defeitos antes que virem prejuízo irreversível.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'A garantia do fabricante é perdida se eu não fizer manutenção periódica?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A garantia cobre defeitos intrínsecos de fabricação. Se um módulo queimar por causa de sujeira acumulada criando ponto quente ou se a estrutura ceder por falta de reaperto de parafusos, o fabricante recusa a troca por negligência operacional do proprietário. O registro técnico de manutenção comprova o zelo.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'O plano de manutenção da Delfos substitui módulos queimados?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A Delfos identifica os módulos defeituosos, emite o laudo pericial para troca em garantia junto ao fabricante e executa a logística e substituição técnica em campo. Caso o módulo esteja fora da garantia, fornecemos o orçamento do componente novo a preço de custo do fabricante.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Qual o custo de não fazer manutenção em 5 anos?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Em uma usina de 8 kWp, a perda estimada acumulada em 5 anos varia de R$ 7.000 a mais de R$ 14.700 em energia não compensada, sem contar o risco de recusa de sinistro de seguro por falta de laudo técnico com ART.',
+          },
+        },
+      ],
+    }
+
+    // 3. BreadcrumbList Schema
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Blog',
+          item: `${BASE_URL}/conteudos`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Manutenção',
+          item: `${BASE_URL}/solucoes/om`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: 'Manutenção de placa solar: até 25% da sua geração pode estar indo embora sem você saber',
+          item: `${BASE_URL}/conteudos/manutencao-de-placa-solar-perda-geracao`,
+        },
+      ],
+    }
+
+    // 4. Organization no rodapé
+    const organizationSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Delfos Engenharia',
+      url: BASE_URL,
+      logo: `${BASE_URL}/og-artigo-manutencao.svg`,
+      telephone: '+55 54 99129-2121',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Rua Espírito Santo, 275',
+        addressLocality: 'Erechim',
+        addressRegion: 'RS',
+        addressCountry: 'BR',
+      },
+      sameAs: [
+        'https://www.instagram.com/delfosengenharia',
+        'https://www.linkedin.com/company/delfos-engenharia',
+        'https://www.facebook.com/delfosengenharia',
+      ],
+    }
+
+    return [articleSchema, faqSchema, breadcrumbSchema, organizationSchema]
+  }, [isManutencaoRichPost])
+
   // Se não encontrar nem estático nem dinâmico e já terminou de buscar
   if (!loadingDb && !dynamicPost && !staticArtigo) {
     return <Navigate to="/conteudos" replace />
@@ -95,7 +248,6 @@ export default function ConteudoPost() {
     : staticArtigo?.metaDescription || ''
   const formNecessidade = staticArtigo?.solucaoRelacionada.necessidadeForm || 'O&M e Monitoramento'
   const formOrigem = staticArtigo?.origemLead || `conteudo-post-${slug}`
-  const isManutencaoRichPost = slug === 'manutencao-de-placa-solar-perda-geracao'
 
   const handleCompartilhar = () => {
     if (navigator.share) {
@@ -127,11 +279,23 @@ export default function ConteudoPost() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title={`${titulo} | Delfos Engenharia`}
-        description={metaDescription}
+        title={
+          isManutencaoRichPost
+            ? 'Manutenção de Placa Solar: até 25% de Perda | Delfos'
+            : `${titulo} | Delfos Engenharia`
+        }
+        description={
+          isManutencaoRichPost
+            ? 'Usina sem limpeza pode perder até 25% da geração. Veja a escala real de perda, o custo em contas de luz e como proteger sua usina.'
+            : metaDescription
+        }
         canonicalPath={`/conteudos/${slug}`}
         ogType="article"
-        ogImage={fotoUrl || '/og-image.png'}
+        ogImage={isManutencaoRichPost ? '/og-artigo-manutencao.svg' : fotoUrl || '/og-image.png'}
+        ogSiteName="Delfos Engenharia"
+        schemaJsonLd={
+          isManutencaoRichPost && schemasArtigoManutencao ? schemasArtigoManutencao : undefined
+        }
       />
 
       {/* Header Institucional Global do Site */}

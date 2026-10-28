@@ -13,6 +13,7 @@ export interface ArtigoBlog {
   autor: {
     nome: string
     cargo: string
+    url?: string
   }
   palavraChavePrincipal: string
   palavrasChaveSecundarias: string[]
@@ -58,6 +59,7 @@ export const ARTIGOS_BLOG: ArtigoBlog[] = [
     autor: {
       nome: 'Eng. Eletricista João Victor Bagetti Fuchs',
       cargo: 'Engenheiro Eletricista · Responsável Técnico — Delfos Engenharia · CREA-RS 151894',
+      url: '/conteudos/autor/joao-victor-bagetti-fuchs',
     },
     palavraChavePrincipal: 'manutenção de placa solar',
     palavrasChaveSecundarias: [

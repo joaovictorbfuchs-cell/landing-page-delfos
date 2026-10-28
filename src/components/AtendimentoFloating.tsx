@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MessageCircle, X, Bot, FileText, Phone, ArrowRight, Headphones } from 'lucide-react'
 import PlantaoWidgetFlutuante from '@/components/PlantaoWidgetFlutuante'
+import { trackWhatsappClick } from '@/lib/analytics'
 
 interface AtendimentoFloatingProps {
   telefoneDisplay?: string
@@ -36,9 +37,14 @@ export default function AtendimentoFloating({
 
   // Número puro e link WhatsApp direto
   const cleanPhone = numeroWhatsApp.replace(/\D/g, '')
-  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-    'Olá! Vim pelo site da Delfos Engenharia e gostaria de atendimento técnico.',
-  )}`
+
+  // Se estiver no artigo de manutenção de placa solar, usa a mensagem pré-preenchida exata requerida
+  const isArtigoManutencao = pathname.includes('manutencao-de-placa-solar-perda-geracao')
+  const defaultWhatsAppMsg = isArtigoManutencao
+    ? 'Olá! Li o artigo sobre manutenção de placas solares e quero saber mais sobre o diagnóstico da minha usina.'
+    : 'Olá! Vim pelo site da Delfos Engenharia e gostaria de atendimento técnico.'
+
+  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(defaultWhatsAppMsg)}`
 
   // Opção 1: Abrir assistente de atendimento automático
   const handleOpenAssistant = () => {
@@ -49,6 +55,10 @@ export default function AtendimentoFloating({
   // Opção 2: Falar no WhatsApp agora (direto)
   const handleOpenWhatsApp = () => {
     setIsMenuOpen(false)
+    trackWhatsappClick(
+      isArtigoManutencao ? 'floating_whatsapp_artigo_manutencao' : 'floating_whatsapp_menu',
+      defaultWhatsAppMsg,
+    )
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 

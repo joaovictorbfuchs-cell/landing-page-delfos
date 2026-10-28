@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#051221" />
+      <stop offset="50%" stop-color="#081B30" />
+      <stop offset="100%" stop-color="#0F2F52" />
+    </linearGradient>
+    <linearGradient id="solarGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F5B301" />
+      <stop offset="100%" stop-color="#FFD15C" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.2" r="0.6">
+      <stop offset="0%" stop-color="#F5B301" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#F5B301" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Fundo escuro premium Delfos -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+
+  <!-- Detalhe superior da marca -->
+  <line x1="80" y1="60" x2="1120" y2="60" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1" />
+
+  <!-- Badge Categoria -->
+  <g transform="translate(80, 95)">
+    <rect width="260" height="40" rx="20" fill="#F5B301" fill-opacity="0.18" stroke="#F5B301" stroke-width="1.5" />
+    <circle cx="24" cy="20" r="5" fill="#F5B301" />
+    <text x="38" y="25" fill="#FFD15C" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" letter-spacing="1.5">OPERAÇÃO &amp; MANUTENÇÃO</text>
+  </g>
+
+  <!-- Logo Marca / Nome Institucional -->
+  <g transform="translate(930, 95)">
+    <text x="190" y="28" text-anchor="end" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" letter-spacing="0.5">DELFOS ENGENHARIA</text>
+    <text x="190" y="46" text-anchor="end" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" letter-spacing="1.5">ALTO URUGUAI • SUL DO BRASIL</text>
+  </g>
+
+  <!-- Título Principal do Artigo -->
+  <text x="80" y="210" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="900" letter-spacing="-1">
+    Manutenção de Placa Solar:
+  </text>
+  <text x="80" y="272" fill="url(#solarGrad)" font-family="system-ui, -apple-system, sans-serif" font-size="50" font-weight="900" letter-spacing="-1">
+    Até 25% de Perda na Geração
+  </text>
+
+  <!-- Subtítulo / Resumo Editorial -->
+  <text x="80" y="340" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="400" width="800">
+    Sujeira, ponto quente e conector frouxo custam até três contas de luz por ano
+  </text>
+  <text x="80" y="372" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400">
+    — e o aplicativo de monitoramento do inversor não emite alerta.
+  </text>
+
+  <!-- Cards de Impacto Técnico -->
+  <g transform="translate(80, 420)">
+    <!-- Card 1 -->
+    <rect width="220" height="90" rx="16" fill="#FFFFFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1"/>
+    <text x="24" y="44" fill="#F43F5E" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="900">Até 25%</text>
+    <text x="24" y="70" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">de perda silenciosa</text>
+
+    <!-- Card 2 -->
+    <rect x="240" y="0" width="220" height="90" rx="16" fill="#FFFFFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1"/>
+    <text x="264" y="44" fill="#F5B301" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="900">3 contas</text>
+    <text x="264" y="70" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">de luz pagas a mais/ano</text>
+
+    <!-- Card 3 -->
+    <rect x="480" y="0" width="240" height="90" rx="16" fill="#FFFFFF" fill-opacity="0.06" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1"/>
+    <text x="504" y="44" fill="#10B981" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="900">12,05 MWp</text>
+    <text x="504" y="70" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">468 usinas monitoradas</text>
+  </g>
+
+  <!-- Rodapé / Autor e Autoridade CREA -->
+  <line x1="80" y1="545" x2="1120" y2="545" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1" />
+
+  <g transform="translate(80, 565)">
+    <!-- Avatar badge -->
+    <rect width="40" height="40" rx="12" fill="#F5B301" />
+    <text x="20" y="26" text-anchor="middle" fill="#051221" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="900">JV</text>
+
+    <!-- Nome e dados do autor -->
+    <text x="54" y="18" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">Eng. Eletricista João Victor Bagetti Fuchs</text>
+    <text x="54" y="36" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500">
+      Responsável Técnico • Delfos Engenharia • <tspan fill="#F5B301" font-weight="700">CREA-RS 151894</tspan>
+    </text>
+  </g>
+
+  <!-- URL canônica à direita -->
+  <g transform="translate(1120, 580)">
+    <text x="0" y="0" text-anchor="end" fill="#64748B" font-family="ui-monospace, monospace" font-size="13" font-weight="600">delfos.eng.br/conteudos</text>
+  </g>
+</svg>
