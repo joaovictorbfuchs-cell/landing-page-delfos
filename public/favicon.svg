@@ -1,54 +1,68 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <!-- Gradiente do fundo circular escuro azul marinho Delfos -->
+    <!-- Gradiente de fundo sofisticado azul-marinho Delfos #061325 -> #0A1E38 -->
     <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#0B233D" />
-      <stop offset="100%" stopColor="#051322" />
+      <stop offset="0%" stop-color="#0B2447" />
+      <stop offset="100%" stop-color="#061325" />
     </linearGradient>
 
-    <!-- Laço Superior: Azul cobalto -> Teal -> Esmeralda -> Verde-Limão -> Amarelo Solar -->
+    <!-- Laço Superior Oficial: Azul cobalto -> Teal -> Esmeralda -> Verde Solar -> Amarelo Solar (#F5B301) -->
     <linearGradient id="fav-top" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stopColor="#1E5B99" />
-      <stop offset="25%" stopColor="#188C88" />
-      <stop offset="50%" stopColor="#3DAE60" />
-      <stop offset="78%" stopColor="#ADC82B" />
-      <stop offset="100%" stopColor="#F8D415" />
+      <stop offset="0%" stop-color="#194D82" />
+      <stop offset="22%" stop-color="#14807C" />
+      <stop offset="48%" stop-color="#2DA85C" />
+      <stop offset="76%" stop-color="#A5C723" />
+      <stop offset="100%" stop-color="#F5B301" />
     </linearGradient>
 
-    <!-- Laço Inferior: Amarelo Solar -> Verde-Limão -> Esmeralda -> Teal -> Azul profundo -->
+    <!-- Laço Inferior Oficial: Amarelo Solar (#F5B301) -> Verde Solar -> Esmeralda -> Teal -> Azul cobalto -->
     <linearGradient id="fav-bottom" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stopColor="#F8D415" />
-      <stop offset="22%" stopColor="#ADC82B" />
-      <stop offset="50%" stopColor="#3DAE60" />
-      <stop offset="75%" stopColor="#188C88" />
-      <stop offset="100%" stopColor="#1E5B99" />
+      <stop offset="0%" stop-color="#F5B301" />
+      <stop offset="24%" stop-color="#A5C723" />
+      <stop offset="52%" stop-color="#2DA85C" />
+      <stop offset="78%" stop-color="#14807C" />
+      <stop offset="100%" stop-color="#194D82" />
     </linearGradient>
+
+    <!-- Brilho do sol central -->
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF2A3" />
+      <stop offset="70%" stop-color="#F5B301" />
+      <stop offset="100%" stop-color="#D99F00" />
+    </radialGradient>
+
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
   </defs>
 
-  <!-- Fundo escuro com cantos arredondados suaves para perfeito contraste em abas claras e escuras -->
+  <!-- Fundo na cor institucional da marca com cantos arredondados para visibilidade em abas claras e escuras -->
   <rect width="128" height="128" rx="28" fill="url(#bg-grad)" />
 
-  <!-- Símbolo oficial dos arcos/laços solares envolventes da Delfos Solar -->
-  <g transform="translate(64, 64) scale(0.92) translate(-64, -64)">
-    <!-- Arco Superior -->
+  <!-- Borda sutil da marca para contraste perfeito -->
+  <rect width="126" height="126" x="1" y="1" rx="27" fill="none" stroke="#F5B301" stroke-width="1.5" stroke-opacity="0.3" />
+
+  <!-- Símbolo oficial dos arcos solares e núcleo Delfos -->
+  <g transform="translate(64, 64) scale(1.08) translate(-64, -64)" filter="url(#shadow)">
+    <!-- Arco Superior Energético -->
     <path
-      d="M 16 56 C 26 34, 52 24, 64 24 C 76 24, 102 34, 112 56 C 98 42, 78 35, 64 35 C 50 35, 30 42, 16 56 Z"
+      d="M 17 56 C 27 33, 51 23, 64 23 C 77 23, 101 33, 111 56 C 97 42, 78 35, 64 35 C 50 35, 31 42, 17 56 Z"
       fill="url(#fav-top)"
     />
 
-    <!-- Arco Inferior -->
+    <!-- Arco Inferior Energético -->
     <path
-      d="M 16 72 C 30 86, 50 93, 64 93 C 78 93, 98 86, 112 72 C 102 94, 76 104, 64 104 C 52 104, 26 94, 16 72 Z"
+      d="M 17 72 C 31 86, 50 93, 64 93 C 78 93, 97 86, 111 72 C 101 95, 77 105, 64 105 C 51 105, 27 95, 17 72 Z"
       fill="url(#fav-bottom)"
     />
 
-    <!-- Sol central estilizado / núcleo de energia solar -->
-    <circle cx="64" cy="64" r="13" fill="#F8D415" />
+    <!-- Núcleo Solar Central -->
+    <circle cx="64" cy="64" r="14.5" fill="url(#sun-glow)" />
 
-    <!-- Letra 'D' vazada ou ponto de luz para identidade instantânea mesmo em 16x16 -->
+    <!-- Letra D oficial vazada central para reconhecimento e autoridade técnica imediata mesmo em 16x16 ou 32px -->
     <path
-      d="M 59 56 L 64 56 C 68.5 56, 71.5 58.5, 71.5 64 C 71.5 69.5, 68.5 72, 64 72 L 59 72 Z M 62 59 L 62 69 L 64 69 C 66.5 69, 68.5 67.5, 68.5 64 C 68.5 60.5, 66.5 59, 64 59 Z"
-      fill="#0B233D"
+      d="M 59 55 L 64.5 55 C 69.5 55, 72.8 58, 72.8 64 C 72.8 70, 69.5 73, 64.5 73 L 59 73 Z M 62.4 58.3 L 62.4 69.7 L 64.4 69.7 C 67.2 69.7, 69.3 67.8, 69.3 64 C 69.3 60.2, 67.2 58.3, 64.4 58.3 Z"
+      fill="#061325"
     />
   </g>
 </svg>

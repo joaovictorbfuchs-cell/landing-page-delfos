@@ -28,7 +28,7 @@ export default function Footer() {
           {/* Brand & Sobre Delfos Solar */}
           <div className="lg:col-span-5 space-y-4" id="sobre-delfos">
             <div className="flex items-center gap-2.5">
-              <DelfosLogo height={40} variant="dark-bg" showSubtitle />
+              <DelfosLogo height={52} variant="dark-bg" showSubtitle />
             </div>
 
             <p className="text-sm text-slate-300 leading-relaxed max-w-md">

@@ -29,7 +29,7 @@ interface DelfosLogoProps {
  */
 export default function DelfosLogo({
   className = '',
-  height = 38,
+  height = 48,
   variant = 'dark-bg',
   showSubtitle = false,
   alt = 'Delfos Solar',

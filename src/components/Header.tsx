@@ -109,7 +109,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo Delfos Solar oficial: compacto, leve e perfeitamente integrado */}
+          {/* Logo Delfos Solar oficial: tamanho ampliado com excelente presença e proporção */}
           <Link
             to="/"
             onClick={() => {
@@ -118,13 +118,23 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }
             }}
             aria-label="Delfos Solar - Início"
-            className="flex items-center gap-2 group cursor-pointer focus:outline-none py-0.5"
+            className="flex items-center gap-2 group cursor-pointer focus:outline-none py-1"
           >
-            <DelfosLogo
-              height={36}
-              variant="dark-bg"
-              className="group-hover:opacity-95 transition-opacity"
-            />
+            {/* Altura responsiva: ~42px no mobile e 52px no desktop */}
+            <div className="hidden sm:block">
+              <DelfosLogo
+                height={52}
+                variant="dark-bg"
+                className="group-hover:opacity-95 transition-opacity"
+              />
+            </div>
+            <div className="block sm:hidden">
+              <DelfosLogo
+                height={42}
+                variant="dark-bg"
+                className="group-hover:opacity-95 transition-opacity"
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -324,7 +334,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <DelfosLogo height={32} variant="dark-bg" />
+                  <DelfosLogo height={42} variant="dark-bg" />
                 </div>
 
                 <Button

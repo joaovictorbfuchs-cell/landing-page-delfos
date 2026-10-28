@@ -305,7 +305,7 @@ export default function Admin() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/" className="flex items-center gap-2.5">
-              <DelfosLogo height={34} variant="dark-bg" />
+              <DelfosLogo height={44} variant="dark-bg" />
             </Link>
             <div className="border-l border-white/20 pl-3 hidden sm:block">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit">
