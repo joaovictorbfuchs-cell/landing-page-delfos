@@ -41,7 +41,7 @@ export default function Sobre() {
     '@id': 'https://landing-page-delfos-engenharia-672ab.goskip.app/#empresa',
     name: 'Delfos Engenharia Solar',
     alternateName: 'Delfos Solar',
-    legalName: 'Delfos Engenharia Solar LTDA',
+    legalName: 'Delfos Engenharia LTDA',
     taxID: '21.379.952/0001-38',
     description:
       'Integradora de engenharia de campo em energia solar fotovoltaica, BESS industrial, operação e manutenção (O&M) com tempo de resposta combinado e recarga veicular com sede em Erechim/RS, atuando em todo o Sul do Brasil há 12 anos com mais de 3.000 projetos entregues.',
@@ -67,8 +67,8 @@ export default function Sobre() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Sobre a Delfos Engenharia Solar | 12 Anos, 3.000+ Projetos em Erechim/RS"
-        description="Conheça a história de 12 anos da Delfos Engenharia Solar em Erechim/RS: engenharia de ciclo completo, time próprio de campo, mais de 3.000 projetos entregues no Sul do Brasil."
+        title="Sobre a Delfos | 12 Anos e 3.000+ Projetos no RS"
+        description="Engenharia de campo em energia solar desde 2014. Sede em Erechim/RS, equipes próprias, 100% ART no CREA-RS, nota 4.9 no Google e +3.000 projetos entregues."
         canonicalPath="/sobre"
         ogImage="/og-image.png"
         schemaJsonLd={localBusinessSchema}
@@ -101,7 +101,7 @@ export default function Sobre() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
-                Da geração à operação da sua energia:{' '}
+                Engenharia de campo em energia solar:{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-amber-300 to-solar-400">
                   12 anos de engenharia real
                 </span>{' '}

@@ -18,6 +18,20 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import { FAQ_ITEMS } from '@/data/faq'
 import { cn } from '@/lib/utils'
 
+// Schema.org FAQPage — gerado a partir dos mesmos dados renderizados na página
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    '@type': 'Question',
+    name: item.pergunta,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: `${item.respostaRapida} ${item.detalheTecnico}`.trim(),
+    },
+  })),
+}
+
 export function FaqPage() {
   const [busca, setBusca] = useState('')
 
@@ -114,9 +128,10 @@ export function FaqPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-emerald-800 selection:text-white">
       <SeoMeta
-        title="Perguntas Frequentes — Energia Solar, Baterias e Mobilidade Elétrica | Delfos Engenharia"
+        title="Perguntas Frequentes sobre Energia Solar | Delfos"
         description="Respostas diretas e detalhes técnicos sobre instalação solar, payback, créditos com a Lei 14.300, baterias de energia para backup no apagão e recarga veicular."
         canonicalPath="/faq"
+        schemaJsonLd={faqPageSchema}
       />
 
       <Header onSolicitarAvaliacao={scrollToContato} />

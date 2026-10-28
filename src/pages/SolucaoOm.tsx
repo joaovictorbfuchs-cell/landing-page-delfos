@@ -117,8 +117,8 @@ export default function SolucaoOm() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Manutenção e monitoramento de usinas solares | Delfos Engenharia"
-        description="Proteja o retorno do seu ativo solar: manutenção e monitoramento remoto, limpeza técnica especializada, termografia por drone e planos preventivos personalizados com prazo garantido. Delfos."
+        title="O&M e Manutenção de Usinas Solares | Delfos"
+        description="Planos de O&M, monitoramento e termografia por drone para recuperar até 25% da geração da sua usina solar. Atendemos usinas de terceiros no Sul do Brasil."
         canonicalPath="/solucoes/om"
         ogImage="/og-image.png"
       />

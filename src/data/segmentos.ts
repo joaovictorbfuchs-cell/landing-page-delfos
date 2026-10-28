@@ -150,7 +150,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Energia Solar e BESS Residencial no RS | Delfos Engenharia',
       description:
-        'Descubra quanto sua residência pode economizar em energia solar em Erechim e no Sul. Projetos com até 90% de redução, opção de backup contra blecautes e aprovação junto à concessionária.',
+        'Energia solar e baterias (BESS) para residências no RS: economia de até 95% na conta, backup contra apagões e projeto com equipes próprias. Orçamento grátis.',
     },
   },
 
@@ -239,7 +239,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
     ],
     seo: {
-      title: 'Energia Solar e BESS para Comércio e Serviços | Delfos Solar RS',
+      title: 'Energia Solar e BESS para Comércio | Delfos RS',
       description:
         'Reduza despesas operacionais no comércio sem parar a operação. Projetos fotovoltaicos, O&M com drone e backup de energia para empresas em Erechim e no Sul.',
     },
@@ -334,9 +334,9 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
     ],
     seo: {
-      title: 'Energia Solar, Baterias (BESS) e Demanda Contratada para Indústrias | Delfos RS',
+      title: 'Energia Solar, BESS e Demanda para Indústria | Delfos',
       description:
-        'Engenharia industrial de ciclo completo no RS: baterias (BESS) para continuidade, bloqueio de ponta, redução de demanda (peak shaving), solar e O&M com tempo de resposta combinado para indústrias em Erechim e no Sul.',
+        'Geração solar, baterias BESS e gestão de demanda contratada para indústrias no RS: redução de custo sem interromper a operação. Engenharia Delfos.',
     },
   },
 
@@ -518,7 +518,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
       },
     ],
     seo: {
-      title: 'Carregadores para Condomínios e Gestão de Carga Inteligente | Delfos Engenharia RS',
+      title: 'Carregadores para Condomínios | Delfos Engenharia RS',
       description:
         'Infraestrutura de recarga veicular para condomínios no RS com gestão de carga inteligente sem sobrecarregar o transformador e com rateio individual.',
     },
@@ -615,7 +615,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Usinas de Solo e O&M para Investidores no RS | Delfos Engenharia',
       description:
-        'Projeto e instalação completos para investidores em geração distribuída e usinas solares de solo no RS. Implantação completa, conexão em média tensão e auditoria O&M com drone.',
+        'Usinas de solo, O&M e monitoramento para investidores no RS: ativo protegido, performance auditada e receita recorrente. Portfólio Delfos.',
     },
   },
 

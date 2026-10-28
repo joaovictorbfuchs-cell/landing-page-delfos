@@ -72,7 +72,9 @@ export default function ConteudoPost() {
 
   const isManutencaoRichPost = slug === 'manutencao-de-placa-solar-perda-geracao'
 
-  const BASE_URL = 'https://landing-page-delfos-engenharia-672ab.goskip.app'
+  const BASE_URL =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_URL) ||
+    'https://landing-page-delfos-engenharia-672ab.goskip.app'
 
   // Schemas dedicados para o artigo de manutenção (chamado incondicionalmente antes de qualquer return)
   const schemasArtigoManutencao = useMemo(() => {
@@ -86,7 +88,7 @@ export default function ConteudoPost() {
         'Manutenção de placa solar: até 25% da sua geração pode estar indo embora sem você saber',
       description:
         'Usina sem limpeza pode perder até 25% da geração. Veja a escala real de perda, o custo em contas de luz e como proteger sua usina.',
-      image: `${BASE_URL}/og-artigo-manutencao.svg`,
+      image: `${BASE_URL}/og-image.png`,
       datePublished: '2026-10-27T08:00:00-03:00',
       dateModified: '2026-10-27T08:00:00-03:00',
       mainEntityOfPage: {
@@ -111,7 +113,7 @@ export default function ConteudoPost() {
         url: BASE_URL,
         logo: {
           '@type': 'ImageObject',
-          url: `${BASE_URL}/og-artigo-manutencao.svg`,
+          url: `${BASE_URL}/og-image.png`,
         },
       },
     }
@@ -204,7 +206,7 @@ export default function ConteudoPost() {
       '@type': 'Organization',
       name: 'Delfos Engenharia',
       url: BASE_URL,
-      logo: `${BASE_URL}/og-artigo-manutencao.svg`,
+      logo: `${BASE_URL}/og-image.png`,
       telephone: '+55 54 99129-2121',
       address: {
         '@type': 'PostalAddress',
@@ -214,9 +216,10 @@ export default function ConteudoPost() {
         addressCountry: 'BR',
       },
       sameAs: [
-        'https://www.instagram.com/delfosengenharia',
-        'https://www.linkedin.com/company/delfos-engenharia',
-        'https://www.facebook.com/delfosengenharia',
+        'https://share.google/kjuaSjNM7WOz3bVZq',
+        'https://www.instagram.com/delfosenergia',
+        'https://br.linkedin.com/company/delfos-solar',
+        'https://www.facebook.com/DelfosEnergiaSolar',
       ],
     }
 
@@ -248,6 +251,56 @@ export default function ConteudoPost() {
     : staticArtigo?.metaDescription || ''
   const formNecessidade = staticArtigo?.solucaoRelacionada.necessidadeForm || 'O&M e Monitoramento'
   const formOrigem = staticArtigo?.origemLead || `conteudo-post-${slug}`
+
+  // Schema Article + BreadcrumbList genérico para posts sem schema dedicado
+  const schemaArtigoGenerico = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: titulo,
+      description: metaDescription,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${BASE_URL}/conteudos/${slug}`,
+      },
+      author: {
+        '@type': 'Person',
+        name: autorNome,
+        worksFor: {
+          '@type': 'Organization',
+          name: 'Delfos Engenharia',
+          url: BASE_URL,
+        },
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Delfos Engenharia',
+        url: BASE_URL,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${BASE_URL}/og-image.png`,
+        },
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Conteúdos',
+          item: `${BASE_URL}/conteudos`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: titulo,
+          item: `${BASE_URL}/conteudos/${slug}`,
+        },
+      ],
+    },
+  ]
 
   const handleCompartilhar = () => {
     if (navigator.share) {
@@ -291,10 +344,12 @@ export default function ConteudoPost() {
         }
         canonicalPath={`/conteudos/${slug}`}
         ogType="article"
-        ogImage={isManutencaoRichPost ? '/og-artigo-manutencao.svg' : fotoUrl || '/og-image.png'}
+        ogImage={isManutencaoRichPost ? '/og-image.png' : fotoUrl || '/og-image.png'}
         ogSiteName="Delfos Engenharia"
         schemaJsonLd={
-          isManutencaoRichPost && schemasArtigoManutencao ? schemasArtigoManutencao : undefined
+          isManutencaoRichPost && schemasArtigoManutencao
+            ? schemasArtigoManutencao
+            : schemaArtigoGenerico
         }
         articlePublishedTime={isManutencaoRichPost ? '2026-10-27T08:00:00-03:00' : undefined}
         articleModifiedTime={isManutencaoRichPost ? '2026-10-27T08:00:00-03:00' : undefined}

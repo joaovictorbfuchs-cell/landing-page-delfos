@@ -20,6 +20,7 @@ routerAdd('GET', '/sitemap.xml', (e) => {
     { loc: '/solucoes/carregadores', changefreq: 'monthly', priority: '0.9', lastmod: today },
     { loc: '/projetos', changefreq: 'weekly', priority: '0.9', lastmod: today },
     { loc: '/sobre', changefreq: 'monthly', priority: '0.8', lastmod: today },
+    { loc: '/faq', changefreq: 'weekly', priority: '0.8', lastmod: today },
     { loc: '/segmentos/residencias', changefreq: 'monthly', priority: '0.8', lastmod: today },
     { loc: '/segmentos/comercio-servicos', changefreq: 'monthly', priority: '0.8', lastmod: today },
     { loc: '/segmentos/industria', changefreq: 'monthly', priority: '0.8', lastmod: today },

@@ -55,19 +55,13 @@ export default function SeoMeta({
     }
     metaRobots.setAttribute('content', robots)
 
-    // 5. Meta Keywords
-    let metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (!metaKeywords) {
-      metaKeywords = document.createElement('meta')
-      metaKeywords.setAttribute('name', 'keywords')
-      document.head.appendChild(metaKeywords)
-    }
-    metaKeywords.setAttribute(
-      'content',
-      'energia solar Erechim, BESS industrial, manutencao de usina solar, Delfos Engenharia RS, engenharia fotovoltaica, O&M solar',
-    )
+    // 5. Meta Keywords: removido (sinal obsoleto para buscadores; mantido só no index.html)
 
-    const BASE_URL = 'https://landing-page-delfos-engenharia-672ab.goskip.app'
+    // URL canônica do site: configurável por env (VITE_SITE_URL) para facilitar a
+    // migração de domínio sem tocar em código. Fallback = URL de produção atual.
+    const BASE_URL =
+      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_URL) ||
+      'https://landing-page-delfos-engenharia-672ab.goskip.app'
 
     // 6. OpenGraph Title
     let ogTitle = document.querySelector('meta[property="og:title"]')

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { createLead } from '@/services/leads'
+import { trackFormSubmit } from '@/lib/analytics'
 import type { TipoLigacao, PosseArea, JaPossuiSolar } from '@/types/leads'
 
 interface ContatoFormProps {
@@ -225,6 +226,10 @@ export default function ContatoForm({
           qualificacaoEspecificaLabel && qualificacaoEspecificaValor.trim()
             ? `[${qualificacaoEspecificaLabel}: ${qualificacaoEspecificaValor.trim()}]${mensagem ? ` | Obs: ${mensagem}` : ''}`
             : mensagem || undefined,
+        origem: initialOrigem || 'home-formulario-2etapas',
+      })
+
+      trackFormSubmit('contato-2-etapas', {
         origem: initialOrigem || 'home-formulario-2etapas',
       })
 

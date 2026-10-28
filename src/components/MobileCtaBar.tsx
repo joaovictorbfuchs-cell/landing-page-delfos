@@ -1,5 +1,6 @@
 import { ArrowRight, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { trackWhatsappClick } from '@/lib/analytics'
 
 interface MobileCtaBarProps {
   onSolicitarAvaliacao: () => void
@@ -16,6 +17,7 @@ export default function MobileCtaBar({ onSolicitarAvaliacao }: MobileCtaBarProps
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackWhatsappClick('mobile_bar', 'Avaliação energética (barra mobile)')}
         className="w-11 h-11 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md"
         aria-label="Chamar no WhatsApp"
       >

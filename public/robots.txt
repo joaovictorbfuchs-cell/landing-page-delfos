@@ -1,12 +1,9 @@
 User-agent: *
 Allow: /
-Allow: /conteudos/
-Allow: /blog/
 
-# Desallow admin & login private routes
+# Rotas privadas
 Disallow: /admin
 Disallow: /login
 
-# Sitemap location
+# Sitemap
 Sitemap: https://landing-page-delfos-engenharia-672ab.goskip.app/sitemap.xml
-Sitemap: https://delfos.eng.br/sitemap.xml

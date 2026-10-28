@@ -146,6 +146,40 @@ export default function SegmentoPageLayout({
     `Olá! Estava na página de ${seg.nome} no site da Delfos e gostaria de: ${seg.ctaRecomendado}. (Origem: segmento-${seg.slug})`,
   )}`
 
+  // URL base do site (mesma regra do SeoMeta: env VITE_SITE_URL ou produção)
+  const SITE_URL =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_URL) ||
+    'https://landing-page-delfos-engenharia-672ab.goskip.app'
+
+  // Schemas.org: BreadcrumbList + FAQPage gerados a partir dos dados renderizados
+  const faqItensSegmento = FAQ_POR_SEGMENTO[seg.slug]?.itens || []
+  const schemaSegmento = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início', item: `${SITE_URL}/` },
+        { '@type': 'ListItem', position: 2, name: seg.nome, item: `${SITE_URL}${seg.path}` },
+      ],
+    },
+    ...(faqItensSegmento.length > 0
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqItensSegmento.map((item) => ({
+              '@type': 'Question',
+              name: item.pergunta,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: `${item.respostaRapida} ${(item.detalheTecnico || []).join(' ')}`.trim(),
+              },
+            })),
+          },
+        ]
+      : []),
+  ]
+
   return (
     <div
       className={`min-h-screen flex flex-col antialiased pb-16 md:pb-0 ${
@@ -159,6 +193,7 @@ export default function SegmentoPageLayout({
         description={seg.seo.description}
         canonicalPath={seg.path}
         ogImage="/og-image.png"
+        schemaJsonLd={schemaSegmento}
       />
 
       <Header onSolicitarAvaliacao={scrollToContato} />
@@ -211,9 +246,13 @@ export default function SegmentoPageLayout({
                   <span className="text-xs sm:text-sm font-mono font-semibold text-solar-300 uppercase tracking-wider block">
                     Pergunta central do setor:
                   </span>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
-                    “{seg.perguntaPrincipal}”
+                  {/* H1 com keyword + segmento (SEO); a pergunta mantém o destaque visual como H2 */}
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-[1.2] text-solar-300">
+                    {seg.seo.title.split('|')[0].trim()}
                   </h1>
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
+                    “{seg.perguntaPrincipal}”
+                  </h2>
                 </div>
 
                 {/* Resposta técnica e posicionamento Delfos */}

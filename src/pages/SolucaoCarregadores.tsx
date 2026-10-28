@@ -87,8 +87,8 @@ export default function SolucaoCarregadores() {
   return (
     <div className="min-h-screen flex flex-col bg-[#070A10] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Recarga veicular para condomínios, empresas e residências | Delfos Engenharia"
-        description="Infraestrutura de recarga veicular inteligente sem sobrecarregar o transformador predial. Carregadores de parede, carregamento rápido e rateio individual por vaga. Delfos."
+        title="Recarga Veicular para Condomínios e Empresas | Delfos"
+        description="Infraestrutura de recarga veicular com gestão inteligente de carga, sem trocar o transformador do prédio. Condomínios, empresas, frotas e eletropostos."
         canonicalPath="/solucoes/carregadores"
         ogImage="/og-image.png"
       />

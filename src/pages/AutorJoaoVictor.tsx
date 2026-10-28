@@ -65,7 +65,7 @@ export default function AutorJoaoVictor() {
         description="Perfil profissional do Eng. Eletricista João Victor Bagetti Fuchs, Responsável Técnico da Delfos Engenharia (CREA-RS 151894). Artigos sobre O&M, termografia e geração solar."
         canonicalPath="/conteudos/autor/joao-victor-bagetti-fuchs"
         ogType="article"
-        ogImage="/og-artigo-manutencao.svg"
+        ogImage="/og-image.png"
         schemaJsonLd={personSchema}
       />
 
