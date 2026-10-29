@@ -520,7 +520,8 @@ export function generateAllIcons() {
   // Top arc: for each x from 0 to croppedW: find highest y (outer edge) and lowest y (inner edge)
   const topArcProfile = []
   for (let x = 0; x < croppedW; x += 10) {
-    let minY = null, maxY = null
+    let minY = null,
+      maxY = null
     for (let y = 0; y <= 286; y++) {
       const p = samplePixel(startCropX + x, y)
       if (p[0] > 20 || p[1] > 20 || p[2] > 20) {
@@ -533,7 +534,8 @@ export function generateAllIcons() {
 
   const botArcProfile = []
   for (let x = 0; x < croppedW; x += 10) {
-    let minY = null, maxY = null
+    let minY = null,
+      maxY = null
     for (let y = 665; y <= 935; y++) {
       const p = samplePixel(startCropX + x, y)
       if (p[0] > 20 || p[1] > 20 || p[2] > 20) {
@@ -544,12 +546,19 @@ export function generateAllIcons() {
     if (minY !== null) botArcProfile.push({ x, minY, maxY })
   }
 
-  fs.writeFileSync(path.resolve('public/arc-profiles.json'), JSON.stringify({
-    croppedW,
-    croppedH,
-    topArcProfile: topArcProfile.filter((_, idx) => idx % 5 === 0),
-    botArcProfile: botArcProfile.filter((_, idx) => idx % 5 === 0),
-  }, null, 2))
+  fs.writeFileSync(
+    path.resolve('public/arc-profiles.json'),
+    JSON.stringify(
+      {
+        croppedW,
+        croppedH,
+        topArcProfile: topArcProfile.filter((_, idx) => idx % 5 === 0),
+        botArcProfile: botArcProfile.filter((_, idx) => idx % 5 === 0),
+      },
+      null,
+      2,
+    ),
+  )
 
   // Trace pixel contours for letter glyphs:
   // Let's find bounds of each letter in delfos:
@@ -569,7 +578,11 @@ export function generateAllIcons() {
     }
   }
   if (inLetter) {
-    letterRanges.push({ start: curStart, end: letterColumns.length - 1, w: letterColumns.length - curStart })
+    letterRanges.push({
+      start: curStart,
+      end: letterColumns.length - 1,
+      w: letterColumns.length - curStart,
+    })
   }
 
   fs.writeFileSync(path.resolve('public/letters.json'), JSON.stringify(letterRanges, null, 2))
@@ -578,7 +591,8 @@ export function generateAllIcons() {
   const letterBoundsDetailed = []
   for (let i = 0; i < letterRanges.length; i++) {
     const range = letterRanges[i]
-    let topY = 9999, botY = -1
+    let topY = 9999,
+      botY = -1
     for (let x = range.start; x <= range.end; x++) {
       for (let y = 286; y <= 665; y++) {
         const p = samplePixel(startCropX + x, y)
@@ -595,11 +609,14 @@ export function generateAllIcons() {
       w: range.w,
       topY,
       botY,
-      h: botY - topY + 1
+      h: botY - topY + 1,
     })
   }
 
-  fs.writeFileSync(path.resolve('public/letter-bounds.json'), JSON.stringify(letterBoundsDetailed, null, 2))
+  fs.writeFileSync(
+    path.resolve('public/letter-bounds.json'),
+    JSON.stringify(letterBoundsDetailed, null, 2),
+  )
   fs.writeFileSync(path.resolve('public/image-analysis.json'), JSON.stringify(arcSamples, null, 2))
   // Usar a nova imagem recortada e transparente para gerar todos os ícones PWA/Favicon
   const newTransparentImg = decodePng(encodedTransparent)
@@ -684,8 +701,12 @@ export function generateAllIcons() {
         if (a > 0.01) {
           const dstIdx = (dy * ogW + dx) * 4
           ogBuf[dstIdx] = Math.round(newTransparentImg.data[idx] * a + ogBuf[dstIdx] * (1 - a))
-          ogBuf[dstIdx + 1] = Math.round(newTransparentImg.data[idx + 1] * a + ogBuf[dstIdx + 1] * (1 - a))
-          ogBuf[dstIdx + 2] = Math.round(newTransparentImg.data[idx + 2] * a + ogBuf[dstIdx + 2] * (1 - a))
+          ogBuf[dstIdx + 1] = Math.round(
+            newTransparentImg.data[idx + 1] * a + ogBuf[dstIdx + 1] * (1 - a),
+          )
+          ogBuf[dstIdx + 2] = Math.round(
+            newTransparentImg.data[idx + 2] * a + ogBuf[dstIdx + 2] * (1 - a),
+          )
           ogBuf[dstIdx + 3] = 255
         }
       }
@@ -694,6 +715,7 @@ export function generateAllIcons() {
   const ogPng = encodePngRgba(ogW, ogH, ogBuf)
   fs.writeFileSync(path.resolve('public/og-image.png'), ogPng)
 
-  console.log('Todos os PNGs, Favicons, ICO e og-image foram gerados com sucesso em public/!')}
+  console.log('Todos os PNGs, Favicons, ICO e og-image foram gerados com sucesso em public/!')
+}
 
 generateAllIcons()

@@ -132,14 +132,14 @@ export default function DelfosLogo({
               <stop offset="76%" stopColor="#C4C048" />
               <stop offset="100%" stopColor="#FDE107" />
             </linearGradient>
-
             <linearGradient id={`logo-bot-grad-${variant}`} x1="0%" y1="50%" x2="100%" y2="50%">
               <stop offset="0%" stopColor="#FFE304" />
               <stop offset="24%" stopColor="#C4C048" />
               <stop offset="48%" stopColor="#53A063" />
               <stop offset="72%" stopColor="#17768A" />
               <stop offset="100%" stopColor="#015BA1" />
-            </linearGradient>          </defs>
+            </linearGradient>{' '}
+          </defs>
 
           {/* Arco Superior Energético (azul cobalto -> folha verde -> amarelo solar) */}
           <path
