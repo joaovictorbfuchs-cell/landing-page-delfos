@@ -70,10 +70,8 @@ export default function DelfosLogo({
     <div className={`inline-flex items-center gap-2.5 ${className}`}>
       {/*
         Utiliza o asset oficial PNG recortado em alta fidelidade a partir da imagem original anexada.
-        Em fundos escuros (Header azul-marinho #081B30 e Footer #061325),
-        uma suave aura de alto contraste (drop-shadow com difusão limpa)
-        garante legibilidade total do texto azul cobalto institucional sem alterar
-        nenhuma cor, curva, espessura ou gradiente oficial.
+        Em fundo claro (light-bg / header branco), exibe a arte original limpa sem nenhum halo ou contorno artificial.
+        Em fundo escuro (dark-bg, ex: footer e gaveta mobile escura), aplica contraste apropriado.
       */}
       <div
         style={{
@@ -92,7 +90,7 @@ export default function DelfosLogo({
           className={`w-full h-full block object-contain select-none pointer-events-none ${
             isDarkBg
               ? 'filter drop-shadow-[0_0_1.5px_rgba(255,255,255,0.75)] drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]'
-              : 'drop-shadow-xs'
+              : ''
           }`}
           style={{ width: `${width}px`, height: `${height}px` }}
         />
@@ -101,7 +99,7 @@ export default function DelfosLogo({
       {showSubtitle && (
         <span
           className={`text-[11px] font-bold tracking-widest uppercase pl-2 ml-1 border-l hidden sm:inline-block ${
-            isDarkBg ? 'text-slate-300 border-white/20' : 'text-slate-600 border-slate-300'
+            isDarkBg ? 'text-slate-300 border-white/20' : 'text-slate-700 border-slate-300'
           }`}
         >
           Engenharia

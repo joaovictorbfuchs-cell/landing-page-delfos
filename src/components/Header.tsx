@@ -104,12 +104,12 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#081B30]/95 backdrop-blur-md shadow-lg py-3 text-white border-b border-white/10'
-            : 'bg-[#081B30]/75 backdrop-blur-sm py-4 text-white border-b border-white/10'
+            ? 'bg-white/95 backdrop-blur-md shadow-sm shadow-slate-900/5 py-3 text-slate-800 border-b border-slate-200/80'
+            : 'bg-white/90 backdrop-blur-md shadow-xs py-4 text-slate-800 border-b border-slate-200/60'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo Delfos Solar oficial: tamanho ampliado com excelente presença e proporção */}
+          {/* Logo Delfos Solar oficial: arte original limpa sobre a faixa branca, sem halo artificial */}
           <Link
             to="/"
             onClick={() => {
@@ -124,15 +124,15 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             <div className="hidden sm:block">
               <DelfosLogo
                 height={52}
-                variant="dark-bg"
-                className="group-hover:opacity-95 transition-opacity"
+                variant="light-bg"
+                className="group-hover:opacity-90 transition-opacity"
               />
             </div>
             <div className="block sm:hidden">
               <DelfosLogo
                 height={42}
-                variant="dark-bg"
-                className="group-hover:opacity-95 transition-opacity"
+                variant="light-bg"
+                className="group-hover:opacity-90 transition-opacity"
               />
             </div>
           </Link>
@@ -146,7 +146,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-700 hover:text-midnight-950"
             >
               Início
             </Link>
@@ -159,8 +159,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 onMouseEnter={() => setSolucoesDropdownOpen(true)}
                 className={`text-xs xl:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                   location.pathname.startsWith('/solucoes')
-                    ? 'text-solar-400 font-semibold'
-                    : 'text-slate-200 hover:text-solar-400'
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
                 }`}
                 aria-expanded={solucoesDropdownOpen}
               >
@@ -176,16 +176,16 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               {solucoesDropdownOpen && (
                 <div
                   onMouseLeave={() => setSolucoesDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-3 w-80 bg-[#061526] border border-white/15 rounded-2xl shadow-2xl p-2.5 backdrop-blur-xl animate-fade-in z-50 space-y-1"
+                  className="absolute top-full left-0 mt-3 w-80 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-2.5 backdrop-blur-xl animate-fade-in z-50 space-y-1"
                 >
-                  <div className="px-3 py-1.5 border-b border-white/10 mb-1 flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
+                  <div className="px-3 py-1.5 border-b border-slate-100 mb-1 flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600">
                       As 4 Soluções Delfos
                     </span>
                     <Link
                       to="/#solucoes"
                       onClick={() => setSolucoesDropdownOpen(false)}
-                      className="text-[10px] text-slate-400 hover:text-white"
+                      className="text-[10px] text-slate-500 hover:text-[#081B30] font-medium"
                     >
                       Ver na home
                     </Link>
@@ -200,18 +200,18 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                         onClick={() => setSolucoesDropdownOpen(false)}
                         className={`flex items-start gap-3 p-2.5 rounded-xl transition-all ${
                           isCurrent
-                            ? 'bg-solar-500/15 border border-solar-500/30'
-                            : 'hover:bg-white/5 border border-transparent'
+                            ? 'bg-amber-50/80 border border-amber-200'
+                            : 'hover:bg-slate-50 border border-transparent'
                         }`}
                       >
-                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 mt-0.5">
                           <Icon className={`w-4 h-4 ${sol.color}`} />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-white block leading-snug">
+                          <span className="text-xs font-bold text-[#081B30] block leading-snug">
                             {sol.title}
                           </span>
-                          <span className="text-[11px] text-slate-400 block leading-tight mt-0.5">
+                          <span className="text-[11px] text-slate-500 block leading-tight mt-0.5">
                             {sol.desc}
                           </span>
                         </div>
@@ -230,8 +230,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname === '/projetos'
-                  ? 'text-solar-400 font-semibold'
-                  : 'text-slate-200 hover:text-solar-400'
+                  ? 'text-[#081B30] font-bold'
+                  : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Projetos e Resultados
@@ -245,8 +245,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname.startsWith('/conteudos')
-                  ? 'text-solar-400 font-semibold'
-                  : 'text-slate-200 hover:text-solar-400'
+                  ? 'text-[#081B30] font-bold'
+                  : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Conteúdos
@@ -260,8 +260,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname === '/faq'
-                  ? 'text-solar-400 font-semibold'
-                  : 'text-slate-200 hover:text-solar-400'
+                  ? 'text-[#081B30] font-bold'
+                  : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               FAQ
@@ -275,8 +275,8 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 location.pathname === '/sobre'
-                  ? 'text-solar-400 font-semibold'
-                  : 'text-slate-200 hover:text-solar-400'
+                  ? 'text-[#081B30] font-bold'
+                  : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Sobre a Delfos
@@ -288,13 +288,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 e.preventDefault()
                 handleNavClick('#contato')
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-200 hover:text-solar-400"
+              className="text-xs xl:text-sm font-medium transition-colors text-slate-700 hover:text-midnight-950"
             >
               Contato
             </a>
           </nav>
 
-          {/* Fixed Global Desktop CTA: "Solicitar avaliação" */}
+          {/* Fixed Global Desktop CTA: "Solicitar avaliação" - amarelo preservado */}
           <div className="hidden md:flex items-center gap-3">
             <Button
               onClick={handleCtaClick}
@@ -311,7 +311,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(true)}
-              className="text-white hover:bg-white/10"
+              className="text-slate-800 hover:text-[#081B30] hover:bg-slate-100"
               aria-label="Abrir menu principal"
             >
               <Menu className="w-6 h-6" />

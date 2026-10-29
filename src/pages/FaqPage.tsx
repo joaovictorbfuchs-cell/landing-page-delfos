@@ -136,9 +136,9 @@ export function FaqPage() {
 
       <Header onSolicitarAvaliacao={scrollToContato} />
 
-      <main className="flex-1 pb-16">
+      <main className="flex-1 pt-24 pb-16">
         {/* Hero do FAQ */}
-        <section className="bg-gradient-to-b from-white via-slate-50 to-emerald-50/30 border-b border-slate-200/80 pt-10 sm:pt-14 pb-10 sm:pb-12 px-4 sm:px-6">
+        <section className="bg-gradient-to-b from-white via-slate-50 to-emerald-50/30 border-b border-slate-200/80 pt-8 sm:pt-12 pb-10 sm:pb-12 px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-100/70 text-emerald-950 border border-emerald-200 mb-4 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_0_2px_rgba(245,158,11,0.3)] animate-pulse" />
