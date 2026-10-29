@@ -42,14 +42,6 @@ export const GOOGLE_REVIEWS: GoogleReview[] = [
     avatarColor: 'bg-amber-600',
   },
   {
-    id: 'rev-tammer-teixeira',
-    author: 'tammer edson marques teixeira',
-    rating: 5,
-    text: 'São muito atenciosos competentes e especializados … muito profissionalismo … assim como o pós venda que atendem com agilidade e presteza ….',
-    timeAgo: '4 anos atrás',
-    avatarColor: 'bg-indigo-600',
-  },
-  {
     id: 'rev-tarcisio-chaves',
     author: 'TARCISIO CHAVES',
     rating: 5,

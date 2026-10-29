@@ -11,15 +11,12 @@ import {
   Calculator,
   AlertTriangle,
   Flame,
-  Activity,
-  Award,
   ChevronDown,
   Copy,
   RotateCcw,
   Sparkles,
   Phone,
   Layers,
-  FileCheck,
   Zap,
   UserCheck,
   ExternalLink,
@@ -468,18 +465,11 @@ export default function ArtigoManutencaoRico({
               8. Estudo de caso de campo (75 kWp)
             </a>
             <a
-              href="#planos"
-              className="hover:text-solar-600 transition-colors flex items-center gap-1.5"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-solar-500" />
-              9. Os três planos Delfos de O&amp;M
-            </a>
-            <a
               href="#checklist"
               className="hover:text-solar-600 transition-colors flex items-center gap-1.5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-solar-500" />
-              10. Checklist de 8 sinais de alerta
+              9. Checklist de 8 sinais de alerta
             </a>
           </div>
         </div>
@@ -1874,242 +1864,8 @@ export default function ArtigoManutencaoRico({
         </div>
       </section>
 
-      {/* 11. OS TRÊS PLANOS DELFOS */}
-      <section id="planos" className="py-16 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
-              Planos de Operação &amp; Manutenção
-            </span>
-            <h2 className="text-3xl font-extrabold text-slate-900">
-              As três modalidades de atendimento da Delfos
-            </h2>
-            <p className="text-slate-600 text-sm">
-              Engenharia preventiva para usinas residenciais, comerciais, industriais e de
-              investimento no Rio Grande do Sul e Santa Catarina:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Plano 1: Monitoramento */}
-            <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-[#081B30] flex items-center justify-center">
-                  <Activity className="w-6 h-6 text-solar-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Plano Monitoramento</h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Camada preditiva e analítica contínua
-                  </p>
-                </div>
-                <ul className="space-y-2.5 text-xs text-slate-700 pt-2 border-t border-slate-100">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Acompanhamento da curva de geração contra dados meteorológicos</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Análise mensal de desvio por string e inversor</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Identificação preventiva de tendência de queda</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Suporte de engenharia para dúvidas da fatura de energia</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 pt-4 border-t border-slate-100">
-                <Link
-                  to="/solucoes/om"
-                  className="text-xs text-solar-700 hover:text-solar-900 font-semibold block text-center"
-                >
-                  Ver detalhes na página O&amp;M &rarr;
-                </Link>
-                <Button
-                  onClick={() => handleCtaIntermediario('plano_monitoramento_btn')}
-                  variant="outline"
-                  className="w-full border-slate-300 text-slate-800 hover:bg-slate-100 text-xs font-bold rounded-xl py-5"
-                >
-                  Solicitar proposta
-                </Button>
-              </div>
-            </div>
-
-            {/* Plano 2: Completo (Destaque) */}
-            <div className="p-8 rounded-3xl bg-[#081B30] text-white border-2 border-solar-400 shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
-              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-solar-400 text-midnight-950 text-[10px] font-black uppercase tracking-wider">
-                Mais Recomendado
-              </div>
-
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-solar-400 text-midnight-950 flex items-center justify-center">
-                  <Award className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Plano Completo</h3>
-                  <p className="text-xs text-slate-300 mt-1">
-                    Monitoramento + Inspeção + Limpeza Técnica
-                  </p>
-                </div>
-                <ul className="space-y-2.5 text-xs text-slate-200 pt-2 border-t border-white/10">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Monitoramento contínuo com alerta de anomalias</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Inspeções periódicas com termografia infravermelha (IEC 62446-3)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Limpeza técnica especializada com água tratada e escova macia</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Reaperto com torquímetro e laudo com ART para seguradoras</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-solar-400 shrink-0 mt-0.5" />
-                    <span>Prioridade em chamados corretivos de emergência</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 pt-4 border-t border-white/10">
-                <Link
-                  to="/solucoes/om"
-                  className="text-xs text-solar-300 hover:text-white font-semibold block text-center"
-                >
-                  Conhecer o programa de O&amp;M &rarr;
-                </Link>
-                <Button
-                  onClick={() => handleCtaIntermediario('plano_completo_btn')}
-                  className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-black text-xs rounded-xl py-5 shadow-lg"
-                >
-                  Quero o plano completo
-                </Button>
-              </div>
-            </div>
-
-            {/* Plano 3: Inspeção Pontual */}
-            <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-[#081B30] flex items-center justify-center">
-                  <FileCheck className="w-6 h-6 text-solar-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Plano de Inspeção</h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Diagnóstico pontual para usinas em operação
-                  </p>
-                </div>
-                <ul className="space-y-2.5 text-xs text-slate-700 pt-2 border-t border-slate-100">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Vistoria minuciosa de conformidade elétrica e estrutural</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Termografia de todos os módulos e quadros elétricos</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Verificação de DPS, fusíveis, disjuntores e aterramento</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Laudo formal assinado por engenheiro com ART (CREA-RS 151894)</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 pt-4 border-t border-slate-100">
-                <Link
-                  to="/solucoes/om"
-                  className="text-xs text-solar-700 hover:text-solar-900 font-semibold block text-center"
-                >
-                  Ver escopo de inspeção &rarr;
-                </Link>
-                <Button
-                  onClick={() => handleCtaIntermediario('plano_inspecao_btn')}
-                  variant="outline"
-                  className="w-full border-slate-300 text-slate-800 hover:bg-slate-100 text-xs font-bold rounded-xl py-5"
-                >
-                  Solicitar inspeção
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 12. O QUE O CLIENTE RECEBE POR VISITA */}
-      <section className="py-16 max-w-4xl mx-auto px-6 space-y-8">
-        <div className="space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
-            Entregáveis da Engenharia
-          </span>
-          <h2 className="text-3xl font-extrabold text-slate-900">
-            O que você recebe ao final de cada visita técnica
-          </h2>
-          <p className="text-slate-600 text-sm">
-            Sem relatórios vagos. Cada intervenção é documentada com critérios de engenharia de
-            conformidade:
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            {
-              titulo: 'Relatório Técnico Fotográfico e Termográfico',
-              desc: 'Imagens no espectro visível e infravermelho de todos os pontos com aquecimento anômalo.',
-            },
-            {
-              titulo: 'Mapa Georreferenciado de Módulos',
-              desc: 'Identificação exata de qual placa ou string apresenta anomalia para troca ou limpeza.',
-            },
-            {
-              titulo: 'Comparativo de Curva de Geração Real vs. Esperada',
-              desc: 'Gráfico de desempenho comprovando o ganho de potência após a intervenção técnica.',
-            },
-            {
-              titulo: 'Checklist Estrutural com Torque Medido',
-              desc: 'Certificação de aperto mecânico de todos os grampos e trilhos da cobertura.',
-            },
-            {
-              titulo: 'Cronograma Regional de Limpezas Recomendadas',
-              desc: 'Calendário de intervenções ajustado ao regime de chuvas e poeira da sua microrregião.',
-            },
-            {
-              titulo: 'ART / CREA-RS e Documentação para Seguradora',
-              desc: 'Dossiê técnico assinado formalmente válido para acionamento de apólices e garantias.',
-            },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-start gap-3"
-            >
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-black flex items-center justify-center shrink-0 text-sm mt-0.5">
-                ✓
-              </div>
-              <div>
-                <strong className="text-sm font-bold text-slate-900 block">{item.titulo}</strong>
-                <span className="text-xs text-slate-600 leading-relaxed block mt-0.5">
-                  {item.desc}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 13. CHECKLIST INTERATIVO DE 8 SINAIS DE ALERTA COM SCORE */}
-      <section id="checklist" className="py-16 bg-slate-50 border-y border-slate-200">
+      {/* 11. CHECKLIST INTERATIVO DE 8 SINAIS DE ALERTA COM SCORE */}
+      <section id="checklist" className="py-16 bg-slate-50 border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-6 space-y-8">
           <div className="space-y-3 text-center max-w-2xl mx-auto">
             <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
@@ -2200,7 +1956,7 @@ export default function ArtigoManutencaoRico({
         </div>
       </section>
 
-      {/* 14. PERGUNTAS FREQUENTES (FAQ COM ACCORDION) */}
+      {/* 12. PERGUNTAS FREQUENTES (FAQ COM ACCORDION) */}
       <section id="faq" className="py-16 max-w-4xl mx-auto px-6 space-y-8">
         <div className="space-y-3 text-center max-w-2xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block">
@@ -2270,12 +2026,12 @@ export default function ArtigoManutencaoRico({
         </div>
       </section>
 
-      {/* 15. FORMULÁRIO DE CAPTURA DE 4 CAMPOS (ITEM 5 DA ORIENTAÇÃO) */}
+      {/* 13. FORMULÁRIO DE CAPTURA DE 4 CAMPOS (ITEM 5 DA ORIENTAÇÃO) */}
       <section className="py-12 max-w-4xl mx-auto px-6">
         <FormCapturaArtigo origem="artigo-manutencao-placa-solar" potenciaInicialKwp={kwp} />
       </section>
 
-      {/* 16. CTA FINAL COM BLOCO DE PROVA SOCIAL OFICIAL */}
+      {/* 14. CTA FINAL COM BLOCO DE PROVA SOCIAL OFICIAL */}
       <section className="py-16 max-w-4xl mx-auto px-6">
         <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0F2A47] to-[#1a446c] text-white shadow-2xl border border-white/15 relative overflow-hidden space-y-8">
           <div className="absolute top-0 right-0 w-80 h-80 bg-solar-500/15 rounded-full blur-[100px] pointer-events-none" />
