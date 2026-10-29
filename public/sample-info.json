@@ -1,0 +1,58 @@
+{
+  "width": 1536,
+  "height": 1024,
+  "minX": 0,
+  "minY": 0,
+  "maxX": 1533,
+  "maxY": 935,
+  "croppedW": 1533,
+  "croppedH": 936,
+  "textMinX": 1,
+  "textMaxX": 1532,
+  "textMinY": 286,
+  "textMaxY": 665,
+  "topArcMinX": 15,
+  "topArcMaxX": 1513,
+  "topArcMinY": 0,
+  "topArcMaxY": 285,
+  "botArcMinX": 0,
+  "botArcMaxX": 1497,
+  "botArcMinY": 666,
+  "botArcMaxY": 935,
+  "dSample": [
+    0,
+    0,
+    0,
+    255
+  ],
+  "eSample": [
+    1,
+    40,
+    68,
+    255
+  ],
+  "lSample": [
+    1,
+    90,
+    161,
+    255
+  ],
+  "fSample": [
+    0,
+    90,
+    161,
+    255
+  ],
+  "oSample": [
+    0,
+    0,
+    0,
+    255
+  ],
+  "sSample": [
+    0,
+    88,
+    159,
+    255
+  ]
+}

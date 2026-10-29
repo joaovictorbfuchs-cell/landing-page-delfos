@@ -123,11 +123,22 @@ function readPng(buffer) {
   return { width, height, data: rgba }
 }
 
-const logoPath = path.resolve('src/assets/delfos-solar-c6f93.png')
-const fileBuf = fs.readFileSync(logoPath)
-const decoded = readPng(fileBuf)
-console.log('Decoded logo successfully:', {
-  width: decoded.width,
-  height: decoded.height,
-  dataLength: decoded.data.length,
-})
+const paths = [
+  'src/assets/imagemgerada1793232546020-bf0d0.png',
+  'src/assets/delfos-solar-c6f93.png',
+]
+
+for (const p of paths) {
+  const fullP = path.resolve(p)
+  if (fs.existsSync(fullP)) {
+    const fileBuf = fs.readFileSync(fullP)
+    const decoded = readPng(fileBuf)
+    console.log(`Decoded ${p} successfully:`, {
+      width: decoded.width,
+      height: decoded.height,
+      dataLength: decoded.data.length,
+    })
+  } else {
+    console.log(`File not found: ${p}`)
+  }
+}

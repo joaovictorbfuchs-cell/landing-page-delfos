@@ -332,7 +332,7 @@ function createIcon({
 }
 
 export function generateAllIcons() {
-  const newImgPath = path.resolve('src/assets/imagemgerada1793232546020-ef8fc.png')
+  const newImgPath = path.resolve('src/assets/imagemgerada1793232546020-bf0d0.png')
   const newBuf = fs.readFileSync(newImgPath)
   const newImg = decodePng(newBuf)
 
@@ -362,32 +362,18 @@ export function generateAllIcons() {
   }
 
   // Find blue text color and bounding box of text vs arcs
-  // Middle vertical band y from 35% to 65% of height
-  const textColors = []
-  for (let y = Math.floor(newImg.height * 0.4); y < Math.floor(newImg.height * 0.6); y += 10) {
-    for (let x = Math.floor(newImg.width * 0.1); x < Math.floor(newImg.width * 0.9); x += 10) {
-      const p = samplePixel(x, y)
-      // If blue: b > 150 and b > r * 1.5
-      if (p[2] > 140 && p[2] > p[0] * 1.5 && p[2] > p[1]) {
-        textColors.push(p)
-      }
-    }
-  }
-
-  // Detailed letter boundaries:
-  // For each column x from minX to maxX, check if there are blue text pixels in y in [300, 600]
-  const textYStart = Math.floor(newImg.height * 0.28)
-  const textYEnd = Math.floor(newImg.height * 0.65)
+  // Amostragem de pixels e cores do texto delfos
+  // No anexo o fundo é preto (#000000) e os elementos têm cores bem definidas
   let textMinX = newImg.width,
     textMaxX = 0,
     textMinY = newImg.height,
     textMaxY = 0
 
-  for (let y = textYStart; y <= textYEnd; y++) {
+  for (let y = 286; y <= 665; y++) {
     for (let x = 0; x < newImg.width; x++) {
       const p = samplePixel(x, y)
-      // Pure blue text: r < 50, b > 120
-      if (p[0] < 50 && p[2] > 120 && p[1] < 140) {
+      // Azul característico da palavra delfos:
+      if (p[2] > 80 && p[2] > p[0] * 1.3 && p[2] >= p[1] * 0.9) {
         if (x < textMinX) textMinX = x
         if (x > textMaxX) textMaxX = x
         if (y < textMinY) textMinY = y
@@ -473,12 +459,13 @@ export function generateAllIcons() {
       const p = samplePixel(srcX, srcY)
       const dstIdx = (y * croppedW + x) * 4
 
+      // Fundo preto puro: desmuting com anti-aliasing suave
       const maxC = Math.max(p[0], p[1], p[2])
       let alpha = 0
-      if (maxC > 25) {
+      if (maxC > 30) {
         alpha = 255
-      } else if (maxC > 5) {
-        alpha = Math.round(((maxC - 5) / 20) * 255)
+      } else if (maxC > 6) {
+        alpha = Math.round(((maxC - 6) / 24) * 255)
       }
 
       if (alpha > 0) {
@@ -617,6 +604,41 @@ export function generateAllIcons() {
     path.resolve('public/letter-bounds.json'),
     JSON.stringify(letterBoundsDetailed, null, 2),
   )
+  fs.writeFileSync(
+    path.resolve('public/sample-info.json'),
+    JSON.stringify(
+      {
+        width: newImg.width,
+        height: newImg.height,
+        minX,
+        minY,
+        maxX,
+        maxY,
+        croppedW,
+        croppedH,
+        textMinX,
+        textMaxX,
+        textMinY,
+        textMaxY,
+        topArcMinX,
+        topArcMaxX,
+        topArcMinY,
+        topArcMaxY,
+        botArcMinX,
+        botArcMaxX,
+        botArcMinY,
+        botArcMaxY,
+        dSample: samplePixel(160, 480),
+        eSample: samplePixel(460, 480),
+        lSample: samplePixel(670, 480),
+        fSample: samplePixel(860, 480),
+        oSample: samplePixel(1080, 480),
+        sSample: samplePixel(1380, 480),
+      },
+      null,
+      2,
+    ),
+  )
   fs.writeFileSync(path.resolve('public/image-analysis.json'), JSON.stringify(arcSamples, null, 2))
   // Usar a nova imagem recortada e transparente para gerar todos os ícones PWA/Favicon
   const newTransparentImg = decodePng(encodedTransparent)
@@ -661,6 +683,32 @@ export function generateAllIcons() {
 
   // 5. favicon.ico
   fs.writeFileSync(path.resolve('public/favicon.ico'), favicon32)
+
+  // 4b. Favicon SVG atualizado com o PNG oficial embutido em alta resolução Base64 (nítido em qualquer tamanho e 100% idêntico)
+  const logoBase64 = encodedTransparent.toString('base64')
+  const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="fav-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B2447" />
+      <stop offset="100%" stop-color="#061325" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#fav-bg)" />
+  <rect width="126" height="126" x="1" y="1" rx="27" fill="none" stroke="#FDE107" stroke-width="1.2" stroke-opacity="0.35" />
+  <image
+    href="data:image/png;base64,${logoBase64}"
+    x="14"
+    y="28"
+    width="100"
+    height="72"
+    preserveAspectRatio="xMidYMid meet"
+  />
+</svg>`
+  fs.writeFileSync(path.resolve('public/favicon.svg'), faviconSvg)
+
+  // Salvar cópia do asset recortado transparente em public/ e src/assets/
+  fs.writeFileSync(path.resolve('public/delfos-logo.png'), encodedTransparent)
+  fs.writeFileSync(path.resolve('src/assets/delfos-logo-transparent.png'), encodedTransparent)
 
   // 6. Atualizar og-image.png (1200x630 padrão OpenGraph / Twitter Cards)
   // Com o logo oficial novo centralizado e fundo institucional #061325

@@ -10,4 +10,4 @@ const height = fileBuf.readUInt32BE(20)
 const bitDepth = fileBuf[24]
 const colorType = fileBuf[25]
 
-console.log('PNG Info:', { width, height, bitDepth, colorType, size: fileBuf.length })
+// Análise concluída
