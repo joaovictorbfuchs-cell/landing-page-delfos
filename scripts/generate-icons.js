@@ -332,53 +332,368 @@ function createIcon({
 }
 
 export function generateAllIcons() {
-  const logoPath = path.resolve('src/assets/delfos-solar-c6f93.png')
-  const fileBuf = fs.readFileSync(logoPath)
-  const srcImage = decodePng(fileBuf)
-  const bbox = getBoundingBox(srcImage)
+  const newImgPath = path.resolve('src/assets/imagemgerada1793232546020-ef8fc.png')
+  const newBuf = fs.readFileSync(newImgPath)
+  const newImg = decodePng(newBuf)
+
+  const samplePixel = (x, y) => {
+    const idx = (y * newImg.width + x) * 4
+    return [newImg.data[idx], newImg.data[idx + 1], newImg.data[idx + 2], newImg.data[idx + 3]]
+  }
+
+  // Find non-black bounding box
+  let minX = newImg.width,
+    minY = newImg.height,
+    maxX = -1,
+    maxY = -1
+  for (let y = 0; y < newImg.height; y++) {
+    for (let x = 0; x < newImg.width; x++) {
+      const idx = (y * newImg.width + x) * 4
+      const r = newImg.data[idx],
+        g = newImg.data[idx + 1],
+        b = newImg.data[idx + 2]
+      if (r > 15 || g > 15 || b > 15) {
+        if (x < minX) minX = x
+        if (x > maxX) maxX = x
+        if (y < minY) minY = y
+        if (y > maxY) maxY = y
+      }
+    }
+  }
+
+  // Find blue text color and bounding box of text vs arcs
+  // Middle vertical band y from 35% to 65% of height
+  const textColors = []
+  for (let y = Math.floor(newImg.height * 0.4); y < Math.floor(newImg.height * 0.6); y += 10) {
+    for (let x = Math.floor(newImg.width * 0.1); x < Math.floor(newImg.width * 0.9); x += 10) {
+      const p = samplePixel(x, y)
+      // If blue: b > 150 and b > r * 1.5
+      if (p[2] > 140 && p[2] > p[0] * 1.5 && p[2] > p[1]) {
+        textColors.push(p)
+      }
+    }
+  }
+
+  // Detailed letter boundaries:
+  // For each column x from minX to maxX, check if there are blue text pixels in y in [300, 600]
+  const textYStart = Math.floor(newImg.height * 0.28)
+  const textYEnd = Math.floor(newImg.height * 0.65)
+  let textMinX = newImg.width,
+    textMaxX = 0,
+    textMinY = newImg.height,
+    textMaxY = 0
+
+  for (let y = textYStart; y <= textYEnd; y++) {
+    for (let x = 0; x < newImg.width; x++) {
+      const p = samplePixel(x, y)
+      // Pure blue text: r < 50, b > 120
+      if (p[0] < 50 && p[2] > 120 && p[1] < 140) {
+        if (x < textMinX) textMinX = x
+        if (x > textMaxX) textMaxX = x
+        if (y < textMinY) textMinY = y
+        if (y > textMaxY) textMaxY = y
+      }
+    }
+  }
+
+  // Top arc boundaries (y from 0 to textMinY):
+  let topArcMinX = newImg.width,
+    topArcMaxX = 0,
+    topArcMinY = newImg.height,
+    topArcMaxY = 0
+  for (let y = 0; y < textMinY; y++) {
+    for (let x = 0; x < newImg.width; x++) {
+      const p = samplePixel(x, y)
+      if (p[0] > 15 || p[1] > 15 || p[2] > 15) {
+        if (x < topArcMinX) topArcMinX = x
+        if (x > topArcMaxX) topArcMaxX = x
+        if (y < topArcMinY) topArcMinY = y
+        if (y > topArcMaxY) topArcMaxY = y
+      }
+    }
+  }
+
+  // Bottom arc boundaries (y from textMaxY to height):
+  let botArcMinX = newImg.width,
+    botArcMaxX = 0,
+    botArcMinY = newImg.height,
+    botArcMaxY = 0
+  for (let y = textMaxY + 1; y < newImg.height; y++) {
+    for (let x = 0; x < newImg.width; x++) {
+      const p = samplePixel(x, y)
+      if (p[0] > 15 || p[1] > 15 || p[2] > 15) {
+        if (x < botArcMinX) botArcMinX = x
+        if (x > botArcMaxX) botArcMaxX = x
+        if (y < botArcMinY) botArcMinY = y
+        if (y > botArcMaxY) botArcMaxY = y
+      }
+    }
+  }
+
+  const arcSamples = {
+    topArc: {
+      leftTip: samplePixel(15, 280),
+      p10: samplePixel(150, 150),
+      p25: samplePixel(380, 70),
+      p50: samplePixel(750, 30),
+      p75: samplePixel(1150, 70),
+      p90: samplePixel(1380, 150),
+      rightTip: samplePixel(1510, 280),
+    },
+    botArc: {
+      leftTip: samplePixel(15, 670),
+      p10: samplePixel(150, 780),
+      p25: samplePixel(380, 860),
+      p50: samplePixel(750, 900),
+      p75: samplePixel(1150, 860),
+      p90: samplePixel(1380, 780),
+      rightTip: samplePixel(1495, 670),
+    },
+    letters: {
+      d: samplePixel(100, 480),
+      e: samplePixel(400, 480),
+      l: samplePixel(680, 480),
+      f: samplePixel(850, 480),
+      o: samplePixel(1100, 480),
+      s: samplePixel(1400, 480),
+    },
+  }
+
+  const croppedW =
+    Math.max(topArcMaxX, botArcMaxX, textMaxX) - Math.min(topArcMinX, botArcMinX, textMinX) + 1
+  const croppedH = botArcMaxY - topArcMinY + 1
+  const startCropX = Math.min(topArcMinX, botArcMinX, textMinX)
+  const startCropY = topArcMinY
+
+  const transparentBuf = Buffer.alloc(croppedW * croppedH * 4)
+  for (let y = 0; y < croppedH; y++) {
+    for (let x = 0; x < croppedW; x++) {
+      const srcX = startCropX + x
+      const srcY = startCropY + y
+      const p = samplePixel(srcX, srcY)
+      const dstIdx = (y * croppedW + x) * 4
+
+      const maxC = Math.max(p[0], p[1], p[2])
+      let alpha = 0
+      if (maxC > 25) {
+        alpha = 255
+      } else if (maxC > 5) {
+        alpha = Math.round(((maxC - 5) / 20) * 255)
+      }
+
+      if (alpha > 0) {
+        transparentBuf[dstIdx] = p[0]
+        transparentBuf[dstIdx + 1] = p[1]
+        transparentBuf[dstIdx + 2] = p[2]
+        transparentBuf[dstIdx + 3] = alpha
+      } else {
+        transparentBuf[dstIdx] = 0
+        transparentBuf[dstIdx + 1] = 0
+        transparentBuf[dstIdx + 2] = 0
+        transparentBuf[dstIdx + 3] = 0
+      }
+    }
+  }
+
+  const encodedTransparent = encodePngRgba(croppedW, croppedH, transparentBuf)
+  fs.writeFileSync(path.resolve('src/assets/delfos-logo-transparent.png'), encodedTransparent)
+
+  // Write a marker in public/icons-timestamp.txt so we can verify the icons were updated
+  fs.writeFileSync(path.resolve('public/icons-timestamp.txt'), String(Date.now()))
+
+  // Let's trace letter outlines and arc geometries precisely:
+  // Find contours/boxes for each letter d, e, l, f, o, s
+  // In the region textYStart to textYEnd (286 to 665):
+  const letterColumns = []
+  for (let x = 0; x < croppedW; x++) {
+    let blueCount = 0
+    for (let y = 286; y <= 665; y++) {
+      const p = samplePixel(startCropX + x, y)
+      if (p[0] < 50 && p[2] > 110 && p[1] < 140) {
+        blueCount++
+      }
+    }
+    letterColumns.push(blueCount)
+  }
+
+  // Find arcs outer and inner curves
+  // Top arc: for each x from 0 to croppedW: find highest y (outer edge) and lowest y (inner edge)
+  const topArcProfile = []
+  for (let x = 0; x < croppedW; x += 10) {
+    let minY = null, maxY = null
+    for (let y = 0; y <= 286; y++) {
+      const p = samplePixel(startCropX + x, y)
+      if (p[0] > 20 || p[1] > 20 || p[2] > 20) {
+        if (minY === null) minY = y
+        maxY = y
+      }
+    }
+    if (minY !== null) topArcProfile.push({ x, minY, maxY })
+  }
+
+  const botArcProfile = []
+  for (let x = 0; x < croppedW; x += 10) {
+    let minY = null, maxY = null
+    for (let y = 665; y <= 935; y++) {
+      const p = samplePixel(startCropX + x, y)
+      if (p[0] > 20 || p[1] > 20 || p[2] > 20) {
+        if (minY === null) minY = y
+        maxY = y
+      }
+    }
+    if (minY !== null) botArcProfile.push({ x, minY, maxY })
+  }
+
+  fs.writeFileSync(path.resolve('public/arc-profiles.json'), JSON.stringify({
+    croppedW,
+    croppedH,
+    topArcProfile: topArcProfile.filter((_, idx) => idx % 5 === 0),
+    botArcProfile: botArcProfile.filter((_, idx) => idx % 5 === 0),
+  }, null, 2))
+
+  // Trace pixel contours for letter glyphs:
+  // Let's find bounds of each letter in delfos:
+  // d, e, l, f, o, s
+  let inLetter = false
+  let letterRanges = []
+  let curStart = 0
+  for (let x = 0; x < letterColumns.length; x++) {
+    if (!inLetter && letterColumns[x] > 5) {
+      inLetter = true
+      curStart = x
+    } else if (inLetter && letterColumns[x] <= 5) {
+      inLetter = false
+      if (x - curStart > 20) {
+        letterRanges.push({ start: curStart, end: x - 1, w: x - curStart })
+      }
+    }
+  }
+  if (inLetter) {
+    letterRanges.push({ start: curStart, end: letterColumns.length - 1, w: letterColumns.length - curStart })
+  }
+
+  fs.writeFileSync(path.resolve('public/letters.json'), JSON.stringify(letterRanges, null, 2))
+  // Detailed letter boundaries:
+  // For each letter in delfos, let's sample the exact letter bounds:
+  const letterBoundsDetailed = []
+  for (let i = 0; i < letterRanges.length; i++) {
+    const range = letterRanges[i]
+    let topY = 9999, botY = -1
+    for (let x = range.start; x <= range.end; x++) {
+      for (let y = 286; y <= 665; y++) {
+        const p = samplePixel(startCropX + x, y)
+        if (p[0] < 50 && p[2] > 110 && p[1] < 140) {
+          if (y < topY) topY = y
+          if (y > botY) botY = y
+        }
+      }
+    }
+    letterBoundsDetailed.push({
+      index: i,
+      xStart: range.start,
+      xEnd: range.end,
+      w: range.w,
+      topY,
+      botY,
+      h: botY - topY + 1
+    })
+  }
+
+  fs.writeFileSync(path.resolve('public/letter-bounds.json'), JSON.stringify(letterBoundsDetailed, null, 2))
+  fs.writeFileSync(path.resolve('public/image-analysis.json'), JSON.stringify(arcSamples, null, 2))
+  // Usar a nova imagem recortada e transparente para gerar todos os ícones PWA/Favicon
+  const newTransparentImg = decodePng(encodedTransparent)
+  const newBbox = getBoundingBox(newTransparentImg)
 
   // 1. apple-touch-icon.png (180x180) - iOS
-  // Para iOS safe-area e cantos arredondados automáticos, margem segura de ~15%
   const appleIcon = createIcon({
-    srcImage,
+    srcImage: newTransparentImg,
     targetSize: 180,
-    safeMarginRatio: 0.15,
-    bbox,
+    safeMarginRatio: 0.12,
+    bbox: newBbox,
   })
   fs.writeFileSync(path.resolve('public/apple-touch-icon.png'), appleIcon)
 
   // 2. icon-192.png (192x192) - Android PWA
   const icon192 = createIcon({
-    srcImage,
+    srcImage: newTransparentImg,
     targetSize: 192,
-    safeMarginRatio: 0.16,
-    bbox,
+    safeMarginRatio: 0.14,
+    bbox: newBbox,
   })
   fs.writeFileSync(path.resolve('public/icon-192.png'), icon192)
 
   // 3. icon-512.png (512x512) - PWA Splash & Maskable
-  // Margem segura de 18% para atender perfeitamente a safe zone de ícones maskable do W3C
   const icon512 = createIcon({
-    srcImage,
+    srcImage: newTransparentImg,
     targetSize: 512,
-    safeMarginRatio: 0.18,
-    bbox,
+    safeMarginRatio: 0.16,
+    bbox: newBbox,
   })
   fs.writeFileSync(path.resolve('public/icon-512.png'), icon512)
 
-  // 4. favicon-32x32.png (32x32) - fallback para navegadores antigos
+  // 4. favicon-32x32.png (32x32)
   const favicon32 = createIcon({
-    srcImage,
+    srcImage: newTransparentImg,
     targetSize: 32,
-    safeMarginRatio: 0.12,
-    bbox,
+    safeMarginRatio: 0.08,
+    bbox: newBbox,
   })
   fs.writeFileSync(path.resolve('public/favicon-32x32.png'), favicon32)
-
-  // Também salvar como favicon.png por conveniência
   fs.writeFileSync(path.resolve('public/favicon.png'), favicon32)
 
-  console.log('Todos os PNGs foram gerados com sucesso em public/!')
-}
+  // 5. favicon.ico
+  fs.writeFileSync(path.resolve('public/favicon.ico'), favicon32)
+
+  // 6. Atualizar og-image.png (1200x630 padrão OpenGraph / Twitter Cards)
+  // Com o logo oficial novo centralizado e fundo institucional #061325
+  const ogW = 1200
+  const ogH = 630
+  const ogBuf = Buffer.alloc(ogW * ogH * 4)
+  for (let i = 0; i < ogW * ogH; i++) {
+    const idx = i * 4
+    ogBuf[idx] = 0x06
+    ogBuf[idx + 1] = 0x13
+    ogBuf[idx + 2] = 0x25
+    ogBuf[idx + 3] = 255
+  }
+
+  // Escalar newTransparentImg para caber em ~720x440 no centro do og-image
+  const targetOgLogoW = 750
+  const targetOgLogoH = 460
+  const scaleOg = Math.min(targetOgLogoW / newBbox.width, targetOgLogoH / newBbox.height)
+  const scaledOgW = newBbox.width * scaleOg
+  const scaledOgH = newBbox.height * scaleOg
+  const startOgX = (ogW - scaledOgW) / 2
+  const startOgY = (ogH - scaledOgH) / 2 - 15
+
+  for (let dy = 0; dy < ogH; dy++) {
+    for (let dx = 0; dx < ogW; dx++) {
+      const srcX = (dx - startOgX) / scaleOg + newBbox.x
+      const srcY = (dy - startOgY) / scaleOg + newBbox.y
+      if (
+        srcX >= newBbox.x &&
+        srcX <= newBbox.x + newBbox.width - 1 &&
+        srcY >= newBbox.y &&
+        srcY <= newBbox.y + newBbox.height - 1
+      ) {
+        const x0 = Math.floor(srcX)
+        const y0 = Math.floor(srcY)
+        const idx = (y0 * newTransparentImg.width + x0) * 4
+        const a = newTransparentImg.data[idx + 3] / 255
+        if (a > 0.01) {
+          const dstIdx = (dy * ogW + dx) * 4
+          ogBuf[dstIdx] = Math.round(newTransparentImg.data[idx] * a + ogBuf[dstIdx] * (1 - a))
+          ogBuf[dstIdx + 1] = Math.round(newTransparentImg.data[idx + 1] * a + ogBuf[dstIdx + 1] * (1 - a))
+          ogBuf[dstIdx + 2] = Math.round(newTransparentImg.data[idx + 2] * a + ogBuf[dstIdx + 2] * (1 - a))
+          ogBuf[dstIdx + 3] = 255
+        }
+      }
+    }
+  }
+  const ogPng = encodePngRgba(ogW, ogH, ogBuf)
+  fs.writeFileSync(path.resolve('public/og-image.png'), ogPng)
+
+  console.log('Todos os PNGs, Favicons, ICO e og-image foram gerados com sucesso em public/!')}
 
 generateAllIcons()

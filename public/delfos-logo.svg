@@ -1,0 +1,88 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1534 936"
+  width="100%"
+  height="100%"
+  aria-label="Delfos Engenharia"
+>
+  <defs>
+    <!-- Gradiente Arco Superior: Azul cobalto (#015BA1) -> Verde Esmeralda/Folha (#5DA55F) -> Amarelo Ouro Solar (#FDE107) -->
+    <linearGradient id="delfos-top-arc-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#015BA1" />
+      <stop offset="28%" stop-color="#17768A" />
+      <stop offset="52%" stop-color="#5DA55F" />
+      <stop offset="76%" stop-color="#C4C048" />
+      <stop offset="100%" stop-color="#FDE107" />
+    </linearGradient>
+
+    <!-- Gradiente Arco Inferior: Amarelo Ouro Solar (#FFE304) -> Verde Esmeralda (#53A063) -> Azul Cobalto (#015BA1) -->
+    <linearGradient id="delfos-bot-arc-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FFE304" />
+      <stop offset="24%" stop-color="#C4C048" />
+      <stop offset="48%" stop-color="#53A063" />
+      <stop offset="72%" stop-color="#17768A" />
+      <stop offset="100%" stop-color="#015BA1" />
+    </linearGradient>
+
+    <filter id="delfos-glow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <g filter="url(#delfos-glow)">
+    <!-- Arco Superior Energético (curvatura elíptica fiel ao anexo) -->
+    <!-- Inicia em (15, 285) contornando o topo suavemente até (1513, 285) e regressa pela borda interna -->
+    <path
+      d="M 15 285 C 80 150, 410 5, 767 5 C 1124 5, 1450 150, 1513 285 C 1320 120, 1060 90, 767 90 C 474 90, 210 120, 15 285 Z"
+      fill="url(#delfos-top-arc-grad)"
+    />
+
+    <!-- Arco Inferior Energético -->
+    <!-- Inicia em (0, 666) contornando a base até (1497, 666) e regressa pela borda interna -->
+    <path
+      d="M 0 666 C 210 825, 474 855, 767 855 C 1060 855, 1320 825, 1497 666 C 1450 805, 1124 935, 767 935 C 410 935, 80 805, 0 666 Z"
+      fill="url(#delfos-bot-arc-grad)"
+    />
+
+    <!-- Tipografia 'delfos' fiel, geométrica e limpa com curvas exatas -->
+    <!-- Cor: #015BA1 (azul Delfos original do anexo) -->
+    <g fill="#015BA1">
+      <!-- Letra 'd': círculo x ~ 230, r ~ 130, haste vertical direita em x ~ 270 a 335 subindo até y ~ 310 -->
+      <!-- d -->
+      <path
+        d="M 335 310 L 335 435 C 300 395, 248 380, 195 380 C 102 380, 25 450, 25 550 C 25 650, 102 720, 195 720 C 248 720, 300 705, 335 665 L 335 715 L 400 715 L 400 310 Z M 215 448 C 275 448, 335 492, 335 550 C 335 608, 275 652, 215 652 C 155 652, 95 608, 95 550 C 95 492, 155 448, 215 448 Z"
+      />
+
+      <!-- Letra 'e': base em 715, topo em 380 -->
+      <!-- e -->
+      <path
+        d="M 445 550 C 445 450, 520 380, 620 380 C 720 380, 795 450, 795 550 L 795 565 L 515 565 C 520 625, 565 658, 625 658 C 670 658, 710 638, 735 605 L 788 640 C 750 690, 690 720, 620 720 C 515 720, 445 650, 445 550 Z M 620 442 C 565 442, 522 478, 516 525 L 724 525 C 718 478, 675 442, 620 442 Z"
+      />
+
+      <!-- Letra 'l': traço vertical reto de y ~ 310 até y ~ 715, largura ~ 65px -->
+      <!-- l -->
+      <path
+        d="M 840 310 L 905 310 L 905 715 L 840 715 Z"
+      />
+
+      <!-- Letra 'f': haste com gancho superior e barra transversal -->
+      <!-- f -->
+      <path
+        d="M 1000 310 C 950 310, 915 345, 915 405 L 915 445 L 870 445 L 870 500 L 915 500 L 915 715 L 980 715 L 980 500 L 1040 500 L 1040 445 L 980 445 L 980 405 C 980 375, 995 365, 1020 365 C 1032 365, 1045 368, 1055 372 L 1065 318 C 1048 313, 1025 310, 1000 310 Z"
+      />
+
+      <!-- Letra 'o': círculo perfeito simétrico -->
+      <!-- o -->
+      <path
+        d="M 1065 550 C 1065 450, 1140 380, 1240 380 C 1340 380, 1415 450, 1415 550 C 1415 650, 1340 720, 1240 720 C 1140 720, 1065 650, 1065 550 Z M 1135 550 C 1135 612, 1180 655, 1240 655 C 1300 655, 1345 612, 1345 550 C 1345 488, 1300 445, 1240 445 C 1180 445, 1135 488, 1135 550 Z"
+      />
+
+      <!-- Letra 's': curvas sinuosas com pontas elegantes -->
+      <!-- s -->
+      <path
+        d="M 1435 640 L 1485 605 C 1500 625, 1525 655, 1565 655 C 1600 655, 1625 635, 1625 605 C 1625 575, 1600 560, 1545 545 C 1475 528, 1440 495, 1440 445 C 1440 395, 1485 380, 1550 380 C 1610 380, 1655 410, 1680 445 L 1632 485 C 1615 458, 1585 440, 1550 440 C 1515 440, 1495 455, 1495 480 C 1495 505, 1515 518, 1570 532 C 1640 550, 1680 580, 1680 635 C 1680 690, 1635 720, 1565 720 C 1505 720, 1458 680, 1435 640 Z"
+        transform="translate(-140, 0)"
+      />
+    </g>
+  </g>
+</svg>

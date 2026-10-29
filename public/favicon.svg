@@ -1,68 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
-    <!-- Gradiente de fundo sofisticado azul-marinho Delfos #061325 -> #0A1E38 -->
-    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Fundo institucional Delfos #061325 -> #0A1E38 -->
+    <linearGradient id="fav-bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0B2447" />
       <stop offset="100%" stop-color="#061325" />
     </linearGradient>
 
-    <!-- Laço Superior Oficial: Azul cobalto -> Teal -> Esmeralda -> Verde Solar -> Amarelo Solar (#F5B301) -->
-    <linearGradient id="fav-top" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#194D82" />
-      <stop offset="22%" stop-color="#14807C" />
-      <stop offset="48%" stop-color="#2DA85C" />
-      <stop offset="76%" stop-color="#A5C723" />
-      <stop offset="100%" stop-color="#F5B301" />
+    <!-- Gradiente Arco Superior: Azul cobalto (#015BA1) -> Verde (#5DA55F) -> Amarelo ouro (#FDE107) -->
+    <linearGradient id="fav-top-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#015BA1" />
+      <stop offset="28%" stop-color="#17768A" />
+      <stop offset="52%" stop-color="#5DA55F" />
+      <stop offset="76%" stop-color="#C4C048" />
+      <stop offset="100%" stop-color="#FDE107" />
     </linearGradient>
 
-    <!-- Laço Inferior Oficial: Amarelo Solar (#F5B301) -> Verde Solar -> Esmeralda -> Teal -> Azul cobalto -->
-    <linearGradient id="fav-bottom" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#F5B301" />
-      <stop offset="24%" stop-color="#A5C723" />
-      <stop offset="52%" stop-color="#2DA85C" />
-      <stop offset="78%" stop-color="#14807C" />
-      <stop offset="100%" stop-color="#194D82" />
+    <!-- Gradiente Arco Inferior: Amarelo ouro (#FFE304) -> Verde (#53A063) -> Azul cobalto (#015BA1) -->
+    <linearGradient id="fav-bot-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FFE304" />
+      <stop offset="24%" stop-color="#C4C048" />
+      <stop offset="48%" stop-color="#53A063" />
+      <stop offset="72%" stop-color="#17768A" />
+      <stop offset="100%" stop-color="#015BA1" />
     </linearGradient>
 
-    <!-- Brilho do sol central -->
-    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFF2A3" />
-      <stop offset="70%" stop-color="#F5B301" />
-      <stop offset="100%" stop-color="#D99F00" />
-    </radialGradient>
-
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.35" />
+    <filter id="fav-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.4" />
     </filter>
   </defs>
 
-  <!-- Fundo na cor institucional da marca com cantos arredondados para visibilidade em abas claras e escuras -->
-  <rect width="128" height="128" rx="28" fill="url(#bg-grad)" />
+  <!-- Fundo na cor institucional com cantos arredondados -->
+  <rect width="128" height="128" rx="28" fill="url(#fav-bg)" />
 
-  <!-- Borda sutil da marca para contraste perfeito -->
-  <rect width="126" height="126" x="1" y="1" rx="27" fill="none" stroke="#F5B301" stroke-width="1.5" stroke-opacity="0.3" />
+  <!-- Borda de acabamento sutil -->
+  <rect width="126" height="126" x="1" y="1" rx="27" fill="none" stroke="#FDE107" stroke-width="1.2" stroke-opacity="0.35" />
 
-  <!-- Símbolo oficial dos arcos solares e núcleo Delfos -->
-  <g transform="translate(64, 64) scale(1.08) translate(-64, -64)" filter="url(#shadow)">
-    <!-- Arco Superior Energético -->
+  <!-- Marca Oficial Delfos: Arcos envolventes e Monograma D oficial em alto contraste -->
+  <g transform="translate(64, 64) scale(0.95) translate(-64, -64)" filter="url(#fav-shadow)">
+    <!-- Arco Superior Energético (curvatura e gradiente idênticos à arte oficial) -->
     <path
-      d="M 17 56 C 27 33, 51 23, 64 23 C 77 23, 101 33, 111 56 C 97 42, 78 35, 64 35 C 50 35, 31 42, 17 56 Z"
-      fill="url(#fav-top)"
+      d="M 12 52 C 22 26, 52 14, 64 14 C 76 14, 106 26, 116 52 C 100 37, 78 28, 64 28 C 50 28, 28 37, 12 52 Z"
+      fill="url(#fav-top-grad)"
     />
 
     <!-- Arco Inferior Energético -->
     <path
-      d="M 17 72 C 31 86, 50 93, 64 93 C 78 93, 97 86, 111 72 C 101 95, 77 105, 64 105 C 51 105, 27 95, 17 72 Z"
-      fill="url(#fav-bottom)"
+      d="M 12 76 C 28 91, 50 100, 64 100 C 78 100, 100 91, 116 76 C 106 102, 76 114, 64 114 C 52 114, 22 102, 12 76 Z"
+      fill="url(#fav-bot-grad)"
     />
 
-    <!-- Núcleo Solar Central -->
-    <circle cx="64" cy="64" r="14.5" fill="url(#sun-glow)" />
-
-    <!-- Letra D oficial vazada central para reconhecimento e autoridade técnica imediata mesmo em 16x16 ou 32px -->
-    <path
-      d="M 59 55 L 64.5 55 C 69.5 55, 72.8 58, 72.8 64 C 72.8 70, 69.5 73, 64.5 73 L 59 73 Z M 62.4 58.3 L 62.4 69.7 L 64.4 69.7 C 67.2 69.7, 69.3 67.8, 69.3 64 C 69.3 60.2, 67.2 58.3, 64.4 58.3 Z"
-      fill="#061325"
-    />
+    <!-- Letra 'd' oficial estilizada no centro, em azul celeste vibrante com contorno branco sutil para legibilidade em 16/32px -->
+    <g transform="translate(64, 64) translate(-18, -18)">
+      <!-- Letra d minúscula com o traço vertical ascendente característico da Delfos -->
+      <path
+        d="M 23 2 L 23 11 C 20.8 7.5, 16.5 6, 12.5 6 C 5.5 6, 0 11.5, 0 19 C 0 26.5, 5.5 32, 12.5 32 C 16.5 32, 20.8 30.5, 23 27 L 23 32 L 31 32 L 31 2 Z M 15.5 25.2 C 11.8 25.2, 8.8 22.4, 8.8 19 C 8.8 15.6, 11.8 12.8, 15.5 12.8 C 19.2 12.8, 22.2 15.6, 22.2 19 C 22.2 22.4, 19.2 25.2, 15.5 25.2 Z"
+        fill="#38BDF8"
+      />
+    </g>
   </g>
 </svg>

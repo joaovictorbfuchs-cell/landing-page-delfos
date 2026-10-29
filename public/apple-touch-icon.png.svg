@@ -1,73 +1,58 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
   <defs>
-    <!-- Fundo sólido/gradiente profundo da marca Delfos (iOS exige fundo sem transparência) -->
-    <linearGradient id="apple-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Fundo sólido institucional Delfos (iOS safe-area opaco) -->
+    <linearGradient id="apple-bg-new" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0B2447" />
       <stop offset="100%" stop-color="#061325" />
     </linearGradient>
 
-    <!-- Laço Superior Oficial: Azul cobalto -> Teal -> Esmeralda -> Verde Solar -> Amarelo Solar (#F5B301) -->
-    <linearGradient id="apple-top" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#194D82" />
-      <stop offset="22%" stop-color="#14807C" />
-      <stop offset="48%" stop-color="#2DA85C" />
-      <stop offset="76%" stop-color="#A5C723" />
-      <stop offset="100%" stop-color="#F5B301" />
+    <!-- Arco Superior: Azul cobalto -> Verde -> Amarelo ouro -->
+    <linearGradient id="apple-top-new" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#015BA1" />
+      <stop offset="28%" stop-color="#17768A" />
+      <stop offset="52%" stop-color="#5DA55F" />
+      <stop offset="76%" stop-color="#C4C048" />
+      <stop offset="100%" stop-color="#FDE107" />
     </linearGradient>
 
-    <!-- Laço Inferior Oficial: Amarelo Solar (#F5B301) -> Verde Solar -> Esmeralda -> Teal -> Azul cobalto -->
-    <linearGradient id="apple-bottom" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#F5B301" />
-      <stop offset="24%" stop-color="#A5C723" />
-      <stop offset="52%" stop-color="#2DA85C" />
-      <stop offset="78%" stop-color="#14807C" />
-      <stop offset="100%" stop-color="#194D82" />
+    <!-- Arco Inferior: Amarelo ouro -> Verde -> Azul cobalto -->
+    <linearGradient id="apple-bot-new" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FFE304" />
+      <stop offset="24%" stop-color="#C4C048" />
+      <stop offset="48%" stop-color="#53A063" />
+      <stop offset="72%" stop-color="#17768A" />
+      <stop offset="100%" stop-color="#015BA1" />
     </linearGradient>
 
-    <!-- Brilho do sol central -->
-    <radialGradient id="apple-sun" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFF2A3" />
-      <stop offset="70%" stop-color="#F5B301" />
-      <stop offset="100%" stop-color="#D99F00" />
+    <radialGradient id="apple-ambient-new" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#FDE107" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#FDE107" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="apple-ambient" cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color="#F5B301" stop-opacity="0.12" />
-      <stop offset="100%" stop-color="#F5B301" stop-opacity="0" />
-    </radialGradient>
-
-    <filter id="apple-shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="apple-shadow-new" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.45" />
     </filter>
   </defs>
 
-  <!-- Fundo 100% opaco da marca Delfos -->
-  <rect width="180" height="180" fill="url(#apple-bg)" />
+  <rect width="180" height="180" fill="url(#apple-bg-new)" />
+  <circle cx="90" cy="90" r="70" fill="url(#apple-ambient-new)" />
 
-  <!-- Brilho ambiente central sutil -->
-  <circle cx="90" cy="90" r="70" fill="url(#apple-ambient)" />
-
-  <!-- Símbolo central com margem segura padrão da Apple (safe area) -->
-  <g transform="translate(90, 90) scale(1.35) translate(-64, -64)" filter="url(#apple-shadow)">
-    <!-- Arco Superior -->
+  <g transform="translate(90, 90) scale(1.32) translate(-64, -64)" filter="url(#apple-shadow-new)">
     <path
-      d="M 17 56 C 27 33, 51 23, 64 23 C 77 23, 101 33, 111 56 C 97 42, 78 35, 64 35 C 50 35, 31 42, 17 56 Z"
-      fill="url(#apple-top)"
+      d="M 12 52 C 22 26, 52 14, 64 14 C 76 14, 106 26, 116 52 C 100 37, 78 28, 64 28 C 50 28, 28 37, 12 52 Z"
+      fill="url(#apple-top-new)"
     />
 
-    <!-- Arco Inferior -->
     <path
-      d="M 17 72 C 31 86, 50 93, 64 93 C 78 93, 97 86, 111 72 C 101 95, 77 105, 64 105 C 51 105, 27 95, 17 72 Z"
-      fill="url(#apple-bottom)"
+      d="M 12 76 C 28 91, 50 100, 64 100 C 78 100, 100 91, 116 76 C 106 102, 76 114, 64 114 C 52 114, 22 102, 12 76 Z"
+      fill="url(#apple-bot-new)"
     />
 
-    <!-- Núcleo Solar Central -->
-    <circle cx="64" cy="64" r="14.5" fill="url(#apple-sun)" />
-
-    <!-- Letra D vazada central -->
-    <path
-      d="M 59 55 L 64.5 55 C 69.5 55, 72.8 58, 72.8 64 C 72.8 70, 69.5 73, 64.5 73 L 59 73 Z M 62.4 58.3 L 62.4 69.7 L 64.4 69.7 C 67.2 69.7, 69.3 67.8, 69.3 64 C 69.3 60.2, 67.2 58.3, 64.4 58.3 Z"
-      fill="#061325"
-    />
+    <g transform="translate(64, 64) translate(-18, -18)">
+      <path
+        d="M 23 2 L 23 11 C 20.8 7.5, 16.5 6, 12.5 6 C 5.5 6, 0 11.5, 0 19 C 0 26.5, 5.5 32, 12.5 32 C 16.5 32, 20.8 30.5, 23 27 L 23 32 L 31 32 L 31 2 Z M 15.5 25.2 C 11.8 25.2, 8.8 22.4, 8.8 19 C 8.8 15.6, 11.8 12.8, 15.5 12.8 C 19.2 12.8, 22.2 15.6, 22.2 19 C 22.2 22.4, 19.2 25.2, 15.5 25.2 Z"
+        fill="#38BDF8"
+      />
+    </g>
   </g>
 </svg>
