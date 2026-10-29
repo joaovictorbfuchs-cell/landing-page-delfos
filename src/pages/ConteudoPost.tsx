@@ -28,14 +28,16 @@ import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { getPostBySlug, getPostImageUrl } from '@/services/content'
-import type { PostRecord } from '@/types/content'
+import { getPostBySlug, getPostImageUrl, listPublishedCases } from '@/services/content'
+import { getArticlePortfolioPhoto } from '@/services/portfolioImages'
+import type { PostRecord, CaseRecord } from '@/types/content'
 
 export default function ConteudoPost() {
   const { slug } = useParams<{ slug: string }>()
   const { toast } = useToast()
 
   const [dynamicPost, setDynamicPost] = useState<PostRecord | null>(null)
+  const [liveCases, setLiveCases] = useState<CaseRecord[]>([])
   const [loadingDb, setLoadingDb] = useState(true)
 
   useEffect(() => {
@@ -43,10 +45,16 @@ export default function ConteudoPost() {
       if (!slug) return
       setLoadingDb(true)
       try {
-        const item = await getPostBySlug(slug)
+        const [item, cases] = await Promise.all([
+          getPostBySlug(slug),
+          listPublishedCases().catch(() => []),
+        ])
         // Garante que só exibe se o status for publicado (se rascunho, ignora)
         if (item && item.status === 'publicado') {
           setDynamicPost(item)
+        }
+        if (cases && cases.length > 0) {
+          setLiveCases(cases)
         }
       } catch (err) {
         console.warn('Erro ao buscar post por slug:', err)
@@ -226,11 +234,6 @@ export default function ConteudoPost() {
     return [articleSchema, faqSchema, breadcrumbSchema, organizationSchema]
   }, [isManutencaoRichPost])
 
-  // Se não encontrar nem estático nem dinâmico e já terminou de buscar
-  if (!loadingDb && !dynamicPost && !staticArtigo) {
-    return <Navigate to="/conteudos" replace />
-  }
-
   // Prepara modelo unificado
   const titulo = dynamicPost?.titulo || staticArtigo?.titulo || ''
   const subtitulo = dynamicPost?.subtitulo || staticArtigo?.subtitulo || ''
@@ -243,7 +246,14 @@ export default function ConteudoPost() {
     dynamicPost?.autor_cargo || staticArtigo?.autor.cargo || 'Especialista em Energia'
   const palavraChave =
     dynamicPost?.palavra_chave || staticArtigo?.palavraChavePrincipal || categoria
-  const fotoUrl = dynamicPost ? getPostImageUrl(dynamicPost, 'grande') : ''
+  const customFotoUrl = dynamicPost ? getPostImageUrl(dynamicPost, 'grande') : ''
+  const fallbackPortfolio = useMemo(() => {
+    return getArticlePortfolioPhoto(slug || '', categoria, 'grande', liveCases)
+  }, [slug, categoria, liveCases])
+
+  // Foto efetiva da capa: se o post tiver upload próprio no banco usa ele, senão usa foto real estável do portfólio
+  const fotoUrl = customFotoUrl || fallbackPortfolio.url
+  const fotoAlt = customFotoUrl ? `${titulo} — Delfos Engenharia Solar` : fallbackPortfolio.alt
   const conteudoTexto = dynamicPost?.conteudo || ''
   const resumo = dynamicPost?.resumo || staticArtigo?.resumo || ''
   const metaDescription = dynamicPost
@@ -251,6 +261,11 @@ export default function ConteudoPost() {
     : staticArtigo?.metaDescription || ''
   const formNecessidade = staticArtigo?.solucaoRelacionada.necessidadeForm || 'O&M e Monitoramento'
   const formOrigem = staticArtigo?.origemLead || `conteudo-post-${slug}`
+
+  // Se não encontrar nem estático nem dinâmico e já terminou de buscar
+  if (!loadingDb && !dynamicPost && !staticArtigo) {
+    return <Navigate to="/conteudos" replace />
+  }
 
   // Schema Article + BreadcrumbList genérico para posts sem schema dedicado
   const schemaArtigoGenerico = [
@@ -463,28 +478,42 @@ export default function ConteudoPost() {
               </div>
             </header>
 
-            {/* Foto de Capa (se houver via upload) ou Placeholder */}
-            {fotoUrl ? (
-              <div className="my-10 aspect-video w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200">
-                <img src={fotoUrl} alt={titulo} className="w-full h-full object-cover" />
-              </div>
-            ) : (
-              <div className="my-10 aspect-video w-full rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0B2C4F] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-8 text-center text-white relative overflow-hidden shadow-lg">
-                <div className="w-14 h-14 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-                  <CategoryIcon className="w-7 h-7" />
+            {/* Imagem Destacada da Instalação com Placas Solares Reais do Portfólio */}
+            <figure className="my-10 w-full">
+              <div className="aspect-video w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200 relative group bg-slate-900">
+                <img
+                  src={fotoUrl}
+                  alt={fotoAlt}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                />
+                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight-950/85 text-solar-300 text-xs font-bold border border-white/15 backdrop-blur-sm">
+                  <Sun className="w-3.5 h-3.5 text-solar-400" />
+                  <span>Obra Real Delfos Solar</span>
                 </div>
-                <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-                  Foto Real de Campo — Aguardando
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-midnight-950/90 via-midnight-950/50 to-transparent p-4 sm:p-5 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-solar-400 block">
+                      Instalação de Referência
+                    </span>
+                    <p className="text-xs sm:text-sm font-semibold text-white/95 line-clamp-1">
+                      {fallbackPortfolio.titulo}
+                    </p>
+                  </div>
+                  {fallbackPortfolio.potencia && (
+                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/10 border border-white/15 text-slate-200 shrink-0 self-start sm:self-auto">
+                      {fallbackPortfolio.potencia} • {fallbackPortfolio.local}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <figcaption className="text-xs text-slate-500 mt-2.5 px-2 flex items-center justify-between">
+                <span>{fotoAlt}</span>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Acervo de Obras da Delfos Engenharia
                 </span>
-                <p className="text-xs text-slate-300 mt-1 max-w-md">
-                  Registro fotográfico da engenharia da Delfos Solar em obra no Sul do Brasil (
-                  {palavraChave}).
-                </p>
-                <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
-                  Erechim/RS • Delfos Engenharia
-                </div>
-              </div>
-            )}
+              </figcaption>
+            </figure>
 
             {/* CONTEÚDO DO ARTIGO */}
             <div className="space-y-12 text-slate-700 leading-relaxed text-base sm:text-lg">
@@ -645,32 +674,48 @@ export default function ConteudoPost() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {artigosRelacionados.map((rel) => (
-                  <Link
-                    key={rel.slug}
-                    to={`/conteudos/${rel.slug}`}
-                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-solar-400/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-                  >
-                    <div className="space-y-3">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-frost text-slate-700 inline-block">
-                        {rel.categoria}
-                      </span>
-                      <h4 className="text-base font-bold text-slate-900 group-hover:text-solar-600 transition-colors line-clamp-2">
-                        {rel.titulo}
-                      </h4>
-                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                        {rel.resumo}
-                      </p>
-                    </div>
+                {artigosRelacionados.map((rel) => {
+                  const relFoto = getArticlePortfolioPhoto(
+                    rel.slug,
+                    rel.categoria,
+                    'leve',
+                    liveCases,
+                  )
+                  return (
+                    <Link
+                      key={rel.slug}
+                      to={`/conteudos/${rel.slug}`}
+                      className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-solar-400/60 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group overflow-hidden"
+                    >
+                      <div className="space-y-3">
+                        <div className="aspect-video w-full rounded-xl overflow-hidden bg-slate-900 relative">
+                          <img
+                            src={relFoto.url}
+                            alt={relFoto.alt}
+                            loading="lazy"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <span className="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-midnight-950/80 text-solar-300 border border-white/10">
+                            {rel.categoria}
+                          </span>
+                        </div>
+                        <h4 className="text-base font-bold text-slate-900 group-hover:text-solar-600 transition-colors line-clamp-2">
+                          {rel.titulo}
+                        </h4>
+                        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                          {rel.resumo}
+                        </p>
+                      </div>
 
-                    <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-                      <span>{rel.tempoLeitura}</span>
-                      <span className="text-solar-700 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                        Ler <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span>{rel.tempoLeitura}</span>
+                        <span className="text-solar-700 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                          Ler <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
           </section>

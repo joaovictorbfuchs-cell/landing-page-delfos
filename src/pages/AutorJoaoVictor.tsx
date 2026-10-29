@@ -20,6 +20,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { Button } from '@/components/ui/button'
 import { ARTIGOS_BLOG } from '@/data/blog'
+import { getArticlePortfolioPhoto } from '@/services/portfolioImages'
 
 export default function AutorJoaoVictor() {
   const scrollToContato = () => {
@@ -297,37 +298,50 @@ export default function AutorJoaoVictor() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {artigosAutor.map((artigo) => (
-                <Link
-                  key={artigo.slug}
-                  to={`/conteudos/${artigo.slug}`}
-                  className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-solar-400/80 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="px-2.5 py-1 rounded-full bg-solar-100 text-solar-900 font-bold uppercase tracking-wider text-[10px]">
-                        {artigo.categoria}
-                      </span>
-                      <span className="text-slate-400">{artigo.tempoLeitura}</span>
+              {artigosAutor.map((artigo) => {
+                const foto = getArticlePortfolioPhoto(artigo.slug, artigo.categoria, 'leve')
+                return (
+                  <Link
+                    key={artigo.slug}
+                    to={`/conteudos/${artigo.slug}`}
+                    className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-solar-400/80 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between overflow-hidden"
+                  >
+                    <div className="space-y-4">
+                      <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 relative">
+                        <img
+                          src={foto.url}
+                          alt={foto.alt}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-midnight-950/80 text-[10px] font-bold text-solar-300 border border-white/10">
+                          {artigo.categoria}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-2 text-xs">
+                        <span className="text-slate-400 font-medium">{artigo.tempoLeitura}</span>
+                        <span className="text-slate-400">{artigo.dataPublicacao}</span>
+                      </div>
+
+                      <h4 className="text-lg font-bold text-slate-900 group-hover:text-solar-600 transition-colors leading-snug">
+                        {artigo.titulo}
+                      </h4>
+
+                      <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
+                        {artigo.resumo}
+                      </p>
                     </div>
 
-                    <h4 className="text-lg font-bold text-slate-900 group-hover:text-solar-600 transition-colors leading-snug">
-                      {artigo.titulo}
-                    </h4>
-
-                    <p className="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">
-                      {artigo.resumo}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span className="text-slate-400">{artigo.dataPublicacao}</span>
-                    <span className="text-solar-700 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      Ler artigo completo <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="text-slate-500 font-medium">Obra Delfos Solar</span>
+                      <span className="text-solar-700 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                        Ler artigo completo <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>

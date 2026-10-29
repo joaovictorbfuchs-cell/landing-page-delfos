@@ -25,8 +25,9 @@ import SeoMeta from '@/components/SeoMeta'
 import { ARTIGOS_BLOG, type ArtigoBlog } from '@/data/blog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { listPublishedPosts, getPostImageUrl } from '@/services/content'
-import type { PostRecord } from '@/types/content'
+import { listPublishedPosts, listPublishedCases, getPostImageUrl } from '@/services/content'
+import { getArticlePortfolioPhoto } from '@/services/portfolioImages'
+import type { PostRecord, CaseRecord } from '@/types/content'
 
 // Interface unificada para exibição tanto de posts estáticos quanto dinâmicos do PocketBase
 interface DisplayArticle {
@@ -49,17 +50,24 @@ export default function Conteudos() {
   const [categoriaFiltro, setCategoriaFiltro] = useState<string>('todas')
   const [busca, setBusca] = useState<string>('')
   const [dynamicPosts, setDynamicPosts] = useState<PostRecord[]>([])
+  const [liveCases, setLiveCases] = useState<CaseRecord[]>([])
 
   useEffect(() => {
-    async function loadDynamic() {
+    async function loadData() {
       try {
-        const posts = await listPublishedPosts()
+        const [posts, cases] = await Promise.all([
+          listPublishedPosts(),
+          listPublishedCases().catch(() => []),
+        ])
         setDynamicPosts(posts)
+        if (cases && cases.length > 0) {
+          setLiveCases(cases)
+        }
       } catch (err) {
-        console.warn('Falha ao carregar posts publicados:', err)
+        console.warn('Falha ao carregar dados:', err)
       }
     }
-    loadDynamic()
+    loadData()
   }, [])
 
   const scrollToContato = () => {
@@ -101,25 +109,29 @@ export default function Conteudos() {
     // 2. Converter posts estáticos existentes (evitando duplicar se o slug existir no banco)
     const existingSlugs = new Set(fromDb.map((d) => d.slug))
     const fromStatic: DisplayArticle[] = ARTIGOS_BLOG.filter((a) => !existingSlugs.has(a.slug)).map(
-      (a) => ({
-        slug: a.slug,
-        titulo: a.titulo,
-        subtitulo: a.subtitulo,
-        resumo: a.resumo,
-        categoria: a.categoria,
-        tempoLeitura: a.tempoLeitura,
-        dataPublicacao: a.dataPublicacao,
-        autorNome: a.autor.nome,
-        autorCargo: a.autor.cargo,
-        palavraChave: a.palavraChavePrincipal,
-        palavrasChaveSecundarias: a.palavrasChaveSecundarias,
-        isDynamic: false,
-      }),
+      (a) => {
+        const portfolioPhoto = getArticlePortfolioPhoto(a.slug, a.categoria, 'leve', liveCases)
+        return {
+          slug: a.slug,
+          titulo: a.titulo,
+          subtitulo: a.subtitulo,
+          resumo: a.resumo,
+          categoria: a.categoria,
+          tempoLeitura: a.tempoLeitura,
+          dataPublicacao: a.dataPublicacao,
+          autorNome: a.autor.nome,
+          autorCargo: a.autor.cargo,
+          palavraChave: a.palavraChavePrincipal,
+          palavrasChaveSecundarias: a.palavrasChaveSecundarias,
+          fotoUrl: portfolioPhoto.url,
+          isDynamic: false,
+        }
+      },
     )
 
     // Coloca os dinâmicos primeiro (mais recentes) seguidos dos estáticos
     return [...fromDb, ...fromStatic]
-  }, [dynamicPosts])
+  }, [dynamicPosts, liveCases])
 
   const artigosFiltrados = useMemo(() => {
     return todosArtigos.filter((artigo) => {
@@ -264,35 +276,30 @@ export default function Conteudos() {
                   </div>
 
                   <div className="lg:col-span-5">
-                    {/* Foto real carregada do banco se houver, ou placeholder */}
-                    {artigoDestaque.fotoUrl ? (
-                      <div className="relative aspect-video lg:aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-slate-200">
-                        <img
-                          src={artigoDestaque.fotoUrl}
-                          alt={artigoDestaque.titulo}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-midnight-950/80 text-[10px] font-bold text-solar-300 border border-white/10">
-                          Foto Oficial
+                    {/* Foto real com placas do portfólio da Delfos */}
+                    {(() => {
+                      const displayFoto =
+                        artigoDestaque.fotoUrl ||
+                        getArticlePortfolioPhoto(
+                          artigoDestaque.slug,
+                          artigoDestaque.categoria,
+                          'media',
+                          liveCases,
+                        ).url
+                      return (
+                        <div className="relative aspect-video lg:aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group">
+                          <img
+                            src={displayFoto}
+                            alt={`Usina fotovoltaica instalada pela Delfos Engenharia — ${artigoDestaque.titulo}`}
+                            loading="lazy"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-midnight-950/85 text-[10px] font-bold text-solar-300 border border-white/15 backdrop-blur-sm">
+                            Obra Delfos Solar
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="relative aspect-video lg:aspect-4/3 rounded-2xl bg-gradient-to-br from-[#081B30] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-6 text-center text-white overflow-hidden shadow-inner">
-                        <div className="w-12 h-12 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-                          <Sun className="w-6 h-6" />
-                        </div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-                          Foto Real — Aguardando
-                        </span>
-                        <p className="text-[11px] text-slate-300 mt-1 max-w-xs">
-                          Instalação fotovoltaica residencial e comercial em telhado no Alto Uruguai
-                          gaúcho (acervo técnico Delfos).
-                        </p>
-                        <div className="absolute bottom-3 right-3 text-[10px] text-slate-400 font-mono">
-                          Erechim/RS • 12 anos
-                        </div>
-                      </div>
-                    )}
+                      )
+                    })()}
                   </div>
                 </div>
               </div>
@@ -380,31 +387,30 @@ export default function Conteudos() {
                       className="bg-white rounded-3xl border border-slate-200/90 hover:border-solar-400/60 transition-all p-6 sm:p-7 shadow-xs hover:shadow-md flex flex-col justify-between group"
                     >
                       <div className="space-y-4">
-                        {/* Foto de Capa (se houver no banco) ou Placeholder técnico */}
-                        {artigo.fotoUrl ? (
-                          <div className="aspect-video w-full rounded-2xl overflow-hidden relative shadow-sm border border-slate-200">
-                            <img
-                              src={artigo.fotoUrl}
-                              alt={artigo.titulo}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-midnight-950/80 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
-                              {artigo.categoria}
+                        {/* Foto de Capa com Foto Real do Portfólio Delfos */}
+                        {(() => {
+                          const cardFoto =
+                            artigo.fotoUrl ||
+                            getArticlePortfolioPhoto(
+                              artigo.slug,
+                              artigo.categoria,
+                              'leve',
+                              liveCases,
+                            ).url
+                          return (
+                            <div className="aspect-video w-full rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-slate-900 group">
+                              <img
+                                src={cardFoto}
+                                alt={`Usina solar fotovoltaica instalada pela Delfos — ${artigo.titulo}`}
+                                loading="lazy"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-midnight-950/85 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
+                                {artigo.categoria}
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#081B30] to-[#103A66] border border-white/10 flex flex-col items-center justify-center p-4 text-center text-white relative overflow-hidden">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-solar-300">
-                              Foto Real — Aguardando
-                            </span>
-                            <span className="text-[11px] text-slate-300 mt-0.5 line-clamp-1 max-w-xs">
-                              {artigo.palavraChave} • Delfos Engenharia de Campo
-                            </span>
-                            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/40 text-[10px] font-semibold text-solar-300 backdrop-blur-xs border border-white/10">
-                              {artigo.categoria}
-                            </div>
-                          </div>
-                        )}
+                          )
+                        })()}
 
                         {/* Metadados */}
                         <div className="flex items-center gap-3 text-xs text-slate-400">
