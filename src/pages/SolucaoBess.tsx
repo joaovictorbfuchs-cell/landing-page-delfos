@@ -101,7 +101,7 @@ export default function SolucaoBess() {
     <div className="min-h-screen flex flex-col bg-[#050A10] text-slate-100 antialiased selection:bg-emerald-500 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
         title="Baterias de Energia: BESS e Backup | Delfos"
-        description="Baterias (BESS) para empresas e indústrias: backup ininterrupto, corte de picos de consumo e economia no horário de ponta. Projeto e instalação no Sul do Brasil."
+        description="Baterias (BESS) para empresas e indústrias: backup ininterrupto, corte de picos e economia no horário de ponta. Projeto e instalação no Sul do Brasil."
         canonicalPath="/solucoes/bess"
         ogImage="/og-image.png"
       />
