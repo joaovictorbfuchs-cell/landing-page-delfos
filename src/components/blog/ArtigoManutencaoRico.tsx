@@ -1651,7 +1651,8 @@ export default function ArtigoManutencaoRico({
             substituído fora da garantia:
           </p>
 
-          <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-xs">
+          {/* Tabela no Desktop / Tablet */}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-slate-200 shadow-xs">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-100 text-slate-700 text-xs uppercase font-bold tracking-wider">
                 <tr>
@@ -1686,6 +1687,54 @@ export default function ArtigoManutencaoRico({
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          {/* Cards responsivos no mobile (perfeitos para 360px sem rolagem horizontal forçada) */}
+          <div className="sm:hidden space-y-3">
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="font-bold text-slate-900 text-xs">5% — Sujeira Leve</span>
+                <span className="text-[11px] font-mono font-bold text-slate-700">R$ 591/ano</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Perda em 5 anos:</span>
+                <span className="font-mono font-bold text-slate-900">R$ 2.955</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+                <span>Impacto:</span>
+                <span>~ 3 módulos novos</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="font-bold text-slate-900 text-xs">12% — Sujeira Moderada</span>
+                <span className="text-[11px] font-mono font-bold text-slate-700">R$ 1.419/ano</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Perda em 5 anos:</span>
+                <span className="font-mono font-bold text-slate-900">R$ 7.095</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+                <span>Impacto:</span>
+                <span>~ 7 módulos novos</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200 shadow-xs space-y-2">
+              <div className="flex items-center justify-between border-b border-rose-200/60 pb-2">
+                <span className="font-extrabold text-rose-950 text-xs">25% — Severa + Falhas</span>
+                <span className="text-[11px] font-mono font-bold text-rose-700">R$ 2.957/ano</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-rose-800 font-medium">Perda em 5 anos:</span>
+                <span className="font-mono font-extrabold text-rose-700">R$ 14.785</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-rose-800 font-bold pt-0.5">
+                <span>Impacto:</span>
+                <span>~ 14 módulos perdidos</span>
+              </div>
+            </div>
           </div>
         </div>
 

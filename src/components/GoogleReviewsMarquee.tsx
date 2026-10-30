@@ -33,9 +33,12 @@ function ReviewCard({ review }: { review: GoogleReview }) {
     .join('')
 
   return (
-    <article
-      aria-label={`Avaliação de ${review.author}`}
-      className="w-[300px] sm:w-[360px] md:w-[380px] shrink-0 bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between text-left select-none"
+    <a
+      href={GOOGLE_PROFILE_DATA.profileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Avaliação de ${review.author} no Google`}
+      className="w-[280px] xs:w-[300px] sm:w-[360px] md:w-[380px] shrink-0 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:border-solar-400 active:scale-[0.98] transition-all duration-200 flex flex-col justify-between text-left select-none cursor-pointer group/card touch-manipulation"
     >
       <div>
         {/* Card Header: Avatar + Autor + Google Icon */}
@@ -87,14 +90,16 @@ function ReviewCard({ review }: { review: GoogleReview }) {
       </div>
 
       {/* Card Footer: Selo de cliente verificado */}
-      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-        <span className="flex items-center gap-1 font-medium text-leaf-dark">
+      <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+        <span className="flex items-center gap-1 font-medium text-emerald-700">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
           Cliente verificado
         </span>
-        <span className="text-slate-400">{GOOGLE_PROFILE_DATA.location}</span>
+        <span className="text-slate-400 text-[10px] sm:text-[11px]">
+          {GOOGLE_PROFILE_DATA.location}
+        </span>
       </div>
-    </article>
+    </a>
   )
 }
 

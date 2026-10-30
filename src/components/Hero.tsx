@@ -174,7 +174,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
   return (
     <section
       id="inicio"
-      className="relative min-h-[92vh] flex items-center pt-28 pb-16 overflow-hidden bg-gradient-to-b from-[#081B30] via-[#0B2C4F] to-[#0A223E] text-white"
+      className="relative min-h-0 sm:min-h-[92vh] flex items-center pt-20 sm:pt-28 pb-10 sm:pb-16 overflow-hidden bg-gradient-to-b from-[#081B30] via-[#0B2C4F] to-[#0A223E] text-white"
     >
       {/* Subtle engineering grid */}
       <div
@@ -192,54 +192,53 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
       <div className="absolute -top-24 -right-24 w-[500px] h-[500px] rounded-full bg-solar-400/15 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 -left-20 w-[420px] h-[420px] rounded-full bg-emerald-500/10 blur-[100px] pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-center">
           {/* Left Column: Novo Posicionamento */}
-          <div className="lg:col-span-7 flex flex-col gap-6">
-            <div className="space-y-4">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+          <div className="lg:col-span-7 flex flex-col gap-3.5 sm:gap-6">
+            <div className="space-y-2 sm:space-y-4">
+              <h1 className="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
                 Da geração à operação{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-solar-400 to-amber-200">
                   da sua energia.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-lg text-slate-200/90 leading-snug sm:leading-relaxed max-w-2xl">
                 Economia real na conta de luz com a segurança de uma engenharia de ciclo completo:
-                equipe própria, homologação sem dor de cabeça e suporte contínuo para sua
-                tranquilidade.
+                equipe própria, homologação sem dor de cabeça e suporte contínuo.
               </p>
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+            <div className="flex flex-row items-center gap-2.5 sm:gap-3.5 pt-0.5 sm:pt-2">
               <Button
                 onClick={() => onSolicitarAvaliacao({ origem: 'home-hero' })}
                 size="lg"
-                className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold px-7 py-6 text-base rounded-xl shadow-lg shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                className="flex-1 sm:flex-initial bg-solar-400 hover:bg-solar-500 text-midnight-950 font-extrabold px-4 sm:px-7 h-12 sm:h-14 text-sm sm:text-base rounded-xl shadow-lg shadow-solar-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2 group shrink-0"
               >
-                Solicitar orçamento
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>Solicitar orçamento</span>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
 
               <a
                 href="#solucoes"
-                className="inline-flex items-center justify-center px-6 py-4 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white text-sm font-semibold backdrop-blur-sm transition-colors text-center"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center px-3.5 sm:px-6 h-12 sm:h-14 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm transition-colors text-center whitespace-nowrap"
               >
-                Conhecer as soluções
+                Soluções
               </a>
             </div>
 
             {/* Micro trust row */}
-            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-slate-300">
+            <div className="pt-0.5 sm:pt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-300">
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
                 <span>Engenharia própria com ART / CREA-RS</span>
               </div>
               <span className="hidden sm:inline-block text-slate-600">•</span>
               <div className="flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-solar-400" />
-                <span>Atendimento regional em Erechim e todo o Sul</span>
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-solar-400 shrink-0" />
+                <span>Atendimento regional em Erechim e Região Sul</span>
               </div>
             </div>
           </div>

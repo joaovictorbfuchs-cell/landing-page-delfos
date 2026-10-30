@@ -77,10 +77,10 @@ export default function AtendimentoFloating({
   return (
     <>
       {/* Balão circular / botão "Atendimento" fixo no canto inferior direito */}
-      {/* bottom-20 no mobile para não sobrepor a MobileCtaBar (h-16), bottom-6 no desktop */}
+      {/* bottom-20 no mobile para ter folga clara acima da MobileCtaBar e evitar sobreposição, bottom-6 no desktop */}
       <aside
         aria-label="Atendimento Delfos Engenharia"
-        className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40"
+        className="fixed bottom-[4.75rem] md:bottom-6 right-3 sm:right-6 z-40"
       >
         {!isAssistantOpen && (
           <button
@@ -88,7 +88,7 @@ export default function AtendimentoFloating({
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? 'Fechar menu de atendimento' : 'Abrir menu de atendimento'}
-            className="group relative flex items-center gap-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-3 sm:px-4 sm:py-3 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/20 cursor-pointer focus:outline-none focus:ring-4 focus:ring-emerald-400/30"
+            className="group relative flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold p-2.5 sm:px-4 sm:py-3 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/20 cursor-pointer focus:outline-none focus:ring-4 focus:ring-emerald-400/30"
           >
             <div className="relative flex items-center justify-center">
               {isMenuOpen ? (

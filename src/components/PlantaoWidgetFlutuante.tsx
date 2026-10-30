@@ -635,13 +635,13 @@ export default function PlantaoWidgetFlutuante({
     <>
       {/* 1. BALÃO CIRCULAR FIXO NO CANTO INFERIOR DIREITO (quando não estiver embutido no menu) */}
       {!hideFloatingButton && (
-        <div className="fixed bottom-20 md:bottom-6 right-5 sm:right-6 z-50">
+        <div className="fixed bottom-[4.75rem] md:bottom-6 right-3 sm:right-6 z-50">
           {!isOpen ? (
             <button
               type="button"
               onClick={() => setIsOpen(true)}
               aria-label="Abrir atendimento do Plantão de IA"
-              className="group relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-midnight-950 via-slate-900 to-[#0A2744] text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-solar-400 cursor-pointer focus:outline-none focus:ring-4 focus:ring-solar-400/30"
+              className="group relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-midnight-950 via-slate-900 to-[#0A2744] text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-solar-400 cursor-pointer focus:outline-none focus:ring-4 focus:ring-solar-400/30"
             >
               <span className="absolute -inset-1 rounded-full bg-solar-400/30 animate-ping opacity-60 pointer-events-none" />
 
@@ -665,7 +665,7 @@ export default function PlantaoWidgetFlutuante({
           className={`fixed z-50 shadow-2xl transition-all duration-200 flex flex-col bg-white overflow-hidden border border-slate-200 ${
             isExpanded
               ? 'inset-2 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[480px] sm:h-[640px] rounded-2xl'
-              : 'bottom-20 sm:bottom-6 right-3 sm:right-6 w-[calc(100vw-24px)] sm:w-[380px] md:w-[400px] h-[520px] sm:h-[560px] rounded-2xl'
+              : 'bottom-[4.5rem] sm:bottom-6 right-2 sm:right-6 w-[calc(100vw-16px)] sm:w-[380px] md:w-[400px] h-[min(540px,calc(100dvh-5.5rem))] rounded-2xl'
           }`}
         >
           {/* CABEÇALHO LIMPO E PROFISSIONAL */}

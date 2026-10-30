@@ -302,12 +302,13 @@ export default function Admin() {
     <div className="min-h-screen bg-frost flex flex-col text-slate-800">
       {/* Top Navbar */}
       <header className="bg-midnight-950 text-white border-b border-white/10 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-2.5">
-              <DelfosLogo height={44} variant="dark-bg" />
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Link to="/" className="flex items-center gap-2 shrink-0">
+              <DelfosLogo height={36} variant="dark-bg" className="sm:hidden" />
+              <DelfosLogo height={44} variant="dark-bg" className="hidden sm:block" />
             </Link>
-            <div className="border-l border-white/20 pl-3 hidden sm:block">
+            <div className="border-l border-white/20 pl-2 sm:pl-3 hidden sm:block">
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit">
                 Painel Administrativo
               </span>
@@ -457,7 +458,7 @@ export default function Admin() {
               </Link>
             </div>
 
-            <Link to="/">
+            <Link to="/" className="hidden sm:inline-flex">
               <Button
                 variant="ghost"
                 size="sm"
@@ -472,7 +473,8 @@ export default function Admin() {
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-red-300 text-xs flex items-center gap-1.5"
+              className="bg-red-500/15 border-red-400/30 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold h-9 px-3 flex items-center gap-1.5 shrink-0"
+              title="Encerrar sessão administrativa"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sair</span>
@@ -530,7 +532,7 @@ export default function Admin() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8 w-full flex-1 space-y-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 w-full flex-1 space-y-6 sm:space-y-8">
         {activeTab === 'posts' && (
           <AdminPostsTab posts={posts} loading={loadingPosts} onRefresh={fetchPosts} />
         )}
@@ -725,7 +727,6 @@ export default function Admin() {
                 </div>
               </div>
             </div>
-
             {/* Filters and Actions */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
               <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -798,9 +799,150 @@ export default function Admin() {
                 </Button>
               </div>
             </div>
+            {/* Leads Display: Cartões Empilhados no Mobile (< md) e Tabela no Desktop (>= md) */}
+            {/* 1. Modo Mobile: Cartões Empilhados com Telefone Clicável e WhatsApp em Destaque */}
+            <div className="md:hidden space-y-3.5">
+              {loading ? (
+                <div className="bg-white rounded-2xl p-8 text-center text-slate-500 border border-slate-200/80">
+                  <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-solar-500" />
+                  Carregando leads do banco...
+                </div>
+              ) : filteredLeads.length === 0 ? (
+                <div className="bg-white rounded-2xl p-8 text-center text-slate-500 border border-slate-200/80">
+                  Nenhum lead encontrado com os filtros atuais.
+                </div>
+              ) : (
+                filteredLeads.map((lead) => {
+                  const dateFormatted = new Date(lead.created).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
 
-            {/* Leads Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                  const cleanPhone = lead.telefone.replace(/\D/g, '')
+                  const telUrl = `tel:${cleanPhone}`
+                  const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
+                    lead.nome,
+                  )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+
+                  const valorFinal = lead.valor_conta || lead.consumo_mensal
+
+                  return (
+                    <article
+                      key={lead.id}
+                      className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-3"
+                    >
+                      {/* Topo do card: Nome + Data */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedLeadModal(lead)}
+                            className="font-bold text-slate-900 text-base text-left hover:text-solar-600 block truncate"
+                          >
+                            {lead.nome}
+                          </button>
+                          <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mt-0.5">
+                            <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
+                            <span>{dateFormatted}</span>
+                            {lead.cidade && (
+                              <>
+                                <span>•</span>
+                                <span className="truncate">{lead.cidade}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Origem badge */}
+                        {lead.origem === 'plantao-ia' ? (
+                          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-300 font-bold text-[10px] shrink-0">
+                            <Bot className="w-3 h-3 text-red-700" />
+                            <span>Plantão IA</span>
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0 truncate max-w-[110px]">
+                            <Tag className="w-2.5 h-2.5 text-slate-400 shrink-0" />
+                            <span className="truncate">{lead.origem || 'direto'}</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Informações técnicas compactas */}
+                      <div className="grid grid-cols-2 gap-2 text-xs py-2 px-3 rounded-xl bg-slate-50 border border-slate-100">
+                        <div>
+                          <span className="text-[10px] text-slate-400 block font-semibold uppercase">
+                            Pilar
+                          </span>
+                          <span className="font-bold text-slate-800 text-[11px] truncate block">
+                            {(lead.necessidade || '') === 'Manutenção'
+                              ? 'Manutenção / O&M'
+                              : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-slate-400 block font-semibold uppercase">
+                            Conta / Mês
+                          </span>
+                          <span className="font-bold text-emerald-800 text-[11px] truncate block">
+                            {valorFinal ? `R$ ${valorFinal.toLocaleString('pt-BR')}` : 'Não inf.'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Botões de Ação Mobile com Telefone e WhatsApp em Destaque */}
+                      <div className="pt-1 flex items-center gap-2">
+                        {/* WhatsApp em Destaque Principal */}
+                        <a
+                          href={whatsappLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 h-11 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-colors"
+                        >
+                          <Phone className="w-4 h-4 fill-white" />
+                          <span>WhatsApp</span>
+                        </a>
+
+                        {/* Telefone Clicável (tel:) */}
+                        <a
+                          href={telUrl}
+                          className="inline-flex items-center justify-center gap-1.5 h-11 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-200 transition-colors"
+                          title={`Ligar para ${lead.telefone}`}
+                        >
+                          <Phone className="w-3.5 h-3.5 text-slate-600" />
+                          <span className="text-[11px] font-mono">{lead.telefone}</span>
+                        </a>
+
+                        {/* Ver ficha */}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedLeadModal(lead)}
+                          className="h-11 px-2.5 text-xs text-slate-600 hover:text-slate-900"
+                        >
+                          Ficha
+                        </Button>
+
+                        {/* Excluir */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          disabled={deletingId === lead.id}
+                          onClick={() => handleDelete(lead.id, lead.nome)}
+                          className="h-11 w-10 text-slate-400 hover:text-red-600 hover:bg-red-50 shrink-0"
+                          title="Remover lead"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </article>
+                  )
+                })
+              )}
+            </div>
+            {/* 2. Modo Desktop: Tabela Completa (visível a partir de md) */}
+            <div className="hidden md:block bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -987,7 +1129,7 @@ export default function Admin() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div>{' '}
           </>
         )}
       </div>

@@ -22,7 +22,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-[#061325] text-slate-300 pt-16 pb-12 border-t border-white/10 relative">
+    <footer className="bg-[#061325] text-slate-300 pt-16 pb-24 md:pb-12 border-t border-white/10 relative">
       <div className="max-w-7xl mx-auto px-6">
         {/* Top Brand & Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
@@ -264,7 +264,7 @@ export default function Footer() {
         {/* Bloco Google Meu Negócio / Google Business Profile */}
         <div className="py-6 border-b border-white/10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
-            <div className="flex items-center gap-3.5">
+            <div className="flex items-start sm:items-center gap-3.5">
               <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path
@@ -311,14 +311,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>
+        <div className="pt-6 pb-2 md:pb-0 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p className="text-center sm:text-left leading-relaxed">
             © {new Date().getFullYear()} Delfos Engenharia • CNPJ 21.379.952/0001-38. Todos os
             direitos reservados.
           </p>
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-1.5 text-slate-400 hover:text-solar-400 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-slate-400 hover:text-solar-400 transition-colors cursor-pointer py-1"
           >
             <span>Voltar ao topo</span>
             <ArrowUp className="w-3.5 h-3.5" />

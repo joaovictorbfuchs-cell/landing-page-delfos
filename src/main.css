@@ -314,11 +314,18 @@
   .animate-marquee-scroll {
     display: flex;
     width: max-content;
-    animation: marquee-scroll 45s linear infinite;
+    animation: marquee-scroll 65s linear infinite;
     will-change: transform;
   }
 
+  @media (min-width: 768px) {
+    .animate-marquee-scroll {
+      animation-duration: 45s;
+    }
+  }
+
   .animate-marquee-scroll:hover,
+  .animate-marquee-scroll:active,
   .group-marquee:hover .animate-marquee-scroll {
     animation-play-state: paused;
   }
