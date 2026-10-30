@@ -194,23 +194,48 @@ export default function Sobre() {
               </div>
 
               <div className="lg:col-span-6">
-                {/* Placeholder de Foto Real com regra de aguardando */}
-                <div className="relative aspect-4/3 rounded-3xl bg-gradient-to-br from-[#081B30] via-[#0B2C4F] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-8 text-center text-white overflow-hidden shadow-xl">
-                  <div className="w-16 h-16 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-                    <Building className="w-8 h-8" />
+                {/* Visual da Marca Delfos: Sede e Centro de Operações */}
+                <div className="relative aspect-4/3 rounded-3xl bg-[#081B30] border border-white/15 flex flex-col justify-between p-8 text-white overflow-hidden shadow-xl">
+                  <div
+                    className="absolute inset-0 opacity-20 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+                      backgroundSize: '24px 24px',
+                    }}
+                  />
+                  <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-transparent blur-2xl pointer-events-none" />
+                  <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-gradient-to-tr from-[#F59E0B]/15 via-[#10B981]/15 to-transparent blur-2xl pointer-events-none" />
+
+                  <div className="relative z-10 flex items-center justify-between text-xs font-mono">
+                    <span className="px-3 py-1 rounded-full bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20 font-bold uppercase tracking-wider">
+                      Centro Operacional
+                    </span>
+                    <span className="text-slate-300 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      Engenharia Ativa
+                    </span>
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-                    Foto Real — Aguardando
-                  </span>
-                  <h3 className="text-base font-bold text-white mt-1">
-                    Sede Técnica e Operacional em Erechim/RS
-                  </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-sm">
-                    Escritório de engenharia, laboratório de monitoramento remoto e pátio logístico
-                    da Delfos Solar no Alto Uruguai.
-                  </p>
-                  <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
-                    Rua Espírito Santo, 275 • Fátima, Erechim/RS
+
+                  <div className="relative z-10 my-auto py-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-[#F59E0B]/20 border border-white/15 flex items-center justify-center mb-4 text-[#00E5FF] shadow-lg">
+                      <Building className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2">
+                      Sede Técnica e Operacional em Erechim/RS
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md">
+                      Escritório de engenharia, laboratório de monitoramento remoto de usinas e
+                      pátio logístico da Delfos Solar atendendo todo o Sul do Brasil.
+                    </p>
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-between text-xs text-slate-300 pt-3 border-t border-white/10 font-mono">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-solar-400" />
+                      Rua Espírito Santo, 275 • Fátima
+                    </span>
+                    <span>Erechim / RS</span>
                   </div>
                 </div>
               </div>
@@ -336,23 +361,42 @@ export default function Sobre() {
               </div>
 
               <div className="lg:col-span-7">
-                {/* Placeholder de Foto Real com regra de aguardando */}
-                <div className="relative aspect-video rounded-3xl bg-gradient-to-br from-[#081B30] to-[#0D3661] border border-white/10 flex flex-col items-center justify-center p-8 text-center text-white overflow-hidden shadow-xl">
-                  <div className="w-14 h-14 rounded-2xl bg-solar-400/20 text-solar-300 flex items-center justify-center mb-3 border border-solar-400/30">
-                    <MapPin className="w-7 h-7" />
+                {/* Visual Elegante Delfos: Mapa de Cobertura e Polos no Sul */}
+                <div className="relative aspect-video rounded-3xl bg-[#081B30] border border-white/15 flex flex-col justify-between p-8 text-white overflow-hidden shadow-xl">
+                  <div
+                    className="absolute inset-0 opacity-20 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+                      backgroundSize: '24px 24px',
+                    }}
+                  />
+                  <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-transparent blur-2xl pointer-events-none" />
+                  <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-gradient-to-tr from-[#F59E0B]/15 via-[#10B981]/15 to-transparent blur-2xl pointer-events-none" />
+
+                  <div className="relative z-10 flex items-center justify-between text-xs font-mono">
+                    <span className="px-3 py-1 rounded-full bg-solar-400/15 text-solar-300 border border-solar-400/30 font-bold uppercase tracking-wider">
+                      Rede de Atendimento
+                    </span>
+                    <span className="text-slate-300">RS • SC • PR</span>
                   </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-solar-300">
-                    Foto Real / Mapa Oficial — Aguardando
-                  </span>
-                  <h3 className="text-base font-bold text-white mt-1">
-                    Mapa de Cobertura Geográfica e Polos de Atendimento
-                  </h3>
-                  <p className="text-xs text-slate-300 mt-1 max-w-md">
-                    Distribuição das 3.000+ usinas instaladas pela Delfos Solar nos três estados do
-                    Sul brasileiro.
-                  </p>
-                  <div className="absolute bottom-4 right-4 text-[10px] text-slate-400 font-mono">
-                    Geolocalização Delfos • RS/SC/PR
+
+                  <div className="relative z-10 my-auto py-3">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-[#F59E0B]/20 border border-white/15 flex items-center justify-center mb-3 text-[#00E5FF]">
+                      <MapPin className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-1.5">
+                      Malha de Usinas em Operação no Sul
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-lg">
+                      Logística com equipes próprias de comissionamento, drone termográfico e
+                      assistência técnica em raio estendido com base em Erechim.
+                    </p>
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-white/10 font-mono">
+                    <span className="text-white font-medium">Polos RS, SC e PR</span>
+                    <span>12,05 MWp Homologados</span>
                   </div>
                 </div>
               </div>

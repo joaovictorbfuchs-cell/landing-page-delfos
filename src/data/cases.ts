@@ -37,7 +37,7 @@ export interface CaseStudy {
   destaque?: boolean // Case principal (ex: Indra)
   isExample?: boolean // Case ilustrativo ("Exemplo de aplicação")
   fotoDescricao: string // Descrição do placeholder técnico
-  fotoPlaceholderNota: string // "Foto real — aguardando" ou nota de autorização
+  fotoPlaceholderNota?: string // Nota institucional opcional (sem texto de pendência)
   fotoUrl?: string
   fotoUrlGrande?: string
   potenciaOuCapacidadeCurta: string // Ex: "9,75 kWp", "250 kWh", "75 kWp", "Wallbox DLM"
@@ -90,7 +90,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '155,0 kWp',
     fotoDescricao:
       'Vista aérea da instalação fotovoltaica sobre telhado metálico da Cassul em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Instalação Homologada RGE',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg',
     tags: ['Comércio', '155 kWp', 'Erechim/RS', 'Telhado Metálico'],
   },
@@ -120,7 +120,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '123,5 kWp',
     fotoDescricao:
       '390 módulos fotovoltaicos instalados sobre telhado industrial da Clanel em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Instalação Industrial 390 Módulos',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/02/DJI_0075.jpg',
     tags: ['Indústria', '123,5 kWp', 'Erechim/RS', '390 Módulos'],
   },
@@ -150,7 +150,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '112,5 kWp',
     fotoDescricao:
       'Visão aérea da usina de 112,5 kWp na cobertura da Panificadora Garcia em Passo Fundo/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Comercial Alta Potência',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2022/07/DJI_0047.jpg',
     tags: ['Comércio', '112,5 kWp', 'Passo Fundo/RS', 'Panificação'],
   },
@@ -179,7 +179,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '76,16 kWp',
     fotoDescricao: 'Foto aérea do arranjo solar sobre o silo de grãos em Erebango/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Arranjo Agroindustrial',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/DJI_0023.jpg',
     tags: ['Agronegócio', 'Silo de Grãos', '76,16 kWp', 'Erebango/RS'],
   },
@@ -207,7 +207,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '54,925 kWp',
     fotoDescricao: 'Registro aéreo da cobertura do posto com 169 módulos fotovoltaicos instalados.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: '169 Módulos Fotovoltaicos',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/04/DJI_0068.jpg',
     tags: ['Comércio', 'Posto de Combustíveis', '54,9 kWp', 'Severiano de Almeida'],
   },
@@ -236,7 +236,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '40,8 kWp Solo',
     fotoDescricao: 'Estrutura de usina de solo fotovoltaica em terreno em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Usina de Solo Homologada',
     fotoUrl:
       'https://www.delfos.eng.br/site/wp-content/uploads/2020/02/WhatsApp-Image-2019-12-11-at-17.44.44-1.jpeg',
     tags: ['Investidores', 'Usina Solo', '40,8 kWp', 'Erechim/RS'],
@@ -265,7 +265,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '6,48 kWp',
     fotoDescricao: 'Foto aérea da cobertura cerâmica simétrica com painéis solares em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Telhado Cerâmico Residencial',
     fotoUrl:
       'https://www.delfos.eng.br/site/wp-content/uploads/2020/06/DJI_0029-e1591648388934.jpg',
     tags: ['Residencial', 'Telhado Cerâmico', '6,48 kWp', 'Erechim/RS'],
@@ -294,7 +294,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '18,525 kWp',
     fotoDescricao: 'Painéis solares fotovoltaicos sobre galpão de ordenha e resfriamento leiteiro.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Geração Rural Agro',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/07/1-3.jpg',
     tags: ['Agronegócio', 'Pecuária de Leite', '18,5 kWp', 'Barão de Cotegipe'],
   },
@@ -323,7 +323,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '25,0 kWp Carport',
     fotoDescricao: 'Carport solar corporativo no estacionamento da System Software em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Carport Solar Corporativo',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2019/08/DJI_0001.jpg',
     tags: ['Carport Solar', 'Indústria / Software', '25 kWp', 'Erechim/RS', 'Destaque Regional'],
   },
@@ -352,7 +352,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '93,5 kWp',
     fotoDescricao: 'Cobertura agroindustrial com usina solar de 93,5 kWp na Ervateira Bazia.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Usina Agroindustrial 93,5 kWp',
     fotoUrl:
       'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/WhatsApp-Image-2022-08-12-at-12.40.04-1-e1660823625916.jpeg',
     tags: ['Agroindústria', 'Erva-mate', '93,5 kWp', 'Paraná', 'Grande Porte'],
@@ -383,7 +383,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '74,43 kWp',
     fotoDescricao:
       'Vista aérea do pavilhão industrial moveleiro com sistema fotovoltaico de 74,43 kW.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Pavilhão Industrial Moveleiro',
     fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=factory%20solar%20rooftop&color=blue',
     tags: ['Indústria', 'Moveleiro', '74,43 kWp', 'Erechim/RS', 'Economia R$ 84k/ano'],
   },
@@ -412,7 +412,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '42,16 kWp',
     fotoDescricao: 'Vista aérea da cobertura de aviário climatizado em Erebango/RS com 42,16 kWp.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Cobertura de Aviário Climatizado',
     fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=farm%20solar%20roof&color=blue',
     tags: ['Agronegócio', 'Avicultura', '42,16 kWp', 'Erebango/RS', '5.000 kWh/mês'],
   },
@@ -441,7 +441,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '32,16 kWp',
     fotoDescricao: 'Vista aérea da garagem e oficina da Spazzini Tur com sistema fotovoltaico.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Garagem de Frotas e Logística',
     fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=commercial%20garage%20solar&color=blue',
     tags: ['Frotas e Transportes', 'Comercial', '32,16 kWp', 'Erechim/RS'],
   },
@@ -470,7 +470,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '30,0 kWp',
     fotoDescricao: 'Vista aérea da fábrica da ARFES Refrigeração com 86 módulos fotovoltaicos.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: '86 Módulos em Cobertura Industrial',
     fotoUrl:
       'https://img.usecurling.com/p/1600/1000?q=industrial%20solar%20rooftop%20plant&color=blue',
     tags: ['Indústria', 'Refrigeração', '30 kWp', '86 Módulos', 'Erechim/RS'],
@@ -500,7 +500,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '25,41 kWp',
     fotoDescricao: 'Cobertura fotovoltaica comercial da loja Bem Estar Móveis em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Showroom Comercial Climatizado',
     fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=commercial%20store%20solar&color=blue',
     tags: ['Comércio e Serviços', 'Móveis', '25,41 kWp', 'Economia R$ 30k/ano', 'Erechim/RS'],
   },
@@ -529,7 +529,7 @@ export const CASES_DATA: CaseStudy[] = [
     destaque: false,
     potenciaOuCapacidadeCurta: '20,0 kWp',
     fotoDescricao: 'Vista aérea do telhado do Supermercado Cavassola com gerador fotovoltaico.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Cobertura Comercial Supermercado',
     fotoUrl: 'https://img.usecurling.com/p/1600/1000?q=supermarket%20solar%20rooftop&color=blue',
     tags: ['Supermercados', 'Comércio', '20 kWp', 'Erechim/RS'],
   },
@@ -559,7 +559,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '32,0 kWp',
     fotoDescricao:
       'Instalação solar fotovoltaica na cobertura do Condomínio Residencial Notabile em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Cobertura Condominial Notabile',
     fotoUrl:
       'https://www.delfos.eng.br/site/wp-content/uploads/2022/08/Captura-de-tela-2025-12-18-213403.png',
     tags: ['Condomínios', '32 kWp', 'Áreas Comuns', 'Erechim/RS', 'Destaque'],
@@ -590,7 +590,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '15,0 kWp',
     fotoDescricao:
       'Cobertura do Edifício Residencial Lyon com sistema solar de 15 kWp em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Cobertura Condomínio Lyon',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2021/01/DJI_0001.jpg',
     tags: ['Condomínios', 'Residencial Multifamiliar', '15 kWp', 'Áreas Comuns', 'Erechim/RS'],
   },
@@ -620,7 +620,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '9,75 kWp',
     fotoDescricao:
       'Instalação fotovoltaica na cobertura metálica da Indra Distribuidora Agropecuária em Erechim/RS.',
-    fotoPlaceholderNota: 'Foto real oficial',
+    fotoPlaceholderNota: 'Cobertura Indra Agropecuária',
     fotoUrl: 'https://www.delfos.eng.br/site/wp-content/uploads/2024/10/Imagem-3-1.jpg',
     tags: ['Agronegócio', 'Insumos Agropecuários', '9,75 kWp', '13.865 kWh/ano', 'Erechim/RS'],
   },
@@ -650,7 +650,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '450 kWp + 250 kWh',
     fotoDescricao:
       'Gabinete BESS climatizado externo IP55 com sistema de extinção de incêndio e subestação abrigada.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'BESS Industrial LiFePO4',
     tags: ['Indústria', 'BESS LiFePO4', 'Peak Shaving', 'Zero Blecaute'],
   },
   {
@@ -679,7 +679,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '6 Wallboxes + DLM 24 vagas',
     fotoDescricao:
       'Estações Wallbox instaladas em vagas demarcadas com leitores RFID e infraestrutura aparente em eletrocalha perfurada.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Smart DLM NBR 17019',
     tags: ['Condomínios', 'Smart DLM', 'NBR 17019', 'Rateio Individual'],
   },
   {
@@ -708,7 +708,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '75 kWp + 80 kWh',
     fotoDescricao:
       'Usina fotovoltaica de solo ao lado de galpão avícola climatizado e abrigo técnico de baterias.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Agro Solar + BESS',
     tags: ['Agronegócio', 'Baterias LiFePO4', 'Geração em Solo', 'Continuidade Crítica'],
   },
   {
@@ -737,7 +737,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '12,5 kWp',
     fotoDescricao:
       'Telhado cerâmico de alto padrão com disposição simétrica dos módulos solares e fixadores discretos.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Telhado Cerâmico Premium',
     tags: ['Residencial', 'Microinversores', 'Telhado Cerâmico', 'Design Limpo'],
   },
   {
@@ -767,7 +767,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '300 kWp Solo',
     fotoDescricao:
       'Visão panorâmica da usina de solo com linhas de módulos bifaciais e cerca perimetral com SPDA.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Usina de Solo GD',
     tags: ['Investidores', 'Usina Solo', 'GD Compartilhada', 'Média Tensão'],
   },
   {
@@ -797,7 +797,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '120 kWp O&M',
     fotoDescricao:
       'Imagem composta: drone sobrevoando a cobertura industrial e mapa de calor infravermelho revelando anomalia.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Auditoria O&M & Drone',
     tags: ['O&M', 'Drone Termográfico', 'Limpeza Técnica', 'Recuperação +21%'],
   },
   {
@@ -826,7 +826,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '2x DC 60 kW + 4x AC 22 kW',
     fotoDescricao:
       'Estação de recarga rápida coberta com furgões elétricos conectados aos conectores CCS2.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'Hub DC Fast Charger',
     tags: ['Frotas', 'DC Fast Charger', 'Logística Limpa', 'Subestação Dedicada'],
   },
   {
@@ -855,7 +855,7 @@ export const CASES_DATA: CaseStudy[] = [
     potenciaOuCapacidadeCurta: '120 kWh BESS Hospitalar',
     fotoDescricao:
       'Sala técnica abrigada com gabinetes de baterias de alta densidade e quadro de bypass estático.',
-    fotoPlaceholderNota: 'Foto real — aguardando',
+    fotoPlaceholderNota: 'BESS Hospitalar Contínuo',
     tags: ['Hospitalar', 'No-Break Dinâmico', 'Energia Crítica', 'Harmônicos'],
   },
   {
@@ -876,18 +876,18 @@ export const CASES_DATA: CaseStudy[] = [
       destaqueLabel: 'Auditoria oficial do primeiro ciclo anual',
       descricao:
         'Geração estimada de ~1.750.000 kWh/ano (dados oficiais em processo de consolidação e auditoria de 12 meses).',
-      periodoMedicao: 'Comissionamento recente (aguardando ciclo de 12 meses)',
+      periodoMedicao: 'Comissionamento recente (ciclo inicial de 12 meses)',
       metodoMedicao:
         'Metodologia oficial Delfos: telemetria em tempo real com calibração por estação solarimétrica in loco.',
       dadoPendente: true,
       notaAuditoria:
-        'Métrica oficial a confirmar — aguardando encerramento do primeiro ciclo de 12 meses de faturamento para auditoria e conferência formal.',
+        'Métrica oficial em consolidação — primeiro ciclo de 12 meses de faturamento para conferência formal.',
     },
     dataEntrega: 'Dezembro / 2024 (Recentemente energizada)',
     potenciaOuCapacidadeCurta: '1,2 MWp Solo',
     fotoDescricao:
       'Vista aérea em alta definição do complexo fotovoltaico em solo com subestação blindada.',
-    fotoPlaceholderNota: 'Foto real — aguardando autorização e medição oficial',
+    fotoPlaceholderNota: 'Complexo Agroindustrial 1,2 MWp',
     tags: ['Agroindústria', '1,2 MWp', 'Média Tensão', 'Métrica a Confirmar'],
   },
   // =========================================================================

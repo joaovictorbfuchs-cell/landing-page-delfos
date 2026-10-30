@@ -94,7 +94,7 @@ export default function SegmentoPageLayout({
               : r.titulo,
             fotoPlaceholderNota: r.is_exemplo
               ? 'Exemplo de aplicação ilustrativo'
-              : staticMatch?.fotoPlaceholderNota || 'Foto real oficial',
+              : staticMatch?.fotoPlaceholderNota || '',
             fotoUrl: pbPhoto || staticMatch?.fotoUrl,
             fotoUrlGrande: pbPhoto || staticMatch?.fotoUrlGrande || staticMatch?.fotoUrl,
             tags: [
@@ -357,19 +357,29 @@ export default function SegmentoPageLayout({
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-3xl border border-white/15 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-solar-400/20 text-solar-300 border border-solar-400/30">
+                  <div className="rounded-3xl border border-white/15 bg-[#081B30] p-6 backdrop-blur-md relative overflow-hidden shadow-xl">
+                    <div
+                      className="absolute inset-0 opacity-20 pointer-events-none"
+                      style={{
+                        backgroundImage:
+                          'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                      }}
+                    />
+                    <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-transparent blur-xl pointer-events-none" />
+
+                    <div className="relative z-10 flex items-center justify-between mb-4">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20 font-mono">
                         Engenharia Consultiva
                       </span>
-                      <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
+                      <span className="text-[11px] font-mono text-slate-300 flex items-center gap-1">
                         <MapPin className="w-3 h-3 text-solar-400" />
                         {fotoRealLocal}
                       </span>
                     </div>
 
-                    <div className="aspect-video rounded-2xl bg-slate-900/70 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
-                      <div className="w-14 h-14 rounded-2xl bg-solar-400/10 border border-solar-400/30 flex items-center justify-center text-solar-400 mb-3">
+                    <div className="relative z-10 aspect-video rounded-2xl bg-[#0B2544]/60 border border-white/10 flex flex-col items-center justify-center p-6 text-center">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-[#F59E0B]/20 border border-white/15 flex items-center justify-center text-[#00E5FF] mb-3 shadow-md">
                         <IconeSegmento className="w-7 h-7" />
                       </div>
                       <h3 className="text-sm font-bold text-white">
@@ -380,7 +390,7 @@ export default function SegmentoPageLayout({
                       </p>
                     </div>
 
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
+                    <div className="relative z-10 mt-3 flex items-center justify-between text-[11px] text-slate-300 pt-2 border-t border-white/10">
                       <span>Projetos com ART no CREA-RS</span>
                       <span className="text-solar-400 font-mono font-bold">Atuação Regional</span>
                     </div>

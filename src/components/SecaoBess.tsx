@@ -1,4 +1,4 @@
-import { BatteryCharging, Zap, ShieldAlert, Cpu, CheckCircle2, ArrowRight } from 'lucide-react'
+import { BatteryCharging, Zap, ShieldAlert, Cpu, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface SecaoBessProps {
@@ -114,27 +114,37 @@ export default function SecaoBess({ onSolicitarViabilidade }: SecaoBessProps) {
           </div>
         </div>
 
-        {/* Real photo / Diagram placeholder */}
-        <div className="rounded-3xl border-2 border-dashed border-emerald-500/30 bg-emerald-950/20 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0 text-emerald-400">
+        {/* Real photo / Diagram Delfos LiFePO4 */}
+        <div className="rounded-3xl border border-white/15 bg-[#081B30] p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden shadow-xl">
+          <div
+            className="absolute inset-0 opacity-15 pointer-events-none"
+            style={{
+              backgroundImage:
+                'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+              backgroundSize: '20px 20px',
+            }}
+          />
+          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-[#10B981]/25 to-transparent blur-2xl pointer-events-none" />
+
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#10B981]/20 via-[#00E5FF]/20 to-transparent border border-emerald-400/30 flex items-center justify-center shrink-0 text-emerald-300">
               <BatteryCharging className="w-7 h-7" />
             </div>
             <div>
-              <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 mb-1">
-                Foto real / Estudo técnico — aguardando
+              <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-1 font-mono">
+                BESS Industrial LiFePO4
               </span>
-              <h4 className="text-sm font-bold text-white">
-                Gabinete de Baterias (BESS) e Módulos com baterias de lítio de última geração
+              <h4 className="text-sm sm:text-base font-bold text-white">
+                Gabinete de Baterias e Inversores Híbridos de Alta Potência
               </h4>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-300 mt-0.5">
                 Dimensionamentos modulares de 30 kWh até 1+ MWh sob projeto de engenharia de campo
                 no RS.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative z-10 shrink-0">
             <div className="text-right hidden sm:block">
               <span className="text-xs text-slate-400 block">Atendimento por Engenheiro</span>
               <span className="text-xs font-bold text-emerald-400">ART / CREA-RS</span>

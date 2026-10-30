@@ -85,7 +85,7 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
             </div>
           </div>
 
-          {/* Photo (Upload real do banco se existir, ou card de placeholder) - versão leve otimizada com lazy loading */}
+          {/* Photo (Upload real do banco se existir, ou visual elegante da marca Delfos) */}
           {caseStudy.fotoUrl ? (
             <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md bg-slate-900">
               <img
@@ -97,16 +97,42 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
               />
             </div>
           ) : (
-            <div className="mt-4 rounded-2xl border border-dashed border-white/20 bg-white/5 p-3 text-center">
-              <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-                <span className="px-1.5 py-0.5 rounded bg-solar-400/20 text-solar-300 font-bold uppercase">
-                  {caseStudy.fotoPlaceholderNota}
+            <div className="mt-4 rounded-2xl overflow-hidden aspect-video relative bg-[#081B30] border border-white/10 p-4 flex flex-col justify-between shadow-inner">
+              <div
+                className="absolute inset-0 opacity-20 pointer-events-none"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+                  backgroundSize: '20px 20px',
+                }}
+              />
+              <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-transparent blur-xl pointer-events-none" />
+              <div className="relative z-10 flex items-center justify-between text-[10px] font-mono">
+                {caseStudy.fotoPlaceholderNota ? (
+                  <span className="px-2 py-0.5 rounded-full bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20 font-bold">
+                    {caseStudy.fotoPlaceholderNota}
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded-full bg-white/5 text-slate-300 border border-white/10 font-bold">
+                    Delfos Solar
+                  </span>
+                )}
+                <span className="text-slate-400 font-medium">
+                  {caseStudy.dataEntrega.split('(')[0].trim()}
                 </span>
-                <span className="text-slate-400">{caseStudy.dataEntrega.split('(')[0].trim()}</span>
               </div>
-              <p className="text-[11px] text-slate-300 line-clamp-1 leading-tight text-left">
-                {caseStudy.fotoDescricao}
-              </p>
+              <div className="relative z-10 my-auto py-1">
+                <p className="text-xs font-semibold text-white/90 line-clamp-1">
+                  {caseStudy.titulo}
+                </p>
+                <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                  {caseStudy.fotoDescricao}
+                </p>
+              </div>
+              <div className="relative z-10 flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-white/10">
+                <span className="text-slate-300 font-medium">{caseStudy.cliente}</span>
+                <span>{caseStudy.segmento}</span>
+              </div>
             </div>
           )}
         </div>

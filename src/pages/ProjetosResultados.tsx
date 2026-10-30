@@ -145,9 +145,7 @@ export default function ProjetosResultados() {
           ? staticMatch?.fotoDescricao ||
             `Exemplo de aplicação ilustrativo para ${c.cliente || 'setor ' + c.setor}.`
           : c.descricao || 'Case auditado pela Delfos Engenharia.',
-        fotoPlaceholderNota: c.is_exemplo
-          ? 'Exemplo de aplicação ilustrativo'
-          : 'Foto real oficial',
+        fotoPlaceholderNota: c.is_exemplo ? 'Exemplo de aplicação ilustrativo' : '',
         potenciaOuCapacidadeCurta: c.potencia_capacidade || 'Não informado',
         fotoUrl: finalPhotoUrlLeve,
         fotoUrlGrande: finalPhotoUrlGrande,

@@ -57,20 +57,40 @@ export default function CaseDestaque({ onSolicitarProjeto }: CaseDestaqueProps) 
                 </div>
               </div>
 
-              {/* Photo placeholder marked */}
-              <div className="my-8 rounded-2xl border-2 border-dashed border-white/20 bg-white/5 p-6 text-center">
-                <Zap className="w-10 h-10 text-solar-400 mx-auto mb-2 opacity-80" />
-                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 mb-1">
-                  Foto real — aguardando
-                </span>
-                <p className="text-xs text-slate-200 font-medium">
-                  Registro aéreo da cobertura metálica e quadro de proteção CA/CC
-                </p>
-                <p className="text-[11px] text-slate-400 mt-1">
-                  9,75 kWp instalados com inversores de alta frequência
-                </p>
-              </div>
+              {/* Visual de engenharia da marca Delfos */}
+              <div className="my-8 rounded-2xl overflow-hidden relative bg-[#081B30] border border-white/15 p-6 flex flex-col justify-between shadow-xl text-left">
+                <div
+                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(to right, rgba(0,229,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,229,255,0.12) 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
+                  }}
+                />
+                <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gradient-to-br from-[#00E5FF]/20 via-[#10B981]/20 to-transparent blur-2xl pointer-events-none" />
+                <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-gradient-to-tr from-[#F59E0B]/15 via-[#10B981]/15 to-transparent blur-2xl pointer-events-none" />
 
+                <div className="relative z-10 flex items-center justify-between text-xs font-mono">
+                  <span className="px-2.5 py-1 rounded-full bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20 font-bold">
+                    125 kWp
+                  </span>
+                  <span className="text-slate-300">Operação RGE</span>
+                </div>
+
+                <div className="relative z-10 my-4">
+                  <p className="text-sm font-semibold text-white mb-1">
+                    Usinas Comerciais e Industriais
+                  </p>
+                  <p className="text-xs text-slate-300">
+                    Telhado comercial com inversores string e telemetria de geração em tempo real.
+                  </p>
+                </div>
+
+                <div className="relative z-10 flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/10">
+                  <span className="text-white font-medium">Indra Sistemas e Engenharia</span>
+                  <span>Erechim / RS</span>
+                </div>
+              </div>
               {/* Mini Stat Summary */}
               <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">
                 <div className="bg-white/5 p-3 rounded-xl">
