@@ -782,7 +782,7 @@ export default function Admin() {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] font-black text-red-700 uppercase tracking-wider block">
-                      Plantão IA
+                      Plantão
                     </span>
                     <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-red-600 text-white uppercase">
                       Alta
@@ -798,7 +798,7 @@ export default function Admin() {
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Fotovoltaico EPC
+                    Fotovoltaico
                   </span>
                   <p className="text-2xl font-bold text-slate-900">{solarLeads}</p>
                 </div>
@@ -810,7 +810,7 @@ export default function Admin() {
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    BESS (Baterias)
+                    Baterias
                   </span>
                   <p className="text-2xl font-bold text-slate-900">{bessLeads}</p>
                 </div>
@@ -834,7 +834,7 @@ export default function Admin() {
                 </div>
                 <div>
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    O&M / Recarga
+                    Recarga
                   </span>
                   <p className="text-2xl font-bold text-slate-900">{outrosPilaresLeads}</p>
                 </div>
