@@ -11,6 +11,11 @@ import {
   Check,
   Edit2,
   Image as ImageIcon,
+  Sparkles,
+  AlertTriangle,
+  ShieldCheck,
+  RefreshCw,
+  Eye,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +33,9 @@ import {
   deleteMedia,
   getMediaFileUrl,
   updateCase,
+  simularLimpezaDuplicadas,
+  executarLimpezaDuplicadas,
+  type LimparDuplicadasResponse,
 } from '@/services/content'
 
 const MEDIA_CATEGORIAS: MediaCategoria[] = [
@@ -72,6 +80,13 @@ export default function AdminMediaTab({
   const [editPreview, setEditPreview] = useState<string | null>(null)
   const [savingEdit, setSavingEdit] = useState(false)
 
+  // Limpeza de duplicadas Modal & State
+  const [limpezaModalOpen, setLimpezaModalOpen] = useState(false)
+  const [carregandoLimpeza, setCarregandoLimpeza] = useState(false)
+  const [executandoLimpeza, setExecutandoLimpeza] = useState(false)
+  const [resultadoLimpeza, setResultadoLimpeza] = useState<LimparDuplicadasResponse | null>(null)
+  const [abaDetalhes, setAbaDetalhes] = useState<'excluir' | 'revisar' | 'vinculados'>('excluir')
+
   // Upload Form
   const [titulo, setTitulo] = useState('')
   const [categoria, setCategoria] = useState<MediaCategoria>('Geral')
@@ -79,6 +94,46 @@ export default function AdminMediaTab({
   const [destinoSugerido, setDestinoSugerido] = useState('')
   const [arquivoFile, setArquivoFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+
+  const handleAbrirLimpeza = async () => {
+    setLimpezaModalOpen(true)
+    setCarregandoLimpeza(true)
+    try {
+      const res = await simularLimpezaDuplicadas()
+      setResultadoLimpeza(res)
+    } catch (err: unknown) {
+      console.error('Erro ao simular limpeza:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Falha ao analisar duplicadas',
+        description: (err as Error)?.message || 'Não foi possível carregar a simulação.',
+      })
+    } finally {
+      setCarregandoLimpeza(false)
+    }
+  }
+
+  const handleConfirmarLimpeza = async () => {
+    setExecutandoLimpeza(true)
+    try {
+      const res = await executarLimpezaDuplicadas()
+      setResultadoLimpeza(res)
+      toast({
+        title: 'Limpeza concluída com sucesso!',
+        description: `${res.resumo.totalExcluidosEfetivamente} arquivos obsoletos/duplicados foram removidos da biblioteca.`,
+      })
+      onRefresh()
+    } catch (err: unknown) {
+      console.error('Erro ao executar limpeza:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Falha na exclusão',
+        description: (err as Error)?.message || 'Ocorreu um erro ao excluir as duplicadas.',
+      })
+    } finally {
+      setExecutandoLimpeza(false)
+    }
+  }
 
   const handleOpenUpload = () => {
     setTitulo('')
@@ -303,13 +358,25 @@ export default function AdminMediaTab({
           </p>
         </div>
 
-        <Button
-          onClick={handleOpenUpload}
-          className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl shadow-sm text-xs h-10 px-4 flex items-center gap-1.5"
-        >
-          <UploadCloud className="w-4 h-4" />
-          <span>Fazer Upload de Foto</span>
-        </Button>
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button
+            type="button"
+            onClick={handleAbrirLimpeza}
+            variant="outline"
+            className="border-amber-300 bg-amber-50/70 hover:bg-amber-100/80 text-amber-900 font-bold rounded-xl text-xs h-10 px-3.5 flex-1 sm:flex-initial flex items-center justify-center gap-1.5"
+          >
+            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>Limpar duplicadas</span>
+          </Button>
+
+          <Button
+            onClick={handleOpenUpload}
+            className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl shadow-sm text-xs h-10 px-4 flex-1 sm:flex-initial flex items-center justify-center gap-1.5"
+          >
+            <UploadCloud className="w-4 h-4 shrink-0" />
+            <span>Fazer Upload de Foto</span>
+          </Button>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -636,6 +703,313 @@ export default function AdminMediaTab({
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Limpar Duplicadas */}
+      {limpezaModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-2xl w-full my-6 overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+            {/* Header Modal */}
+            <div className="p-5 sm:p-6 pb-4 border-b border-slate-100 flex items-start justify-between gap-3 bg-gradient-to-r from-amber-50/50 via-white to-white">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> Manutenção da Biblioteca
+                  </span>
+                  {resultadoLimpeza?.modo === 'executado' && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                      Concluído
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+                  Limpeza Segura de Fotos Duplicadas
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  Exclui os registros obsoletos da 1ª importação e cópias redundantes, preservando
+                  fotos vinculadas aos cases do site.
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLimpezaModalOpen(false)}
+                className="text-slate-400 hover:text-slate-900 -mr-2"
+              >
+                ✕
+              </Button>
+            </div>
+
+            {/* Conteúdo / Resumo */}
+            <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-4 text-xs sm:text-sm">
+              {carregandoLimpeza ? (
+                <div className="py-12 text-center text-slate-500 space-y-3">
+                  <RefreshCw className="w-8 h-8 text-amber-500 animate-spin mx-auto" />
+                  <p className="font-semibold text-slate-700">
+                    Analisando banco de dados e verificando vínculos de mídia...
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    Conferindo coleções de cases, posts e leads para garantir segurança total.
+                  </p>
+                </div>
+              ) : !resultadoLimpeza ? (
+                <div className="py-8 text-center text-slate-500">
+                  <p>Não foi possível carregar a análise de duplicadas.</p>
+                  <Button onClick={handleAbrirLimpeza} variant="outline" className="mt-3 text-xs">
+                    Tentar novamente
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  {/* Cards de Resumo */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div className="bg-red-50/80 border border-red-200/80 rounded-2xl p-3 text-center">
+                      <span className="text-[11px] font-bold text-red-700 block uppercase">
+                        {resultadoLimpeza.modo === 'executado' ? 'Excluídas' : 'A Apagar'}
+                      </span>
+                      <span className="text-2xl font-extrabold text-red-900 block my-0.5">
+                        {resultadoLimpeza.modo === 'executado'
+                          ? resultadoLimpeza.resumo.totalExcluidosEfetivamente
+                          : resultadoLimpeza.resumo.totalParaExcluir}
+                      </span>
+                      <span className="text-[10px] text-red-600 block leading-tight">
+                        obsoletas / 1ª rodada
+                      </span>
+                    </div>
+
+                    <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-3 text-center">
+                      <span className="text-[11px] font-bold text-amber-800 block uppercase">
+                        Para Revisão
+                      </span>
+                      <span className="text-2xl font-extrabold text-amber-950 block my-0.5">
+                        {resultadoLimpeza.resumo.totalParaRevisar}
+                      </span>
+                      <span className="text-[10px] text-amber-700 block leading-tight">
+                        aéreas / únicas mantidas
+                      </span>
+                    </div>
+
+                    <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-3 text-center">
+                      <span className="text-[11px] font-bold text-emerald-800 block uppercase">
+                        Vinculadas
+                      </span>
+                      <span className="text-2xl font-extrabold text-emerald-950 block my-0.5">
+                        {resultadoLimpeza.resumo.totalVinculadosPulados}
+                      </span>
+                      <span className="text-[10px] text-emerald-700 block leading-tight">
+                        protegidas no site
+                      </span>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center">
+                      <span className="text-[11px] font-bold text-slate-700 block uppercase">
+                        Total Final
+                      </span>
+                      <span className="text-2xl font-extrabold text-slate-900 block my-0.5">
+                        {resultadoLimpeza.modo === 'executado'
+                          ? resultadoLimpeza.totalRegistrosAtual -
+                            resultadoLimpeza.resumo.totalExcluidosEfetivamente
+                          : resultadoLimpeza.totalAposLimpezaEstimado}
+                      </span>
+                      <span className="text-[10px] text-slate-500 block leading-tight">
+                        de {resultadoLimpeza.totalRegistrosAtual} atuais
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Aviso de segurança e regras atendidas */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+                    <div className="flex items-start gap-2 text-slate-700">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="font-bold text-slate-900 text-xs">
+                          Garantia de segurança do site público
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-relaxed">
+                          Nenhum registro utilizado em cases de sucesso, posts de blog ou
+                          formulários será excluído. As fotos aéreas genéricas do acervo histórico
+                          que não possuem cópia explícita foram preservadas e sinalizadas para
+                          revisão manual.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tabs de Detalhamento */}
+                  <div className="border border-slate-200 rounded-2xl overflow-hidden">
+                    <div className="flex border-b border-slate-200 bg-slate-50">
+                      <button
+                        type="button"
+                        onClick={() => setAbaDetalhes('excluir')}
+                        className={`flex-1 py-2 px-3 text-xs font-bold text-center border-b-2 transition-colors cursor-pointer ${
+                          abaDetalhes === 'excluir'
+                            ? 'border-red-500 text-red-700 bg-white'
+                            : 'border-transparent text-slate-500 hover:text-slate-800'
+                        }`}
+                      >
+                        {resultadoLimpeza.modo === 'executado' ? 'Excluídos' : 'A Apagar'} (
+                        {resultadoLimpeza.detalhes.paraExcluir.length})
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setAbaDetalhes('revisar')}
+                        className={`flex-1 py-2 px-3 text-xs font-bold text-center border-b-2 transition-colors cursor-pointer ${
+                          abaDetalhes === 'revisar'
+                            ? 'border-amber-500 text-amber-800 bg-white'
+                            : 'border-transparent text-slate-500 hover:text-slate-800'
+                        }`}
+                      >
+                        Revisar ({resultadoLimpeza.detalhes.paraRevisar.length})
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setAbaDetalhes('vinculados')}
+                        className={`flex-1 py-2 px-3 text-xs font-bold text-center border-b-2 transition-colors cursor-pointer ${
+                          abaDetalhes === 'vinculados'
+                            ? 'border-emerald-500 text-emerald-700 bg-white'
+                            : 'border-transparent text-slate-500 hover:text-slate-800'
+                        }`}
+                      >
+                        Protegidos ({resultadoLimpeza.detalhes.vinculadosPulados.length})
+                      </button>
+                    </div>
+
+                    <div className="max-h-52 overflow-y-auto divide-y divide-slate-100 p-1">
+                      {abaDetalhes === 'excluir' &&
+                        (resultadoLimpeza.detalhes.paraExcluir.length === 0 ? (
+                          <div className="p-4 text-center text-slate-400 text-xs">
+                            Nenhum registro para excluir.
+                          </div>
+                        ) : (
+                          resultadoLimpeza.detalhes.paraExcluir.map((item) => (
+                            <div
+                              key={item.id}
+                              className="p-2.5 flex items-start justify-between gap-2 text-xs"
+                            >
+                              <div className="min-w-0">
+                                <p className="font-semibold text-slate-800 truncate">
+                                  {item.titulo}
+                                </p>
+                                <p className="text-[11px] text-slate-400 font-mono truncate">
+                                  {item.arquivo}
+                                </p>
+                                <span className="inline-block mt-0.5 text-[10px] text-red-600 bg-red-50 px-1.5 py-0.2 rounded font-medium">
+                                  {item.motivo}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-slate-400 shrink-0 font-mono">
+                                {item.created ? item.created.substring(0, 10) : ''}
+                              </span>
+                            </div>
+                          ))
+                        ))}
+
+                      {abaDetalhes === 'revisar' &&
+                        (resultadoLimpeza.detalhes.paraRevisar.length === 0 ? (
+                          <div className="p-4 text-center text-slate-400 text-xs">
+                            Nenhum registro marcado para revisão.
+                          </div>
+                        ) : (
+                          resultadoLimpeza.detalhes.paraRevisar.map((item) => (
+                            <div
+                              key={item.id}
+                              className="p-2.5 flex items-start justify-between gap-2 text-xs bg-amber-50/30"
+                            >
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <AlertTriangle className="w-3 h-3 text-amber-600 shrink-0" />
+                                  <p className="font-semibold text-amber-950 truncate">
+                                    {item.titulo}
+                                  </p>
+                                </div>
+                                <p className="text-[11px] text-slate-500 font-mono truncate">
+                                  {item.arquivo}
+                                </p>
+                                <span className="inline-block mt-0.5 text-[10px] text-amber-800 bg-amber-100/70 px-1.5 py-0.2 rounded font-medium">
+                                  {item.motivo}
+                                </span>
+                              </div>
+                            </div>
+                          ))
+                        ))}
+
+                      {abaDetalhes === 'vinculados' &&
+                        (resultadoLimpeza.detalhes.vinculadosPulados.length === 0 ? (
+                          <div className="p-4 text-center text-slate-400 text-xs">
+                            Nenhuma foto vinculada corria risco de exclusão.
+                          </div>
+                        ) : (
+                          resultadoLimpeza.detalhes.vinculadosPulados.map((item) => (
+                            <div
+                              key={item.id}
+                              className="p-2.5 flex items-start justify-between gap-2 text-xs bg-emerald-50/30"
+                            >
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
+                                  <p className="font-semibold text-emerald-950 truncate">
+                                    {item.titulo}
+                                  </p>
+                                </div>
+                                <p className="text-[11px] text-slate-500 font-mono truncate">
+                                  {item.arquivo}
+                                </p>
+                                <span className="inline-block mt-0.5 text-[10px] text-emerald-700 bg-emerald-100/70 px-1.5 py-0.2 rounded font-medium">
+                                  {item.motivo}
+                                </span>
+                              </div>
+                            </div>
+                          ))
+                        ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Footer Modal / Ações */}
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50 flex flex-col-reverse sm:flex-row items-center justify-between gap-2.5">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setLimpezaModalOpen(false)}
+                className="w-full sm:w-auto rounded-xl text-xs h-10"
+              >
+                {resultadoLimpeza?.modo === 'executado' ? 'Fechar' : 'Cancelar'}
+              </Button>
+
+              {resultadoLimpeza?.modo !== 'executado' && (
+                <Button
+                  type="button"
+                  onClick={handleConfirmarLimpeza}
+                  disabled={
+                    carregandoLimpeza ||
+                    executandoLimpeza ||
+                    (resultadoLimpeza?.resumo.totalParaExcluir || 0) === 0
+                  }
+                  className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs h-10 px-5 shadow-sm flex items-center justify-center gap-2"
+                >
+                  {executandoLimpeza ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Excluindo registros...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>
+                        Confirmar e Excluir {resultadoLimpeza?.resumo.totalParaExcluir || 0}{' '}
+                        Duplicadas
+                      </span>
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}

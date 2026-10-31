@@ -278,3 +278,48 @@ export async function updateMedia(id: string, payload: UpdateMediaPayload): Prom
 export async function deleteMedia(id: string): Promise<boolean> {
   return await pb.collection('media').delete(id)
 }
+
+export interface LimparDuplicadasItem {
+  id: string
+  titulo: string
+  arquivo: string
+  created: string
+  motivo: string
+}
+
+export interface LimparDuplicadasResponse {
+  sucesso: boolean
+  modo: 'simulacao' | 'executado'
+  totalRegistrosAtual: number
+  totalAposLimpezaEstimado: number
+  resumo: {
+    totalParaExcluir: number
+    totalParaRevisar: number
+    totalVinculadosPulados: number
+    totalMantidosValidos: number
+    totalExcluidosEfetivamente: number
+    totalFalhas: number
+  }
+  detalhes: {
+    paraExcluir: LimparDuplicadasItem[]
+    paraRevisar: LimparDuplicadasItem[]
+    vinculadosPulados: LimparDuplicadasItem[]
+    falhas: Array<{ id: string; error: string }>
+  }
+  error?: string
+}
+
+export async function simularLimpezaDuplicadas(): Promise<LimparDuplicadasResponse> {
+  const res = await pb.send<LimparDuplicadasResponse>('/backend/v1/limpar-duplicadas-media', {
+    method: 'GET',
+  })
+  return res
+}
+
+export async function executarLimpezaDuplicadas(): Promise<LimparDuplicadasResponse> {
+  const res = await pb.send<LimparDuplicadasResponse>('/backend/v1/limpar-duplicadas-media', {
+    method: 'POST',
+    body: { confirmar: true },
+  })
+  return res
+}
