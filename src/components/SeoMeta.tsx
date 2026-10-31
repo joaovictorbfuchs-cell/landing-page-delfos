@@ -21,7 +21,7 @@ export default function SeoMeta({
   canonicalPath,
   ogType = 'website',
   ogImage = '/og-image.png',
-  ogSiteName = 'Delfos Engenharia',
+  ogSiteName = 'Delfos Energia Solar',
   ogLocale = 'pt_BR',
   robots = 'index, follow',
   schemaJsonLd,
@@ -31,7 +31,7 @@ export default function SeoMeta({
 }: SeoMetaProps) {
   useEffect(() => {
     // 1. Title Tag
-    const formattedTitle = title.includes('Delfos') ? title : `${title} | Delfos Engenharia`
+    const formattedTitle = title.includes('Delfos') ? title : `${title} | Delfos Energia Solar`
     document.title = formattedTitle
 
     // 2. Lang no html
