@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   FolderOpen,
   UploadCloud,
@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   RefreshCw,
   Eye,
+  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,8 @@ import {
   executarLimpezaDuplicadas,
   type LimparDuplicadasResponse,
 } from '@/services/content'
+import AdminBatchMediaModal from './AdminBatchMediaModal'
+import { formatFilenameToTitle, findMatchingCase, buildDestinoSugerido } from './mediaMatchUtils'
 
 const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Geral',
@@ -64,10 +67,13 @@ export default function AdminMediaTab({
   const { toast } = useToast()
   const [search, setSearch] = useState('')
   const [filterCat, setFilterCat] = useState<string>('todos')
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false) // Modal de upload único (legado/compatibilidade)
+  const [batchModalOpen, setBatchModalOpen] = useState(false) // Modal de upload múltiplo (novo)
+  const [batchInitialFiles, setBatchInitialFiles] = useState<File[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const filePickerRef = useRef<HTMLInputElement>(null)
 
   // Edit State & Modal
   const [editingItem, setEditingItem] = useState<MediaRecord | null>(null)
@@ -155,16 +161,10 @@ export default function AdminMediaTab({
     setEditPreview(null)
 
     // Se houver algum case com nome/slug contido no destino_sugerido ou título, sugerir pré-seleção
-    const matchCase = casesList.find((c) => {
-      const dest = (item.destino_sugerido || '').toLowerCase()
-      const tit = (item.titulo || '').toLowerCase()
-      const cNome = (c.cliente || '').toLowerCase()
-      const cTit = (c.titulo || '').toLowerCase()
-      return (
-        (cNome && (dest.includes(cNome) || tit.includes(cNome))) ||
-        (cTit && (dest.includes(cTit) || tit.includes(cTit)))
-      )
-    })
+    const matchCase =
+      findMatchingCase(item.destino_sugerido || '', casesList) ||
+      findMatchingCase(item.titulo || '', casesList) ||
+      findMatchingCase(item.arquivo || '', casesList)
     setEditCaseId(matchCase ? matchCase.id : '')
   }
 
@@ -240,9 +240,34 @@ export default function AdminMediaTab({
       setPreview(URL.createObjectURL(file))
       if (!titulo) {
         // Tenta inferir nome amigável a partir do arquivo
-        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
-        setTitulo(nameWithoutExt.charAt(0).toUpperCase() + nameWithoutExt.slice(1))
+        const formattedTitle = formatFilenameToTitle(file.name)
+        setTitulo(formattedTitle)
       }
+      if (!destinoSugerido) {
+        const matchCase = findMatchingCase(file.name, casesList)
+        if (matchCase) {
+          setDestinoSugerido(buildDestinoSugerido(matchCase))
+        }
+      }
+    }
+  }
+
+  // Gatilho rápido ao escolher arquivos múltiplos pelo botão principal
+  const handleQuickMultipleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const filesArray = Array.from(e.target.files)
+      if (filesArray.length > 1) {
+        // Se selecionou múltiplos, abre direto o modal de lote
+        setBatchInitialFiles(filesArray)
+        setBatchModalOpen(true)
+      } else if (filesArray.length === 1) {
+        // Se selecionou apenas 1, abre o modal de lote já com ele (ou o usuário pode usar normalmente)
+        setBatchInitialFiles(filesArray)
+        setBatchModalOpen(true)
+      }
+    }
+    if (e.target) {
+      e.target.value = ''
     }
   }
 
@@ -369,13 +394,40 @@ export default function AdminMediaTab({
             <span>Limpar duplicadas</span>
           </Button>
 
-          <Button
-            onClick={handleOpenUpload}
-            className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl shadow-sm text-xs h-10 px-4 flex-1 sm:flex-initial flex items-center justify-center gap-1.5"
-          >
-            <UploadCloud className="w-4 h-4 shrink-0" />
-            <span>Fazer Upload de Foto</span>
-          </Button>
+          {/* Input oculto com multiple para seleção direta se o usuário quiser disparar a partir do botão */}
+          <input
+            ref={filePickerRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleQuickMultipleSelect}
+            className="hidden"
+          />
+
+          <div className="flex items-center gap-1.5 flex-1 sm:flex-initial">
+            <Button
+              type="button"
+              onClick={() => {
+                setBatchInitialFiles([])
+                setBatchModalOpen(true)
+              }}
+              className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl shadow-sm text-xs h-10 px-3.5 flex-1 sm:flex-initial flex items-center justify-center gap-1.5"
+              title="Enviar várias fotos simultaneamente com título automático e sugestão de case"
+            >
+              <UploadCloud className="w-4 h-4 shrink-0" />
+              <span>Upload Múltiplo</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleOpenUpload}
+              className="border-slate-300 hover:bg-slate-100 text-slate-700 font-semibold rounded-xl text-xs h-10 px-2.5 hidden sm:inline-flex items-center justify-center"
+              title="Upload tradicional de arquivo único"
+            >
+              Único
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -427,12 +479,25 @@ export default function AdminMediaTab({
             centralizado e usar em qualquer página do site.
           </p>
           {mediaList.length === 0 && (
-            <Button
-              onClick={handleOpenUpload}
-              className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs rounded-xl"
-            >
-              Fazer Primeiro Upload
-            </Button>
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+              <Button
+                onClick={() => {
+                  setBatchInitialFiles([])
+                  setBatchModalOpen(true)
+                }}
+                className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs rounded-xl h-10 px-4"
+              >
+                <Layers className="w-4 h-4 mr-1.5" />
+                Upload Múltiplo de Fotos
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleOpenUpload}
+                className="rounded-xl text-xs h-10 px-4"
+              >
+                Upload Individual
+              </Button>
+            </div>
           )}
         </div>
       ) : (
@@ -1041,12 +1106,23 @@ export default function AdminMediaTab({
                 <UploadCloud className="w-10 h-10 text-solar-500 mx-auto" />
                 <div>
                   <label className="text-xs font-bold text-slate-800 block mb-1 cursor-pointer">
-                    Selecione o arquivo da imagem *
+                    Selecione o arquivo da imagem (ou vários para modo lote) *
                   </label>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange}
+                    multiple
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 1) {
+                        // Se o usuário selecionou mais de um arquivo aqui, redireciona suavemente para o lote
+                        const files = Array.from(e.target.files)
+                        setModalOpen(false)
+                        setBatchInitialFiles(files)
+                        setBatchModalOpen(true)
+                      } else {
+                        handleFileChange(e)
+                      }
+                    }}
                     required
                     className="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-midnight-950 file:text-white hover:file:bg-midnight-900 cursor-pointer"
                   />
@@ -1061,7 +1137,7 @@ export default function AdminMediaTab({
                   </div>
                 )}
                 <p className="text-[11px] text-slate-400">
-                  Formatos: JPG, PNG, WEBP, SVG, GIF. Limite: 15MB.
+                  Formatos: JPG, PNG, WEBP, SVG, GIF. Seleção múltipla suportada.
                 </p>
               </div>
 
@@ -1138,6 +1214,21 @@ export default function AdminMediaTab({
           </div>
         </div>
       )}
+
+      {/* Modal Upload Múltiplo em Lote */}
+      <AdminBatchMediaModal
+        isOpen={batchModalOpen}
+        onClose={() => {
+          setBatchModalOpen(false)
+          setBatchInitialFiles([])
+        }}
+        casesList={casesList}
+        categorias={MEDIA_CATEGORIAS}
+        initialFiles={batchInitialFiles}
+        onSuccessBatch={() => {
+          onRefresh()
+        }}
+      />
     </div>
   )
 }
