@@ -29,9 +29,18 @@ import {
   FileText,
   Award,
   Image as ImageIcon,
+  ChevronDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import DelfosLogo from '@/components/DelfosLogo'
 import { useToast } from '@/hooks/use-toast'
 import { isAuthenticated, logout, getCurrentUser } from '@/services/auth'
@@ -302,36 +311,43 @@ export default function Admin() {
     <div className="min-h-screen bg-frost flex flex-col text-slate-800">
       {/* Top Navbar */}
       <header className="bg-midnight-950 text-white border-b border-white/10 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <Link to="/" className="flex items-center gap-2 shrink-0">
-              <DelfosLogo height={36} variant="dark-bg" className="sm:hidden" />
-              <DelfosLogo height={44} variant="dark-bg" className="hidden sm:block" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2 md:gap-4">
+          {/* Logo + Identificação com truncamento limpo */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 shrink-0 max-w-[200px] sm:max-w-[280px] md:max-w-[320px]">
+            <Link to="/" className="flex items-center gap-2 shrink-0" title="Delfos Engenharia">
+              <DelfosLogo height={32} variant="dark-bg" className="sm:hidden" />
+              <DelfosLogo height={40} variant="dark-bg" className="hidden sm:block" />
             </Link>
-            <div className="border-l border-white/20 pl-2 sm:pl-3 hidden sm:block">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit">
-                Painel Administrativo
+            <div className="border-l border-white/20 pl-2 sm:pl-3 hidden sm:flex flex-col min-w-0 overflow-hidden">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-solar-400/20 text-solar-300 uppercase block w-fit shrink-0 tracking-wider">
+                Painel Admin
               </span>
-              <span className="text-xs text-slate-400 block leading-tight mt-0.5">
+              <span
+                className="text-xs text-slate-400 block leading-tight mt-0.5 truncate"
+                title={`Erechim/RS • ${currentUser?.email || 'Administrador'}`}
+              >
                 Erechim/RS • {currentUser?.email || 'Administrador'}
               </span>
             </div>
           </div>
 
-          {/* Abas Centrais de Navegação do Painel */}
-          <div className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+          {/* Abas Centrais de Navegação do Painel (desktop & telas médias) */}
+          <nav
+            aria-label="Abas do Painel"
+            className="hidden md:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10 overflow-x-auto no-scrollbar shrink min-w-0"
+          >
             <button
               type="button"
               onClick={() => setActiveTab('leads')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'leads'
                   ? 'bg-solar-400 text-midnight-950 shadow-sm'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
-              <span>Leads & Métricas</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+              <Users className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Leads & Métricas</span>
+              <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono shrink-0 leading-none">
                 {leads.length}
               </span>
             </button>
@@ -339,16 +355,16 @@ export default function Admin() {
             <button
               type="button"
               onClick={() => setActiveTab('posts')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'posts'
                   ? 'bg-solar-400 text-midnight-950 shadow-sm'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Blog / Conteúdos</span>
+              <FileText className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Blog / Conteúdos</span>
               {posts.length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono shrink-0 leading-none">
                   {posts.length}
                 </span>
               )}
@@ -357,16 +373,16 @@ export default function Admin() {
             <button
               type="button"
               onClick={() => setActiveTab('cases')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'cases'
                   ? 'bg-solar-400 text-midnight-950 shadow-sm'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              <Award className="w-3.5 h-3.5" />
-              <span>Cases</span>
+              <Award className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Cases</span>
               {cases.length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono shrink-0 leading-none">
                   {cases.length}
                 </span>
               )}
@@ -375,24 +391,26 @@ export default function Admin() {
             <button
               type="button"
               onClick={() => setActiveTab('media')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === 'media'
                   ? 'bg-solar-400 text-midnight-950 shadow-sm'
                   : 'text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
-              <ImageIcon className="w-3.5 h-3.5" />
-              <span>Biblioteca de Mídia</span>
+              <ImageIcon className="w-3.5 h-3.5 shrink-0" />
+              <span className="whitespace-nowrap">Biblioteca de Mídia</span>
               {mediaList.length > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 font-mono">
+                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono shrink-0 leading-none">
                   {mediaList.length}
                 </span>
               )}
             </button>
-          </div>
+          </nav>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2">
+          {/* Ações da Direita */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Atalhos completos visíveis apenas em telas extragrandes (2xl) */}
+            <div className="hidden 2xl:flex items-center gap-1">
               <Link to="/solucoes/energia-solar">
                 <Button
                   variant="ghost"
@@ -458,22 +476,92 @@ export default function Admin() {
               </Link>
             </div>
 
+            {/* Menu suspenso compacto de atalhos do site para telas médias e grandes (md a xl) */}
+            <div className="hidden md:block 2xl:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-slate-300 hover:text-white hover:bg-white/10 text-xs h-8 px-2.5 flex items-center gap-1 border border-white/10 rounded-lg"
+                  >
+                    <span>Páginas</span>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 bg-midnight-950 border-white/15 text-slate-200"
+                >
+                  <DropdownMenuLabel className="text-[10px] uppercase font-bold text-slate-400">
+                    Atalhos do Site
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/solucoes/energia-solar">Solar EPC</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/solucoes/bess">BESS (Baterias)</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/solucoes/om">O&M / Monitoramento</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/solucoes/carregadores">Carregadores Veiculares</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/projetos">Cases & Projetos</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/conteudos">Blog & Conteúdos</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-white/10 focus:text-white cursor-pointer"
+                  >
+                    <Link to="/sobre">Sobre a Delfos</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* Ver Site com ícone */}
             <Link to="/" className="hidden sm:inline-flex">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-slate-300 hover:text-white hover:bg-white/10 text-xs flex items-center gap-1.5"
+                className="text-slate-300 hover:text-white hover:bg-white/10 text-xs h-8 px-2.5 flex items-center gap-1.5"
+                title="Abrir página inicial do site"
               >
                 <span>Ver Site</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             </Link>
 
+            {/* Sair sempre visível e destacado */}
             <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="bg-red-500/15 border-red-400/30 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold h-9 px-3 flex items-center gap-1.5 shrink-0"
+              className="bg-red-500/15 border-red-400/30 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold h-8 sm:h-9 px-2.5 sm:px-3 flex items-center gap-1.5 shrink-0"
               title="Encerrar sessão administrativa"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -483,53 +571,78 @@ export default function Admin() {
         </div>
       </header>
 
-      {/* Mobile Sub-Nav Tab Bar */}
-      <div className="lg:hidden bg-midnight-900 border-b border-white/10 px-4 py-2 flex items-center gap-1 overflow-x-auto">
+      {/* Mobile Sub-Nav Tab Bar (rolagem suave horizontal com indicador e rótulos completos) */}
+      <nav
+        aria-label="Navegação móvel de abas"
+        className="md:hidden bg-midnight-900 border-b border-white/10 px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar"
+      >
         <button
           type="button"
           onClick={() => setActiveTab('leads')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-colors ${
             activeTab === 'leads'
-              ? 'bg-solar-400 text-midnight-950'
-              : 'text-slate-300 hover:text-white'
+              ? 'bg-solar-400 text-midnight-950 shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/5'
           }`}
         >
-          Leads ({leads.length})
+          <Users className="w-3.5 h-3.5" />
+          <span>Leads & Métricas</span>
+          <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono leading-none">
+            {leads.length}
+          </span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('posts')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-colors ${
             activeTab === 'posts'
-              ? 'bg-solar-400 text-midnight-950'
-              : 'text-slate-300 hover:text-white'
+              ? 'bg-solar-400 text-midnight-950 shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/5'
           }`}
         >
-          Blog ({posts.length})
+          <FileText className="w-3.5 h-3.5" />
+          <span>Blog / Conteúdos</span>
+          {posts.length > 0 && (
+            <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono leading-none">
+              {posts.length}
+            </span>
+          )}
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('cases')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-colors ${
             activeTab === 'cases'
-              ? 'bg-solar-400 text-midnight-950'
-              : 'text-slate-300 hover:text-white'
+              ? 'bg-solar-400 text-midnight-950 shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/5'
           }`}
         >
-          Cases ({cases.length})
+          <Award className="w-3.5 h-3.5" />
+          <span>Cases</span>
+          {cases.length > 0 && (
+            <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono leading-none">
+              {cases.length}
+            </span>
+          )}
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('media')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shrink-0 transition-colors ${
             activeTab === 'media'
-              ? 'bg-solar-400 text-midnight-950'
-              : 'text-slate-300 hover:text-white'
+              ? 'bg-solar-400 text-midnight-950 shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/5'
           }`}
         >
-          Mídia ({mediaList.length})
+          <ImageIcon className="w-3.5 h-3.5" />
+          <span>Biblioteca de Mídia</span>
+          {mediaList.length > 0 && (
+            <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono leading-none">
+              {mediaList.length}
+            </span>
+          )}
         </button>
-      </div>
+      </nav>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-5 sm:py-8 w-full flex-1 space-y-6 sm:space-y-8">

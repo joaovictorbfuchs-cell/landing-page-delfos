@@ -407,4 +407,15 @@
       transform: none !important;
     }
   }
+
+  /* Utilitário para ocultar barra de rolagem mantendo a rolagem ativa */
+  .no-scrollbar::-webkit-scrollbar,
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar,
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
