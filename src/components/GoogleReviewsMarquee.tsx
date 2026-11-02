@@ -1,4 +1,4 @@
-import { ExternalLink, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { GOOGLE_PROFILE_DATA, GOOGLE_REVIEWS, type GoogleReview } from '@/data/googleReviews'
 
 function GoogleIcon({ className = 'w-4 h-4' }: { className?: string }) {
@@ -109,48 +109,6 @@ export default function GoogleReviewsMarquee() {
 
   return (
     <div className="w-full">
-      {/* Cabeçalho da Faixa */}
-      <div className="max-w-[1200px] mx-auto px-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          {/* Selo Google */}
-          <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <GoogleIcon className="w-6 h-6 shrink-0" />
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg font-bold text-slate-900 leading-none">
-                  {GOOGLE_PROFILE_DATA.rating}
-                </span>
-                <div className="flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-              </div>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                {GOOGLE_PROFILE_DATA.totalReviews} avaliações no Google Meu Negócio
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-              Avaliações reais no Google
-            </h3>
-          </div>
-        </div>
-
-        {/* Link para o perfil completo no Google */}
-        <a
-          href={GOOGLE_PROFILE_DATA.profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 hover:text-slate-900 border border-slate-200 transition-colors shrink-0 shadow-sm"
-        >
-          <span>Ver todas as avaliações no Google</span>
-          <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-        </a>
-      </div>
-
       {/* Esteira Animada Contínua (Marquee) */}
       <div className="relative w-full overflow-hidden group-marquee py-2 bg-gradient-to-b from-slate-50/50 via-white to-slate-50/30">
         {/* Máscaras de Fade laterais para transição suave */}
@@ -170,11 +128,6 @@ export default function GoogleReviewsMarquee() {
           ))}
         </div>
       </div>
-
-      {/* Micro-legenda de acessibilidade / pausar */}
-      <p className="text-center text-[11px] text-slate-400 mt-4">
-        Passe o mouse ou toque para pausar a rolagem
-      </p>
     </div>
   )
 }

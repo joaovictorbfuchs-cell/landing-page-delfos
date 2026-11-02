@@ -12,10 +12,6 @@ export default function Depoimentos() {
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-4">
             O que nossos clientes dizem
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Atendimento próximo e acompanhamento do início ao fim — o resultado está nas avaliações
-            reais dos nossos clientes no Google.
-          </p>
         </div>
       </div>
 

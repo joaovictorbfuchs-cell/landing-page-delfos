@@ -616,10 +616,11 @@ export default function ContatoForm({
                   <div className="pt-4">
                     <Button
                       type="submit"
-                      className="w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold h-13 py-3 text-base rounded-xl shadow-md flex items-center justify-center gap-2 group"
+                      className="w-full max-w-full bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold h-12 sm:h-13 px-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl shadow-md flex items-center justify-center gap-2 group box-border overflow-hidden"
                     >
-                      <span>Avançar para Qualificação Técnica</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <span className="sm:hidden truncate">Continuar</span>
+                      <span className="hidden sm:inline">Avançar para Qualificação Técnica</span>
+                      <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <p className="text-center text-[11px] text-slate-400 mt-2">
                       Falta apenas 1 etapa rápida para completar seu estudo preliminar.

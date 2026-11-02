@@ -1435,203 +1435,588 @@ export default function ArtigoManutencaoRico({
           </div>
 
           {/* Diagrama SVG Semântico */}
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10 overflow-x-auto">
+          <div className="p-3 sm:p-6 rounded-2xl bg-white/5 border border-white/10 overflow-x-auto w-full">
             <svg
-              viewBox="0 0 720 220"
-              className="w-full min-w-[580px] h-auto block"
-              aria-label="Módulo fotovoltaico com sujeira acumulada comparado a módulo limpo em fileira em série"
+              viewBox="0 0 940 380"
+              className="w-full min-w-[700px] h-auto block overflow-visible"
+              aria-label="Diagrama de string solar fotovoltaica ligada em série com módulo sombreado limitando a corrente de toda a fileira"
             >
               <defs>
-                <linearGradient id="delfosModNormal" x1="0" y1="0" x2="1" y2="1">
+                <linearGradient id="modNormalGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#1E3E62" />
                   <stop offset="100%" stopColor="#0B1E33" />
                 </linearGradient>
-                <linearGradient id="delfosModHot" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#E4572E" />
-                  <stop offset="100%" stopColor="#F5A623" />
+                <linearGradient id="modSombreadoGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#6C2818" />
+                  <stop offset="100%" stopColor="#3A1009" />
                 </linearGradient>
+                <marker
+                  id="setaCorrente"
+                  viewBox="0 0 10 10"
+                  refX="6"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 1 L 8 5 L 0 9 z" fill="#F5A623" />
+                </marker>
               </defs>
 
-              {/* Módulos */}
+              {/* Título de topo / Banner explicativo da Lei Física */}
               <rect
-                x="24"
-                y="55"
-                width="96"
-                height="75"
+                x="20"
+                y="12"
+                width="900"
+                height="36"
                 rx="8"
-                fill="url(#delfosModNormal)"
-                stroke="#F5A623"
-                strokeOpacity="0.5"
-                strokeWidth="2"
+                fill="#11253E"
+                stroke="#254A74"
+                strokeWidth="1"
               />
               <text
-                x="72"
-                y="98"
-                fill="#A8B2D1"
-                fontSize="11"
+                x="470"
+                y="35"
                 textAnchor="middle"
+                fill="#FBD38D"
+                fontSize="13"
                 fontWeight="bold"
               >
-                Módulo 1 (100%)
+                CIRCUITO EM SÉRIE: TENSÕES SE SOMAM (V_total = Σ V_módulo) • CORRENTE É A MESMA EM
+                TODOS (I_string = I_gargalo)
               </text>
 
-              <rect
-                x="150"
-                y="55"
-                width="96"
-                height="75"
-                rx="8"
-                fill="url(#delfosModNormal)"
-                stroke="#F5A623"
-                strokeOpacity="0.5"
-                strokeWidth="2"
-              />
-              <text
-                x="198"
-                y="98"
-                fill="#A8B2D1"
-                fontSize="11"
-                textAnchor="middle"
-                fontWeight="bold"
-              >
-                Módulo 2 (100%)
-              </text>
+              {/* Barramento Superior: Cabos de Ligação em Série (+ no -) */}
+              {/* String: Polo Positivo Principal sai do Inversor (à esquerda) */}
+              {/* Módulo 1 (x=30): + na esq, - na dir */}
+              {/* Módulo 2 (x=180): + na esq, - na dir */}
+              {/* Módulo 3 (x=330 - Sombreado): + na esq, - na dir */}
+              {/* Módulo 4 (x=480): + na esq, - na dir */}
+              {/* Módulo 5 (x=630): + na esq, - na dir */}
+              {/* Módulo 6 (x=780): + na esq, - na dir */}
 
-              {/* Módulo Danificado / Afetado */}
-              <rect
-                x="276"
-                y="55"
-                width="96"
-                height="75"
-                rx="8"
-                fill="url(#delfosModHot)"
-                stroke="#E4572E"
-                strokeWidth="2.5"
-              />
-              <text
-                x="324"
-                y="92"
-                fill="#FFFFFF"
-                fontSize="11"
-                textAnchor="middle"
-                fontWeight="black"
-              >
-                Módulo 3 (70%)
-              </text>
-              <text x="324" y="108" fill="#FFE2D8" fontSize="9" textAnchor="middle">
-                Sujo / Ponto Quente
-              </text>
-
-              <rect
-                x="402"
-                y="55"
-                width="96"
-                height="75"
-                rx="8"
-                fill="url(#delfosModNormal)"
-                stroke="#F5A623"
-                strokeOpacity="0.5"
-                strokeWidth="2"
-              />
-              <text
-                x="450"
-                y="98"
-                fill="#A8B2D1"
-                fontSize="11"
-                textAnchor="middle"
-                fontWeight="bold"
-              >
-                Módulo 4 (100%)
-              </text>
-
-              <rect
-                x="528"
-                y="55"
-                width="96"
-                height="75"
-                rx="8"
-                fill="url(#delfosModNormal)"
-                stroke="#F5A623"
-                strokeOpacity="0.5"
-                strokeWidth="2"
-              />
-              <text
-                x="576"
-                y="98"
-                fill="#A8B2D1"
-                fontSize="11"
-                textAnchor="middle"
-                fontWeight="bold"
-              >
-                Módulo 5 (100%)
-              </text>
-
-              <rect
-                x="654"
-                y="55"
-                width="50"
-                height="75"
-                rx="8"
-                fill="url(#delfosModNormal)"
-                stroke="#F5A623"
-                strokeOpacity="0.5"
-                strokeWidth="2"
-              />
-              <text x="679" y="98" fill="#A8B2D1" fontSize="10" textAnchor="middle">
-                ...
-              </text>
-
-              {/* Conexões em série */}
-              <g stroke="#FFB83D" strokeWidth="3" fill="none">
-                <line x1="120" y1="92" x2="150" y2="92" />
-                <line x1="246" y1="92" x2="276" y2="92" />
-                <line x1="372" y1="92" x2="402" y2="92" />
-                <line x1="498" y1="92" x2="528" y2="92" />
-                <line x1="624" y1="92" x2="654" y2="92" />
+              {/* Fios inter-módulos ligando (-) do anterior ao (+) do próximo */}
+              <g stroke="#F5A623" strokeWidth="3" fill="none">
+                {/* Mod 1 (-) x=148 para Mod 2 (+) x=180 */}
+                <line x1="148" y1="125" x2="180" y2="125" markerEnd="url(#setaCorrente)" />
+                {/* Mod 2 (-) x=298 para Mod 3 (+) x=330 */}
+                <line x1="298" y1="125" x2="330" y2="125" markerEnd="url(#setaCorrente)" />
+                {/* Mod 3 (-) x=448 para Mod 4 (+) x=480 */}
+                <line x1="448" y1="125" x2="480" y2="125" markerEnd="url(#setaCorrente)" />
+                {/* Mod 4 (-) x=598 para Mod 5 (+) x=630 */}
+                <line x1="598" y1="125" x2="630" y2="125" markerEnd="url(#setaCorrente)" />
+                {/* Mod 5 (-) x=748 para Mod 6 (+) x=780 */}
+                <line x1="748" y1="125" x2="780" y2="125" markerEnd="url(#setaCorrente)" />
               </g>
 
-              {/* Linha indicadora */}
+              {/* Retorno do circuito ao Inversor (cabo negativo de volta pela base) */}
               <path
-                d="M324 45 Q 324 20 295 20"
-                stroke="#E4572E"
-                strokeWidth="2"
+                d="M 898 125 L 920 125 L 920 230 L 20 230 L 20 125 L 30 125"
+                stroke="#64748B"
+                strokeWidth="2.5"
+                strokeDasharray="6 4"
                 fill="none"
-                strokeDasharray="4 4"
               />
               <text
-                x="324"
-                y="16"
+                x="470"
+                y="246"
                 textAnchor="middle"
-                fill="#FFB4A0"
-                fontSize="12"
+                fill="#94A3B8"
+                fontSize="11"
                 fontWeight="bold"
               >
-                Módulo afetado limita a corrente da string inteira
+                Retorno do circuito fechado em série ao inversor central / MPPT (CC)
               </text>
 
-              {/* Barramento inferior */}
-              <text
-                x="360"
-                y="165"
-                textAnchor="middle"
-                fill="#FFFFFF"
-                fontSize="14"
-                fontWeight="bold"
-              >
-                Resultado real: todos os módulos geram no máximo 70% da capacidade
-              </text>
-              <line
-                x1="40"
-                y1="185"
-                x2="680"
-                y2="185"
-                stroke="#F5A623"
-                strokeWidth="2"
-                strokeDasharray="4 6"
+              {/* ================= MÓDULO 1 ================= */}
+              <g id="mod1">
+                <rect
+                  x="30"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modNormalGrad)"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                />
+                {/* Grade de células solares */}
+                <line x1="30" y1="105" x2="148" y2="105" stroke="#334155" strokeWidth="1" />
+                <line x1="30" y1="145" x2="148" y2="145" stroke="#334155" strokeWidth="1" />
+                <line x1="89" y1="65" x2="89" y2="185" stroke="#334155" strokeWidth="1" />
+                {/* Bornes */}
+                <circle cx="34" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="34"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="144" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="144"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                {/* Textos */}
+                <text
+                  x="89"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 1
+                </text>
+                <text
+                  x="89"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V = 41 V
+                </text>
+                <text x="89" y="168" textAnchor="middle" fill="#A8B2D1" fontSize="10">
+                  Sol pleno
+                </text>
+              </g>
+
+              {/* ================= MÓDULO 2 ================= */}
+              <g id="mod2">
+                <rect
+                  x="180"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modNormalGrad)"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                />
+                <line x1="180" y1="105" x2="298" y2="105" stroke="#334155" strokeWidth="1" />
+                <line x1="180" y1="145" x2="298" y2="145" stroke="#334155" strokeWidth="1" />
+                <line x1="239" y1="65" x2="239" y2="185" stroke="#334155" strokeWidth="1" />
+                <circle cx="184" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="184"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="294" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="294"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                <text
+                  x="239"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 2
+                </text>
+                <text
+                  x="239"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V = 41 V
+                </text>
+                <text x="239" y="168" textAnchor="middle" fill="#A8B2D1" fontSize="10">
+                  Sol pleno
+                </text>
+              </g>
+
+              {/* ================= MÓDULO 3 (SOMBREADO / GARGALO) ================= */}
+              <g id="mod3">
+                {/* Destaque com brilho avermelhado de alerta */}
+                <rect
+                  x="328"
+                  y="63"
+                  width="122"
+                  height="124"
+                  rx="10"
+                  fill="none"
+                  stroke="#EF4444"
+                  strokeWidth="3"
+                  strokeDasharray="5 3"
+                />
+                <rect
+                  x="330"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modSombreadoGrad)"
+                  stroke="#F87171"
+                  strokeWidth="2"
+                />
+                <line x1="330" y1="105" x2="448" y2="105" stroke="#7F1D1D" strokeWidth="1" />
+                <line x1="330" y1="145" x2="448" y2="145" stroke="#7F1D1D" strokeWidth="1" />
+                <line x1="389" y1="65" x2="389" y2="185" stroke="#7F1D1D" strokeWidth="1" />
+                {/* Ícone de folha/sombra visual */}
+                <rect
+                  x="350"
+                  y="95"
+                  width="78"
+                  height="30"
+                  rx="6"
+                  fill="#000000"
+                  fillOpacity="0.65"
+                />
+                <circle cx="334" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="334"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="444" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="444"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                <text
+                  x="389"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FECACA"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 3
+                </text>
+                <text
+                  x="389"
+                  y="115"
+                  textAnchor="middle"
+                  fill="#FCA5A5"
+                  fontSize="11"
+                  fontWeight="black"
+                >
+                  SOMBREADO
+                </text>
+                <text
+                  x="389"
+                  y="142"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V ≈ 41 V
+                </text>
+                <text
+                  x="389"
+                  y="172"
+                  textAnchor="middle"
+                  fill="#FCA5A5"
+                  fontSize="10"
+                  fontWeight="bold"
+                >
+                  Corrente cai a 7A!
+                </text>
+              </g>
+
+              {/* ================= MÓDULO 4 ================= */}
+              <g id="mod4">
+                <rect
+                  x="480"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modNormalGrad)"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                />
+                <line x1="480" y1="105" x2="598" y2="105" stroke="#334155" strokeWidth="1" />
+                <line x1="480" y1="145" x2="598" y2="145" stroke="#334155" strokeWidth="1" />
+                <line x1="539" y1="65" x2="539" y2="185" stroke="#334155" strokeWidth="1" />
+                <circle cx="484" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="484"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="594" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="594"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                <text
+                  x="539"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 4
+                </text>
+                <text
+                  x="539"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V = 41 V
+                </text>
+                <text x="539" y="168" textAnchor="middle" fill="#A8B2D1" fontSize="10">
+                  Sol pleno
+                </text>
+              </g>
+
+              {/* ================= MÓDULO 5 ================= */}
+              <g id="mod5">
+                <rect
+                  x="630"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modNormalGrad)"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                />
+                <line x1="630" y1="105" x2="748" y2="105" stroke="#334155" strokeWidth="1" />
+                <line x1="630" y1="145" x2="748" y2="145" stroke="#334155" strokeWidth="1" />
+                <line x1="689" y1="65" x2="689" y2="185" stroke="#334155" strokeWidth="1" />
+                <circle cx="634" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="634"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="744" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="744"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                <text
+                  x="689"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 5
+                </text>
+                <text
+                  x="689"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V = 41 V
+                </text>
+                <text x="689" y="168" textAnchor="middle" fill="#A8B2D1" fontSize="10">
+                  Sol pleno
+                </text>
+              </g>
+
+              {/* ================= MÓDULO 6 ================= */}
+              <g id="mod6">
+                <rect
+                  x="780"
+                  y="65"
+                  width="118"
+                  height="120"
+                  rx="8"
+                  fill="url(#modNormalGrad)"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                />
+                <line x1="780" y1="105" x2="898" y2="105" stroke="#334155" strokeWidth="1" />
+                <line x1="780" y1="145" x2="898" y2="145" stroke="#334155" strokeWidth="1" />
+                <line x1="839" y1="65" x2="839" y2="185" stroke="#334155" strokeWidth="1" />
+                <circle cx="784" cy="125" r="5" fill="#38BDF8" />
+                <text
+                  x="784"
+                  y="129"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  +
+                </text>
+                <circle cx="894" cy="125" r="5" fill="#F5A623" />
+                <text
+                  x="894"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#0F172A"
+                  fontSize="9"
+                  fontWeight="black"
+                >
+                  -
+                </text>
+                <text
+                  x="839"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#FFFFFF"
+                  fontSize="12"
+                  fontWeight="bold"
+                >
+                  Módulo 6
+                </text>
+                <text
+                  x="839"
+                  y="128"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="12"
+                  fontWeight="extrabold"
+                >
+                  V = 41 V
+                </text>
+                <text x="839" y="168" textAnchor="middle" fill="#A8B2D1" fontSize="10">
+                  Sol pleno
+                </text>
+              </g>
+
+              {/* Balão de Alerta do Módulo Sombreado */}
+              <g>
+                <path d="M 389 60 L 389 50" stroke="#EF4444" strokeWidth="2" />
+                <rect
+                  x="230"
+                  y="4"
+                  width="318"
+                  height="28"
+                  rx="6"
+                  fill="#7F1D1D"
+                  stroke="#EF4444"
+                  strokeWidth="1.5"
+                />
+                <text
+                  x="389"
+                  y="22"
+                  textAnchor="middle"
+                  fill="#FEF2F2"
+                  fontSize="11"
+                  fontWeight="bold"
+                >
+                  ⚠️ Ponto quente / sujeira: corrente cai de ~13A para ~7A
+                </text>
+              </g>
+
+              {/* ================= PAINEL DE RESULTADOS (CÁLCULOS TÉCNICOS REAIS) ================= */}
+              <rect
+                x="20"
+                y="265"
+                width="900"
+                height="100"
+                rx="12"
+                fill="#0B1E33"
+                stroke="#1E3E62"
+                strokeWidth="1.5"
               />
-              <text x="360" y="202" textAnchor="middle" fill="#A8B2D1" fontSize="11">
-                Uma sujeira de 15% em um painel provoca perda composta de mais de 20% no arranjo.
-              </text>
+
+              {/* Coluna 1: Tensões se somam */}
+              <g transform="translate(40, 275)">
+                <text x="0" y="18" fill="#38BDF8" fontSize="12" fontWeight="bold">
+                  1. TENSÕES SE SOMAM (V):
+                </text>
+                <text x="0" y="38" fill="#FFFFFF" fontSize="14" fontWeight="extrabold">
+                  V_total = 6 módulos × 41 V ≈ 246 V
+                </text>
+                <text x="0" y="58" fill="#94A3B8" fontSize="11">
+                  A tensão permanece próxima da nominal
+                </text>
+              </g>
+
+              {/* Coluna 2: Corrente é a mesma (gargalo) */}
+              <g transform="translate(360, 275)">
+                <text x="0" y="18" fill="#F87171" fontSize="12" fontWeight="bold">
+                  2. CORRENTE LIMITADA (I):
+                </text>
+                <text x="0" y="38" fill="#FCA5A5" fontSize="14" fontWeight="extrabold">
+                  I_string = 7 A (era 13 A no sol pleno)
+                </text>
+                <text x="0" y="58" fill="#FCA5A5" fontSize="11">
+                  O módulo sombreado estrangula os outros 5!
+                </text>
+              </g>
+
+              {/* Coluna 3: Potência Total Despenca */}
+              <g transform="translate(680, 275)">
+                <text x="0" y="18" fill="#FBBF24" fontSize="12" fontWeight="bold">
+                  3. IMPACTO NA POTÊNCIA (P = V × I):
+                </text>
+                <text x="0" y="38" fill="#FDE68A" fontSize="14" fontWeight="extrabold">
+                  Potência cai ~46% na string inteira
+                </text>
+                <text x="0" y="58" fill="#94A3B8" fontSize="11">
+                  De ~3.200 W nominais para ~1.722 W
+                </text>
+              </g>
             </svg>
           </div>
         </div>

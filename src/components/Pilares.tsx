@@ -61,24 +61,24 @@ export default function Pilares() {
   ]
 
   return (
-    <section id="solucoes" className="py-24 bg-white relative">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="solucoes" className="py-12 sm:py-24 bg-white relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-100 text-solar-800 text-xs font-bold uppercase tracking-wider mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-solar-100 text-solar-800 text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3">
             Nossas soluções
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3 sm:mb-4">
             Tudo para a sua energia, em um só lugar
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+          <p className="text-sm sm:text-lg text-slate-600 leading-relaxed">
             Projeto, instalação e manutenção de energia solar, baterias e recarga veicular — com uma
             única equipe responsável, do orçamento ao suporte.
           </p>
         </div>
 
         {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
           {pilares.map((p) => {
             const Icon = p.icone
             return (
@@ -86,42 +86,38 @@ export default function Pilares() {
                 key={p.id}
                 to={p.paginaUrl}
                 aria-label={`${p.titulo} - ${p.textoBotao}`}
-                className={`bg-white rounded-3xl border-2 border-slate-200/90 shadow-sm hover:shadow-2xl ${p.bordaHover} hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden cursor-pointer`}
+                className={`bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 sm:border-2 shadow-xs sm:shadow-sm hover:shadow-xl ${p.bordaHover} hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden cursor-pointer`}
               >
                 {/* Barra de cor no topo para identidade visual marcante */}
-                <div className={`h-2 w-full ${p.barraCor}`} />
+                <div className={`h-1.5 sm:h-2 w-full ${p.barraCor}`} />
 
-                <div className="p-7 sm:p-9">
+                <div className="p-4 sm:p-9">
                   {/* Top Header */}
-                  <div className="flex items-center gap-4 mb-5">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-5">
                     <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-md ${p.corIcone} group-hover:scale-105 transition-transform duration-300 shrink-0`}
+                      className={`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-xs sm:shadow-md ${p.corIcone} group-hover:scale-105 transition-transform duration-300 shrink-0`}
                     >
-                      <Icon className="w-7 h-7" />
+                      <Icon className="w-5 h-5 sm:w-7 sm:h-7" />
                     </div>
                     <div>
-                      <span
-                        className={`inline-block text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border mb-1.5 ${p.tagCor}`}
-                      >
-                        Solução {p.numero}
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight group-hover:text-midnight-950 transition-colors">
+                      <h3 className="text-lg sm:text-2xl font-bold text-slate-900 leading-tight group-hover:text-midnight-950 transition-colors">
                         {p.titulo}
                       </h3>
                     </div>
                   </div>
 
                   {/* Frase de benefício */}
-                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                  <p className="text-xs sm:text-base text-slate-600 leading-relaxed">
                     {p.beneficio}
                   </p>
                 </div>
 
                 {/* Footer Action */}
-                <div className="px-7 sm:px-9 pb-7 sm:pb-9 pt-4 border-t border-slate-100 flex items-center">
-                  <div className="inline-flex items-center gap-2 bg-solar-400 group-hover:bg-solar-500 text-midnight-950 font-bold px-6 py-3 rounded-xl text-sm shadow-md transition-all group-hover:scale-[1.02]">
-                    <span>{p.textoBotao}</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+                <div className="px-4 sm:px-9 pb-4 sm:pb-9 pt-3 sm:pt-4 border-t border-slate-100 flex items-center">
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-solar-400 group-hover:bg-solar-500 text-midnight-950 font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm shadow-xs sm:shadow-md transition-all group-hover:scale-[1.02]">
+                    <span className="sm:hidden">Ver mais</span>
+                    <span className="hidden sm:inline">{p.textoBotao}</span>
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
                   </div>
                 </div>
               </Link>

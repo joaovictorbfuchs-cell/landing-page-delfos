@@ -379,14 +379,14 @@ export default function Conteudos() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
                 {artigosFiltrados.map((artigo) => {
                   return (
                     <article
                       key={artigo.slug}
-                      className="bg-white rounded-3xl border border-slate-200/90 hover:border-solar-400/60 transition-all p-6 sm:p-7 shadow-xs hover:shadow-md flex flex-col justify-between group"
+                      className="bg-white rounded-3xl border border-slate-200/90 hover:border-solar-400/60 transition-all p-5 sm:p-7 shadow-xs hover:shadow-md flex flex-col h-full group"
                     >
-                      <div className="space-y-4">
+                      <div className="space-y-4 flex-1 flex flex-col">
                         {/* Foto de Capa com Foto Real do Portfólio Delfos */}
                         {(() => {
                           const cardFoto =
@@ -398,7 +398,7 @@ export default function Conteudos() {
                               liveCases,
                             ).url
                           return (
-                            <div className="aspect-video w-full rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-slate-900 group">
+                            <div className="aspect-video w-full rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-slate-900 group shrink-0">
                               <img
                                 src={cardFoto}
                                 alt={`Usina solar fotovoltaica instalada pela Delfos — ${artigo.titulo}`}
@@ -426,22 +426,22 @@ export default function Conteudos() {
                         </div>
 
                         {/* Título H2 com Link */}
-                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-solar-600 transition-colors leading-snug">
+                        <h2 className="text-lg sm:text-2xl font-extrabold text-slate-900 group-hover:text-solar-600 transition-colors leading-snug line-clamp-2">
                           <Link to={`/conteudos/${artigo.slug}`}>{artigo.titulo}</Link>
                         </h2>
 
                         {/* Resumo */}
-                        <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
+                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-3">
                           {artigo.resumo}
                         </p>
 
                         {/* Palavras-chave em tags */}
-                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1 mt-auto">
                           <span className="text-[11px] font-semibold text-slate-500 mr-1 flex items-center gap-1">
                             <Tag className="w-3 h-3 text-solar-500" />
                             Foco:
                           </span>
-                          <span className="px-2 py-0.5 rounded-md bg-frost text-[11px] font-medium text-slate-700 border border-slate-200">
+                          <span className="px-2 py-0.5 rounded-md bg-frost text-[11px] font-medium text-slate-700 border border-slate-200 truncate max-w-[140px] sm:max-w-none">
                             {artigo.palavraChave}
                           </span>
                           {artigo.palavrasChaveSecundarias.slice(0, 2).map((kw) => (
@@ -456,14 +456,14 @@ export default function Conteudos() {
                       </div>
 
                       {/* Footer do Card com CTA */}
-                      <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-xs text-slate-500 font-medium">
+                      <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-slate-100 flex items-center justify-between gap-3 shrink-0">
+                        <span className="text-xs text-slate-500 font-medium truncate max-w-[160px] sm:max-w-none">
                           {artigo.autorNome}
                         </span>
 
                         <Link
                           to={`/conteudos/${artigo.slug}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-solar-700 group-hover:text-solar-900 group-hover:translate-x-0.5 transition-all"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-solar-700 group-hover:text-solar-900 group-hover:translate-x-0.5 transition-all shrink-0 whitespace-nowrap"
                         >
                           <span>Acessar conteúdo</span>
                           <ArrowRight className="w-4 h-4" />

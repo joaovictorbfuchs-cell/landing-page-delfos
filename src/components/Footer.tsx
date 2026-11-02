@@ -286,10 +286,13 @@ export default function Footer() {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-white flex items-center gap-2">
-                  Delfos Engenharia no Google
+                <p className="text-sm font-semibold text-white flex flex-wrap items-center gap-2">
+                  <span>Delfos Engenharia no Google</span>
                   <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                     Perfil Oficial Verificado
+                  </span>
+                  <span className="text-[11px] font-semibold text-amber-300">
+                    ★ 4,9 • 39 avaliações no Google Meu Negócio
                   </span>
                 </p>
                 <p className="text-xs text-slate-400">

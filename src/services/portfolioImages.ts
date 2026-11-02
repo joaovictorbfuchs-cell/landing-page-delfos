@@ -10,10 +10,7 @@ export interface PortfolioImageSelection {
   cliente?: string
 }
 
-// Catálogo fixo de fotos reais de instalações da Delfos homologadas no banco (PocketBase 'cases')
-// Todas as fotos aqui vêm das usinas reais instaladas pela Delfos em telhados industriais, comerciais,
-// rurais, residenciais e solo, com placas solares em destaque.
-export const PORTFOLIO_REAL_CASES: Array<{
+export interface CaseItem {
   id: string
   foto: string
   titulo: string
@@ -23,7 +20,11 @@ export const PORTFOLIO_REAL_CASES: Array<{
   potencia: string
   temaTags: string[]
   altDestaque: string
-}> = [
+}
+
+// Catálogo fixo de fotos reais de instalações da Delfos homologadas no banco (PocketBase 'cases')
+// Usinas reais instaladas pela Delfos em telhados industriais, comerciais, rurais, condomínios e solo.
+export const PORTFOLIO_REAL_CASES: CaseItem[] = [
   {
     id: 'psl026eq9dcvpjr',
     foto: 'clanel_ind_confeccoes_erechim_rs_123_5_kwp_2_ourlwcmvml.jpg',
@@ -32,7 +33,15 @@ export const PORTFOLIO_REAL_CASES: Array<{
     setor: 'Indústria',
     local: 'Erechim / RS',
     potencia: '123,5 kWp',
-    temaTags: ['industria', 'bess', 'baterias', 'demanda', 'armazenamento', 'alta-potencia'],
+    temaTags: [
+      'industria',
+      'bess',
+      'baterias',
+      'demanda',
+      'armazenamento',
+      'alta-potencia',
+      'solar',
+    ],
     altDestaque:
       'Painéis solares fotovoltaicos instalados em cobertura industrial pela Delfos Engenharia (Clanel 123,5 kWp em Erechim/RS)',
   },
@@ -53,6 +62,7 @@ export const PORTFOLIO_REAL_CASES: Array<{
       'perda',
       'usina',
       'alto-uruguai',
+      'solar',
     ],
     altDestaque:
       'Instalação de usina solar com módulos fotovoltaicos em telhado metálico pela Delfos Engenharia (Cassul 155 kWp em Erechim/RS)',
@@ -65,9 +75,44 @@ export const PORTFOLIO_REAL_CASES: Array<{
     setor: 'Comércio e Serviços',
     local: 'Passo Fundo / RS',
     potencia: '112,5 kWp',
-    temaTags: ['comercio', 'om', 'monitoramento', 'manutencao', 'passo-fundo'],
+    temaTags: ['comercio', 'om', 'monitoramento', 'manutencao', 'passo-fundo', 'limpeza', 'solar'],
     altDestaque:
       'Vista aérea de placas solares instaladas na Panificadora Garcia em Passo Fundo/RS pela Delfos Engenharia',
+  },
+  {
+    id: 'tundxjltzsy7x48',
+    foto: 'arfes_refrigeracao_erechim_rs_30_kwp_dji_0038_vzzddwb76g.jpg',
+    titulo: 'ARFES Refrigeração — Erechim/RS — 30,0 kWp',
+    cliente: 'ARFES Refrigeração',
+    setor: 'Indústria',
+    local: 'Erechim / RS',
+    potencia: '30,0 kWp',
+    temaTags: ['industria', 'om', 'manutencao', 'monitoramento', 'erechim', 'solar'],
+    altDestaque:
+      'Arranjo de 86 módulos fotovoltaicos da ARFES Refrigeração vistoriados pela equipe de O&M da Delfos Engenharia',
+  },
+  {
+    id: 'hooy17m85v3h5lo',
+    foto: 'spazzini_tur_erechim_rs_32_16_kwp_dji_0105_8xm144mvhy.jpg',
+    titulo: 'Spazzini Tur — Erechim/RS — 32,16 kWp',
+    cliente: 'Spazzini Tur',
+    setor: 'Comércio e Serviços',
+    local: 'Erechim / RS',
+    potencia: '32,16 kWp',
+    temaTags: ['comercio', 'om', 'manutencao', 'frotas', 'solar', 'mobilidade'],
+    altDestaque:
+      'Módulos solares em cobertura de garagem comercial inspecionados pela engenharia Delfos',
+  },
+  {
+    id: 'o2585id40npspsy',
+    foto: 'supermercado_cavassola_erechim_rs_20_kwp_dji_0106_zlahih7lgd.jpg',
+    titulo: 'Supermercado Cavassola — Erechim/RS — 20,0 kWp',
+    cliente: 'Supermercado Cavassola',
+    setor: 'Comércio e Serviços',
+    local: 'Erechim / RS',
+    potencia: '20,0 kWp',
+    temaTags: ['comercio', 'om', 'manutencao', 'solar'],
+    altDestaque: 'Usina solar comercial com 20 kWp operando sob supervisão da Delfos Engenharia',
   },
   {
     id: '2i9vws5rfgjujs9',
@@ -120,7 +165,7 @@ export const PORTFOLIO_REAL_CASES: Array<{
     setor: 'Investidores e Usinas',
     local: 'Erechim / RS',
     potencia: '40,8 kWp',
-    temaTags: ['solo', 'usina', 'investidores', 'gd', 'rural', 'fazenda'],
+    temaTags: ['solo', 'usina', 'investidores', 'gd', 'rural', 'fazenda', 'bess'],
     altDestaque:
       'Usina solar de solo com fileiras de módulos fotovoltaicos instalada pela Delfos Engenharia em Erechim/RS',
   },
@@ -132,7 +177,7 @@ export const PORTFOLIO_REAL_CASES: Array<{
     setor: 'Indústria',
     local: 'Erechim / RS',
     potencia: '74,43 kWp',
-    temaTags: ['industria', 'erechim', 'solar', 'economia'],
+    temaTags: ['industria', 'erechim', 'solar', 'economia', 'bess'],
     altDestaque:
       'Módulos solares fotovoltaicos sobre pavilhão industrial pela Delfos Engenharia (Dal Pra 74,4 kWp)',
   },
@@ -173,10 +218,9 @@ function hashString(str: string): number {
 }
 
 /**
- * Seleciona de forma DETERMINÍSTICA e COERENTE com o tema uma foto real de portfólio
- * com as placas solares aparecendo.
- *
- * Se liveCases for fornecido (do banco), também busca cases compatíveis adicionais.
+ * Mapeamento temático refinado com rotação determinística por hash de slug.
+ * Garante que artigos de um mesmo tema (ex.: O&M, solar, baterias) variem entre
+ * fotos reais diferentes do acervo, evitando que Cassul se repita em todos os artigos.
  */
 export function getArticlePortfolioPhoto(
   slugOrKey: string,
@@ -186,73 +230,10 @@ export function getArticlePortfolioPhoto(
 ): PortfolioImageSelection {
   const normKey = (slugOrKey || '').toLowerCase()
   const normCat = (categoria || '').toLowerCase()
+  const slugHash = hashString(normKey || 'delfos-solar')
 
-  // 1. Tenta mapeamento contextual específico por slug conhecido
-  if (normKey.includes('manutencao') || normKey.includes('om') || normCat.includes('manutenção')) {
-    // Foto de grande porte comercial/industrial onde as placas ficam nítidas para ilustrar O&M
-    const c =
-      PORTFOLIO_REAL_CASES.find((item) => item.id === '4a4b0ludx9rb5yr') || PORTFOLIO_REAL_CASES[1]
-    return {
-      url: getPocketBaseFileUrl('cases', c.id, c.foto, variant),
-      alt: c.altDestaque,
-      titulo: c.titulo,
-      local: c.local,
-      potencia: c.potencia,
-      cliente: c.cliente,
-    }
-  }
-
-  if (
-    normKey.includes('carregador') ||
-    normKey.includes('eletromobilidade') ||
-    normCat.includes('mobilidade')
-  ) {
-    // Carport Solar com placas sobre vagas ou condomínio residencial
-    const c = normKey.includes('condominio')
-      ? PORTFOLIO_REAL_CASES.find((item) => item.id === 'l1xdzcvzlzft48x') ||
-        PORTFOLIO_REAL_CASES[4]
-      : PORTFOLIO_REAL_CASES.find((item) => item.id === '2i9vws5rfgjujs9') ||
-        PORTFOLIO_REAL_CASES[3]
-    return {
-      url: getPocketBaseFileUrl('cases', c.id, c.foto, variant),
-      alt: c.altDestaque,
-      titulo: c.titulo,
-      local: c.local,
-      potencia: c.potencia,
-      cliente: c.cliente,
-    }
-  }
-
-  if (normKey.includes('bess') || normKey.includes('bateria') || normCat.includes('bess')) {
-    // Instalação industrial de alta potência
-    const c =
-      PORTFOLIO_REAL_CASES.find((item) => item.id === 'psl026eq9dcvpjr') || PORTFOLIO_REAL_CASES[0]
-    return {
-      url: getPocketBaseFileUrl('cases', c.id, c.foto, variant),
-      alt: c.altDestaque,
-      titulo: c.titulo,
-      local: c.local,
-      potencia: c.potencia,
-      cliente: c.cliente,
-    }
-  }
-
-  if (normKey.includes('erechim') || normKey.includes('guia') || normCat.includes('solar')) {
-    // Foto aérea da Clanel ou Dal Pra ou Residência em Erechim
-    const c =
-      PORTFOLIO_REAL_CASES.find((item) => item.id === '88p02q2qkva9dlj') || PORTFOLIO_REAL_CASES[7]
-    return {
-      url: getPocketBaseFileUrl('cases', c.id, c.foto, variant),
-      alt: c.altDestaque,
-      titulo: c.titulo,
-      local: c.local,
-      potencia: c.potencia,
-      cliente: c.cliente,
-    }
-  }
-
-  // 2. Se houver liveCases do banco com foto, podemos combinar
-  const poolFromDb = (liveCases || [])
+  // Se houver liveCases do banco com foto, incorpora ao catálogo
+  const poolFromDb: CaseItem[] = (liveCases || [])
     .filter((lc) => lc.foto && lc.status === 'publicado')
     .map((lc) => ({
       id: lc.id,
@@ -262,21 +243,91 @@ export function getArticlePortfolioPhoto(
       setor: lc.setor,
       local: lc.local,
       potencia: lc.potencia_capacidade || '',
-      temaTags: [lc.setor?.toLowerCase() || '', lc.solucao?.toLowerCase() || ''],
+      temaTags: [
+        lc.setor?.toLowerCase() || '',
+        lc.solucao?.toLowerCase() || '',
+        ...(lc.slug?.toLowerCase().split('-') || []),
+      ],
       altDestaque: `Usina solar fotovoltaica instalada pela Delfos Engenharia — ${lc.titulo}`,
     }))
 
-  const combinedPool = poolFromDb.length > 0 ? poolFromDb : PORTFOLIO_REAL_CASES
+  const combinedMap = new Map<string, CaseItem>()
+  PORTFOLIO_REAL_CASES.forEach((c) => combinedMap.set(c.id, c))
+  poolFromDb.forEach((c) => combinedMap.set(c.id, c))
+  const allCases = Array.from(combinedMap.values())
 
-  // Filtra por coerência de tema se possível
-  const matchingPool = combinedPool.filter((item) => {
-    if (normCat.includes('solar')) return true
-    return item.temaTags.some((tag) => normKey.includes(tag) || normCat.includes(tag))
-  })
+  let candidatos: CaseItem[] = []
 
-  const finalPool = matchingPool.length > 0 ? matchingPool : combinedPool
-  const index = hashString(normKey || 'delfos-post') % finalPool.length
-  const selected = finalPool[index]
+  // 1. TEMA: OPERAÇÃO & MANUTENÇÃO (O&M, Limpeza, Termografia, Perda)
+  if (
+    normKey.includes('manutencao') ||
+    normKey.includes('om') ||
+    normCat.includes('manutenção') ||
+    normCat.includes('operação')
+  ) {
+    // Candidatos para O&M: Panificadora Garcia, ARFES Refrigeração, Spazzini Tur, Supermercado Cavassola, Cassul
+    // Distribuídos por hash de slug para garantir rotação sem repetição da mesma foto
+    candidatos = allCases.filter((c) =>
+      [
+        'wsvai8gfu5e4ksl',
+        'tundxjltzsy7x48',
+        'hooy17m85v3h5lo',
+        'o2585id40npspsy',
+        '4a4b0ludx9rb5yr',
+      ].includes(c.id),
+    )
+  }
+  // 2. TEMA: MOBILIDADE / CARREGADORES
+  else if (
+    normKey.includes('carregador') ||
+    normKey.includes('eletromobilidade') ||
+    normKey.includes('mobilidade') ||
+    normCat.includes('mobilidade') ||
+    normCat.includes('carregador')
+  ) {
+    if (normKey.includes('condominio')) {
+      candidatos = allCases.filter((c) =>
+        ['l1xdzcvzlzft48x', '2i9vws5rfgjujs9', 'hooy17m85v3h5lo'].includes(c.id),
+      )
+    } else {
+      candidatos = allCases.filter((c) =>
+        ['2i9vws5rfgjujs9', 'l1xdzcvzlzft48x', 'hooy17m85v3h5lo'].includes(c.id),
+      )
+    }
+  }
+  // 3. TEMA: BESS / BATERIAS / ARMAZENAMENTO
+  else if (
+    normKey.includes('bess') ||
+    normKey.includes('bateria') ||
+    normKey.includes('armazenamento') ||
+    normCat.includes('bess') ||
+    normCat.includes('armazenamento')
+  ) {
+    candidatos = allCases.filter((c) =>
+      ['psl026eq9dcvpjr', '88p02q2qkva9dlj', 'jfeklgmlxlawntj'].includes(c.id),
+    )
+  }
+  // 4. TEMA: ENERGIA SOLAR EPC / REGIONAL
+  else {
+    candidatos = allCases.filter((c) =>
+      [
+        '88p02q2qkva9dlj',
+        'm6s7q8vxo8pdjh3',
+        '6gzbgbg3gptt1wf',
+        'uyibkaudvcqkn37',
+        'jfeklgmlxlawntj',
+        'psl026eq9dcvpjr',
+        'wsvai8gfu5e4ksl',
+      ].includes(c.id),
+    )
+  }
+
+  if (candidatos.length === 0) {
+    candidatos = allCases
+  }
+
+  // Rotação determinística baseada no hash do slug
+  const selected = candidatos[slugHash % candidatos.length]
 
   return {
     url: getPocketBaseFileUrl('cases', selected.id, selected.foto, variant),
