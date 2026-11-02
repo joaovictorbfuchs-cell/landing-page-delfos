@@ -87,9 +87,9 @@ export default function DelfosLogo({
           height={height}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
-          className={`w-full h-full block object-contain select-none pointer-events-none ${
+          className={`w-full h-full block object-contain select-none pointer-events-none transition-[filter] duration-200 ${
             isDarkBg
-              ? 'filter drop-shadow-[0_0_1.5px_rgba(255,255,255,0.75)] drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]'
+              ? 'filter brightness-105 contrast-110 drop-shadow-[0_0_2px_rgba(255,255,255,0.9)] drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]'
               : ''
           }`}
           style={{ width: `${width}px`, height: `${height}px` }}

@@ -128,17 +128,20 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             aria-label="Delfos Solar - Início"
             className="flex items-center gap-2 group cursor-pointer focus:outline-none py-0.5 sm:py-1"
           >
-            {/* Altura responsiva: mais compacta no mobile (~32-34px) e 48-52px no desktop */}
+            {/* Altura responsiva:
+                - Desktop: no topo da home 54px (presença nobre e imponente sobre o hero escuro), ao rolar 48px
+                - Mobile: 36px (ganho de legibilidade da marca sem empurrar a primeira dobra nem competir com o hambúrguer)
+            */}
             <div className="hidden sm:block">
               <DelfosLogo
-                height={scrolled ? 48 : 52}
+                height={isTransparentOnHome ? 54 : scrolled ? 48 : 50}
                 variant={isTransparentOnHome ? 'dark-bg' : 'light-bg'}
                 className="group-hover:opacity-90 transition-opacity"
               />
             </div>
             <div className="block sm:hidden">
               <DelfosLogo
-                height={34}
+                height={36}
                 variant={isTransparentOnHome ? 'dark-bg' : 'light-bg'}
                 className="group-hover:opacity-90 transition-opacity"
               />

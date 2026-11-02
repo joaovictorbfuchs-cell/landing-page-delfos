@@ -9,58 +9,85 @@ interface CounterProps {
   duration?: number
 }
 
-function Counter({ end, decimals = 0, suffix = '', prefix = '', duration = 1800 }: CounterProps) {
-  const [count, setCount] = useState(0)
-  const [hasStarted, setHasStarted] = useState(false)
+function Counter({ end, decimals = 0, suffix = '', prefix = '', duration = 1500 }: CounterProps) {
+  const [displayValue, setDisplayValue] = useState('0')
   const ref = useRef<HTMLSpanElement>(null)
+  const hasAnimatedRef = useRef(false)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !hasStarted) {
-          setHasStarted(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
+    const node = ref.current
+    if (!node) return
 
-    if (ref.current) {
-      observer.observe(ref.current)
+    // Se já animou antes, garante que exibe o valor final exato e não recria observer
+    if (hasAnimatedRef.current) {
+      setDisplayValue(
+        end.toLocaleString('pt-BR', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        }),
+      )
+      return
     }
 
-    return () => observer.disconnect()
-  }, [hasStarted])
+    // Função de animação suave via requestAnimationFrame com curva ease-out
+    const runAnimation = () => {
+      hasAnimatedRef.current = true
+      const startTime = performance.now()
 
-  useEffect(() => {
-    if (!hasStarted) return
+      const easeOutQuad = (t: number) => t * (2 - t)
 
-    let start = 0
-    const stepTime = 20
-    const totalSteps = duration / stepTime
-    const increment = end / totalSteps
+      const tick = (currentTime: number) => {
+        const elapsed = currentTime - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const easedProgress = easeOutQuad(progress)
+        const currentVal = easedProgress * end
 
-    const timer = setInterval(() => {
-      start += increment
-      if (start >= end) {
-        setCount(end)
-        clearInterval(timer)
-      } else {
-        setCount(start)
+        if (progress < 1) {
+          setDisplayValue(
+            currentVal.toLocaleString('pt-BR', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }),
+          )
+          requestAnimationFrame(tick)
+        } else {
+          // Valor final exato
+          setDisplayValue(
+            end.toLocaleString('pt-BR', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }),
+          )
+        }
       }
-    }, stepTime)
 
-    return () => clearInterval(timer)
-  }, [hasStarted, end, duration])
+      requestAnimationFrame(tick)
+    }
 
-  const formattedValue = count.toLocaleString('pt-BR', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  })
+    // No mobile, threshold 0.1 garante disparo assim que a seção começa a entrar,
+    // sem instabilidades quando a rolagem passa rápido ou em telas menores.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0]
+        if (entry?.isIntersecting && !hasAnimatedRef.current) {
+          observer.disconnect()
+          runAnimation()
+        }
+      },
+      { threshold: 0.1 },
+    )
+
+    observer.observe(node)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [end, decimals, duration])
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="tabular-nums">
       {prefix}
-      {formattedValue}
+      {displayValue}
       {suffix}
     </span>
   )
