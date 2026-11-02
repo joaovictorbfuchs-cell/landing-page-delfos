@@ -174,7 +174,7 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
   return (
     <section
       id="inicio"
-      className="relative min-h-0 sm:min-h-[92vh] flex items-center pt-20 sm:pt-28 pb-10 sm:pb-16 overflow-hidden bg-gradient-to-b from-[#081B30] via-[#0B2C4F] to-[#0A223E] text-white"
+      className="relative min-h-0 sm:min-h-[92vh] flex items-center pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-16 overflow-hidden bg-gradient-to-b from-[#081B30] via-[#0B2C4F] to-[#0A223E] text-white"
     >
       {/* Subtle engineering grid */}
       <div

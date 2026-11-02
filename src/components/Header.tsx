@@ -26,11 +26,17 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
 
+  const isHome = location.pathname === '/'
+  // Na home, no topo (scroll <= 20px), o cabeçalho fica transparente sobre o hero escuro.
+  // Ao rolar, volta à faixa branca translúcida com blur. Nas outras páginas, sempre faixa branca.
+  const isTransparentOnHome = isHome && !scrolled
+
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40)
+      setScrolled(window.scrollY > 20)
     }
-    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -103,13 +109,15 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-sm shadow-slate-900/5 py-3 text-slate-800 border-b border-slate-200/80'
-            : 'bg-white/90 backdrop-blur-md shadow-xs py-4 text-slate-800 border-b border-slate-200/60'
+          isTransparentOnHome
+            ? 'bg-transparent py-2 sm:py-3 text-white border-b border-white/10'
+            : scrolled
+              ? 'bg-white/95 backdrop-blur-md shadow-sm shadow-slate-900/5 py-2 sm:py-3 text-slate-800 border-b border-slate-200/80'
+              : 'bg-white/90 backdrop-blur-md shadow-xs py-2.5 sm:py-4 text-slate-800 border-b border-slate-200/60'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo Delfos Solar oficial: arte original limpa sobre a faixa branca, sem halo artificial */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+          {/* Logo Delfos Solar oficial: no topo da home usa dark-bg (arte sobre fundo escuro); nas demais ou após rolar usa light-bg */}
           <Link
             to="/"
             onClick={() => {
@@ -118,20 +126,20 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }
             }}
             aria-label="Delfos Solar - Início"
-            className="flex items-center gap-2 group cursor-pointer focus:outline-none py-1"
+            className="flex items-center gap-2 group cursor-pointer focus:outline-none py-0.5 sm:py-1"
           >
-            {/* Altura responsiva: ~42px no mobile e 52px no desktop */}
+            {/* Altura responsiva: mais compacta no mobile (~32-34px) e 48-52px no desktop */}
             <div className="hidden sm:block">
               <DelfosLogo
-                height={52}
-                variant="light-bg"
+                height={scrolled ? 48 : 52}
+                variant={isTransparentOnHome ? 'dark-bg' : 'light-bg'}
                 className="group-hover:opacity-90 transition-opacity"
               />
             </div>
             <div className="block sm:hidden">
               <DelfosLogo
-                height={42}
-                variant="light-bg"
+                height={34}
+                variant={isTransparentOnHome ? 'dark-bg' : 'light-bg'}
                 className="group-hover:opacity-90 transition-opacity"
               />
             </div>
@@ -146,7 +154,11 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-700 hover:text-midnight-950"
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                isTransparentOnHome
+                  ? 'text-white/90 hover:text-solar-400'
+                  : 'text-slate-700 hover:text-midnight-950'
+              }`}
             >
               Início
             </Link>
@@ -158,9 +170,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 onClick={() => setSolucoesDropdownOpen(!solucoesDropdownOpen)}
                 onMouseEnter={() => setSolucoesDropdownOpen(true)}
                 className={`text-xs xl:text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                  location.pathname.startsWith('/solucoes')
-                    ? 'text-[#081B30] font-bold'
-                    : 'text-slate-700 hover:text-midnight-950'
+                  isTransparentOnHome
+                    ? location.pathname.startsWith('/solucoes')
+                      ? 'text-solar-400 font-bold'
+                      : 'text-white/90 hover:text-solar-400'
+                    : location.pathname.startsWith('/solucoes')
+                      ? 'text-[#081B30] font-bold'
+                      : 'text-slate-700 hover:text-midnight-950'
                 }`}
                 aria-expanded={solucoesDropdownOpen}
               >
@@ -229,9 +245,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 setSolucoesDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
-                location.pathname === '/projetos'
-                  ? 'text-[#081B30] font-bold'
-                  : 'text-slate-700 hover:text-midnight-950'
+                isTransparentOnHome
+                  ? location.pathname === '/projetos'
+                    ? 'text-solar-400 font-bold'
+                    : 'text-white/90 hover:text-solar-400'
+                  : location.pathname === '/projetos'
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Projetos e Resultados
@@ -244,9 +264,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 setSolucoesDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
-                location.pathname.startsWith('/conteudos')
-                  ? 'text-[#081B30] font-bold'
-                  : 'text-slate-700 hover:text-midnight-950'
+                isTransparentOnHome
+                  ? location.pathname.startsWith('/conteudos')
+                    ? 'text-solar-400 font-bold'
+                    : 'text-white/90 hover:text-solar-400'
+                  : location.pathname.startsWith('/conteudos')
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Conteúdos
@@ -259,9 +283,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 setSolucoesDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
-                location.pathname === '/faq'
-                  ? 'text-[#081B30] font-bold'
-                  : 'text-slate-700 hover:text-midnight-950'
+                isTransparentOnHome
+                  ? location.pathname === '/faq'
+                    ? 'text-solar-400 font-bold'
+                    : 'text-white/90 hover:text-solar-400'
+                  : location.pathname === '/faq'
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               FAQ
@@ -274,9 +302,13 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 setSolucoesDropdownOpen(false)
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
-                location.pathname === '/sobre'
-                  ? 'text-[#081B30] font-bold'
-                  : 'text-slate-700 hover:text-midnight-950'
+                isTransparentOnHome
+                  ? location.pathname === '/sobre'
+                    ? 'text-solar-400 font-bold'
+                    : 'text-white/90 hover:text-solar-400'
+                  : location.pathname === '/sobre'
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
               Sobre a Delfos
@@ -288,7 +320,11 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                 e.preventDefault()
                 handleNavClick('#contato')
               }}
-              className="text-xs xl:text-sm font-medium transition-colors text-slate-700 hover:text-midnight-950"
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                isTransparentOnHome
+                  ? 'text-white/90 hover:text-solar-400'
+                  : 'text-slate-700 hover:text-midnight-950'
+              }`}
             >
               Contato
             </a>
@@ -311,10 +347,14 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(true)}
-              className="text-slate-800 hover:text-[#081B30] hover:bg-slate-100"
+              className={`h-9 w-9 p-1.5 transition-colors ${
+                isTransparentOnHome
+                  ? 'text-white hover:text-solar-400 hover:bg-white/10'
+                  : 'text-slate-800 hover:text-[#081B30] hover:bg-slate-100'
+              }`}
               aria-label="Abrir menu principal"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </Button>
           </div>
         </div>
