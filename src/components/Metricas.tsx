@@ -113,9 +113,6 @@ export default function Metricas() {
                 Potência instalada
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
-              Capacidade de geração limpa em operação contínua gerando economia real.
-            </p>
           </div>
 
           {/* Card 2: 468 — Usinas sob monitoramento (dourado) */}
@@ -136,9 +133,6 @@ export default function Metricas() {
                 Usinas sob monitoramento
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
-              Supervisão em tempo real pela engenharia de O&amp;M para máxima disponibilidade.
-            </p>
           </div>
 
           {/* Card 3: 12 — Anos de mercado (verde) */}
@@ -162,9 +156,6 @@ export default function Metricas() {
                 Anos de mercado
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
-              Atuação técnica contínua no RS, SC e PR desde o início do marco legal elétrico.
-            </p>
           </div>
 
           {/* Card 4: 3.000+ — Projetos entregues (verde) */}
@@ -188,9 +179,6 @@ export default function Metricas() {
                 Projetos entregues
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mt-2">
-              Sistemas homologados e gerando economia em diversos segmentos do Sul do Brasil.
-            </p>
           </div>
         </div>
       </div>
