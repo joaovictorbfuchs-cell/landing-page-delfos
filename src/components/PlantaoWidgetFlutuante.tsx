@@ -89,7 +89,7 @@ export default function PlantaoWidgetFlutuante({
 
   // Sub-estados da conversa:
   // 1: identificação inicial ("Já é cliente?")
-  // 'validar_cliente': pedir e-mail ou telefone para conferir cadastro
+  // 'identificacao_cliente': coletar telefone/e-mail para contato direto
   // 'cliente_menu': opções do cliente ("Suporte técnico", "Dúvida sobre a conta", "Manutenção")
   // 'duvida_conta_anexo': tela/estado para upload do PDF da conta
   // 2: problema técnico ("O que aconteceu com a usina?")
@@ -99,12 +99,7 @@ export default function PlantaoWidgetFlutuante({
   const [step, setStep] = useState<number | string>(1)
 
   const [clientType, setClientType] = useState<string>('')
-  const [isClientValidated, setIsClientValidated] = useState<boolean | null>(null)
-  const [clientData, setClientData] = useState<{
-    nome?: string
-    telefone?: string
-    email?: string
-  } | null>(null)
+  const [clientContact, setClientContact] = useState<string>('')
   const [problemType, setProblemType] = useState<string>('')
   const [urgency, setUrgency] = useState<string>('')
 
@@ -140,7 +135,7 @@ export default function PlantaoWidgetFlutuante({
   useEffect(() => {
     if (isOpen) {
       scrollToBottom()
-      if (window.innerWidth > 640 && (step === 4 || step === 'validar_cliente')) {
+      if (window.innerWidth > 640 && (step === 4 || step === 'identificacao_cliente')) {
         inputRef.current?.focus()
       }
     }
@@ -157,12 +152,7 @@ export default function PlantaoWidgetFlutuante({
 
     const answersList: string[] = []
     if (clientType) answersList.push(`• Relação: ${clientType}`)
-    if (isClientValidated !== null) {
-      answersList.push(
-        `• Cadastro validado: ${isClientValidated ? 'Sim' : 'Não localizado (vistoria)'}`,
-      )
-    }
-    if (clientData?.nome) answersList.push(`• Cliente: ${clientData.nome}`)
+    if (clientContact) answersList.push(`• Contato: ${clientContact}`)
     if (problemType) answersList.push(`• Situação: ${problemType}`)
     if (urgency) answersList.push(`• Urgência: ${urgency}`)
     if (selectedFile) answersList.push(`• Anexo de conta de luz: ${selectedFile.name}`)
@@ -173,11 +163,12 @@ export default function PlantaoWidgetFlutuante({
         !STEP_1_OPTIONS.includes(t) &&
         !STEP_PROBLEM_OPTIONS.includes(t) &&
         !STEP_URGENCY_OPTIONS.includes(t) &&
-        !CLIENT_SUB_OPTIONS.includes(t),
+        !CLIENT_SUB_OPTIONS.includes(t) &&
+        t !== clientContact,
     )
 
     if (extraInfo.length > 0) {
-      answersList.push(`• Contato/Local informado: ${extraInfo.slice(-2).join(' | ')}`)
+      answersList.push(`• Informações adicionais: ${extraInfo.slice(-2).join(' | ')}`)
     }
 
     let textToSend = defaultText
@@ -186,30 +177,6 @@ export default function PlantaoWidgetFlutuante({
     }
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(textToSend)}`
-  }
-
-  // Validação no backend de cliente Delfos por telefone ou e-mail
-  const callValidarClienteBackend = async (
-    termo: string,
-  ): Promise<{
-    valido: boolean
-    cliente?: { nome: string; telefone?: string; email?: string }
-  }> => {
-    try {
-      const backendUrl = import.meta.env.VITE_POCKETBASE_URL
-      const resp = await fetch(`${backendUrl}/backend/v1/validar-cliente`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ termo }),
-      })
-      if (resp.ok) {
-        const data = await resp.json()
-        return data
-      }
-    } catch (e) {
-      console.warn('Erro ao chamar validar-cliente:', e)
-    }
-    return { valido: false }
   }
 
   // Envio de mensagem
@@ -238,9 +205,9 @@ export default function PlantaoWidgetFlutuante({
     if (currentStep === 1) {
       if (raw === 'Sou cliente Delfos') {
         setClientType('Sou cliente Delfos')
-        setStep('validar_cliente')
+        setStep('identificacao_cliente')
         const reply =
-          'Entendi, você já é cliente Delfos! Para ativarmos seu atendimento prioritário, por favor informe seu telefone (com DDD) ou e-mail cadastrado.'
+          'Entendi, você já é cliente Delfos! Para registrar seu chamado com prioridade, por favor informe seu telefone (com DDD) ou e-mail de contato.'
         appendAssistantMessage(reply)
         setIsLoading(false)
         return
@@ -248,7 +215,6 @@ export default function PlantaoWidgetFlutuante({
 
       if (raw === 'Instalei com outra empresa') {
         setClientType('Instalei com outra empresa')
-        setIsClientValidated(false)
         setStep(2)
         const reply =
           'Entendi, sua usina foi feita por outra empresa. Atendemos usinas de qualquer instalador com nossa Vistoria Diagnóstica! O que está acontecendo com a usina?'
@@ -259,7 +225,6 @@ export default function PlantaoWidgetFlutuante({
 
       if (raw === 'Quero conhecer os planos') {
         setClientType('Quero conhecer os planos')
-        setIsClientValidated(false)
         setStep(2)
         const reply =
           'Perfeito! Oferecemos planos personalizados de operação e manutenção sob medida, com tempo de resposta rápido e termografia por drone. O que motivou seu contato ou qual a situação da sua usina?'
@@ -278,23 +243,13 @@ export default function PlantaoWidgetFlutuante({
     }
 
     // ==========================================
-    // ETAPA: Validação de cliente (telefone/e-mail)
+    // ETAPA: Registro de contato do cliente (telefone/e-mail)
     // ==========================================
-    if (currentStep === 'validar_cliente') {
-      const result = await callValidarClienteBackend(raw)
-      if (result.valido && result.cliente) {
-        setIsClientValidated(true)
-        setClientData(result.cliente)
-        setStep('cliente_menu')
-        const reply = `Cadastro localizado com sucesso, ${result.cliente.nome}! Atendimento prioritário Delfos ativo. Como podemos te ajudar hoje?`
-        appendAssistantMessage(reply)
-      } else {
-        setIsClientValidated(false)
-        setStep(2)
-        const reply =
-          'Não localizamos esse contato em nossa base de usinas instaladas. Mas não se preocupe: a Delfos atende usinas de qualquer instalador com nossa Vistoria Diagnóstica! O que está acontecendo com seu sistema?'
-        appendAssistantMessage(reply)
-      }
+    if (currentStep === 'identificacao_cliente') {
+      setClientContact(raw)
+      setStep('cliente_menu')
+      const reply = `Perfeito, anotei seu contato: ${raw}. Seu chamado terá atendimento prioritário. Como podemos te ajudar hoje?`
+      appendAssistantMessage(reply)
       setIsLoading(false)
       return
     }
@@ -439,7 +394,7 @@ export default function PlantaoWidgetFlutuante({
 
     try {
       const backendUrl = import.meta.env.VITE_POCKETBASE_URL
-      const promptContext = `[Contexto da triagem: Cliente=${clientType || 'Não informado'} | Validado=${isClientValidated ? 'Sim' : 'Não'} | Situação=${problemType || 'O&M'} | Urgência=${urgency || 'Alta'} | Anexo=${selectedFile ? selectedFile.name : 'Nenhum'}] Contato informado pelo usuário: ${userText}`
+      const promptContext = `[Contexto da triagem: Cliente=${clientType || 'Não informado'} | Contato=${clientContact || userText} | Situação=${problemType || 'O&M'} | Urgência=${urgency || 'Alta'} | Anexo=${selectedFile ? selectedFile.name : 'Nenhum'}] Informações informadas pelo usuário: ${userText}`
 
       const response = await fetch(`${backendUrl}/backend/v1/plantao-chat`, {
         method: 'POST',
@@ -525,18 +480,18 @@ export default function PlantaoWidgetFlutuante({
 
     // Registrar lead imediatamente com o arquivo da conta
     try {
-      const contactName = clientData?.nome || 'Cliente com Dúvida de Fatura'
-      const contactPhone = clientData?.telefone || '54991292121'
-      const contactEmail = clientData?.email || 'plantao@delfosengenharia.com.br'
+      const isEmail = clientContact.includes('@')
+      const contactPhone = !isEmail && clientContact ? clientContact : '54991292121'
+      const contactEmail = isEmail ? clientContact : 'plantao@delfosengenharia.com.br'
 
       await createLead({
-        nome: contactName,
+        nome: 'Cliente com Dúvida de Fatura',
         telefone: contactPhone,
         email: contactEmail,
         necessidade: 'Manutenção',
         ja_possui_solar: 'Sim',
         origem: origemLead,
-        mensagem: `[CONTA DE LUZ - ${origemLead === 'plantao-ia' ? 'PLANTÃO IA' : 'ATENDIMENTO IA'}] Cliente com dúvida na fatura anexou o arquivo "${file.name}". Cadastro cliente: ${isClientValidated ? 'Validado' : 'Não validado'}. Solicita parecer técnico de engenharia.`,
+        mensagem: `[CONTA DE LUZ - ${origemLead === 'plantao-ia' ? 'PLANTÃO IA' : 'ATENDIMENTO IA'}] Cliente anexou a fatura "${file.name}". Contato registrado: ${clientContact || 'Não informado'}. Solicita parecer técnico de engenharia.`,
         arquivo_conta: file,
       })
       setFileAttachedLeadRegistered(true)
@@ -566,20 +521,23 @@ export default function PlantaoWidgetFlutuante({
     const phoneRegex = /(?:\+?55\s?)?(?:\(?\d{2}\)?[\s-]?)?\d{4,5}[-\s]?\d{4}/g
     const match = text.match(phoneRegex)
 
-    const phoneFound = match ? match[0] : clientData?.telefone || '54991292121'
+    const clientContactPhone =
+      clientContact && !clientContact.includes('@') ? clientContact : undefined
+    const clientContactEmail =
+      clientContact && clientContact.includes('@') ? clientContact : undefined
+
+    const phoneFound = match ? match[0] : clientContactPhone || '54991292121'
     const nameFound =
-      clientData?.nome ||
       text
         .split(/[,\n-]/)[0]
         ?.replace(/[^\p{L}\s]/gu, '')
         .trim()
-        .slice(0, 40) ||
-      'Lead Plantão IA'
+        .slice(0, 40) || 'Lead Plantão IA'
 
-    const emailFound = clientData?.email || 'plantao@delfosengenharia.com.br'
+    const emailFound = clientContactEmail || 'plantao@delfosengenharia.com.br'
 
     const tagOrigem = origemLead === 'plantao-ia' ? 'PLANTÃO IA' : 'ATENDIMENTO IA'
-    const summaryMsg = `[${tagOrigem}] Triagem assistente. Relação: ${client || 'Não informado'} | Validado: ${isClientValidated ? 'Sim' : 'Não'} | Situação: ${problem || 'Não informado'} | Urgência: ${urgencyVal || 'Alta'} | Anexo: ${fileAttached ? fileAttached.name : 'Nenhum'} | Dados digitados: "${text}"`
+    const summaryMsg = `[${tagOrigem}] Triagem assistente. Relação: ${client || 'Não informado'} | Contato prévio: ${clientContact || 'Não informado'} | Situação: ${problem || 'Não informado'} | Urgência: ${urgencyVal || 'Alta'} | Anexo: ${fileAttached ? fileAttached.name : 'Nenhum'} | Dados digitados: "${text}"`
 
     try {
       await createLead({
@@ -610,8 +568,7 @@ export default function PlantaoWidgetFlutuante({
     }
     setStep(1)
     setClientType('')
-    setIsClientValidated(null)
-    setClientData(null)
+    setClientContact('')
     setProblemType('')
     setUrgency('')
     setSelectedFile(null)
@@ -665,47 +622,47 @@ export default function PlantaoWidgetFlutuante({
           className={`fixed z-50 shadow-2xl transition-all duration-200 flex flex-col bg-white overflow-hidden border border-slate-200 ${
             isExpanded
               ? 'inset-2 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[480px] sm:h-[640px] rounded-2xl'
-              : 'bottom-[4.5rem] sm:bottom-6 right-2 sm:right-6 w-[calc(100vw-16px)] sm:w-[380px] md:w-[400px] h-[min(540px,calc(100dvh-5.5rem))] rounded-2xl'
+              : 'top-2 bottom-[4.75rem] left-2 right-2 sm:top-auto sm:bottom-6 sm:left-auto sm:right-6 sm:w-[380px] md:w-[400px] h-[calc(100dvh-5.25rem)] sm:h-[560px] max-h-[calc(100dvh-2rem)] rounded-2xl'
           }`}
         >
           {/* CABEÇALHO LIMPO E PROFISSIONAL */}
-          <header className="bg-gradient-to-r from-[#071F38] via-[#0C2B4E] to-[#0A2644] text-white px-4 py-3 shrink-0 flex flex-col gap-2.5 border-b border-blue-900/40">
+          <header className="bg-gradient-to-r from-[#071F38] via-[#0C2B4E] to-[#0A2644] text-white px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 flex flex-col gap-2 border-b border-blue-900/40">
             {/* Linha superior: Status do Assistente + Ações da Janela */}
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-center justify-between gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 {onBackToMenu && (
                   <button
                     type="button"
                     onClick={onBackToMenu}
                     title="Voltar ao menu de atendimento"
-                    className="p-1.5 -ml-1 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-1"
+                    className="p-1 -ml-1 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-0.5"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    <span className="text-[11px] font-bold hidden sm:inline">Voltar</span>
+                    <span className="text-[11px] font-bold">Voltar</span>
                   </button>
                 )}
                 <div className="relative shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-solar-400 text-midnight-950 flex items-center justify-center font-bold shadow-sm">
-                    <Bot className="w-4 h-4 text-midnight-950" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-solar-400 text-midnight-950 flex items-center justify-center font-bold shadow-sm">
+                    <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-midnight-950" />
                   </div>
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-slate-900" />
+                  <span className="absolute bottom-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-500 rounded-full border border-slate-900" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
                     <h2 className="text-xs sm:text-sm font-extrabold text-white leading-tight truncate">
                       Assistente Delfos
                     </h2>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-medium shrink-0">
+                    <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-medium shrink-0">
                       {origemLead === 'plantao-ia' ? 'O&M' : 'Triagem'}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-tight truncate">
+                  <p className="text-[10px] sm:text-[11px] text-slate-300 leading-tight truncate">
                     Atendimento virtual ágil
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 text-slate-300 shrink-0">
+              <div className="flex items-center gap-0.5 sm:gap-1 text-slate-300 shrink-0">
                 <button
                   type="button"
                   onClick={handleReset}
@@ -743,9 +700,9 @@ export default function PlantaoWidgetFlutuante({
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Acionar WhatsApp com a equipe de engenharia"
-              className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer border border-emerald-400/40"
+              className="w-full flex items-center justify-between gap-2 px-3 py-1.5 sm:py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer border border-emerald-400/40"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 animate-pulse" />
                 <span>Acionar WhatsApp</span>
               </div>
@@ -844,16 +801,16 @@ export default function PlantaoWidgetFlutuante({
                   </div>
                 )}
 
-                {/* Validação de cliente: aviso explicativo */}
-                {step === 'validar_cliente' && (
-                  <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 text-[11px] text-amber-900 space-y-1">
+                {/* Contato do cliente Delfos: aviso explicativo */}
+                {step === 'identificacao_cliente' && (
+                  <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200/80 text-[11px] text-blue-900 space-y-1">
                     <div className="flex items-center gap-1.5 font-bold">
-                      <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                      <span>Validação de Cadastro Delfos:</span>
+                      <AlertCircle className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <span>Identificação de Contato Delfos:</span>
                     </div>
                     <p>
                       Digite abaixo seu <strong>telefone com DDD</strong> ou <strong>e-mail</strong>{' '}
-                      para localizarmos sua usina.
+                      para registrarmos seu chamado prioritário.
                     </p>
                   </div>
                 )}
@@ -1052,7 +1009,7 @@ export default function PlantaoWidgetFlutuante({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={
-                  step === 'validar_cliente'
+                  step === 'identificacao_cliente'
                     ? 'Informe seu telefone ou e-mail...'
                     : step === 4
                       ? 'Ex: João Silva, Erechim, (54) 99999-0000...'
