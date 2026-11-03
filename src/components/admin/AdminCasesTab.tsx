@@ -556,7 +556,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                   <Input
                     value={local}
                     onChange={(e) => setLocal(e.target.value)}
-                    placeholder="Ex: Erechim / RS (Autorizado)"
+                    placeholder="Ex: Erechim / RS (Autorizado) · com bairro: Centro, Erechim / RS"
                     className="rounded-xl text-xs"
                   />
                 </div>
@@ -654,6 +654,12 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                   <ImageIcon className="w-4 h-4 text-solar-600" />
                   Foto do Case via Upload (armazenada no banco)
                 </label>
+                <p className="text-[10px] text-slate-500 leading-snug">
+                  SEO de imagens: nomeie o arquivo como instalacao-cliente-cidade.jpg antes de
+                  enviar (ex.: instalacao-cassul-erechim.jpg). A legenda e o texto alternativo da
+                  foto são gerados automaticamente no padrão: serviço de potência em bairro, cidade
+                  — cliente — resultado.
+                </p>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <input
                     type="file"

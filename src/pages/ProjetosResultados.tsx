@@ -25,7 +25,13 @@ import CaseHeroFeatured from '@/components/cases/CaseHeroFeatured'
 import CaseFilters from '@/components/cases/CaseFilters'
 import CaseCard from '@/components/cases/CaseCard'
 import CaseModal from '@/components/cases/CaseModal'
-import { CASES_DATA, type CaseStudy, type SegmentoCase, type SolucaoCase } from '@/data/cases'
+import {
+  CASES_DATA,
+  fraseLocalCase,
+  type CaseStudy,
+  type SegmentoCase,
+  type SolucaoCase,
+} from '@/data/cases'
 import { Button } from '@/components/ui/button'
 import { listPublishedCases, getCaseImageUrl } from '@/services/content'
 import type { CaseRecord } from '@/types/content'
@@ -218,6 +224,22 @@ export default function ProjetosResultados() {
         description="Conheça os cases reais de engenharia da Delfos: solar fotovoltaico, BESS, O&M e recarga veicular com métricas auditadas, período de medição e comprovação."
         canonicalPath="/projetos"
         ogImage="/og-image.png"
+        schemaJsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Cases e projetos Delfos Energia Solar',
+          itemListElement: CASES_DATA.filter((c) => !c.isExample).map((c, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item: {
+              '@type': 'Project',
+              name: c.titulo,
+              description: fraseLocalCase(c),
+              location: { '@type': 'Place', name: c.local.split('(')[0].trim() },
+              parentOrganization: { '@id': 'https://www.delfos.eng.br/#empresa' },
+            },
+          })),
+        }}
       />
 
       {/* Header Institucional */}

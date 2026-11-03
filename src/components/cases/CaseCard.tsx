@@ -8,6 +8,7 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { fraseLocalCase } from '@/data/cases'
 import type { CaseStudy } from '@/data/cases'
 
 interface CaseCardProps {
@@ -18,6 +19,8 @@ interface CaseCardProps {
 
 export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }: CaseCardProps) {
   const { resultadoMedido } = caseStudy
+  // Legenda/alt padrao SEO local: servico + potencia + bairro, cidade + cliente + resultado
+  const legenda = fraseLocalCase(caseStudy)
 
   const getSolucaoBadge = (solucao: string) => {
     switch (solucao) {
@@ -90,7 +93,7 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
             <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md bg-slate-900">
               <img
                 src={caseStudy.fotoUrl}
-                alt={caseStudy.titulo}
+                alt={legenda}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

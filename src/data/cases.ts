@@ -44,6 +44,23 @@ export interface CaseStudy {
   tags?: string[]
 }
 
+// Frase-padrao SEO local (template de legenda/alt das fotos):
+// [Servico] de [potencia] em [Bairro], [Cidade] — [cliente] — [resultado].
+// Um unico padrao replicado em todo case. O campo local aceita "Bairro, Cidade / UF"
+// (ex.: "Centro, Erechim / RS") e o bairro entra sozinho na frase.
+const SERVICO_POR_SOLUCAO: Record<SolucaoCase, string> = {
+  'Energia Solar (EPC)': 'Instalação fotovoltaica',
+  'BESS (Armazenamento)': 'Sistema de baterias (BESS)',
+  'O&M e Monitoramento': 'Monitoramento e manutenção de usina',
+  'Carregadores Veiculares': 'Recarga veicular',
+}
+
+export function fraseLocalCase(c: CaseStudy): string {
+  const lugar = c.local.split('(')[0].trim()
+  const servico = SERVICO_POR_SOLUCAO[c.solucao] ?? 'Projeto'
+  return `${servico} de ${c.potenciaOuCapacidadeCurta} em ${lugar} — ${c.cliente} — ${c.resultadoMedido.destaqueLabel}: ${c.resultadoMedido.destaqueValor}`
+}
+
 export const SEGMENTOS_FILTRO: { id: string; label: string; count?: number }[] = [
   { id: 'todos', label: 'Todos os Segmentos' },
   { id: 'Residências', label: 'Residências' },

@@ -14,6 +14,7 @@ import {
   Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { fraseLocalCase } from '@/data/cases'
 import type { CaseStudy } from '@/data/cases'
 
 interface CaseModalProps {
@@ -26,6 +27,8 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
   if (!caseStudy) return null
 
   const { resultadoMedido } = caseStudy
+  // Legenda/alt padrao SEO local: servico + potencia + bairro, cidade + cliente + resultado
+  const legenda = fraseLocalCase(caseStudy)
 
   const getSolucaoColor = (solucao: string) => {
     switch (solucao) {
@@ -121,7 +124,7 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
             <div className="rounded-2xl overflow-hidden aspect-video border border-slate-200 shadow-md bg-slate-900">
               <img
                 src={caseStudy.fotoUrlGrande || caseStudy.fotoUrl}
-                alt={caseStudy.titulo}
+                alt={legenda}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover"
@@ -160,6 +163,9 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
               </div>
             </div>
           )}
+
+          {/* Frase-padrao SEO local, replicada em todo case */}
+          <p className="text-sm font-semibold text-slate-700 leading-relaxed">{legenda}</p>
 
           {/* Quick Summary Grid: Segmento, Local, Escopo, Data */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-frost border border-slate-200/80 text-xs">
