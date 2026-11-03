@@ -12,6 +12,8 @@ import {
   Image as ImageIcon,
   CheckCircle2,
   Star,
+  FolderOpen,
+  X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,6 +24,7 @@ import type {
   CaseSetor,
   CaseSolucao,
   CaseStatus,
+  MediaRecord,
 } from '@/types/content'
 import {
   createCase,
@@ -29,7 +32,10 @@ import {
   toggleCaseStatus,
   deleteCase,
   getCaseImageUrl,
+  getMediaFileUrl,
 } from '@/services/content'
+import MediaLibraryPicker from './MediaLibraryPicker'
+import { fetchMediaAsFile } from './mediaCaseUtils'
 
 const SETORES: CaseSetor[] = [
   'Residências',
@@ -52,9 +58,16 @@ interface AdminCasesTabProps {
   cases: CaseRecord[]
   loading: boolean
   onRefresh: () => void
+  /** Biblioteca de mídia para escolher foto do case sem reenviar arquivo (mobile) */
+  mediaList?: MediaRecord[]
 }
 
-export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesTabProps) {
+export default function AdminCasesTab({
+  cases,
+  loading,
+  onRefresh,
+  mediaList = [],
+}: AdminCasesTabProps) {
   const { toast } = useToast()
   const [modalOpen, setModalOpen] = useState(false)
   const [editingCase, setEditingCase] = useState<CaseRecord | null>(null)
@@ -81,6 +94,9 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
   const [isExemplo, setIsExemplo] = useState(false)
   const [fotoFile, setFotoFile] = useState<File | null>(null)
   const [fotoPreview, setFotoPreview] = useState<string | null>(null)
+  const [pickerOpen, setPickerOpen] = useState(false)
+  const [pickerLoadingId, setPickerLoadingId] = useState<string | null>(null)
+  const [fotoRemovida, setFotoRemovida] = useState(false)
 
   const handleOpenCreate = () => {
     setEditingCase(null)
@@ -103,6 +119,8 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setIsExemplo(false)
     setFotoFile(null)
     setFotoPreview(null)
+    setFotoRemovida(false)
+    setPickerOpen(false)
     setModalOpen(true)
   }
 
@@ -127,7 +145,50 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setIsExemplo(Boolean(caseItem.is_exemplo))
     setFotoFile(null)
     setFotoPreview(getCaseImageUrl(caseItem) || null)
+    setFotoRemovida(false)
+    setPickerOpen(false)
     setModalOpen(true)
+  }
+
+  // Escolha de foto direto da Biblioteca de Mídia: baixa o arquivo original da
+  // mídia escolhida e o transforma em File, que será enviado junto ao salvar o
+  // case — sem o usuário precisar reenviar o arquivo manualmente.
+  const handleSelectMediaFoto = async (media: MediaRecord) => {
+    setPickerLoadingId(media.id)
+    try {
+      const file = await fetchMediaAsFile(media)
+      if (!file) {
+        toast({
+          variant: 'destructive',
+          title: 'Foto indisponível',
+          description: 'Não foi possível obter o arquivo desta mídia.',
+        })
+        return
+      }
+      setFotoFile(file)
+      setFotoPreview(getMediaFileUrl(media, 'leve'))
+      setFotoRemovida(false)
+      setPickerOpen(false)
+      toast({
+        title: 'Foto da biblioteca selecionada',
+        description: `"${media.titulo}" será usada como capa do case ao salvar.`,
+      })
+    } catch (err: unknown) {
+      console.error('Erro ao usar foto da biblioteca:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao usar foto da biblioteca',
+        description: (err as Error)?.message || 'Não foi possível carregar a imagem selecionada.',
+      })
+    } finally {
+      setPickerLoadingId(null)
+    }
+  }
+
+  const handleRemoverFoto = () => {
+    setFotoFile(null)
+    setFotoPreview(null)
+    setFotoRemovida(true)
   }
 
   const handleTituloChange = (val: string) => {
@@ -182,7 +243,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
         status,
         destaque,
         is_exemplo: isExemplo,
-        foto: fotoFile,
+        foto: fotoRemovida ? null : fotoFile,
       }
 
       if (editingCase) {
@@ -471,11 +532,11 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
         )}
       </div>
 
-      {/* Modal Criar / Editar Case */}
+      {/* Modal Criar / Editar Case — rola internamente, header/rodapé sempre visíveis */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-2xl w-full my-6 overflow-hidden shadow-2xl border border-slate-100 space-y-6 p-6 sm:p-8 animate-fade-in-up">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-2xl w-full h-[95vh] sm:h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-100 animate-fade-in-up">
+            <div className="flex items-center justify-between px-6 py-4 sm:px-8 border-b border-slate-100 shrink-0">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600 block">
                   {editingCase ? 'Editar Case' : 'Novo Case de Sucesso'}
@@ -494,7 +555,10 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
               </Button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="flex-1 overflow-y-auto space-y-4 p-6 sm:p-8 overscroll-contain"
+            >
               {/* Título & Slug */}
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-700">Título do Case *</label>
@@ -648,11 +712,11 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                 </div>
               </div>
 
-              {/* Upload da Foto do Case */}
+              {/* Foto do Case: upload direto ou escolha na Biblioteca de Mídia */}
               <div className="space-y-2 p-4 bg-frost rounded-2xl border border-slate-200/80">
                 <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                   <ImageIcon className="w-4 h-4 text-solar-600" />
-                  Foto do Case via Upload (armazenada no banco)
+                  Foto do Case (upload ou Biblioteca de Mídia)
                 </label>
                 <p className="text-[10px] text-slate-500 leading-snug">
                   SEO de imagens: nomeie o arquivo como instalacao-cliente-cidade.jpg antes de
@@ -660,13 +724,24 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                   foto são gerados automaticamente no padrão: serviço de potência em bairro, cidade
                   — cliente — resultado.
                 </p>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                     className="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-midnight-950 file:text-white hover:file:bg-midnight-900 cursor-pointer"
                   />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setPickerOpen(true)}
+                    disabled={pickerLoadingId !== null}
+                    className="rounded-xl text-xs h-9 border-solar-400/60 text-solar-700 hover:bg-solar-50 shrink-0 w-full sm:w-auto"
+                    title="Escolher a capa do case entre as fotos já enviadas na Biblioteca de Mídia"
+                  >
+                    <FolderOpen className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+                    {pickerLoadingId ? 'Carregando foto...' : 'Usar foto da biblioteca'}
+                  </Button>
                   {fotoPreview && (
                     <div className="relative">
                       <img
@@ -674,11 +749,20 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                         alt="Preview"
                         className="w-20 h-14 object-cover rounded-xl border border-slate-300 shadow-xs"
                       />
+                      <button
+                        type="button"
+                        onClick={handleRemoverFoto}
+                        title="Remover foto do case"
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md hover:bg-red-700"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
                     </div>
                   )}
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  Formatos aceitos: JPG, PNG, WEBP. Tamanho máximo: 10MB.
+                  Formatos aceitos: JPG, PNG, WEBP. Tamanho máximo: 10MB. A foto escolhida da
+                  biblioteca é copiada para o case ao salvar.
                 </p>
               </div>
 
@@ -747,8 +831,8 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                 </div>
               </div>
 
-              {/* Botões do Rodapé */}
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+              {/* Botões do Rodapé — sempre visíveis fora da área rolável */}
+              <div className="sticky bottom-0 -mx-6 sm:-mx-8 px-6 sm:px-8 pt-4 pb-2 bg-white/95 backdrop-blur border-t border-slate-100 flex items-center justify-end gap-3">
                 <Button
                   type="button"
                   variant="outline"
@@ -768,6 +852,17 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
             </form>
           </div>
         </div>
+      )}
+
+      {/* Picker de foto da Biblioteca de Mídia */}
+      {pickerOpen && (
+        <MediaLibraryPicker
+          mediaList={mediaList}
+          casesList={cases}
+          contextTerm={cliente || titulo}
+          onSelect={handleSelectMediaFoto}
+          onClose={() => setPickerOpen(false)}
+        />
       )}
     </div>
   )

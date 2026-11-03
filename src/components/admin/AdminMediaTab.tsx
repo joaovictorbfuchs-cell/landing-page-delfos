@@ -17,6 +17,7 @@ import {
   RefreshCw,
   Eye,
   Layers,
+  Award,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -34,12 +35,15 @@ import {
   deleteMedia,
   getMediaFileUrl,
   updateCase,
+  createCase,
   simularLimpezaDuplicadas,
   executarLimpezaDuplicadas,
   type LimparDuplicadasResponse,
 } from '@/services/content'
 import AdminBatchMediaModal from './AdminBatchMediaModal'
 import { formatFilenameToTitle, findMatchingCase, buildDestinoSugerido } from './mediaMatchUtils'
+import { fetchMediaAsFile, deriveCaseFromMedia, gerarSlugUnico } from './mediaCaseUtils'
+import type { CaseSetor, CaseSolucao } from '@/types/content'
 
 const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Geral',
@@ -72,6 +76,7 @@ export default function AdminMediaTab({
   const [batchInitialFiles, setBatchInitialFiles] = useState<File[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [virandoCaseId, setVirandoCaseId] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const filePickerRef = useRef<HTMLInputElement>(null)
 
@@ -349,6 +354,75 @@ export default function AdminMediaTab({
     })
   }
 
+  // "Virar case": cria um case novo (sempre em rascunho) já com a foto da
+  // biblioteca como capa, título, cliente e local derivados do nome do arquivo
+  // (padrão cliente_cidade.jpg), usando a mesma lógica de casamento do lote.
+  const handleVirarCase = async (item: MediaRecord) => {
+    setVirandoCaseId(item.id)
+    try {
+      const file = await fetchMediaAsFile(item)
+      if (!file) {
+        toast({
+          variant: 'destructive',
+          title: 'Foto indisponível',
+          description: 'Não foi possível obter o arquivo desta mídia.',
+        })
+        return
+      }
+
+      const derivado = deriveCaseFromMedia(item)
+      const matchCase = findMatchingCase(item.arquivo || item.titulo, casesList)
+      if (matchCase) {
+        derivado.cliente = matchCase.cliente || derivado.cliente
+        derivado.local = matchCase.local || derivado.local
+        derivado.titulo = matchCase.titulo || derivado.titulo
+      }
+
+      const setor: CaseSetor = 'Comércio e Serviços'
+      const solucao: CaseSolucao = 'Energia Solar'
+      const slug = gerarSlugUnico(derivado.slugBase, casesList)
+
+      await createCase({
+        titulo: derivado.titulo,
+        slug,
+        cliente: derivado.cliente,
+        setor,
+        solucao,
+        local: derivado.local || 'Erechim / RS',
+        escopo: '',
+        descricao: '',
+        solucao_tecnica: '',
+        resultado: '',
+        resultado_valor: '',
+        resultado_label: '',
+        potencia_capacidade: '',
+        data_entrega: '',
+        // Case nasce em rascunho para o usuário revisar antes de publicar —
+        // nunca publicado automaticamente.
+        status: 'rascunho',
+        destaque: false,
+        is_exemplo: false,
+        foto: file,
+      })
+
+      toast({
+        title: 'Case criado em rascunho!',
+        description: `"${derivado.titulo}" foi criado com esta foto como capa. Revise os dados e publique quando estiver pronto.`,
+      })
+      onRefresh()
+    } catch (err: unknown) {
+      console.error('Erro ao criar case a partir da mídia:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao criar case',
+        description:
+          (err as Error)?.message || 'Não foi possível criar o case a partir desta foto.',
+      })
+    } finally {
+      setVirandoCaseId(null)
+    }
+  }
+
   const filteredMedia = mediaList.filter((m) => {
     const matchCat = filterCat === 'todos' || m.categoria === filterCat
     const term = search.toLowerCase()
@@ -559,19 +633,35 @@ export default function AdminMediaTab({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleCopyUrl(item)}
-                    className="text-[11px] h-7 px-2 text-slate-600 hover:text-slate-900 flex items-center gap-1"
-                    title="Copiar URL direta da foto"
+                    disabled={virandoCaseId === item.id}
+                    onClick={() => handleVirarCase(item)}
+                    className="text-[11px] h-7 px-2 text-solar-700 hover:text-solar-800 hover:bg-solar-50 flex items-center gap-1"
+                    title="Criar um case novo em rascunho usando esta foto como capa (título e local vêm do nome do arquivo)"
                   >
-                    {isCopied ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    {virandoCaseId === item.id ? (
+                      <div className="w-3.5 h-3.5 border-2 border-solar-500 border-t-transparent rounded-full animate-spin" />
                     ) : (
-                      <Copy className="w-3.5 h-3.5 text-slate-500" />
+                      <Award className="w-3.5 h-3.5" />
                     )}
-                    <span>{isCopied ? 'Copiado!' : 'Copiar URL'}</span>
+                    <span>{virandoCaseId === item.id ? 'Criando...' : 'Virar case'}</span>
                   </Button>
 
                   <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleCopyUrl(item)}
+                      className="text-[11px] h-7 px-2 text-slate-600 hover:text-slate-900 flex items-center gap-1 hidden sm:flex"
+                      title="Copiar URL direta da foto"
+                    >
+                      {isCopied ? (
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5 text-slate-500" />
+                      )}
+                      <span>{isCopied ? 'Copiado!' : 'URL'}</span>
+                    </Button>
+
                     <Button
                       variant="ghost"
                       size="sm"

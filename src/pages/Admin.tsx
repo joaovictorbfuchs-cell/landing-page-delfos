@@ -651,7 +651,12 @@ export default function Admin() {
         )}
 
         {activeTab === 'cases' && (
-          <AdminCasesTab cases={cases} loading={loadingCases} onRefresh={fetchCases} />
+          <AdminCasesTab
+            cases={cases}
+            loading={loadingCases}
+            onRefresh={fetchCases}
+            mediaList={mediaList}
+          />
         )}
 
         {activeTab === 'media' && (

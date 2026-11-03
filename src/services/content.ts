@@ -216,6 +216,11 @@ export async function updateCase(
   if (payload.data_entrega !== undefined)
     formData.append('data_entrega', payload.data_entrega.trim())
   if (payload.status !== undefined) formData.append('status', payload.status)
+  // foto === null significa "remover a foto atual" (valor vazio limpa o campo
+  // arquivo no PocketBase); foto instanceof File reenvia o arquivo.
+  if (payload.foto === null) {
+    formData.append('foto', '')
+  }
   if (payload.destaque !== undefined)
     formData.append('destaque', payload.destaque ? 'true' : 'false')
   if (payload.is_exemplo !== undefined)

@@ -84,6 +84,8 @@ export interface CaseRecord {
 }
 
 export interface UpsertCasePayload {
+  /** Passar null remove a foto atual do case (valor vazio limpa o campo arquivo no PocketBase) */
+  foto?: File | null
   titulo: string
   slug: string
   cliente?: string
@@ -98,7 +100,6 @@ export interface UpsertCasePayload {
   resultado_label?: string
   potencia_capacidade?: string
   data_entrega?: string
-  foto?: File | null
   status: CaseStatus
   destaque?: boolean
   is_exemplo?: boolean
