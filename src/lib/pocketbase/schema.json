@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T16:48:29.841Z",
+  "generatedAt": "2026-11-03T17:01:46.639Z",
   "collections": [
     {
       "name": "users",
@@ -429,6 +429,12 @@
         },
         {
           "name": "is_exemplo",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status_protegido",
           "type": "bool",
           "required": false,
           "system": false
