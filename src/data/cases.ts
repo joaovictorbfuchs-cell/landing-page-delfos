@@ -550,7 +550,7 @@ export const CASES_DATA: CaseStudy[] = [
       destaqueValor: '32,0 kWp',
       destaqueLabel: 'Geração compartilhada condominial',
       descricao:
-        'Redução direta de até 85% nas contas de eletricidade das áreas comuns e estabilização da taxa de condomínio.',
+        'Redução direta de até 90% nas contas de eletricidade das áreas comuns e estabilização da taxa de condomínio.',
       periodoMedicao: 'Histórico contínuo pós-energização',
       metodoMedicao: 'Demonstrativo da administradora e auditoria de faturas RGE',
     },

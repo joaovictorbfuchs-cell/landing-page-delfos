@@ -30,7 +30,7 @@ export const FAQ_ITEMS: FaqItemData[] = [
     tituloNav: 'Vale a pena e payback',
     pergunta: 'Energia solar vale a pena? Em quanto tempo o investimento se paga?',
     respostaRapida:
-      'Na grande maioria dos casos, sim. Um sistema bem dimensionado reduz de 85% a 95% da despesa com energia e se paga, tipicamente, em 2 a 5 anos — com vida útil superior a 25 anos. O payback exato depende do seu consumo, tarifa, irradiação da região e das regras de compensação vigentes.',
+      'Na grande maioria dos casos, sim. Um sistema bem dimensionado reduz até 90% da despesa com energia e se paga, tipicamente, em 2 a 5 anos — com vida útil superior a 25 anos. O payback exato depende do seu consumo, tarifa, irradiação da região e das regras de compensação vigentes.',
     detalheTecnico:
       'O cálculo é simples na lógica e rigoroso na execução: payback = investimento ÷ economia mensal líquida. As premissas devem considerar o histórico de 12 meses de consumo, a tarifa vigente com projeção de reajuste, a irradiação local e o custo de operação. Dois fatores aceleram o retorno: o reajuste anual da tarifa de energia, que historicamente supera a inflação em boa parte do Brasil, e o financiamento com parcela inferior à economia gerada. Exija sempre as premissas da simulação por escrito — é o que separa uma proposta séria de uma estimativa genérica.',
     ctaTexto: 'Quero uma simulação personalizada',

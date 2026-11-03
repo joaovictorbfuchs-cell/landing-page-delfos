@@ -150,7 +150,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
     seo: {
       title: 'Energia Solar e BESS Residencial no RS | Delfos Engenharia',
       description:
-        'Energia solar e baterias (BESS) para residências no RS: economia de até 95% na conta, backup contra apagões e projeto com equipes próprias. Orçamento grátis.',
+        'Energia solar e baterias (BESS) para residências no RS: economia de até 90% na conta, backup contra apagões e projeto com equipes próprias. Orçamento grátis.',
     },
   },
 

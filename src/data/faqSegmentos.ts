@@ -42,7 +42,7 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         numero: 'Q2',
         pergunta: 'Energia solar zera a conta de luz?',
         respostaRapida:
-          'Quase. Os excedentes viram créditos que abatem o consumo, mas permanecem o custo de disponibilidade (30, 50 ou 100 kWh conforme o padrão) e a iluminação pública. A economia real média fica entre 85% e 95% da conta.',
+          'Quase. Os excedentes viram créditos que abatem o consumo, mas permanecem o custo de disponibilidade (30, 50 ou 100 kWh conforme o padrão) e a iluminação pública. A economia real média fica em até 90% da conta.',
         detalheTecnico: [
           'O Sistema de Compensação (SCEE/ANEEL) é contábil: a energia gerada de dia abate o consumo noturno via créditos válidos por 60 meses. A Lei 14.300/2022 instituiu cobrança progressiva do Fio B para novos sistemas (15% em 2023 até 90% em 2029) — mais um motivo para instalar antes.',
           'Confira sempre se a simulação já desconta essas cobranças regulatórias para não gerar falsa expectativa de custo zero absoluto.',
