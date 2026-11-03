@@ -8,7 +8,7 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { fraseLocalCase } from '@/data/cases'
+import { fraseLocalCase, isBrokenLegacyPhoto } from '@/data/cases'
 import type { CaseStudy } from '@/data/cases'
 
 interface CaseCardProps {
