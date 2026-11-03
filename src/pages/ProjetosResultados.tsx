@@ -132,7 +132,7 @@ export default function ProjetosResultados() {
         titulo: c.titulo,
         cliente: c.cliente || c.titulo,
         segmento: c.setor as SegmentoCase,
-        solucao: (c.solucao || 'Energia Solar (EPC)') as SolucaoCase,
+        solucao: (c.solucao || 'Energia Solar') as SolucaoCase,
         local: c.local || 'Erechim / RS',
         dataEntrega: c.data_entrega || 'Auditado',
         escopo: c.escopo || `${c.potencia_capacidade || ''} Projeto Turnkey Delfos`,

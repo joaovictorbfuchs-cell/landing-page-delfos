@@ -32,7 +32,7 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
 
   const getSolucaoColor = (solucao: string) => {
     switch (solucao) {
-      case 'Energia Solar (EPC)':
+      case 'Energia Solar':
         return 'bg-solar-500 text-midnight-950'
       case 'BESS (Armazenamento)':
         return 'bg-emerald-500 text-midnight-950'

@@ -43,7 +43,7 @@ import { formatFilenameToTitle, findMatchingCase, buildDestinoSugerido } from '.
 
 const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Geral',
-  'Solar EPC',
+  'Solar',
   'BESS Baterias',
   'O&M Manutenção',
   'Carregadores',

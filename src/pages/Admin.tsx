@@ -417,7 +417,7 @@ export default function Admin() {
                   size="sm"
                   className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
                 >
-                  Solar EPC
+                  Energia Solar
                 </Button>
               </Link>
               <Link to="/solucoes/bess">
@@ -501,7 +501,7 @@ export default function Admin() {
                     asChild
                     className="focus:bg-white/10 focus:text-white cursor-pointer"
                   >
-                    <Link to="/solucoes/energia-solar">Solar EPC</Link>
+                    <Link to="/solucoes/energia-solar">Energia Solar</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
@@ -864,7 +864,7 @@ export default function Admin() {
                     className="h-10 px-3 bg-frost border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-solar-400"
                   >
                     <option value="todos">Todos os pilares</option>
-                    <option value="Solar">Energia Solar (EPC)</option>
+                    <option value="Solar">Energia Solar</option>
                     <option value="BESS">BESS (Armazenamento)</option>
                     <option value="Manutenção">Manutenção / Assistência Técnica</option>
                     <option value="O&M">O&M / Monitoramento</option>
@@ -991,7 +991,7 @@ export default function Admin() {
                           <span className="font-bold text-slate-800 text-[11px] truncate block">
                             {(lead.necessidade || '') === 'Manutenção'
                               ? 'Manutenção / O&M'
-                              : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
+                              : lead.necessidade || lead.tipo_imovel || 'Energia Solar'}
                           </span>
                         </div>
                         <div>
@@ -1157,7 +1157,7 @@ export default function Admin() {
                               >
                                 {(lead.necessidade || '') === 'Manutenção'
                                   ? 'Manutenção / Assistência'
-                                  : lead.necessidade || lead.tipo_imovel || 'Solar EPC'}
+                                  : lead.necessidade || lead.tipo_imovel || 'Energia Solar'}
                               </span>
                             </td>
 

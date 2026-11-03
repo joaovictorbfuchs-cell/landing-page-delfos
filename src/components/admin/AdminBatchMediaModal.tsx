@@ -53,7 +53,7 @@ export default function AdminBatchMediaModal({
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Categoria unificada para o lote
-  const [categoriaLote, setCategoriaLote] = useState<MediaCategoria>('Solar EPC')
+  const [categoriaLote, setCategoriaLote] = useState<MediaCategoria>('Solar')
   const [descricaoGeral, setDescricaoGeral] = useState('')
 
   // Lista de arquivos e estado de progresso

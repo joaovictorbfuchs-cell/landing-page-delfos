@@ -8,7 +8,7 @@ export type SegmentoCase =
   | 'Frotas e Eletropostos'
 
 export type SolucaoCase =
-  | 'Energia Solar (EPC)'
+  | 'Energia Solar'
   | 'BESS (Armazenamento)'
   | 'O&M e Monitoramento'
   | 'Carregadores Veiculares'
@@ -22,7 +22,7 @@ export interface CaseStudy {
   solucao: SolucaoCase
   local: string // autorizado para divulgação
   desafioInicial: string
-  escopo: string // ex: "450 kWp + BESS 200 kWh" ou "9,75 kWp Solar EPC"
+  escopo: string // ex: "450 kWp + BESS 200 kWh" ou "9,75 kWp Energia Solar"
   solucaoTecnica: string
   resultadoMedido: {
     destaqueValor: string // Ex: "91%", "R$ 14.500/mês", "Zero", "100%", "Payback 3,2a"
@@ -49,7 +49,7 @@ export interface CaseStudy {
 // Um unico padrao replicado em todo case. O campo local aceita "Bairro, Cidade / UF"
 // (ex.: "Centro, Erechim / RS") e o bairro entra sozinho na frase.
 const SERVICO_POR_SOLUCAO: Record<SolucaoCase, string> = {
-  'Energia Solar (EPC)': 'Instalação fotovoltaica',
+  'Energia Solar': 'Instalação fotovoltaica',
   'BESS (Armazenamento)': 'Sistema de baterias (BESS)',
   'O&M e Monitoramento': 'Monitoramento e manutenção de usina',
   'Carregadores Veiculares': 'Recarga veicular',
@@ -74,7 +74,7 @@ export const SEGMENTOS_FILTRO: { id: string; label: string; count?: number }[] =
 
 export const SOLUCOES_FILTRO: { id: string; label: string }[] = [
   { id: 'todas', label: 'Todas as Soluções' },
-  { id: 'Energia Solar (EPC)', label: 'Solar Fotovoltaica' },
+  { id: 'Energia Solar', label: 'Solar Fotovoltaica' },
   { id: 'BESS (Armazenamento)', label: 'Armazenamento e Baterias (BESS)' },
   { id: 'O&M e Monitoramento', label: 'O&M & Monitoramento' },
   { id: 'Carregadores Veiculares', label: 'Carregadores Veiculares' },
@@ -87,7 +87,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Cassul Distribuidora — Erechim/RS — 155,0 kWp',
     cliente: 'Cassul Distribuidora',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Alto custo de energia elétrica operacional em centro de distribuição comercial com equipamentos e iluminação contínua.',
@@ -117,7 +117,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Clanel Ind. e Comércio de Confecções — Erechim/RS — 123,5 kWp',
     cliente: 'Clanel Indústria e Comércio de Confecções Ltda.',
     segmento: 'Indústria',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Aumentos anuais na tarifa elétrica acima da inflação impactando o custo da produção têxtil e necessidade de posicionamento de sustentabilidade da marca.',
@@ -147,7 +147,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Panificadora Garcia — Passo Fundo/RS — 112,5 kWp',
     cliente: 'Panificadora Garcia',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Passo Fundo / RS',
     desafioInicial:
       'Alto consumo contínuo e imprevisível de energia em fornos elétricos, câmaras frias e maquinário de panificação de alta demanda.',
@@ -177,7 +177,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Silo de Grãos — Erebango/RS — 76,16 kWp',
     cliente: 'Produtor Rural de Erebango',
     segmento: 'Agronegócio',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erebango / RS',
     desafioInicial:
       'Custos elevados com energia para secagem e armazenagem de grãos durante o período de safra e entre-safra.',
@@ -206,7 +206,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Posto Caminho do Mercosul — Severiano de Almeida/RS — 54,9 kWp',
     cliente: 'Comércio de Combustíveis Cerro do Meio Dia Ltda.',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Severiano de Almeida / RS',
     desafioInicial:
       'Conta de energia elevada com bombas de combustível, compressores de ar e loja de conveniência operando 24 horas.',
@@ -234,7 +234,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Usina Solar de Solo — Erechim/RS — 40,8 kWp',
     cliente: 'Residência & Empreendimento Rural',
     segmento: 'Investidores e Usinas',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Necessidade de gerar energia própria para compensação em imóveis remotos sem disponibilidade de espaço de telhado.',
@@ -264,7 +264,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Residência Urbana — Erechim/RS — 6,48 kWp',
     cliente: 'Residência Familiar',
     segmento: 'Residências',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Faturas elevadas causadas por climatização de precisão de verão/inverno e aquecimento de água em residência.',
@@ -293,7 +293,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Pecuária de Leite — Barão de Cotegipe/RS — 18,5 kWp',
     cliente: 'Produtor de Pecuária de Leite',
     segmento: 'Agronegócio',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Barão de Cotegipe / RS',
     desafioInicial:
       'A atividade leiteira exige resfriamento ininterrupto e ordenhadeiras elétricas diárias, pesando no custo de produção.',
@@ -321,7 +321,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'System Desenvolvimento de Software — Erechim/RS — 25,0 kWp',
     cliente: 'System Desenvolvimento de Software Ltda.',
     segmento: 'Indústria',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Necessidade de cobrir o estacionamento de veículos corporativos integrando inovação tecnológica e sustentabilidade na sede da empresa.',
@@ -350,7 +350,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Ervateira Bazia — Inácio Martins/PR — 93,5 kWp',
     cliente: 'Ervateira Bazia',
     segmento: 'Agronegócio',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Inácio Martins / PR',
     desafioInicial:
       'Alta demanda de energia elétrica no processamento e moagem pesada de erva-mate no estado do Paraná.',
@@ -380,7 +380,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Dal Pra Comércio e Indústria de Móveis — Erechim/RS — 74,43 kWp',
     cliente: 'Dal Pra Comércio e Indústria de Móveis',
     segmento: 'Indústria',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Alto consumo produtivo em maquinários de marcenaria industrial, exigindo redução substancial no custo de energia da fábrica.',
@@ -410,7 +410,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Aviário — Erebango/RS — 42,16 kWp',
     cliente: 'Produtor Rural Integrado de Aves',
     segmento: 'Agronegócio',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erebango / RS',
     desafioInicial:
       'Custos elevados e necessidade de estabilidade no acionamento de exaustores e climatizadores de granja avícola.',
@@ -439,7 +439,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Spazzini Tur — Erechim/RS — 32,16 kWp',
     cliente: 'Spazzini Tur Transporte e Turismo',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Consumo elevado com oficina de frotas rodoviárias, ar-condicionado de setores administrativos e bombas de lavagem.',
@@ -468,7 +468,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'ARFES Refrigeração — Erechim/RS — 30,0 kWp',
     cliente: 'ARFES Refrigeração Indústria e Comércio Ltda.',
     segmento: 'Indústria',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Fabricação de equipamentos de refrigeração comercial com consumo intensivo de máquinas de corte e montagem.',
@@ -498,7 +498,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Bem Estar Móveis — Erechim/RS — 25,41 kWp',
     cliente: 'Bem Estar Móveis',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Showroom comercial amplo com iluminação cenográfica contínua e climatização central de alta demanda.',
@@ -527,7 +527,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Supermercado Cavassola — Erechim/RS — 20,0 kWp',
     cliente: 'Supermercado Cavassola',
     segmento: 'Comércio e Serviços',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Câmaras frias, ilhas de congelados e iluminação de supermercado demandando energia 24 horas por dia.',
@@ -556,7 +556,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Condomínio Residencial Notabile — Erechim/RS — 32,0 kWp',
     cliente: 'Condomínio Residencial Notabile',
     segmento: 'Condomínios',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Faturas elevadas de energia para áreas comuns, elevadores, bombas de recalque e iluminação condominial gerando aumento contínuo na taxa de condomínio.',
@@ -587,7 +587,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Condomínio Residencial Lyon — Erechim/RS — 15,0 kWp',
     cliente: 'Condomínio Residencial Lyon',
     segmento: 'Condomínios',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Faturas elevadas nas áreas comuns (elevadores, bombas de recalque, portaria eletrônica e iluminação de garagens).',
@@ -617,7 +617,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Indra Distribuidora de Insumos Agropecuários — Erechim/RS — 9,75 kWp',
     cliente: 'Indra — Distribuidora de Insumos para Agropecuária Ltda.',
     segmento: 'Agronegócio',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Erechim / RS',
     desafioInicial:
       'Custos fixos de eletricidade na operação administrativa e logística de distribuição de insumos agropecuários.',
@@ -734,7 +734,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Residência Sobrado Alto Padrão',
     cliente: 'Residência Família Martins (Autorizado)',
     segmento: 'Residências',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Bairro Fátima, Erechim / RS',
     desafioInicial:
       'Consumo elevado com piso aquecido, climatização multizone e piscina aquecida. O proprietário exigia acabamento estético rigoroso sem quebra de telhas cerâmicas e integração com monitoramento mobile.',
@@ -763,7 +763,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Usina de Solo para Investidor de GD',
     cliente: 'Grupo de Investimento Imobiliário & Energia (Autorizado sob sigilo)',
     segmento: 'Investidores e Usinas',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Região Norte / RS',
     desafioInicial:
       'Terreno rural com declividade irregular e necessidade de modelagem financeira segura sob a Lei 14.300/2022 para locação de cotas de geração distribuída com taxa interna de retorno (TIR) atrativa.',
@@ -881,7 +881,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Complexo Solar Agroindustrial em Solo',
     cliente: 'Cooperativa Agroindustrial Regional (Divulgação preliminar autorizada)',
     segmento: 'Investidores e Usinas',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Região Noroeste / RS',
     desafioInicial:
       'Demanda contínua para abastecer silos de grãos e fábricas de ração com alta sazonalidade na safra.',
@@ -917,7 +917,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Condomínio Residencial Horizontal — 65 kWp (Exemplo de aplicação)',
     cliente: 'Exemplo de aplicação ilustrativo (Condomínio Horizontal)',
     segmento: 'Condomínios',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Região Norte / RS',
     desafioInicial:
       'Custos elevados com iluminação perimetral de vias internas, portaria blindada, bombas de piscinas coletivas e sede social, pressionando a cota mensal dos condôminos.',
@@ -1047,7 +1047,7 @@ export const CASES_DATA: CaseStudy[] = [
     titulo: 'Usina de Solo para Geração Distribuída — 500 kWp (Exemplo de aplicação)',
     cliente: 'Exemplo de aplicação ilustrativo (Investidor GD / Lei 14.300)',
     segmento: 'Investidores e Usinas',
-    solucao: 'Energia Solar (EPC)',
+    solucao: 'Energia Solar',
     local: 'Região Norte / RS',
     desafioInicial:
       'Investidor pessoa física buscando diversificação de carteira imobiliária com renda passiva previsível através da locação de cotas de usina solar sob o marco legal da Lei 14.300/2022.',

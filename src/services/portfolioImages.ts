@@ -307,7 +307,7 @@ export function getArticlePortfolioPhoto(
       ['psl026eq9dcvpjr', '88p02q2qkva9dlj', 'jfeklgmlxlawntj'].includes(c.id),
     )
   }
-  // 4. TEMA: ENERGIA SOLAR EPC / REGIONAL
+  // 4. TEMA: ENERGIA SOLAR / REGIONAL
   else {
     candidatos = allCases.filter((c) =>
       [

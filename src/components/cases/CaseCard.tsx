@@ -24,7 +24,7 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
 
   const getSolucaoBadge = (solucao: string) => {
     switch (solucao) {
-      case 'Energia Solar (EPC)':
+      case 'Energia Solar':
         return 'bg-solar-500 text-midnight-950'
       case 'BESS (Armazenamento)':
         return 'bg-emerald-500 text-midnight-950'

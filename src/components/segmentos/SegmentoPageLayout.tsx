@@ -60,7 +60,7 @@ export default function SegmentoPageLayout({
             titulo: r.titulo,
             cliente: r.cliente || r.titulo,
             segmento: (r.setor as any) || staticMatch?.segmento || 'Comércio e Serviços',
-            solucao: (r.solucao as any) || staticMatch?.solucao || 'Energia Solar (EPC)',
+            solucao: (r.solucao as any) || staticMatch?.solucao || 'Energia Solar',
             local: r.local || staticMatch?.local || 'Erechim / RS',
             desafioInicial: r.descricao || staticMatch?.desafioInicial || '',
             escopo:

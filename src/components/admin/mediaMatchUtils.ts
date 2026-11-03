@@ -23,7 +23,7 @@ export function formatFilenameToTitle(filename: string): string {
       if (idx === 0) {
         return word.charAt(0).toUpperCase() + word.slice(1)
       }
-      // Se for número ou sigla (ex: BESS, EPC, KWP, RS, etc)
+      // Se for número ou sigla (ex: BESS, KWP, RS, etc)
       if (/^[a-zA-Z]{2,4}$/.test(word) && word === word.toUpperCase()) {
         return word
       }

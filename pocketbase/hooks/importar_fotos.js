@@ -58,7 +58,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'cassul-erechim-rs-155-0-kwp',
         nomeAmigavel: 'Cassul Distribuidora 155 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Cassul / Solução Solar / Comércio',
         patterns: [/cassul-erechim-rs-1550-kwp/i, /\/cassul-distribuidora\//i],
         tituloPrefixo: 'Obra Cassul Distribuidora 155 kWp',
@@ -66,7 +66,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'clanel-ind-confeccoes-erechim-rs-123-5-kwp',
         nomeAmigavel: 'Clanel Ind. e Comércio de Confecções 123,5 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Clanel / Indústria / Solução Solar',
         patterns: [/clanel/i],
         tituloPrefixo: 'Obra Clanel Confecções 123,5 kWp',
@@ -74,7 +74,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'panificadora-garcia-passo-fundo-rs-112-5-kwp',
         nomeAmigavel: 'Panificadora Garcia 112,5 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Panificadora Garcia / Comércio / Solução Solar',
         patterns: [
           /panificadora-garcia-passo-fundo-rs-1125-kwp/i,
@@ -85,7 +85,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'silo-erebango-rs-76-16-kwp',
         nomeAmigavel: 'Silo de Grãos Erebango 76,16 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Silo Erebango / Agronegócio / Solução Solar',
         patterns: [/silo-erebango/i, /silo.*76/i],
         tituloPrefixo: 'Silo de Grãos Erebango 76,16 kWp',
@@ -93,7 +93,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'posto-caminho-do-mercosul-severiano-de-almeida-rs-54-9-kwp',
         nomeAmigavel: 'Posto Caminho do Mercosul 54,9 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Posto Mercosul / Comércio e Serviços',
         patterns: [/posto-caminho-do-mercosul/i, /cerro-do-meio-dia/i, /mercosul/i],
         tituloPrefixo: 'Posto Caminho do Mercosul 54,9 kWp',
@@ -101,7 +101,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'usina-solar-solo-erechim-rs-40-8-kwp',
         nomeAmigavel: 'Usina Fotovoltaica de Solo Erechim 40,8 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Usina Solo / Investidores / Solução Solar',
         patterns: [/usina-fotovoltaica-erechim-rs-408-kwp/i, /usina.*solo.*40/i],
         tituloPrefixo: 'Usina Solar de Solo Erechim 40,8 kWp',
@@ -109,7 +109,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'condominio-residencial-notabile-erechim-rs-32-kwp',
         nomeAmigavel: 'Condomínio Residencial Notabile 32 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Notabile / Condomínios / Solução Solar',
         patterns: [/notabile/i],
         tituloPrefixo: 'Condomínio Residencial Notabile 32 kWp',
@@ -117,7 +117,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'pecuaria-de-leite-barao-de-cotegipe-rs-18-5-kwp',
         nomeAmigavel: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Pecuária Leite / Agronegócio',
         patterns: [/pecuaria-de-leite-barao-de-cotegipe/i, /pecuaria.*18525/i, /leite.*cotegipe/i],
         tituloPrefixo: 'Pecuária de Leite Barão de Cotegipe 18,5 kWp',
@@ -125,7 +125,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'residencia-urbana-erechim-rs-6-48-kwp',
         nomeAmigavel: 'Residência Urbana Erechim 6,48 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Residência / Residências / Solução Solar',
         patterns: [/residencia-erechim-rs-648-kwp/i, /residencia.*648/i],
         tituloPrefixo: 'Residência Urbana Erechim 6,48 kWp',
@@ -133,7 +133,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'system-desenvolvimento-software-erechim-rs-25-kwp',
         nomeAmigavel: 'System Desenvolvimento de Software 25 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case System Software / Indústria / Tecnologia',
         patterns: [/system-desenvolvimento/i, /system/i],
         tituloPrefixo: 'System Desenvolvimento de Software 25 kWp',
@@ -141,7 +141,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'ervateira-bazia-inacio-martins-pr-93-5-kwp',
         nomeAmigavel: 'Ervateira Bazia 93,5 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Ervateira Bazia / Agronegócio',
         patterns: [/ervateira-bazia/i, /bazia/i],
         tituloPrefixo: 'Ervateira Bazia 93,5 kWp',
@@ -149,7 +149,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'aviario-erebango-rs-42-16-kwp',
         nomeAmigavel: 'Aviário Erebango 42,16 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Aviário / Agronegócio',
         patterns: [/aviario-erebango/i, /aviario/i],
         tituloPrefixo: 'Aviário Erebango 42,16 kWp',
@@ -157,7 +157,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'dal-pra-moveis-erechim-rs-74-43-kwp',
         nomeAmigavel: 'Dal Pra Comércio e Indústria de Móveis 74,43 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Dal Pra / Indústria',
         patterns: [/dal-pra/i],
         tituloPrefixo: 'Dal Pra Móveis 74,43 kWp',
@@ -165,7 +165,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'arfes-refrigeracao-erechim-rs-30-kwp',
         nomeAmigavel: 'ARFES Refrigeração 30 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case ARFES Refrigeração / Indústria',
         patterns: [/arfes/i],
         tituloPrefixo: 'ARFES Refrigeração 30 kWp',
@@ -173,7 +173,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'spazzini-tur-erechim-rs-32-16-kwp',
         nomeAmigavel: 'Spazzini Tur 32,16 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Spazzini Tur / Comércio e Serviços',
         patterns: [/spazzini/i],
         tituloPrefixo: 'Spazzini Tur 32,16 kWp',
@@ -181,7 +181,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'supermercado-cavassola-erechim-rs-20-kwp',
         nomeAmigavel: 'Supermercado Cavassola 20 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Supermercado Cavassola / Comércio e Serviços',
         patterns: [/cavassola/i],
         tituloPrefixo: 'Supermercado Cavassola 20 kWp',
@@ -189,7 +189,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'bem-estar-moveis-erechim-rs-25-41-kwp',
         nomeAmigavel: 'Bem Estar Móveis 25,41 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Bem Estar Móveis / Comércio e Serviços',
         patterns: [/bem-estar/i, /2541-kwp/i],
         tituloPrefixo: 'Bem Estar Móveis 25,41 kWp',
@@ -197,7 +197,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'condominio-residencial-lyon-erechim-rs-15-kwp',
         nomeAmigavel: 'Condomínio Residencial Lyon 15 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Condomínio Lyon / Condomínios',
         patterns: [/res-lyon/i, /lyon/i],
         tituloPrefixo: 'Condomínio Residencial Lyon 15 kWp',
@@ -205,7 +205,7 @@ const executarSincronizacaoFotos = (e) => {
       {
         slug: 'indra-distribuidora-agropecuaria-erechim-rs-9-75-kwp',
         nomeAmigavel: 'Indra Distribuidora Agropecuária 9,75 kWp',
-        categoria: 'Solar EPC',
+        categoria: 'Solar',
         destino: 'Case Indra / Agronegócio',
         patterns: [/indra.*975/i, /empresa-indra/i, /indra/i],
         tituloPrefixo: 'Indra Agropecuária 9,75 kWp',
@@ -391,7 +391,7 @@ const executarSincronizacaoFotos = (e) => {
         let finalTitle = ''
         let finalDescricao = ''
         let finalDestino = ''
-        let finalCategoria = 'Solar EPC'
+        let finalCategoria = 'Solar'
         let targetCaseSlug = null
         let nomeArquivoFinal = ''
 
@@ -409,7 +409,7 @@ const executarSincronizacaoFotos = (e) => {
             : 'Instalação Solar Delfos'
           finalTitle = `${cleanPageName} — Foto ${imgIdx + 1} (${originalFileName})`
           finalDescricao = `Foto do acervo histórico de instalações fotovoltaicas Delfos Engenharia (${originalFileName}).`
-          finalDestino = 'Biblioteca Geral / Solução Solar EPC'
+          finalDestino = 'Biblioteca Geral / Solução Solar'
           nomeArquivoFinal = `delfos-acervo-${cleanBase}`
         }
 

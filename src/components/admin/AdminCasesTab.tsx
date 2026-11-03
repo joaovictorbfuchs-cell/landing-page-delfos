@@ -42,7 +42,7 @@ const SETORES: CaseSetor[] = [
 ]
 
 const SOLUCOES: CaseSolucao[] = [
-  'Energia Solar (EPC)',
+  'Energia Solar',
   'BESS (Armazenamento)',
   'O&M e Monitoramento',
   'Carregadores Veiculares',
@@ -66,7 +66,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
   const [slug, setSlug] = useState('')
   const [cliente, setCliente] = useState('')
   const [setor, setSetor] = useState<CaseSetor>('Comércio e Serviços')
-  const [solucao, setSolucao] = useState<CaseSolucao>('Energia Solar (EPC)')
+  const [solucao, setSolucao] = useState<CaseSolucao>('Energia Solar')
   const [local, setLocal] = useState('Erechim / RS')
   const [escopo, setEscopo] = useState('')
   const [descricao, setDescricao] = useState('')
@@ -88,7 +88,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setSlug('')
     setCliente('')
     setSetor('Comércio e Serviços')
-    setSolucao('Energia Solar (EPC)')
+    setSolucao('Energia Solar')
     setLocal('Erechim / RS')
     setEscopo('')
     setDescricao('')
@@ -112,7 +112,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
     setSlug(caseItem.slug)
     setCliente(caseItem.cliente || '')
     setSetor(caseItem.setor)
-    setSolucao(caseItem.solucao || 'Energia Solar (EPC)')
+    setSolucao(caseItem.solucao || 'Energia Solar')
     setLocal(caseItem.local || '')
     setEscopo(caseItem.escopo || '')
     setDescricao(caseItem.descricao || '')
@@ -379,7 +379,7 @@ export default function AdminCasesTab({ cases, loading, onRefresh }: AdminCasesT
                       <td className="py-3 px-5 text-xs text-slate-600 whitespace-nowrap">
                         <div className="space-y-0.5">
                           <div className="font-semibold text-slate-800">
-                            {caseItem.solucao || 'Solar EPC'}
+                            {caseItem.solucao || 'Energia Solar'}
                           </div>
                           <div className="text-solar-700 font-mono font-bold text-[11px] flex items-center gap-1">
                             <Zap className="w-3 h-3 text-solar-500" />

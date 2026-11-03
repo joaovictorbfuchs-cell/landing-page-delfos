@@ -54,7 +54,7 @@ export type CaseSetor =
   | 'Frotas e Eletropostos'
 
 export type CaseSolucao =
-  | 'Energia Solar (EPC)'
+  | 'Energia Solar'
   | 'BESS (Armazenamento)'
   | 'O&M e Monitoramento'
   | 'Carregadores Veiculares'
@@ -106,7 +106,7 @@ export interface UpsertCasePayload {
 
 export type MediaCategoria =
   | 'Geral'
-  | 'Solar EPC'
+  | 'Solar'
   | 'BESS Baterias'
   | 'O&M Manutenção'
   | 'Carregadores'
