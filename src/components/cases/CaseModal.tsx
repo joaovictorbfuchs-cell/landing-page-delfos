@@ -14,7 +14,7 @@ import {
   Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { fraseLocalCase } from '@/data/cases'
+import { fraseLocalCase, isBrokenLegacyPhoto } from '@/data/cases'
 import type { CaseStudy } from '@/data/cases'
 
 interface CaseModalProps {
@@ -120,13 +120,16 @@ export default function CaseModal({ caseStudy, onClose, onSolicitarEstudo }: Cas
         {/* Modal Body: Estrutura obrigatória dos 7 campos */}
         <div className="p-6 sm:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
           {/* Foto no modal (Versão grande/capa ~1600px se disponível, ou visual elegante da marca Delfos) */}
-          {caseStudy.fotoUrlGrande || caseStudy.fotoUrl ? (
+          {(caseStudy.fotoUrlGrande || caseStudy.fotoUrl) &&
+          !isBrokenLegacyPhoto(caseStudy.fotoUrlGrande || caseStudy.fotoUrl) ? (
             <div className="rounded-2xl overflow-hidden aspect-video border border-slate-200 shadow-md bg-slate-900">
               <img
                 src={caseStudy.fotoUrlGrande || caseStudy.fotoUrl}
                 alt={legenda}
                 loading="lazy"
                 decoding="async"
+                width={1600}
+                height={900}
                 className="w-full h-full object-cover"
               />
             </div>

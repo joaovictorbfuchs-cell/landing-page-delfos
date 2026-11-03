@@ -21,6 +21,9 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
   const { resultadoMedido } = caseStudy
   // Legenda/alt padrao SEO local: servico + potencia + bairro, cidade + cliente + resultado
   const legenda = fraseLocalCase(caseStudy)
+  // Foto legada em /site/wp-content/uploads/ nao existe mais (servidor antigo desativado):
+  // cai no visual da marca em vez de mostrar imagem quebrada.
+  const temFotoValida = Boolean(caseStudy.fotoUrl) && !isBrokenLegacyPhoto(caseStudy.fotoUrl)
 
   const getSolucaoBadge = (solucao: string) => {
     switch (solucao) {
@@ -89,13 +92,15 @@ export default function CaseCard({ caseStudy, onVerDetalhes, onSolicitarEstudo }
           </div>
 
           {/* Photo (Upload real do banco se existir, ou visual elegante da marca Delfos) */}
-          {caseStudy.fotoUrl ? (
+          {temFotoValida ? (
             <div className="mt-4 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-md bg-slate-900">
               <img
                 src={caseStudy.fotoUrl}
                 alt={legenda}
                 loading="lazy"
                 decoding="async"
+                width={1200}
+                height={675}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>

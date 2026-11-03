@@ -55,6 +55,13 @@ const SERVICO_POR_SOLUCAO: Record<SolucaoCase, string> = {
   'Carregadores Veiculares': 'Recarga veicular',
 }
 
+// Fotos legadas apontam para /site/wp-content/uploads/ no servidor antigo, que foi
+// desativado (HTTP 404). Detecta antes de renderizar para nao exibir imagem quebrada.
+export function isBrokenLegacyPhoto(url?: string): boolean {
+  if (!url) return false
+  return url.includes('/site/wp-content/uploads/')
+}
+
 export function fraseLocalCase(c: CaseStudy): string {
   const lugar = c.local.split('(')[0].trim()
   const servico = SERVICO_POR_SOLUCAO[c.solucao] ?? 'Projeto'

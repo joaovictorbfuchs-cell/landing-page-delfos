@@ -8,6 +8,7 @@ import {
   TrendingDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { fraseLocalCase, isBrokenLegacyPhoto } from '@/data/cases'
 import type { CaseStudy } from '@/data/cases'
 
 interface CaseHeroFeaturedProps {
@@ -22,6 +23,11 @@ export default function CaseHeroFeatured({
   onSolicitarEstudo,
 }: CaseHeroFeaturedProps) {
   const { resultadoMedido } = caseStudy
+  const legenda = fraseLocalCase(caseStudy)
+  // Hero em destaque ocupa ~530px de largura no desktop: a versao leve (900px, ~301 KB)
+  // basta e evita baixar a capa de 1600px (816 KB) so para o card de destaque.
+  const fotoHero = caseStudy.fotoUrl || caseStudy.fotoUrlGrande
+  const temFotoValida = Boolean(fotoHero) && !isBrokenLegacyPhoto(fotoHero)
 
   return (
     <section className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
@@ -49,13 +55,15 @@ export default function CaseHeroFeatured({
           </div>
 
           {/* Photo (Versão grande/capa para o card hero em destaque ou visual de marca da Delfos) */}
-          {caseStudy.fotoUrlGrande || caseStudy.fotoUrl ? (
+          {temFotoValida ? (
             <div className="my-6 rounded-2xl overflow-hidden aspect-video border border-white/20 shadow-xl bg-slate-900">
               <img
-                src={caseStudy.fotoUrlGrande || caseStudy.fotoUrl}
-                alt={caseStudy.titulo}
+                src={fotoHero}
+                alt={legenda}
                 loading="lazy"
                 decoding="async"
+                width={900}
+                height={506}
                 className="w-full h-full object-cover"
               />
             </div>

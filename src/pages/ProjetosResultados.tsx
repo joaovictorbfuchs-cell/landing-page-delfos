@@ -28,6 +28,7 @@ import CaseModal from '@/components/cases/CaseModal'
 import {
   CASES_DATA,
   fraseLocalCase,
+  isBrokenLegacyPhoto,
   type CaseStudy,
   type SegmentoCase,
   type SolucaoCase,
@@ -164,13 +165,22 @@ export default function ProjetosResultados() {
       (c) => !c.isExample && !existingIds.has(c.id) && !existingIds.has(c.slug),
     )
 
-    return [...fromDb, ...fromStatic]
+    // Os cases do banco (PocketBase) sao a fonte de verdade quando o mesmo case existe
+    // nos dois lugares: o registro do banco tem a foto que o cliente subiu e a versao
+    // otimizada (?thumb=). Sem isso as fotos de /site/wp-content/uploads/ retornavam 404
+    // (servidor antigo ja desativado) e o card ficava com imagem quebrada.
+    const dbSlugs = new Set(dynamicCases.map((c) => c.slug))
+    const staticSemDuplicata = fromStatic.filter((c) => !dbSlugs.has(c.slug))
+
+    return [...fromDb, ...staticSemDuplicata]
   }, [dynamicCases])
 
   // Find featured case: seleciona entre os destaques ativos com foto real comprovada (ex: Cassul, Dal Pra, Panificadora Garcia)
   const caseDestaque = useMemo(() => {
     // 1. Procurar case marcado como destaque que possua foto real
-    const destaqueComFoto = todosCases.find((c) => c.destaque && Boolean(c.fotoUrl))
+    const destaqueComFoto = todosCases.find(
+      (c) => c.destaque && Boolean(c.fotoUrl) && !isBrokenLegacyPhoto(c.fotoUrl),
+    )
     if (destaqueComFoto) return destaqueComFoto
 
     // 2. Fallbacks de cases fortes e homologados com fotos
@@ -179,11 +189,16 @@ export default function ProjetosResultados() {
         (c.slug === 'cassul-erechim-rs-155-0-kwp' ||
           c.slug === 'dal-pra-moveis-erechim-rs-74-43-kwp' ||
           c.slug === 'panificadora-garcia-passo-fundo-rs-112-5-kwp') &&
-        Boolean(c.fotoUrl),
+        Boolean(c.fotoUrl) &&
+        !isBrokenLegacyPhoto(c.fotoUrl),
     )
     if (fallbackForte) return fallbackForte
 
-    return todosCases.find((c) => c.destaque) || todosCases[0]
+    return (
+      todosCases.find((c) => c.destaque && !isBrokenLegacyPhoto(c.fotoUrl)) ||
+      todosCases.find((c) => !isBrokenLegacyPhoto(c.fotoUrl)) ||
+      todosCases[0]
+    )
   }, [todosCases])
 
   // Filter cases dynamically by Segmento and Solucao
