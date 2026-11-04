@@ -54,10 +54,11 @@ const ROTAS = [
   },
   {
     path: '/projetos',
-    title: 'Projetos e Resultados Reais | Cases Auditados Delfos Solar',
+    title: 'Projetos Realizados | Obras e Cases da Delfos Energia Solar',
     description:
-      'Conheça os cases reais de engenharia da Delfos: solar fotovoltaico, BESS, O&M e recarga veicular com métricas auditadas, período de medição e comprovação.',
+      'Projetos reais executados pela Delfos Engenharia: usinas solares fotovoltaicas, BESS, carregadores veiculares e O&M com fotos das obras, potência instalada, cidade e data de entrega.',
   },
+
   {
     path: '/sobre',
     title: 'Sobre a Delfos | 12 Anos e 3.000+ Projetos no RS',

@@ -34,17 +34,9 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Projetos e resultados -->
+  <!-- Projetos Realizados (página única; /obras redireciona 301 para cá) -->
   <url>
     <loc>https://www.delfos.eng.br/projetos</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Galeria pública de obras -->
-  <url>
-    <loc>https://www.delfos.eng.br/obras</loc>
     <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

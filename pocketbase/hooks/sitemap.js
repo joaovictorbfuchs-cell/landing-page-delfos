@@ -19,7 +19,6 @@ routerAdd('GET', '/sitemap.xml', (e) => {
     { loc: '/solucoes/om', changefreq: 'monthly', priority: '0.9', lastmod: today },
     { loc: '/solucoes/carregadores', changefreq: 'monthly', priority: '0.9', lastmod: today },
     { loc: '/projetos', changefreq: 'weekly', priority: '0.9', lastmod: today },
-    { loc: '/obras', changefreq: 'monthly', priority: '0.3', lastmod: today }, // redireciona 301 para /projetos
     { loc: '/sobre', changefreq: 'monthly', priority: '0.8', lastmod: today },
     { loc: '/faq', changefreq: 'weekly', priority: '0.8', lastmod: today },
     { loc: '/segmentos/residencias', changefreq: 'monthly', priority: '0.8', lastmod: today },
@@ -210,9 +209,7 @@ routerAdd('GET', '/sitemap.xml', (e) => {
         imagensXml +=
           '    <image:image>\n' +
           '      <image:loc>' +
-          xmlEscape(
-            baseUrl + '/api/files/media/' + foto.getId() + '/' + foto.getString('arquivo'),
-          ) +
+          xmlEscape(baseUrl + '/api/files/media/' + foto.id + '/' + foto.getString('arquivo')) +
           '</image:loc>\n' +
           '      <image:title>' +
           xmlEscape(alt) +
