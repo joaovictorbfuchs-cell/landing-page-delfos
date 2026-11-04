@@ -69,7 +69,7 @@ const TIPOS_OBRA: TipoObraGaleria[] = [
   'O&M',
 ]
 
-/** Estado inicial dos campos da galeria pública /obras */
+/** Estado inicial dos campos da galeria pública (/projetos) */
 const GALERIA_VAZIA = {
   cidade: '',
   bairro: '',
@@ -255,7 +255,7 @@ export default function AdminMediaTab({
         variant: 'destructive',
         title: 'Faltam dados da obra',
         description:
-          'Para publicar na galeria, informe pelo menos a cidade e a potência. Sem elas a foto não aparece em /obras.',
+          'Para publicar na galeria, informe pelo menos a cidade e a potência. Sem elas a foto não aparece em Projetos Realizados (/projetos).',
       })
       return
     }
@@ -913,7 +913,7 @@ export default function AdminMediaTab({
                 />
               </div>
 
-              {/* ---- Galeria pública /obras ---- */}
+              {/* ---- Galeria pública /projetos ---- */}
               <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-3">
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -921,7 +921,7 @@ export default function AdminMediaTab({
                       Galeria pública de obras
                     </span>
                     <p className="text-[11px] text-amber-900/80 leading-snug mt-0.5">
-                      Preencha cidade e potência para a foto aparecer em <strong>/obras</strong>.
+                      Preencha cidade e potência para a foto aparecer em <strong>/projetos</strong>.
                       Fotos com a mesma cidade, potência e tipo viram{' '}
                       <strong>um único card da obra</strong>.
                     </p>

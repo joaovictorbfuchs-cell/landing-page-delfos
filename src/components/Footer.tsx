@@ -125,7 +125,7 @@ export default function Footer() {
                   href="/projetos"
                   className="hover:text-solar-400 transition-colors block font-medium text-solar-300"
                 >
-                  Projetos & Resultados (Cases Reais)
+                  Projetos Realizados (Obras e Cases Reais)
                 </a>
               </li>
               <li>

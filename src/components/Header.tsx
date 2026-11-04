@@ -249,34 +249,15 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               }}
               className={`text-xs xl:text-sm font-medium transition-colors ${
                 isTransparentOnHome
-                  ? location.pathname === '/projetos'
+                  ? location.pathname === '/projetos' || location.pathname === '/obras'
                     ? 'text-solar-400 font-bold'
                     : 'text-white/90 hover:text-solar-400'
-                  : location.pathname === '/projetos'
+                  : location.pathname === '/projetos' || location.pathname === '/obras'
                     ? 'text-[#081B30] font-bold'
                     : 'text-slate-700 hover:text-midnight-950'
               }`}
             >
-              Projetos e Resultados
-            </Link>
-
-            <Link
-              to="/obras"
-              onClick={() => {
-                setMobileMenuOpen(false)
-                setSolucoesDropdownOpen(false)
-              }}
-              className={`text-xs xl:text-sm font-medium transition-colors ${
-                isTransparentOnHome
-                  ? location.pathname === '/obras'
-                    ? 'text-solar-400 font-bold'
-                    : 'text-white/90 hover:text-solar-400'
-                  : location.pathname === '/obras'
-                    ? 'text-[#081B30] font-bold'
-                    : 'text-slate-700 hover:text-midnight-950'
-              }`}
-            >
-              Obras
+              Projetos Realizados
             </Link>
 
             <Link
@@ -454,23 +435,12 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   to="/projetos"
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
-                    location.pathname === '/projetos'
+                    location.pathname === '/projetos' || location.pathname === '/obras'
                       ? 'bg-solar-500/15 text-solar-400 font-semibold'
                       : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
                   }`}
                 >
-                  Projetos e Resultados
-                </Link>
-                <Link
-                  to="/obras"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
-                    location.pathname === '/obras'
-                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
-                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
-                  }`}
-                >
-                  Obras
+                  Projetos Realizados
                 </Link>
                 <Link
                   to="/conteudos"

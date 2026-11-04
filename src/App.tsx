@@ -18,8 +18,8 @@ const SolucaoSolar = lazy(() => import('./pages/SolucaoSolar'))
 const SolucaoBess = lazy(() => import('./pages/SolucaoBess'))
 const SolucaoOm = lazy(() => import('./pages/SolucaoOm'))
 const SolucaoCarregadores = lazy(() => import('./pages/SolucaoCarregadores'))
-const ProjetosResultados = lazy(() => import('./pages/ProjetosResultados'))
-const GaleriaObras = lazy(() => import('./pages/GaleriaObras'))
+const ProjetosRealizados = lazy(() => import('./pages/ProjetosRealizados'))
+const RedirectPermanente = lazy(() => import('./components/RedirectPermanente'))
 const Sobre = lazy(() => import('./pages/Sobre'))
 const Conteudos = lazy(() => import('./pages/Conteudos'))
 const ConteudoPost = lazy(() => import('./pages/ConteudoPost'))
@@ -61,9 +61,12 @@ const App = () => {
               <Route path="/solucoes/carregadores" element={<SolucaoCarregadores />} />
               <Route path="/recarga" element={<SolucaoCarregadores />} />
 
-              {/* Fase 3: Projetos e Resultados */}
-              <Route path="/projetos" element={<ProjetosResultados />} />
-              <Route path="/obras" element={<GaleriaObras />} />
+              {/* Fase 3: página unificada de projetos + redirecionamento de /obras */}
+              <Route path="/projetos" element={<ProjetosRealizados />} />
+              <Route
+                path="/obras"
+                element={<RedirectPermanente destino="/projetos" motivo="Projetos Realizados" />}
+              />
 
               {/* Fase 5: Sobre e Conteúdos / Blog */}
               <Route path="/sobre" element={<Sobre />} />
