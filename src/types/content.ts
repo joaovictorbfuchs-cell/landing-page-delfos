@@ -133,6 +133,13 @@ export interface MediaRecord {
   descricao?: string
   destino_sugerido?: string
   /** Dados da obra — usados pela galeria pública /obras */
+  obra_slug?: string
+  obra_titulo?: string
+  obra_descricao?: string
+  obra_cidade?: string
+  obra_uf?: string
+  obra_potencia?: string
+  obra_tipo?: string
   cidade?: string
   bairro?: string
   uf?: string
@@ -155,6 +162,8 @@ export interface UpdateMediaGaleriaPayload {
   tipo_obra?: TipoObraGaleria | ''
   alt_texto?: string
   slug?: string
+  obra_titulo?: string
+  obra_descricao?: string
   publicado_galeria?: boolean
   destaque_galeria?: boolean
   ordem?: number

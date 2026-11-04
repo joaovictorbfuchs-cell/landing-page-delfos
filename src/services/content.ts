@@ -322,6 +322,27 @@ export async function listGaleriaObras(): Promise<MediaRecord[]> {
  * Atualiza os dados de obra/publicação de uma foto da biblioteca.
  * Só os campos enviados são alterados.
  */
+/** Normaliza texto para compor chaves e slugs: sem acento, minúsculo, hifenizado. */
+function slugificar(texto: string): string {
+  return String(texto || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+/**
+ * Monta o `obra_slug` a partir de cidade + potência + tipo.
+ * É o que agrupa várias fotos no MESMO card da galeria: mudar qualquer um dos
+ * três campos move a foto para outro card, que é o comportamento esperado.
+ */
+function chaveObra(cidade: string, potencia: string, tipo: string): string {
+  const partes = [slugificar(cidade), slugificar(potencia), slugificar(tipo)].filter(Boolean)
+  return partes.join('-')
+}
+
 export async function updateMediaGaleria(
   id: string,
   payload: UpdateMediaGaleriaPayload,
@@ -334,11 +355,150 @@ export async function updateMediaGaleria(
   if (payload.tipo_obra !== undefined) body.tipo_obra = payload.tipo_obra
   if (payload.alt_texto !== undefined) body.alt_texto = payload.alt_texto.trim()
   if (payload.slug !== undefined) body.slug = payload.slug.trim()
+  if (payload.obra_titulo !== undefined) body.obra_titulo = payload.obra_titulo.trim()
+  if (payload.obra_descricao !== undefined) body.obra_descricao = payload.obra_descricao.trim()
   if (payload.publicado_galeria !== undefined) body.publicado_galeria = payload.publicado_galeria
   if (payload.destaque_galeria !== undefined) body.destaque_galeria = payload.destaque_galeria
   if (payload.ordem !== undefined) body.ordem = payload.ordem
 
+  // Sempre que cidade/potência/tipo mudam, recalcula o agrupamento da obra e
+  // replica os dados da obra para todas as fotos do mesmo grupo.
+  const cidade = (payload.cidade ?? '').trim()
+  const potencia = (payload.potencia ?? '').trim()
+  const tipo = (payload.tipo_obra ?? '') as string
+
+  const precisaReagrupar =
+    payload.cidade !== undefined ||
+    payload.potencia !== undefined ||
+    payload.tipo_obra !== undefined
+
+  if (precisaReagrupar && cidade && potencia) {
+    const obraSlug = chaveObra(cidade, potencia, tipo)
+    const obraTitulo = (payload.obra_titulo ?? '').trim()
+    const obraDescricao = (payload.obra_descricao ?? '').trim()
+
+    body.obra_slug = obraSlug
+    body.obra_cidade = cidade
+    body.obra_uf = (payload.uf ?? '').trim().toUpperCase()
+    body.obra_potencia = potencia
+    body.obra_tipo = tipo
+    if (obraTitulo) body.obra_titulo = obraTitulo
+    if (obraDescricao) body.obra_descricao = obraDescricao
+
+    // Replica o nome/descrição da obra nas demais fotos do mesmo grupo, para o
+    // card mostrar o mesmo título venha a foto que vier.
+    if (obraTitulo || obraDescricao) {
+      try {
+        const irmaos = await pb.collection('media').getFullList<MediaRecord>({
+          filter: `obra_slug = "${obraSlug}" && id != "${id}"`,
+        })
+        for (const irmao of irmaos) {
+          const atualizacao: Record<string, unknown> = {}
+          if (obraTitulo) atualizacao.obra_titulo = obraTitulo
+          if (obraDescricao) atualizacao.obra_descricao = obraDescricao
+          if (Object.keys(atualizacao).length > 0) {
+            await pb.collection('media').update(irmao.id, atualizacao)
+          }
+        }
+      } catch (err) {
+        console.warn('Não foi possível replicar os dados da obra nas outras fotos:', err)
+      }
+    }
+  }
+
   return await pb.collection('media').update<MediaRecord>(id, body)
+}
+
+/** Uma obra da galeria: 1 card, N fotos. */
+export interface ObraGaleria {
+  slug: string
+  titulo: string
+  descricao: string
+  cidade: string
+  uf: string
+  potencia: string
+  tipo: string
+  fotos: MediaRecord[]
+  capa: MediaRecord
+  destaque: boolean
+}
+
+/**
+ * Lista a galeria AGRUPADA POR OBRA.
+ *
+ * Cada card da página é uma obra, não uma foto: publicar as 13 fotos da Cassul
+ * continua gerando um único card. As fotos de cada obra aparecem dentro do card,
+ * com a capa escolhida por `ordem`.
+ */
+export async function listObrasGaleria(): Promise<ObraGaleria[]> {
+  let registros: MediaRecord[] = []
+  try {
+    registros = await pb.collection('media').getFullList<MediaRecord>({
+      filter: 'publicado_galeria = true && obra_slug != ""',
+      sort: 'ordem,-created',
+    })
+  } catch (err) {
+    console.warn('Erro ao buscar a galeria de obras publicadas:', err)
+    return []
+  }
+
+  const mapa = new Map<string, ObraGaleria>()
+
+  registros
+    .filter((r) => Boolean(r.arquivo) && Boolean(r.obra_slug))
+    .forEach((registro) => {
+      const slug = registro.obra_slug as string
+      const existente = mapa.get(slug)
+
+      if (!existente) {
+        mapa.set(slug, {
+          slug,
+          titulo: registro.obra_titulo || registro.titulo || 'Obra Delfos',
+          descricao: registro.obra_descricao || '',
+          cidade: registro.obra_cidade || registro.cidade || '',
+          uf: registro.obra_uf || registro.uf || '',
+          potencia: registro.obra_potencia || registro.potencia || '',
+          tipo: registro.obra_tipo || registro.tipo_obra || '',
+          fotos: [registro],
+          capa: registro,
+          destaque: Boolean(registro.destaque_galeria),
+        })
+        return
+      }
+
+      existente.fotos.push(registro)
+      if (registro.destaque_galeria) existente.destaque = true
+
+      // A capa é a foto de menor `ordem` (1 = capa definida na migração)
+      const ordemAtual = existente.capa.ordem ?? 999
+      const ordemNova = registro.ordem ?? 999
+      if (ordemNova < ordemAtual) existente.capa = registro
+    })
+
+  const obras = Array.from(mapa.values())
+
+  // Ordena as fotos dentro de cada obra e garante capa coerente
+  obras.forEach((obra) => {
+    obra.fotos.sort((a, b) => (a.ordem ?? 999) - (b.ordem ?? 999))
+    if (!obra.fotos.some((f) => f.id === obra.capa.id)) obra.capa = obra.fotos[0]
+  })
+
+  // Destaques primeiro; depois maior potência; depois cidade
+  const potenciaNumerica = (texto: string) => {
+    const m = String(texto)
+      .replace(/\./g, '')
+      .replace(',', '.')
+      .match(/([\d.]+)/)
+    return m ? parseFloat(m[1]) : 0
+  }
+
+  return obras.sort((a, b) => {
+    if (a.destaque !== b.destaque) return a.destaque ? -1 : 1
+    const pa = potenciaNumerica(a.potencia)
+    const pb2 = potenciaNumerica(b.potencia)
+    if (pa !== pb2) return pb2 - pa
+    return (a.cidade || '').localeCompare(b.cidade || '')
+  })
 }
 
 export interface LimparDuplicadasItem {

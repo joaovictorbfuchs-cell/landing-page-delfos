@@ -11,107 +11,57 @@ import {
   Sun,
   SlidersHorizontal,
   Images,
+  Camera,
+  CheckCircle2,
 } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import SeoMeta from '@/components/SeoMeta'
 import MobileCtaBar from '@/components/MobileCtaBar'
-import { listGaleriaObras, getMediaFileUrl } from '@/services/content'
-import type { MediaRecord, TipoObraGaleria } from '@/types/content'
+import { listObrasGaleria, getMediaFileUrl, type ObraGaleria } from '@/services/content'
+import type { MediaRecord } from '@/types/content'
 import { cn } from '@/lib/utils'
 
 const BASE_URL = 'https://www.delfos.eng.br'
 
 /**
- * Frase-padrão da obra — mesma convenção dos cases: serviço + potência + bairro,
- * cidade + cliente. Serve de alt da imagem, legenda e descrição estrutural.
- * Obra residencial nunca expõe nome de cliente (LGPD): usa só bairro + perfil.
+ * Quantas obras aparecem antes do botão "Ver mais".
+ * Existe para a página não montar dezenas de cards de uma vez quando o acervo
+ * crescer. Com 15 obras o botão nem aparece; a partir de 19, passa a aparecer.
  */
-export function fraseObra(foto: MediaRecord): string {
-  const partes: string[] = []
+const OBRAS_POR_LOTE = 18
 
-  const servico = foto.tipo_obra
-    ? `${foto.tipo_obra} solar fotovoltaico`
-    : 'Instalação solar fotovoltaica'
-  const potencia = foto.potencia ? ` de ${foto.potencia}` : ''
+/** Frase SEO da obra: tipo + potência + bairro, cidade — executada pela Delfos. */
+function fraseObra(foto: MediaRecord, obra: ObraGaleria): string {
+  if (foto.alt_texto && foto.alt_texto.trim()) return foto.alt_texto.trim()
 
-  let local = ''
-  if (foto.cidade) {
-    const uf = foto.uf ? `/${foto.uf}` : ''
-    local = foto.bairro ? ` em ${foto.bairro}, ${foto.cidade}${uf}` : ` em ${foto.cidade}${uf}`
-  }
-
-  partes.push(`${servico}${potencia}${local}`)
-
-  const residencial = foto.tipo_obra === 'Telhado residencial'
-  if (foto.titulo && !residencial) {
-    partes.push(foto.titulo.split('—')[0].trim())
-  }
-
-  partes.push('obra executada pela Delfos Energia Solar')
-
-  return partes.filter(Boolean).join(' — ')
+  const servico = obra.tipo ? `${obra.tipo} solar fotovoltaico` : 'Instalação solar fotovoltaica'
+  const potencia = obra.potencia ? ` de ${obra.potencia}` : ''
+  const local = obra.cidade ? ` em ${obra.cidade}${obra.uf ? `/${obra.uf}` : ''}` : ''
+  return `${servico}${potencia}${local} — obra executada pela Delfos Energia Solar`
 }
 
-/**
- * Nome curto da obra para o card.
- *
- * Muitas fotos herdaram o título genérico do acervo ("Instalação Solar Delfos —
- * Acervo (arquivo.jpg)"), que não diz nada a quem visita. Quando isso acontece,
- * usamos o nome do cliente gravado no alt_texto (que a migração preencheu a
- * partir da obra real) e, na falta dele, o tipo de obra com a potência.
- */
-function tituloObra(foto: MediaRecord): string {
-  const titulo = (foto.titulo || '').trim()
-  const generico = !titulo || /acervo/i.test(titulo) || /^Instalação Solar Delfos/i.test(titulo)
-
-  if (!generico) {
-    const limpo = titulo.split('—')[0].trim()
-    if (limpo && !/^Instalação Solar Delfos$/i.test(limpo)) return limpo
-  }
-
-  // Cliente fica no fim do alt_texto: "... em Erechim/RS — Cassul Distribuidora (Delfos..."
-  const alt = foto.alt_texto || ''
-  const match = alt.match(/—\s*(.+?)\s*\(Delfos/)
-  if (match && match[1]) return match[1].trim()
-
-  if (foto.tipo_obra && foto.potencia) return `${foto.tipo_obra} de ${foto.potencia}`
-  return foto.tipo_obra || foto.potencia || 'Obra Delfos Energia Solar'
-}
-
-interface FotoGaleria {
-  registro: MediaRecord
-  urlLeve: string
-  urlGrande: string
-  frase: string
-  titulo: string
-}
-
-function converterParaGaleria(registros: MediaRecord[]): FotoGaleria[] {
-  return registros
-    .filter((r) => Boolean(r.arquivo))
-    .map((registro) => ({
-      registro,
-      urlLeve: getMediaFileUrl(registro, 'leve'),
-      urlGrande: getMediaFileUrl(registro, 'grande'),
-      frase: registro.alt_texto?.trim() || fraseObra(registro),
-      titulo: tituloObra(registro),
-    }))
+function localCurto(obra: ObraGaleria): string {
+  return obra.cidade ? `${obra.cidade}${obra.uf ? ` / ${obra.uf}` : ''}` : 'Sul do Brasil'
 }
 
 export default function GaleriaObras() {
   const [carregando, setCarregando] = useState(true)
-  const [fotos, setFotos] = useState<FotoGaleria[]>([])
+  const [obras, setObras] = useState<ObraGaleria[]>([])
   const [filtroTipo, setFiltroTipo] = useState<string>('todas')
   const [filtroCidade, setFiltroCidade] = useState<string>('todas')
-  const [fotoAberta, setFotoAberta] = useState<number | null>(null)
+  const [limite, setLimite] = useState(OBRAS_POR_LOTE)
+
+  // Obra aberta no modal (null = nenhuma)
+  const [obraAberta, setObraAberta] = useState<ObraGaleria | null>(null)
+  const [fotoAtual, setFotoAtual] = useState(0)
 
   useEffect(() => {
     let ativo = true
     async function carregar() {
-      const registros = await listGaleriaObras()
+      const lista = await listObrasGaleria()
       if (!ativo) return
-      setFotos(converterParaGaleria(registros))
+      setObras(lista)
       setCarregando(false)
     }
     carregar()
@@ -122,82 +72,101 @@ export default function GaleriaObras() {
 
   const tiposDisponiveis = useMemo(() => {
     const set = new Set<string>()
-    fotos.forEach((f) => {
-      if (f.registro.tipo_obra) set.add(f.registro.tipo_obra)
+    obras.forEach((o) => {
+      if (o.tipo) set.add(o.tipo)
     })
     return Array.from(set).sort()
-  }, [fotos])
+  }, [obras])
 
   const cidadesDisponiveis = useMemo(() => {
     const mapa = new Map<string, number>()
-    fotos.forEach((f) => {
-      const cidade = f.registro.cidade
-      if (cidade) mapa.set(cidade, (mapa.get(cidade) || 0) + 1)
+    obras.forEach((o) => {
+      if (o.cidade) mapa.set(o.cidade, (mapa.get(o.cidade) || 0) + 1)
     })
     return Array.from(mapa.entries()).sort((a, b) => b[1] - a[1])
-  }, [fotos])
+  }, [obras])
 
-  const fotosFiltradas = useMemo(() => {
-    return fotos.filter((f) => {
-      const okTipo = filtroTipo === 'todas' || f.registro.tipo_obra === filtroTipo
-      const okCidade = filtroCidade === 'todas' || f.registro.cidade === filtroCidade
+  const obrasFiltradas = useMemo(() => {
+    return obras.filter((o) => {
+      const okTipo = filtroTipo === 'todas' || o.tipo === filtroTipo
+      const okCidade = filtroCidade === 'todas' || o.cidade === filtroCidade
       return okTipo && okCidade
     })
-  }, [fotos, filtroTipo, filtroCidade])
+  }, [obras, filtroTipo, filtroCidade])
 
-  // Navegação do lightbox com teclado
+  const obrasVisiveis = useMemo(() => obrasFiltradas.slice(0, limite), [obrasFiltradas, limite])
+
+  const totalFotos = useMemo(() => obras.reduce((soma, o) => soma + o.fotos.length, 0), [obras])
+
+  // Reseta o lote ao trocar filtro
   useEffect(() => {
-    if (fotoAberta === null) return
+    setLimite(OBRAS_POR_LOTE)
+  }, [filtroTipo, filtroCidade])
+
+  const abrirObra = (obra: ObraGaleria) => {
+    setObraAberta(obra)
+    setFotoAtual(0)
+  }
+
+  const fecharObra = () => setObraAberta(null)
+
+  // Teclado dentro do modal da obra
+  useEffect(() => {
+    if (!obraAberta) return
+    const total = obraAberta.fotos.length
     function aoTeclar(e: KeyboardEvent) {
-      if (e.key === 'Escape') setFotoAberta(null)
-      if (e.key === 'ArrowRight')
-        setFotoAberta((i) => (i === null ? null : (i + 1) % fotosFiltradas.length))
-      if (e.key === 'ArrowLeft')
-        setFotoAberta((i) =>
-          i === null ? null : (i - 1 + fotosFiltradas.length) % fotosFiltradas.length,
-        )
+      if (e.key === 'Escape') fecharObra()
+      if (e.key === 'ArrowRight') setFotoAtual((i) => (i + 1) % total)
+      if (e.key === 'ArrowLeft') setFotoAtual((i) => (i - 1 + total) % total)
     }
     window.addEventListener('keydown', aoTeclar)
     return () => window.removeEventListener('keydown', aoTeclar)
-  }, [fotoAberta, fotosFiltradas.length])
+  }, [obraAberta])
+
+  // Bloqueia rolagem do fundo enquanto o modal estiver aberto
+  useEffect(() => {
+    if (obraAberta) {
+      const anterior = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = anterior
+      }
+    }
+  }, [obraAberta])
 
   const scrollToContato = () => {
     const el = document.querySelector('#contato')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const fotoAtual = fotoAberta !== null ? fotosFiltradas[fotoAberta] : null
-
-  // JSON-LD: ImageGallery com as fotos publicadas (entidade própria, ligada à empresa)
+  // JSON-LD: ImageGallery com as obras (capa + detalhes), ligado à empresa
   const galeriaSchema = useMemo(() => {
-    if (fotos.length === 0) return undefined
+    if (obras.length === 0) return undefined
     return {
       '@context': 'https://schema.org',
       '@type': 'ImageGallery',
       '@id': `${BASE_URL}/obras#galeria`,
       name: 'Obras e instalações da Delfos Energia Solar',
       description:
-        'Galeria de usinas solares fotovoltaicas, BESS, carregadores veiculares e serviços de O&M executados pela Delfos Energia Solar no Sul do Brasil.',
+        'Galeria de usinas solares fotovoltaicas, sistemas BESS, carregadores veiculares e serviços de O&M executados pela Delfos Energia Solar no Sul do Brasil.',
       url: `${BASE_URL}/obras`,
       about: { '@id': `${BASE_URL}/#empresa` },
-      image: fotos.slice(0, 60).map((f) => ({
+      image: obras.slice(0, 60).map((obra) => ({
         '@type': 'ImageObject',
-        contentUrl: f.urlGrande,
-        name: f.frase,
-        description: f.frase,
-        ...(f.registro.cidade
+        contentUrl: getMediaFileUrl(obra.capa, 'grande'),
+        name: `${obra.titulo} — ${obra.potencia}`,
+        description: obra.descricao || fraseObra(obra.capa, obra),
+        ...(obra.cidade
           ? {
               contentLocation: {
                 '@type': 'Place',
-                name: f.registro.bairro
-                  ? `${f.registro.bairro}, ${f.registro.cidade}${f.registro.uf ? `/${f.registro.uf}` : ''}`
-                  : `${f.registro.cidade}${f.registro.uf ? `/${f.registro.uf}` : ''}`,
+                name: `${obra.cidade}${obra.uf ? `/${obra.uf}` : ''}`,
               },
             }
           : {}),
       })),
     }
-  }, [fotos])
+  }, [obras])
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -225,14 +194,15 @@ export default function GaleriaObras() {
             </h1>
 
             <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-              Cada foto abaixo é uma instalação entregue pela nossa equipe — com cidade, tipo de
-              telhado e potência. Sem banco de imagens: é o nosso trabalho, como ele ficou.
+              Cada card é uma obra entregue pela nossa equipe. Clique para ver todas as fotos e os
+              detalhes técnicos da instalação.
             </p>
 
-            {!carregando && fotos.length > 0 && (
+            {!carregando && obras.length > 0 && (
               <p className="text-sm text-slate-500 mt-4">
-                <strong className="text-slate-800">{fotos.length}</strong>{' '}
-                {fotos.length === 1 ? 'foto publicada' : 'fotos publicadas'}
+                <strong className="text-slate-800">{obras.length}</strong>{' '}
+                {obras.length === 1 ? 'obra publicada' : 'obras publicadas'} ·{' '}
+                <strong className="text-slate-800">{totalFotos}</strong> fotos
                 {cidadesDisponiveis.length > 0 && (
                   <>
                     {' '}
@@ -246,7 +216,7 @@ export default function GaleriaObras() {
         </section>
 
         {/* Filtros */}
-        {fotos.length > 0 && (
+        {obras.length > 0 && (
           <section className="px-4 sm:px-6 pt-8">
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
@@ -307,7 +277,7 @@ export default function GaleriaObras() {
           </section>
         )}
 
-        {/* Grade de fotos */}
+        {/* Grade de obras */}
         <section className="px-4 sm:px-6 py-8 sm:py-10">
           <div className="max-w-6xl mx-auto">
             {carregando ? (
@@ -325,7 +295,7 @@ export default function GaleriaObras() {
                   </div>
                 ))}
               </div>
-            ) : fotos.length === 0 ? (
+            ) : obras.length === 0 ? (
               <div className="max-w-xl mx-auto text-center py-14 px-6 rounded-3xl bg-slate-50 border border-slate-200">
                 <Sun className="w-10 h-10 text-amber-500 mx-auto mb-3" />
                 <h2 className="text-lg font-bold text-slate-800 mb-2">Galeria em preparação</h2>
@@ -342,9 +312,9 @@ export default function GaleriaObras() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-            ) : fotosFiltradas.length === 0 ? (
+            ) : obrasFiltradas.length === 0 ? (
               <div className="text-center py-12 text-slate-500 text-sm">
-                Nenhuma foto com esse filtro.{' '}
+                Nenhuma obra com esse filtro.{' '}
                 <button
                   type="button"
                   onClick={() => {
@@ -357,60 +327,90 @@ export default function GaleriaObras() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {fotosFiltradas.map((foto, indice) => (
-                  <figure
-                    key={foto.registro.id}
-                    className="group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-lg hover:border-slate-300 transition-all"
-                  >
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {obrasVisiveis.map((obra, indice) => (
+                    <article
+                      key={obra.slug}
+                      className="group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-lg hover:border-slate-300 transition-all flex flex-col"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => abrirObra(obra)}
+                        className="block w-full text-left cursor-pointer"
+                        aria-label={`Ver fotos e detalhes: ${obra.titulo}`}
+                      >
+                        <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                          <img
+                            src={getMediaFileUrl(obra.capa, 'leve')}
+                            alt={fraseObra(obra.capa, obra)}
+                            loading={indice < 6 ? 'eager' : 'lazy'}
+                            decoding="async"
+                            width={900}
+                            height={675}
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+                          />
+
+                          {obra.potencia && (
+                            <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-midnight-950/85 backdrop-blur-sm text-white text-[11px] font-bold">
+                              <Zap className="w-3 h-3 text-amber-400" />
+                              {obra.potencia}
+                            </span>
+                          )}
+
+                          {obra.fotos.length > 1 && (
+                            <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-slate-800 text-[11px] font-bold shadow-sm">
+                              <Camera className="w-3 h-3" />
+                              {obra.fotos.length} fotos
+                            </span>
+                          )}
+                        </div>
+                      </button>
+
+                      <div className="p-4 flex-1 flex flex-col">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                          <span className="truncate">{localCurto(obra)}</span>
+                        </div>
+
+                        <h2 className="text-sm font-semibold text-slate-800 leading-snug line-clamp-2">
+                          {obra.titulo}
+                        </h2>
+
+                        {obra.tipo && (
+                          <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                            <Building2 className="w-3 h-3 shrink-0" />
+                            {obra.tipo}
+                          </p>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => abrirObra(obra)}
+                          className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-solar-700 hover:text-solar-800 transition-colors cursor-pointer"
+                        >
+                          Ver fotos e detalhes
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                {/* Botão "Ver mais" — só aparece quando há mais obras que o lote */}
+                {obrasFiltradas.length > limite && (
+                  <div className="text-center mt-8">
                     <button
                       type="button"
-                      onClick={() => setFotoAberta(indice)}
-                      className="block w-full text-left cursor-pointer"
-                      aria-label={`Ampliar: ${foto.frase}`}
+                      onClick={() => setLimite((l) => l + OBRAS_POR_LOTE)}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:border-slate-400 hover:bg-slate-50 transition-colors cursor-pointer"
                     >
-                      <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
-                        <img
-                          src={foto.urlLeve}
-                          alt={foto.frase}
-                          loading={indice < 6 ? 'eager' : 'lazy'}
-                          decoding="async"
-                          width={900}
-                          height={675}
-                          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
-                        />
-                        {foto.registro.potencia && (
-                          <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-midnight-950/85 backdrop-blur-sm text-white text-[11px] font-bold">
-                            <Zap className="w-3 h-3 text-amber-400" />
-                            {foto.registro.potencia}
-                          </span>
-                        )}
-                      </div>
+                      Ver mais obras ({obrasFiltradas.length - limite} restantes)
+                      <ChevronRight className="w-4 h-4 rotate-90" />
                     </button>
-
-                    <figcaption className="p-4">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                        <span className="truncate">
-                          {foto.registro.bairro
-                            ? `${foto.registro.bairro}, ${foto.registro.cidade}`
-                            : foto.registro.cidade || 'Sul do Brasil'}
-                          {foto.registro.uf ? ` / ${foto.registro.uf}` : ''}
-                        </span>
-                      </div>
-                      <p className="text-sm font-semibold text-slate-800 leading-snug line-clamp-2">
-                        {foto.titulo}
-                      </p>
-                      {foto.registro.tipo_obra && (
-                        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
-                          <Building2 className="w-3 h-3 shrink-0" />
-                          {foto.registro.tipo_obra}
-                        </p>
-                      )}
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </section>
@@ -437,75 +437,178 @@ export default function GaleriaObras() {
         </section>
       </main>
 
-      {/* Lightbox */}
-      {fotoAtual && (
+      {/* Modal da obra: todas as fotos + detalhes */}
+      {obraAberta && (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={fotoAtual.frase}
-          className="fixed inset-0 z-50 bg-midnight-950/92 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6"
-          onClick={() => setFotoAberta(null)}
+          aria-label={`Obra: ${obraAberta.titulo}`}
+          className="fixed inset-0 z-50 bg-midnight-950/94 backdrop-blur-sm flex items-start sm:items-center justify-center p-0 sm:p-6 overflow-y-auto"
+          onClick={fecharObra}
         >
-          <button
-            type="button"
-            onClick={() => setFotoAberta(null)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="Fechar"
-          >
-            <X className="w-5 h-5" />
-          </button>
-
-          {fotosFiltradas.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setFotoAberta((i) =>
-                    i === null ? null : (i - 1 + fotosFiltradas.length) % fotosFiltradas.length,
-                  )
-                }}
-                className="absolute left-2 sm:left-6 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Foto anterior"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setFotoAberta((i) => (i === null ? null : (i + 1) % fotosFiltradas.length))
-                }}
-                className="absolute right-2 sm:right-6 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Próxima foto"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </>
-          )}
-
-          <figure
-            className="max-w-5xl w-full flex flex-col items-center"
+          <div
+            className="bg-white w-full max-w-5xl sm:rounded-3xl overflow-hidden shadow-2xl my-0 sm:my-8 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={fotoAtual.urlGrande}
-              alt={fotoAtual.frase}
-              width={1600}
-              height={1067}
-              className="w-full h-auto max-h-[75vh] object-contain rounded-xl"
-            />
-            <figcaption className="text-center mt-4 max-w-2xl">
-              <p className="text-white font-semibold text-sm sm:text-base">{fotoAtual.frase}</p>
-              <p className="text-slate-400 text-xs mt-1">
-                {fotoAtual.registro.tipo_obra}
-                {fotoAtual.registro.potencia ? ` • ${fotoAtual.registro.potencia}` : ''}
-                {fotoAtual.registro.cidade
-                  ? ` • ${fotoAtual.registro.bairro ? `${fotoAtual.registro.bairro}, ` : ''}${fotoAtual.registro.cidade}${fotoAtual.registro.uf ? `/${fotoAtual.registro.uf}` : ''}`
-                  : ''}
+            <button
+              type="button"
+              onClick={fecharObra}
+              className="absolute top-3 right-3 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md hover:bg-slate-100 text-slate-700 flex items-center justify-center shadow-md transition-all cursor-pointer"
+              aria-label="Fechar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Foto principal */}
+            <div className="relative bg-slate-900">
+              <img
+                src={getMediaFileUrl(obraAberta.fotos[fotoAtual] ?? obraAberta.capa, 'grande')}
+                alt={fraseObra(obraAberta.fotos[fotoAtual] ?? obraAberta.capa, obraAberta)}
+                width={1600}
+                height={1067}
+                className="w-full h-auto max-h-[65vh] object-contain mx-auto"
+              />
+
+              {obraAberta.fotos.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFotoAtual(
+                        (i) => (i - 1 + obraAberta.fotos.length) % obraAberta.fotos.length,
+                      )
+                    }
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg cursor-pointer"
+                    aria-label="Foto anterior"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFotoAtual((i) => (i + 1) % obraAberta.fotos.length)}
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg cursor-pointer"
+                    aria-label="Próxima foto"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <span className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-midnight-950/80 text-white text-xs font-bold">
+                    {fotoAtual + 1} / {obraAberta.fotos.length}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Miniaturas */}
+            {obraAberta.fotos.length > 1 && (
+              <div className="px-3 sm:px-6 py-3 bg-slate-50 border-b border-slate-200 flex gap-2 overflow-x-auto">
+                {obraAberta.fotos.map((foto, i) => (
+                  <button
+                    key={foto.id}
+                    type="button"
+                    onClick={() => setFotoAtual(i)}
+                    className={cn(
+                      'shrink-0 w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden border-2 transition-all cursor-pointer',
+                      i === fotoAtual
+                        ? 'border-solar-500 ring-2 ring-solar-400/40'
+                        : 'border-transparent opacity-70 hover:opacity-100',
+                    )}
+                    aria-label={`Foto ${i + 1} de ${obraAberta.fotos.length}`}
+                  >
+                    <img
+                      src={getMediaFileUrl(foto, 'leve')}
+                      alt=""
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Detalhes da obra */}
+            <div className="p-5 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                {obraAberta.tipo && (
+                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-midnight-950 text-white">
+                    {obraAberta.tipo}
+                  </span>
+                )}
+                {obraAberta.potencia && (
+                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-200 inline-flex items-center gap-1">
+                    <Zap className="w-3 h-3" />
+                    {obraAberta.potencia}
+                  </span>
+                )}
+                {obraAberta.fotos.length > 1 && (
+                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 inline-flex items-center gap-1">
+                    <Camera className="w-3 h-3" />
+                    {obraAberta.fotos.length} fotos
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-xl sm:text-2xl font-extrabold text-midnight-950 mb-1.5">
+                {obraAberta.titulo}
+              </h2>
+
+              <p className="flex items-center gap-1.5 text-sm text-slate-600 mb-4">
+                <MapPin className="w-4 h-4 text-amber-500" />
+                {localCurto(obraAberta)}
               </p>
-            </figcaption>
-          </figure>
+
+              {obraAberta.descricao && (
+                <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                  {obraAberta.descricao}
+                </p>
+              )}
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 py-4 border-y border-slate-100 text-xs">
+                <div>
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                    Tipo de obra
+                  </span>
+                  <strong className="text-slate-800">{obraAberta.tipo || '—'}</strong>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                    Potência instalada
+                  </span>
+                  <strong className="text-slate-800">{obraAberta.potencia || '—'}</strong>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                    Localização
+                  </span>
+                  <strong className="text-slate-800">{localCurto(obraAberta)}</strong>
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Obra executada e comissionada pela equipe técnica da Delfos.</span>
+              </div>
+
+              <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    fecharObra()
+                    scrollToContato()
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-sm transition-colors cursor-pointer"
+                >
+                  Quero uma obra assim
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <Link
+                  to="/projetos"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 text-slate-700 font-bold text-sm hover:bg-slate-50 transition-colors"
+                >
+                  Ver projetos e resultados
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -514,5 +617,3 @@ export default function GaleriaObras() {
     </div>
   )
 }
-
-export type { TipoObraGaleria }

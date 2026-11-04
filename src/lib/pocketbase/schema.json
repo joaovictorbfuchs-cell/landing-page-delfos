@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T11:31:23.958Z",
+  "generatedAt": "2026-11-04T11:51:03.584Z",
   "collections": [
     {
       "name": "users",
@@ -29,14 +29,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -78,7 +83,11 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["Residencia", "Empresa", "Outro"]
+          "selectValues": [
+            "Residencia",
+            "Empresa",
+            "Outro"
+          ]
         },
         {
           "name": "consumo_mensal",
@@ -97,14 +106,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "cidade",
@@ -237,7 +251,10 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["rascunho", "publicado"]
+          "selectValues": [
+            "rascunho",
+            "publicado"
+          ]
         },
         {
           "name": "tempo_leitura",
@@ -268,14 +285,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -405,7 +427,10 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["rascunho", "publicado"]
+          "selectValues": [
+            "rascunho",
+            "publicado"
+          ]
         },
         {
           "name": "destaque",
@@ -418,14 +443,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "is_exemplo",
@@ -502,14 +532,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "cidade",
@@ -581,6 +616,48 @@
           "type": "number",
           "required": false,
           "system": false
+        },
+        {
+          "name": "obra_slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_titulo",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_descricao",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_cidade",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_uf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_potencia",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "obra_tipo",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
@@ -588,7 +665,8 @@
         "CREATE INDEX idx_media_created ON media (created DESC)",
         "CREATE INDEX idx_media_galeria ON media (publicado_galeria, tipo_obra)",
         "CREATE INDEX idx_media_cidade ON media (cidade)",
-        "CREATE UNIQUE INDEX idx_media_slug ON media (slug) WHERE slug != \"\""
+        "CREATE UNIQUE INDEX idx_media_slug ON media (slug) WHERE slug != \"\"",
+        "CREATE INDEX idx_media_obra ON media (obra_slug)"
       ]
     }
   ]

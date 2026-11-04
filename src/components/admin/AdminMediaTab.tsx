@@ -77,6 +77,8 @@ const GALERIA_VAZIA = {
   potencia: '',
   tipo_obra: '' as TipoObraGaleria | '',
   alt_texto: '',
+  obra_titulo: '',
+  obra_descricao: '',
   publicado_galeria: false,
   destaque_galeria: false,
 }
@@ -202,6 +204,8 @@ export default function AdminMediaTab({
       potencia: item.potencia || '',
       tipo_obra: item.tipo_obra || '',
       alt_texto: item.alt_texto || '',
+      obra_titulo: item.obra_titulo || '',
+      obra_descricao: item.obra_descricao || '',
       publicado_galeria: Boolean(item.publicado_galeria),
       destaque_galeria: Boolean(item.destaque_galeria),
     })
@@ -279,6 +283,8 @@ export default function AdminMediaTab({
         potencia: editGaleria.potencia,
         tipo_obra: editGaleria.tipo_obra,
         alt_texto: editGaleria.alt_texto,
+        obra_titulo: editGaleria.obra_titulo,
+        obra_descricao: editGaleria.obra_descricao,
         publicado_galeria: editGaleria.publicado_galeria,
         destaque_galeria: editGaleria.destaque_galeria,
       })
@@ -916,7 +922,8 @@ export default function AdminMediaTab({
                     </span>
                     <p className="text-[11px] text-amber-900/80 leading-snug mt-0.5">
                       Preencha cidade e potência para a foto aparecer em <strong>/obras</strong>.
-                      Sem esses dados ela fica só no acervo interno.
+                      Fotos com a mesma cidade, potência e tipo viram{' '}
+                      <strong>um único card da obra</strong>.
                     </p>
                   </div>
                   <label className="flex items-center gap-1.5 shrink-0 cursor-pointer">
@@ -930,6 +937,39 @@ export default function AdminMediaTab({
                     />
                     <span className="text-[11px] font-bold text-slate-700">Publicar</span>
                   </label>
+                </div>
+
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">
+                      Nome da obra (aparece no card)
+                    </label>
+                    <Input
+                      value={editGaleria.obra_titulo}
+                      onChange={(e) =>
+                        setEditGaleria((p) => ({ ...p, obra_titulo: e.target.value }))
+                      }
+                      placeholder="Cassul Distribuidora"
+                      className="rounded-xl text-xs h-9"
+                    />
+                    <p className="text-[10px] text-slate-500">
+                      Deixe em branco que o site usa o nome do cliente do texto alternativo.
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">
+                      Descrição da obra (opcional)
+                    </label>
+                    <textarea
+                      value={editGaleria.obra_descricao}
+                      onChange={(e) =>
+                        setEditGaleria((p) => ({ ...p, obra_descricao: e.target.value }))
+                      }
+                      rows={2}
+                      placeholder="Cobertura metálica com 280 módulos, inversores string e monitoramento remoto."
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
