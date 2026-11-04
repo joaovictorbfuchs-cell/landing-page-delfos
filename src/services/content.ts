@@ -296,9 +296,21 @@ export async function deleteMedia(id: string): Promise<boolean> {
  */
 export async function listGaleriaObras(): Promise<MediaRecord[]> {
   try {
-    return await pb.collection('media').getFullList<MediaRecord>({
+    // Sort no servidor apenas por campos simples: o PocketBase não ordena por
+    // booleano nesta coleção (a consulta volta 500). O destaque é aplicado no cliente.
+    const registros = await pb.collection('media').getFullList<MediaRecord>({
       filter: 'publicado_galeria = true',
-      sort: 'destaque_galeria desc,ordem,cidade,-created',
+      sort: 'ordem,cidade,-created',
+    })
+    // Destaques primeiro, preservando a ordem manual dentro de cada grupo
+    return registros.sort((a, b) => {
+      const destaqueA = a.destaque_galeria ? 0 : 1
+      const destaqueB = b.destaque_galeria ? 0 : 1
+      if (destaqueA !== destaqueB) return destaqueA - destaqueB
+      const ordemA = a.ordem ?? 999
+      const ordemB = b.ordem ?? 999
+      if (ordemA !== ordemB) return ordemA - ordemB
+      return (a.cidade || '').localeCompare(b.cidade || '')
     })
   } catch (err) {
     console.warn('Erro ao buscar a galeria de obras publicadas:', err)
