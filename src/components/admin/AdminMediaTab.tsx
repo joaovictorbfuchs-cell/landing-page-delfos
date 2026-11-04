@@ -28,10 +28,12 @@ import type {
   UpdateMediaPayload,
   MediaCategoria,
   CaseRecord,
+  TipoObraGaleria,
 } from '@/types/content'
 import {
   createMedia,
   updateMedia,
+  updateMediaGaleria,
   deleteMedia,
   getMediaFileUrl,
   updateCase,
@@ -54,6 +56,30 @@ const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Segmentos',
   'Equipe e Empresa',
 ]
+
+const TIPOS_OBRA: TipoObraGaleria[] = [
+  'Telhado industrial',
+  'Telhado comercial',
+  'Telhado residencial',
+  'Usina de solo',
+  'Solo rural',
+  'Carport',
+  'BESS',
+  'Carregadores',
+  'O&M',
+]
+
+/** Estado inicial dos campos da galeria pública /obras */
+const GALERIA_VAZIA = {
+  cidade: '',
+  bairro: '',
+  uf: '',
+  potencia: '',
+  tipo_obra: '' as TipoObraGaleria | '',
+  alt_texto: '',
+  publicado_galeria: false,
+  destaque_galeria: false,
+}
 
 interface AdminMediaTabProps {
   mediaList: MediaRecord[]
@@ -81,6 +107,9 @@ export default function AdminMediaTab({
   const filePickerRef = useRef<HTMLInputElement>(null)
 
   // Edit State & Modal
+  // Campos da galeria pública de obras
+  const [editGaleria, setEditGaleria] = useState(GALERIA_VAZIA)
+
   const [editingItem, setEditingItem] = useState<MediaRecord | null>(null)
   const [editTitulo, setEditTitulo] = useState('')
   const [editCategoria, setEditCategoria] = useState<MediaCategoria>('Geral')
@@ -164,6 +193,18 @@ export default function AdminMediaTab({
     setEditDestinoSugerido(item.destino_sugerido || '')
     setEditArquivoFile(null)
     setEditPreview(null)
+    // Carrega os dados já preenchidos da galeria (migração 0032 preencheu
+    // cidade/potência a partir do nome do arquivo; o dono ajusta o resto).
+    setEditGaleria({
+      cidade: item.cidade || '',
+      bairro: item.bairro || '',
+      uf: item.uf || '',
+      potencia: item.potencia || '',
+      tipo_obra: item.tipo_obra || '',
+      alt_texto: item.alt_texto || '',
+      publicado_galeria: Boolean(item.publicado_galeria),
+      destaque_galeria: Boolean(item.destaque_galeria),
+    })
 
     // Se houver algum case com nome/slug contido no destino_sugerido ou título, sugerir pré-seleção
     const matchCase =
@@ -200,6 +241,21 @@ export default function AdminMediaTab({
       return
     }
 
+    // Trava da galeria: publicar sem cidade e potência deixaria a foto competindo
+    // como "imagem solta" no Google, sem valor de SEO local. Melhor barrar no painel.
+    if (
+      editGaleria.publicado_galeria &&
+      (!editGaleria.cidade.trim() || !editGaleria.potencia.trim())
+    ) {
+      toast({
+        variant: 'destructive',
+        title: 'Faltam dados da obra',
+        description:
+          'Para publicar na galeria, informe pelo menos a cidade e a potência. Sem elas a foto não aparece em /obras.',
+      })
+      return
+    }
+
     setSavingEdit(true)
     try {
       // 1. Atualizar registro em media
@@ -214,6 +270,18 @@ export default function AdminMediaTab({
       }
 
       await updateMedia(editingItem.id, payload)
+
+      // 1b. Dados da obra / publicação da galeria
+      await updateMediaGaleria(editingItem.id, {
+        cidade: editGaleria.cidade,
+        bairro: editGaleria.bairro,
+        uf: editGaleria.uf,
+        potencia: editGaleria.potencia,
+        tipo_obra: editGaleria.tipo_obra,
+        alt_texto: editGaleria.alt_texto,
+        publicado_galeria: editGaleria.publicado_galeria,
+        destaque_galeria: editGaleria.destaque_galeria,
+      })
 
       // 2. Se o usuário vinculou ou trocou a imagem no case selecionado e forneceu novo arquivo
       if (editCaseId && editArquivoFile) {
@@ -837,6 +905,112 @@ export default function AdminMediaTab({
                   placeholder="Detalhes da foto: tipo de estrutura, módulos solares, ângulo..."
                   className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
                 />
+              </div>
+
+              {/* ---- Galeria pública /obras ---- */}
+              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">
+                      Galeria pública de obras
+                    </span>
+                    <p className="text-[11px] text-amber-900/80 leading-snug mt-0.5">
+                      Preencha cidade e potência para a foto aparecer em <strong>/obras</strong>.
+                      Sem esses dados ela fica só no acervo interno.
+                    </p>
+                  </div>
+                  <label className="flex items-center gap-1.5 shrink-0 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={editGaleria.publicado_galeria}
+                      onChange={(e) =>
+                        setEditGaleria((p) => ({ ...p, publicado_galeria: e.target.checked }))
+                      }
+                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 cursor-pointer"
+                    />
+                    <span className="text-[11px] font-bold text-slate-700">Publicar</span>
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">Cidade</label>
+                    <Input
+                      value={editGaleria.cidade}
+                      onChange={(e) => setEditGaleria((p) => ({ ...p, cidade: e.target.value }))}
+                      placeholder="Erechim"
+                      className="rounded-xl text-xs h-9"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">
+                      Bairro (opcional)
+                    </label>
+                    <Input
+                      value={editGaleria.bairro}
+                      onChange={(e) => setEditGaleria((p) => ({ ...p, bairro: e.target.value }))}
+                      placeholder="Fátima"
+                      className="rounded-xl text-xs h-9"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">UF</label>
+                    <Input
+                      value={editGaleria.uf}
+                      onChange={(e) => setEditGaleria((p) => ({ ...p, uf: e.target.value }))}
+                      placeholder="RS"
+                      maxLength={2}
+                      className="rounded-xl text-xs h-9"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">Potência</label>
+                    <Input
+                      value={editGaleria.potencia}
+                      onChange={(e) => setEditGaleria((p) => ({ ...p, potencia: e.target.value }))}
+                      placeholder="155,0 kWp"
+                      className="rounded-xl text-xs h-9"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-slate-700">Tipo de obra</label>
+                  <select
+                    value={editGaleria.tipo_obra}
+                    onChange={(e) =>
+                      setEditGaleria((p) => ({
+                        ...p,
+                        tipo_obra: e.target.value as TipoObraGaleria | '',
+                      }))
+                    }
+                    className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  >
+                    <option value="">Não informado</option>
+                    {TIPOS_OBRA.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-slate-700">
+                    Texto alternativo da foto (SEO)
+                  </label>
+                  <textarea
+                    value={editGaleria.alt_texto}
+                    onChange={(e) => setEditGaleria((p) => ({ ...p, alt_texto: e.target.value }))}
+                    rows={2}
+                    placeholder="Instalação solar fotovoltaica de 155,0 kWp em Erechim/RS — Cassul Distribuidora"
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  />
+                  <p className="text-[10px] text-slate-500">
+                    Deixe em branco para o site gerar automaticamente a partir de cidade, potência e
+                    tipo de obra.
+                  </p>
+                </div>
               </div>
 
               {/* Ações */}

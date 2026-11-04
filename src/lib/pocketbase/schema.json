@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T22:03:11.118Z",
+  "generatedAt": "2026-11-04T11:29:55.748Z",
   "collections": [
     {
       "name": "users",
@@ -29,14 +29,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -78,7 +83,11 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["Residencia", "Empresa", "Outro"]
+          "selectValues": [
+            "Residencia",
+            "Empresa",
+            "Outro"
+          ]
         },
         {
           "name": "consumo_mensal",
@@ -97,14 +106,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "cidade",
@@ -237,7 +251,10 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["rascunho", "publicado"]
+          "selectValues": [
+            "rascunho",
+            "publicado"
+          ]
         },
         {
           "name": "tempo_leitura",
@@ -268,14 +285,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -405,7 +427,10 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["rascunho", "publicado"]
+          "selectValues": [
+            "rascunho",
+            "publicado"
+          ]
         },
         {
           "name": "destaque",
@@ -418,14 +443,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "is_exemplo",
@@ -502,19 +532,98 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
+        },
+        {
+          "name": "cidade",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "bairro",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "uf",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "potencia",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tipo_obra",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "Telhado industrial",
+            "Telhado comercial",
+            "Telhado residencial",
+            "Usina de solo",
+            "Solo rural",
+            "Carport",
+            "BESS",
+            "Carregadores",
+            "O&M"
+          ]
+        },
+        {
+          "name": "alt_texto",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "publicado_galeria",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "destaque_galeria",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ordem",
+          "type": "number",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [
         "CREATE INDEX idx_media_categoria ON media (categoria)",
-        "CREATE INDEX idx_media_created ON media (created DESC)"
+        "CREATE INDEX idx_media_created ON media (created DESC)",
+        "CREATE INDEX idx_media_galeria ON media (publicado_galeria, tipo_obra)",
+        "CREATE INDEX idx_media_cidade ON media (cidade)",
+        "CREATE UNIQUE INDEX idx_media_slug ON media (slug) WHERE slug != \"\""
       ]
     }
   ]

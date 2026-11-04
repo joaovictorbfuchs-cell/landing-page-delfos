@@ -7,6 +7,7 @@ import type {
   MediaRecord,
   CreateMediaPayload,
   UpdateMediaPayload,
+  UpdateMediaGaleriaPayload,
 } from '@/types/content'
 
 export type ImageSizeVariant = 'original' | 'grande' | 'leve' | string
@@ -282,6 +283,50 @@ export async function updateMedia(id: string, payload: UpdateMediaPayload): Prom
 
 export async function deleteMedia(id: string): Promise<boolean> {
   return await pb.collection('media').delete(id)
+}
+
+// ----------------------------------------------------
+// GALERIA PÚBLICA DE OBRAS (/obras)
+// ----------------------------------------------------
+
+/**
+ * Lista as fotos publicadas na galeria.
+ * Falha em silêncio: se o backend ainda não tiver os campos novos (migração não
+ * aplicada no preview), a galeria mostra o estado vazio em vez de quebrar a página.
+ */
+export async function listGaleriaObras(): Promise<MediaRecord[]> {
+  try {
+    return await pb.collection('media').getFullList<MediaRecord>({
+      filter: 'publicado_galeria = true',
+      sort: 'destaque_galeria desc,ordem,cidade,-created',
+    })
+  } catch (err) {
+    console.warn('Erro ao buscar a galeria de obras publicadas:', err)
+    return []
+  }
+}
+
+/**
+ * Atualiza os dados de obra/publicação de uma foto da biblioteca.
+ * Só os campos enviados são alterados.
+ */
+export async function updateMediaGaleria(
+  id: string,
+  payload: UpdateMediaGaleriaPayload,
+): Promise<MediaRecord> {
+  const body: Record<string, unknown> = {}
+  if (payload.cidade !== undefined) body.cidade = payload.cidade.trim()
+  if (payload.bairro !== undefined) body.bairro = payload.bairro.trim()
+  if (payload.uf !== undefined) body.uf = payload.uf.trim().toUpperCase()
+  if (payload.potencia !== undefined) body.potencia = payload.potencia.trim()
+  if (payload.tipo_obra !== undefined) body.tipo_obra = payload.tipo_obra
+  if (payload.alt_texto !== undefined) body.alt_texto = payload.alt_texto.trim()
+  if (payload.slug !== undefined) body.slug = payload.slug.trim()
+  if (payload.publicado_galeria !== undefined) body.publicado_galeria = payload.publicado_galeria
+  if (payload.destaque_galeria !== undefined) body.destaque_galeria = payload.destaque_galeria
+  if (payload.ordem !== undefined) body.ordem = payload.ordem
+
+  return await pb.collection('media').update<MediaRecord>(id, body)
 }
 
 export interface LimparDuplicadasItem {

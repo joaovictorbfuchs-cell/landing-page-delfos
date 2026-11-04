@@ -114,6 +114,17 @@ export type MediaCategoria =
   | 'Segmentos'
   | 'Equipe e Empresa'
 
+export type TipoObraGaleria =
+  | 'Telhado industrial'
+  | 'Telhado comercial'
+  | 'Telhado residencial'
+  | 'Usina de solo'
+  | 'Solo rural'
+  | 'Carport'
+  | 'BESS'
+  | 'Carregadores'
+  | 'O&M'
+
 export interface MediaRecord {
   id: string
   titulo: string
@@ -121,8 +132,32 @@ export interface MediaRecord {
   categoria: MediaCategoria
   descricao?: string
   destino_sugerido?: string
+  /** Dados da obra — usados pela galeria pública /obras */
+  cidade?: string
+  bairro?: string
+  uf?: string
+  potencia?: string
+  tipo_obra?: TipoObraGaleria | ''
+  alt_texto?: string
+  slug?: string
+  publicado_galeria?: boolean
+  destaque_galeria?: boolean
+  ordem?: number
   created: string
   updated: string
+}
+
+export interface UpdateMediaGaleriaPayload {
+  cidade?: string
+  bairro?: string
+  uf?: string
+  potencia?: string
+  tipo_obra?: TipoObraGaleria | ''
+  alt_texto?: string
+  slug?: string
+  publicado_galeria?: boolean
+  destaque_galeria?: boolean
+  ordem?: number
 }
 
 export interface CreateMediaPayload {

@@ -261,6 +261,25 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
             </Link>
 
             <Link
+              to="/obras"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                setSolucoesDropdownOpen(false)
+              }}
+              className={`text-xs xl:text-sm font-medium transition-colors ${
+                isTransparentOnHome
+                  ? location.pathname === '/obras'
+                    ? 'text-solar-400 font-bold'
+                    : 'text-white/90 hover:text-solar-400'
+                  : location.pathname === '/obras'
+                    ? 'text-[#081B30] font-bold'
+                    : 'text-slate-700 hover:text-midnight-950'
+              }`}
+            >
+              Obras
+            </Link>
+
+            <Link
               to="/conteudos"
               onClick={() => {
                 setMobileMenuOpen(false)
@@ -441,6 +460,17 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
                   }`}
                 >
                   Projetos e Resultados
+                </Link>
+                <Link
+                  to="/obras"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2.5 rounded-xl font-medium transition-colors text-sm ${
+                    location.pathname === '/obras'
+                      ? 'bg-solar-500/15 text-solar-400 font-semibold'
+                      : 'text-slate-200 hover:bg-white/5 hover:text-solar-400'
+                  }`}
+                >
+                  Obras
                 </Link>
                 <Link
                   to="/conteudos"

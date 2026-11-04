@@ -19,6 +19,7 @@ const SolucaoBess = lazy(() => import('./pages/SolucaoBess'))
 const SolucaoOm = lazy(() => import('./pages/SolucaoOm'))
 const SolucaoCarregadores = lazy(() => import('./pages/SolucaoCarregadores'))
 const ProjetosResultados = lazy(() => import('./pages/ProjetosResultados'))
+const GaleriaObras = lazy(() => import('./pages/GaleriaObras'))
 const Sobre = lazy(() => import('./pages/Sobre'))
 const Conteudos = lazy(() => import('./pages/Conteudos'))
 const ConteudoPost = lazy(() => import('./pages/ConteudoPost'))
@@ -62,6 +63,7 @@ const App = () => {
 
               {/* Fase 3: Projetos e Resultados */}
               <Route path="/projetos" element={<ProjetosResultados />} />
+              <Route path="/obras" element={<GaleriaObras />} />
 
               {/* Fase 5: Sobre e Conteúdos / Blog */}
               <Route path="/sobre" element={<Sobre />} />
