@@ -42,6 +42,7 @@ import {
   attachMediaToCase,
   detachMediaFromCase,
   reorderCaseMedia,
+  updateMediaGaleria,
 } from '@/services/content'
 import MediaLibraryPicker from './MediaLibraryPicker'
 import { fetchMediaAsFile } from './mediaCaseUtils'
