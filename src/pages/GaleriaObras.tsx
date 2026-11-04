@@ -53,11 +53,38 @@ export function fraseObra(foto: MediaRecord): string {
   return partes.filter(Boolean).join(' — ')
 }
 
+/**
+ * Nome curto da obra para o card.
+ *
+ * Muitas fotos herdaram o título genérico do acervo ("Instalação Solar Delfos —
+ * Acervo (arquivo.jpg)"), que não diz nada a quem visita. Quando isso acontece,
+ * usamos o nome do cliente gravado no alt_texto (que a migração preencheu a
+ * partir da obra real) e, na falta dele, o tipo de obra com a potência.
+ */
+function tituloObra(foto: MediaRecord): string {
+  const titulo = (foto.titulo || '').trim()
+  const generico = !titulo || /acervo/i.test(titulo) || /^Instalação Solar Delfos/i.test(titulo)
+
+  if (!generico) {
+    const limpo = titulo.split('—')[0].trim()
+    if (limpo && !/^Instalação Solar Delfos$/i.test(limpo)) return limpo
+  }
+
+  // Cliente fica no fim do alt_texto: "... em Erechim/RS — Cassul Distribuidora (Delfos..."
+  const alt = foto.alt_texto || ''
+  const match = alt.match(/—\s*(.+?)\s*\(Delfos/)
+  if (match && match[1]) return match[1].trim()
+
+  if (foto.tipo_obra && foto.potencia) return `${foto.tipo_obra} de ${foto.potencia}`
+  return foto.tipo_obra || foto.potencia || 'Obra Delfos Energia Solar'
+}
+
 interface FotoGaleria {
   registro: MediaRecord
   urlLeve: string
   urlGrande: string
   frase: string
+  titulo: string
 }
 
 function converterParaGaleria(registros: MediaRecord[]): FotoGaleria[] {
@@ -68,6 +95,7 @@ function converterParaGaleria(registros: MediaRecord[]): FotoGaleria[] {
       urlLeve: getMediaFileUrl(registro, 'leve'),
       urlGrande: getMediaFileUrl(registro, 'grande'),
       frase: registro.alt_texto?.trim() || fraseObra(registro),
+      titulo: tituloObra(registro),
     }))
 }
 
@@ -371,7 +399,7 @@ export default function GaleriaObras() {
                         </span>
                       </div>
                       <p className="text-sm font-semibold text-slate-800 leading-snug line-clamp-2">
-                        {foto.registro.titulo.split('—')[0].trim()}
+                        {foto.titulo}
                       </p>
                       {foto.registro.tipo_obra && (
                         <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
