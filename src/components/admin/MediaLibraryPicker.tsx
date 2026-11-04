@@ -13,6 +13,8 @@ interface MediaLibraryPickerProps {
   contextTerm?: string
   onSelect: (media: MediaRecord) => void
   onClose: () => void
+  tituloModal?: string
+  subtituloModal?: string
 }
 
 /**
@@ -26,6 +28,8 @@ export default function MediaLibraryPicker({
   contextTerm,
   onSelect,
   onClose,
+  tituloModal,
+  subtituloModal,
 }: MediaLibraryPickerProps) {
   const [busca, setBusca] = useState('')
 
@@ -83,7 +87,7 @@ export default function MediaLibraryPicker({
               Biblioteca de Mídia
             </span>
             <h3 className="text-lg font-extrabold text-slate-900 truncate">
-              Escolher Foto do Case
+              {tituloModal || 'Escolher Foto para o Projeto'}
             </h3>
           </div>
           <Button

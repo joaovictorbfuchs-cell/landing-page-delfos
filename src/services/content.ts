@@ -262,6 +262,7 @@ export async function createMedia(payload: CreateMediaPayload): Promise<MediaRec
   if (payload.categoria) formData.append('categoria', payload.categoria)
   if (payload.descricao) formData.append('descricao', payload.descricao.trim())
   if (payload.destino_sugerido) formData.append('destino_sugerido', payload.destino_sugerido.trim())
+  if (payload.case_id !== undefined) formData.append('case_id', payload.case_id)
 
   return await pb.collection('media').create<MediaRecord>(formData)
 }
@@ -274,6 +275,9 @@ export async function updateMedia(id: string, payload: UpdateMediaPayload): Prom
   if (payload.destino_sugerido !== undefined) {
     formData.append('destino_sugerido', payload.destino_sugerido.trim())
   }
+  if (payload.case_id !== undefined) {
+    formData.append('case_id', payload.case_id)
+  }
   if (payload.arquivo instanceof File) {
     formData.append('arquivo', payload.arquivo)
   }
@@ -284,6 +288,86 @@ export async function updateMedia(id: string, payload: UpdateMediaPayload): Prom
 export async function deleteMedia(id: string): Promise<boolean> {
   return await pb.collection('media').delete(id)
 }
+
+/**
+ * Lista todas as fotos vinculadas a um projeto/case específico, ordenadas por ordem crescente.
+ */
+export async function listMediaByCaseId(caseId: string): Promise<MediaRecord[]> {
+  if (!caseId) return []
+  try {
+    return await pb.collection('media').getFullList<MediaRecord>({
+      filter: `case_id = "${caseId}"`,
+      sort: 'ordem,created',
+    })
+  } catch (err) {
+    console.warn(`Erro ao carregar fotos do projeto ${caseId}:`, err)
+    return []
+  }
+}
+
+/** Alias para compatibilidade */
+export const listMediaByCase = listMediaByCaseId
+
+/**
+ * Vincula uma mídia existente da biblioteca a um projeto/case com uma ordem específica.
+ */
+export async function attachMediaToCase(
+  mediaId: string,
+  caseId: string,
+  ordem?: number,
+): Promise<MediaRecord> {
+  const payload: Record<string, unknown> = { case_id: caseId, publicado_galeria: true }
+  if (ordem !== undefined) payload.ordem = ordem
+  return await pb.collection('media').update<MediaRecord>(mediaId, payload)
+}
+
+export const vincularMediaAoCase = attachMediaToCase
+
+/**
+ * Faz upload direto de uma imagem e já vincula diretamente ao case.
+ */
+export async function uploadMediaToCase(
+  caseId: string,
+  file: File,
+  titulo?: string,
+  ordem?: number,
+): Promise<MediaRecord> {
+  const formData = new FormData()
+  formData.append('arquivo', file)
+  formData.append('titulo', titulo || file.name)
+  formData.append('categoria', 'Solar')
+  formData.append('case_id', caseId)
+  formData.append('publicado_galeria', 'true')
+  if (ordem !== undefined) {
+    formData.append('ordem', String(ordem))
+  }
+  return await pb.collection('media').create<MediaRecord>(formData)
+}
+
+/**
+ * Desvincula uma foto do projeto/case (mantém a foto no acervo geral da biblioteca).
+ */
+export async function detachMediaFromCase(mediaId: string): Promise<MediaRecord> {
+  return await pb.collection('media').update<MediaRecord>(mediaId, { case_id: '' })
+}
+
+export const desvincularMediaDoCase = detachMediaFromCase
+
+/**
+ * Reordena as fotos de um case. Atualiza o campo `ordem` (1, 2, 3...) de cada registro.
+ */
+export async function reorderCaseMedia(mediaIds: string[]): Promise<void> {
+  for (let i = 0; i < mediaIds.length; i++) {
+    const id = mediaIds[i]
+    try {
+      await pb.collection('media').update(id, { ordem: i + 1 })
+    } catch (err) {
+      console.warn(`Falha ao reordenar mídia ${id}:`, err)
+    }
+  }
+}
+
+export const reordenarFotosDoCase = reorderCaseMedia
 
 // ----------------------------------------------------
 // GALERIA PÚBLICA DE OBRAS (/obras)
@@ -360,6 +444,7 @@ export async function updateMediaGaleria(
   if (payload.publicado_galeria !== undefined) body.publicado_galeria = payload.publicado_galeria
   if (payload.destaque_galeria !== undefined) body.destaque_galeria = payload.destaque_galeria
   if (payload.ordem !== undefined) body.ordem = payload.ordem
+  if (payload.case_id !== undefined) body.case_id = payload.case_id
 
   // Sempre que cidade/potência/tipo mudam, recalcula o agrupamento da obra e
   // replica os dados da obra para todas as fotos do mesmo grupo.

@@ -210,12 +210,13 @@ export default function AdminMediaTab({
       destaque_galeria: Boolean(item.destaque_galeria),
     })
 
-    // Se houver algum case com nome/slug contido no destino_sugerido ou título, sugerir pré-seleção
+    // Se a foto já tem case_id vinculado, usar diretamente; senão sugerir casamento
     const matchCase =
+      (item.case_id ? casesList.find((c) => c.id === item.case_id) : null) ||
       findMatchingCase(item.destino_sugerido || '', casesList) ||
       findMatchingCase(item.titulo || '', casesList) ||
       findMatchingCase(item.arquivo || '', casesList)
-    setEditCaseId(matchCase ? matchCase.id : '')
+    setEditCaseId(item.case_id || (matchCase ? matchCase.id : ''))
   }
 
   const handleCloseEdit = () => {
@@ -262,12 +263,13 @@ export default function AdminMediaTab({
 
     setSavingEdit(true)
     try {
-      // 1. Atualizar registro em media
+      // 1. Atualizar registro em media com vínculo direto de case_id
       const payload: UpdateMediaPayload = {
         titulo: editTitulo.trim(),
         categoria: editCategoria,
         descricao: editDescricao.trim(),
         destino_sugerido: editDestinoSugerido.trim(),
+        case_id: editCaseId || '',
       }
       if (editArquivoFile) {
         payload.arquivo = editArquivoFile
@@ -858,7 +860,7 @@ export default function AdminMediaTab({
 
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-slate-700">
-                    Case / Projeto Vinculado
+                    Projeto Vinculado (case_id)
                   </label>
                   <select
                     value={editCaseId}
@@ -869,8 +871,19 @@ export default function AdminMediaTab({
                         const targetCase = casesList.find((c) => c.id === selectedId)
                         if (targetCase) {
                           setEditDestinoSugerido(
-                            `Case ${targetCase.cliente || targetCase.titulo} / ${targetCase.setor || 'Solar'}`,
+                            `Projeto ${targetCase.cliente || targetCase.titulo} / ${targetCase.setor || 'Solar'}`,
                           )
+                          // Se vinculou a projeto, preencher dados da obra caso vazios
+                          const partesLocal = (targetCase.local || '').split(/[/-]/)
+                          const cid = partesLocal[0]?.trim() || ''
+                          const uf = partesLocal[1]?.trim() || 'RS'
+                          setEditGaleria((prev) => ({
+                            ...prev,
+                            publicado_galeria: true,
+                            cidade: prev.cidade || cid,
+                            uf: prev.uf || uf,
+                            potencia: prev.potencia || targetCase.potencia_capacidade || '',
+                          }))
                         }
                       }
                     }}

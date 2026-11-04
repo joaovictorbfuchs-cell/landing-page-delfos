@@ -380,7 +380,7 @@ export default function Admin() {
               }`}
             >
               <Award className="w-3.5 h-3.5 shrink-0" />
-              <span className="whitespace-nowrap">Cases</span>
+              <span className="whitespace-nowrap">Projetos</span>
               {cases.length > 0 && (
                 <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono shrink-0 leading-none">
                   {cases.length}
@@ -453,7 +453,7 @@ export default function Admin() {
                   size="sm"
                   className="text-slate-300 hover:text-white hover:bg-white/10 text-[11px] h-8 px-2"
                 >
-                  Cases
+                  Projetos
                 </Button>
               </Link>
               <Link to="/conteudos">
@@ -618,7 +618,7 @@ export default function Admin() {
           }`}
         >
           <Award className="w-3.5 h-3.5" />
-          <span>Cases</span>
+          <span>Projetos</span>
           {cases.length > 0 && (
             <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] bg-black/20 font-mono leading-none">
               {cases.length}

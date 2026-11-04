@@ -20,11 +20,12 @@ import ContatoForm from '@/components/ContatoForm'
 import {
   listPublishedCases,
   listObrasGaleria,
+  listMedia,
   getCaseImageUrl,
   getMediaFileUrl,
   type ObraGaleria,
 } from '@/services/content'
-import type { CaseRecord } from '@/types/content'
+import type { CaseRecord, MediaRecord } from '@/types/content'
 import { cn } from '@/lib/utils'
 
 const BASE_URL = 'https://www.delfos.eng.br'
@@ -78,37 +79,90 @@ export default function ProjetosRealizados() {
   useEffect(() => {
     let ativo = true
     async function carregar() {
-      const [cases, obras] = await Promise.all([listPublishedCases(), listObrasGaleria()])
+      const [cases, obras, todasMedias] = await Promise.all([
+        listPublishedCases(),
+        listObrasGaleria(),
+        listMedia().catch(() => [] as MediaRecord[]),
+      ])
       if (!ativo) return
+
+      // Agrupar mídias vinculadas diretamente via case_id
+      const mediaPorCase = new Map<string, MediaRecord[]>()
+      todasMedias.forEach((m) => {
+        if (!m.case_id) return
+        const lista = mediaPorCase.get(m.case_id) || []
+        lista.push(m)
+        mediaPorCase.set(m.case_id, lista)
+      })
+      // Ordena fotos por `ordem` e depois por data
+      mediaPorCase.forEach((lista) => {
+        lista.sort((a, b) => (a.ordem ?? 999) - (b.ordem ?? 999))
+      })
 
       const cartoes: ProjetoCard[] = cases
         .filter((c) => !c.is_exemplo)
         .map((caseItem) => {
           const obra = obras.find((o) => mesmaObra(caseItem, o)) || null
           const fotos: ProjetoCard['fotos'] = []
-          const urlCapa = getCaseImageUrl(caseItem, 'grande')
-          if (urlCapa) {
-            fotos.push({
-              url: urlCapa,
-              alt: altObra(obra?.tipo || '', caseItem.potencia_capacidade || '', caseItem.local),
-              contentUrlOriginal: urlCapa,
-            })
-          }
           const vistas = new Set<string>()
-          ;(obra?.fotos || []).forEach((f) => {
-            if (vistas.has(f.arquivo)) return
-            vistas.add(f.arquivo)
-            const url = getMediaFileUrl(f, 'grande')
-            if (url) {
+
+          // 1. Fotos vinculadas DIRETAMENTE pelo novo campo case_id
+          const fotosVinculadas = mediaPorCase.get(caseItem.id) || []
+          if (fotosVinculadas.length > 0) {
+            fotosVinculadas.forEach((f) => {
+              if (vistas.has(f.arquivo)) return
+              vistas.add(f.arquivo)
+              const url = getMediaFileUrl(f, 'grande')
+              if (url) {
+                fotos.push({
+                  url,
+                  alt:
+                    f.alt_texto?.trim() ||
+                    altObra(
+                      obra?.tipo || f.tipo_obra || '',
+                      caseItem.potencia_capacidade || '',
+                      caseItem.local,
+                    ),
+                  contentUrlOriginal: getMediaFileUrl(f, 'original'),
+                })
+              }
+            })
+          } else {
+            // Fallback gracioso: capa do próprio case + fotos da obra legada
+            const urlCapa = getCaseImageUrl(caseItem, 'grande')
+            if (urlCapa) {
               fotos.push({
-                url,
-                alt:
-                  f.alt_texto?.trim() ||
-                  altObra(obra?.tipo || '', obra?.potencia || '', caseItem.local),
-                contentUrlOriginal: getMediaFileUrl(f, 'original'),
+                url: urlCapa,
+                alt: altObra(obra?.tipo || '', caseItem.potencia_capacidade || '', caseItem.local),
+                contentUrlOriginal: urlCapa,
               })
             }
-          })
+            ;(obra?.fotos || []).forEach((f) => {
+              if (vistas.has(f.arquivo)) return
+              vistas.add(f.arquivo)
+              const url = getMediaFileUrl(f, 'grande')
+              if (url) {
+                fotos.push({
+                  url,
+                  alt:
+                    f.alt_texto?.trim() ||
+                    altObra(obra?.tipo || '', obra?.potencia || '', caseItem.local),
+                  contentUrlOriginal: getMediaFileUrl(f, 'original'),
+                })
+              }
+            })
+          }
+
+          // Se a foto de capa do case não estava entre as fotos vinculadas, adiciona se válida
+          const urlCapaCase = getCaseImageUrl(caseItem, 'grande')
+          if (urlCapaCase && fotos.length === 0) {
+            fotos.push({
+              url: urlCapaCase,
+              alt: altObra(obra?.tipo || '', caseItem.potencia_capacidade || '', caseItem.local),
+              contentUrlOriginal: urlCapaCase,
+            })
+          }
+
           return { caseRecord: caseItem, obra, fotos }
         })
         .filter((p) => p.fotos.length > 0)

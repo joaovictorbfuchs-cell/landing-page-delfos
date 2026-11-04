@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T13:46:25.612Z",
+  "generatedAt": "2026-11-04T14:38:53.205Z",
   "collections": [
     {
       "name": "users",
@@ -623,6 +623,13 @@
           "type": "text",
           "required": false,
           "system": false
+        },
+        {
+          "name": "case_id",
+          "type": "relation",
+          "required": false,
+          "system": false,
+          "collectionRef": "cases"
         }
       ],
       "indexes": [
@@ -631,7 +638,8 @@
         "CREATE INDEX idx_media_galeria ON media (publicado_galeria, tipo_obra)",
         "CREATE INDEX idx_media_cidade ON media (cidade)",
         "CREATE UNIQUE INDEX idx_media_slug ON media (slug) WHERE slug != \"\"",
-        "CREATE INDEX idx_media_obra ON media (obra_slug)"
+        "CREATE INDEX idx_media_obra ON media (obra_slug)",
+        "CREATE INDEX idx_media_case_id ON media (case_id)"
       ]
     }
   ]

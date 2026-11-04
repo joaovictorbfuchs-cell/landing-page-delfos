@@ -169,7 +169,7 @@ export default function AdminBatchMediaModal({
     )
   }
 
-  // Upload de um item individual
+  // Upload de um item individual com vínculo direto case_id quando confirmado/sugerido
   const uploadSingleItem = async (item: BatchItem): Promise<boolean> => {
     try {
       const payload: CreateMediaPayload = {
@@ -178,6 +178,8 @@ export default function AdminBatchMediaModal({
         categoria: categoriaLote,
         descricao: descricaoGeral.trim(),
         destino_sugerido: item.destinoSugerido.trim(),
+        case_id: item.suggestedCase?.id || '',
+        publicado_galeria: Boolean(item.suggestedCase?.id),
       }
 
       await createMedia(payload)
@@ -311,8 +313,8 @@ export default function AdminBatchMediaModal({
               Adicionar Lote de Fotos à Biblioteca
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Envie várias fotos de uma só vez com títulos automáticos e sugestão de case pelo nome
-              do arquivo.
+              Envie várias fotos de uma só vez. O painel sugere o projeto correspondente pelo nome
+              do arquivo para você confirmar antes de salvar.
             </p>
           </div>
 
@@ -544,39 +546,40 @@ export default function AdminBatchMediaModal({
                           <span>{(item.file.size / 1024).toFixed(0)} KB</span>
                         </div>
 
-                        {/* Sugestão de Case Automática ou Seletor */}
+                        {/* Sugestão de Projeto e Confirmação de Vínculo */}
                         <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                           {item.suggestedCase ? (
-                            <div className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-900 bg-amber-100/80 px-2 py-0.5 rounded-md border border-amber-200">
-                              <Sparkles className="w-3 h-3 text-amber-600 shrink-0" />
+                            <div className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-900 bg-emerald-100/90 px-2 py-0.5 rounded-md border border-emerald-300">
+                              <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" />
                               <span className="truncate max-w-[180px] sm:max-w-[240px]">
-                                Case sugerido:{' '}
+                                Projeto sugerido:{' '}
                                 {item.suggestedCase.cliente || item.suggestedCase.titulo}
                               </span>
                             </div>
                           ) : null}
 
-                          {/* Seletor compacto de case para ajustar ou associar se quiser */}
+                          {/* Seletor compacto de projeto para confirmar/trocar vínculo */}
                           {!isItemSuccess && (
                             <select
                               value={item.suggestedCase?.id || ''}
                               onChange={(e) => handleUpdateItemCase(item.id, e.target.value)}
                               disabled={isUploading}
-                              className="text-[10px] h-6 px-1.5 bg-slate-50 hover:bg-white border border-slate-200 rounded-md text-slate-600 focus:outline-none"
-                              title="Vincular a um case específico"
+                              className="text-[10px] h-6 px-1.5 bg-slate-50 hover:bg-white border border-slate-200 rounded-md text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-solar-500"
+                              title="Vincular a um projeto específico"
                             >
                               <option value="">
-                                {item.suggestedCase ? 'Trocar case...' : 'Vincular case...'}
+                                {item.suggestedCase
+                                  ? 'Alterar projeto vinculado...'
+                                  : 'Vincular a um projeto...'}
                               </option>
                               {casesList.map((c) => (
                                 <option key={c.id} value={c.id}>
-                                  {c.cliente || c.titulo}
+                                  {c.cliente ? `${c.cliente} (${c.local || 'RS'})` : c.titulo}
                                 </option>
                               ))}
                             </select>
                           )}
                         </div>
-
                         {/* Mensagem de Erro se houver */}
                         {isItemError && item.errorMessage && (
                           <p className="text-[11px] text-red-600 font-medium">

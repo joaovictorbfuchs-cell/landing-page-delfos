@@ -150,6 +150,7 @@ export interface MediaRecord {
   publicado_galeria?: boolean
   destaque_galeria?: boolean
   ordem?: number
+  case_id?: string
   created: string
   updated: string
 }
@@ -167,6 +168,7 @@ export interface UpdateMediaGaleriaPayload {
   publicado_galeria?: boolean
   destaque_galeria?: boolean
   ordem?: number
+  case_id?: string
 }
 
 export interface CreateMediaPayload {
@@ -175,6 +177,8 @@ export interface CreateMediaPayload {
   categoria: MediaCategoria
   descricao?: string
   destino_sugerido?: string
+  case_id?: string
+  publicado_galeria?: boolean
 }
 
 export interface UpdateMediaPayload {
@@ -183,4 +187,5 @@ export interface UpdateMediaPayload {
   descricao?: string
   destino_sugerido?: string
   arquivo?: File | null
+  case_id?: string
 }

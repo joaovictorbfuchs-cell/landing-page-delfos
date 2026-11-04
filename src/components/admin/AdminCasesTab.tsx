@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Award,
   Plus,
@@ -14,6 +14,10 @@ import {
   Star,
   FolderOpen,
   X,
+  Upload,
+  ArrowUp,
+  ArrowDown,
+  Sparkles,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -33,6 +37,11 @@ import {
   deleteCase,
   getCaseImageUrl,
   getMediaFileUrl,
+  listMediaByCase,
+  uploadMediaToCase,
+  attachMediaToCase,
+  detachMediaFromCase,
+  reorderCaseMedia,
 } from '@/services/content'
 import MediaLibraryPicker from './MediaLibraryPicker'
 import { fetchMediaAsFile } from './mediaCaseUtils'
@@ -95,7 +104,11 @@ export default function AdminCasesTab({
   const [fotoFile, setFotoFile] = useState<File | null>(null)
   const [fotoPreview, setFotoPreview] = useState<string | null>(null)
   const [pickerOpen, setPickerOpen] = useState(false)
+  const [pickerMode, setPickerMode] = useState<'capa' | 'galeria'>('capa')
   const [pickerLoadingId, setPickerLoadingId] = useState<string | null>(null)
+  const [projectPhotos, setProjectPhotos] = useState<MediaRecord[]>([])
+  const [loadingPhotos, setLoadingPhotos] = useState(false)
+  const [uploadingDirectPhoto, setUploadingDirectPhoto] = useState(false)
   const [fotoRemovida, setFotoRemovida] = useState(false)
 
   const handleOpenCreate = () => {
@@ -121,7 +134,21 @@ export default function AdminCasesTab({
     setFotoPreview(null)
     setFotoRemovida(false)
     setPickerOpen(false)
+    setProjectPhotos([])
     setModalOpen(true)
+  }
+
+  // Carrega fotos vinculadas por case_id quando o modal de edição abre
+  const carregarFotosDoProjeto = async (caseId: string) => {
+    setLoadingPhotos(true)
+    try {
+      const photos = await listMediaByCase(caseId)
+      setProjectPhotos(photos)
+    } catch (err) {
+      console.error('Erro ao carregar fotos do projeto:', err)
+    } finally {
+      setLoadingPhotos(false)
+    }
   }
 
   const handleOpenEdit = (caseItem: CaseRecord) => {
@@ -148,12 +175,35 @@ export default function AdminCasesTab({
     setFotoRemovida(false)
     setPickerOpen(false)
     setModalOpen(true)
+    carregarFotosDoProjeto(caseItem.id)
   }
 
-  // Escolha de foto direto da Biblioteca de Mídia: baixa o arquivo original da
-  // mídia escolhida e o transforma em File, que será enviado junto ao salvar o
-  // case — sem o usuário precisar reenviar o arquivo manualmente.
+  // Escolha de foto da biblioteca (modo capa OU modo vincular à galeria)
   const handleSelectMediaFoto = async (media: MediaRecord) => {
+    if (pickerMode === 'galeria' && editingCase) {
+      setPickerLoadingId(media.id)
+      try {
+        const updated = await attachMediaToCase(media.id, editingCase.id, projectPhotos.length + 1)
+        setProjectPhotos((prev) => [...prev.filter((p) => p.id !== updated.id), updated])
+        setPickerOpen(false)
+        toast({
+          title: 'Foto vinculada ao projeto',
+          description: `"${media.titulo}" agora faz parte da galeria deste projeto.`,
+        })
+      } catch (err: unknown) {
+        console.error('Erro ao vincular mídia:', err)
+        toast({
+          variant: 'destructive',
+          title: 'Erro ao vincular',
+          description: (err as Error)?.message || 'Não foi possível vincular a foto.',
+        })
+      } finally {
+        setPickerLoadingId(null)
+      }
+      return
+    }
+
+    // Modo capa legado/fallback
     setPickerLoadingId(media.id)
     try {
       const file = await fetchMediaAsFile(media)
@@ -171,7 +221,7 @@ export default function AdminCasesTab({
       setPickerOpen(false)
       toast({
         title: 'Foto da biblioteca selecionada',
-        description: `"${media.titulo}" será usada como capa do case ao salvar.`,
+        description: `"${media.titulo}" será usada como capa ao salvar.`,
       })
     } catch (err: unknown) {
       console.error('Erro ao usar foto da biblioteca:', err)
@@ -182,6 +232,101 @@ export default function AdminCasesTab({
       })
     } finally {
       setPickerLoadingId(null)
+    }
+  }
+
+  // Upload direto de foto para a galeria deste projeto
+  const handleDirectPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !editingCase) return
+
+    setUploadingDirectPhoto(true)
+    try {
+      const newMedia = await uploadMediaToCase(
+        editingCase.id,
+        file,
+        file.name,
+        projectPhotos.length + 1,
+      )
+      // Atualiza metadados complementares de obra se possível
+      const partesLocal = (editingCase.local || local || '').split(/[/-]/)
+      const cid = partesLocal[0]?.trim() || ''
+      const uf = partesLocal[1]?.trim() || 'RS'
+      await updateMediaGaleria(newMedia.id, {
+        cidade: cid,
+        uf: uf,
+        potencia: editingCase.potencia_capacidade || potenciaCapacidade || '',
+        publicado_galeria: true,
+      })
+      setProjectPhotos((prev) => [
+        ...prev,
+        { ...newMedia, cidade: cid, uf: uf, potencia: editingCase.potencia_capacidade },
+      ])
+      toast({
+        title: 'Foto adicionada',
+        description: 'A foto foi enviada e vinculada a este projeto.',
+      })
+    } catch (err: unknown) {
+      console.error('Erro no upload da foto do projeto:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro no envio da foto',
+        description: (err as Error)?.message || 'Não foi possível enviar a foto.',
+      })
+    } finally {
+      setUploadingDirectPhoto(false)
+      e.target.value = ''
+    }
+  }
+
+  // Excluir / desvincular foto do projeto
+  const handleRemoveProjectPhoto = async (photoId: string) => {
+    if (!window.confirm('Deseja desvincular esta foto do projeto?')) return
+    try {
+      await detachMediaFromCase(photoId)
+      const updatedList = projectPhotos.filter((p) => p.id !== photoId)
+      setProjectPhotos(updatedList)
+      await reorderCaseMedia(updatedList.map((p) => p.id))
+      toast({
+        title: 'Foto desvinculada',
+        description: 'A foto foi removida da galeria deste projeto.',
+      })
+    } catch (err: unknown) {
+      console.error('Erro ao desvincular foto:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao desvincular foto',
+        description: (err as Error)?.message || 'Não foi possível desvincular a foto.',
+      })
+    }
+  }
+
+  // Reordenar foto do projeto (sobe ou desce)
+  const handleMovePhoto = async (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1
+    if (targetIndex < 0 || targetIndex >= projectPhotos.length) return
+
+    const newList = [...projectPhotos]
+    const [moved] = newList.splice(index, 1)
+    newList.splice(targetIndex, 0, moved)
+    setProjectPhotos(newList)
+
+    try {
+      await reorderCaseMedia(newList.map((p) => p.id))
+      toast({
+        title: 'Ordem atualizada',
+        description:
+          targetIndex === 0
+            ? 'A foto agora é a primeira da galeria (capa).'
+            : 'Ordem das fotos salva.',
+      })
+    } catch (err) {
+      console.error('Erro ao salvar reordenação:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao reordenar',
+        description: 'Não foi possível salvar a nova ordem das fotos.',
+      })
     }
   }
 
@@ -249,25 +394,25 @@ export default function AdminCasesTab({
       if (editingCase) {
         await updateCase(editingCase.id, payload)
         toast({
-          title: 'Case atualizado',
-          description: `O case "${titulo}" foi salvo com sucesso.`,
+          title: 'Projeto atualizado',
+          description: `O projeto "${titulo}" foi salvo com sucesso.`,
         })
       } else {
         await createCase(payload)
         toast({
-          title: 'Case criado',
-          description: `O case "${titulo}" foi adicionado com sucesso.`,
+          title: 'Projeto criado',
+          description: `O projeto "${titulo}" foi adicionado com sucesso.`,
         })
       }
 
       setModalOpen(false)
       onRefresh()
     } catch (err: unknown) {
-      console.error('Erro ao salvar case:', err)
+      console.error('Erro ao salvar projeto:', err)
       toast({
         variant: 'destructive',
-        title: 'Erro ao salvar case',
-        description: (err as Error)?.message || 'Não foi possível salvar o case.',
+        title: 'Erro ao salvar projeto',
+        description: (err as Error)?.message || 'Não foi possível salvar o projeto.',
       })
     } finally {
       setSubmitting(false)
@@ -279,8 +424,8 @@ export default function AdminCasesTab({
     try {
       await toggleCaseStatus(caseItem.id, caseItem.status)
       toast({
-        title: caseItem.status === 'publicado' ? 'Case despublicado' : 'Case publicado',
-        description: `O case agora está em status ${caseItem.status === 'publicado' ? 'rascunho' : 'publicado'}.`,
+        title: caseItem.status === 'publicado' ? 'Projeto despublicado' : 'Projeto publicado',
+        description: `O projeto agora está em status ${caseItem.status === 'publicado' ? 'rascunho' : 'publicado'}.`,
       })
       onRefresh()
     } catch (err) {
@@ -295,7 +440,7 @@ export default function AdminCasesTab({
   }
 
   const handleDelete = async (caseItem: CaseRecord) => {
-    if (!window.confirm(`Tem certeza que deseja excluir o case "${caseItem.titulo}"?`)) {
+    if (!window.confirm(`Tem certeza que deseja excluir o projeto "${caseItem.titulo}"?`)) {
       return
     }
 
@@ -303,8 +448,8 @@ export default function AdminCasesTab({
     try {
       await deleteCase(caseItem.id)
       toast({
-        title: 'Case excluído',
-        description: 'O case foi removido com sucesso.',
+        title: 'Projeto excluído',
+        description: 'O projeto foi removido com sucesso.',
       })
       onRefresh()
     } catch (err) {
@@ -328,15 +473,15 @@ export default function AdminCasesTab({
               Gestão de Conteúdo
             </span>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
-              {cases.length} {cases.length === 1 ? 'case' : 'cases'}
+              {cases.length} {cases.length === 1 ? 'projeto' : 'projetos'}
             </span>
           </div>
           <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            Cases de Sucesso e Projetos Auditados
+            Projetos Realizados e Obras da Delfos
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Cases com status "publicado" são exibidos automaticamente na seção e página de Cases do
-            site. Rascunhos nunca aparecem publicamente.
+            Projetos com status &ldquo;publicado&rdquo; são exibidos automaticamente na página
+            pública de Projetos Realizados com suas fotos. Rascunhos nunca aparecem publicamente.
           </p>
         </div>
 
@@ -345,7 +490,7 @@ export default function AdminCasesTab({
           className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl shadow-sm text-xs h-10 px-4 flex items-center gap-1.5"
         >
           <Plus className="w-4 h-4" />
-          <span>Novo Case</span>
+          <span>Novo Projeto</span>
         </Button>
       </div>
 
@@ -539,10 +684,10 @@ export default function AdminCasesTab({
             <div className="flex items-center justify-between px-6 py-4 sm:px-8 border-b border-slate-100 shrink-0">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600 block">
-                  {editingCase ? 'Editar Case' : 'Novo Case de Sucesso'}
+                  {editingCase ? 'Editar Projeto' : 'Novo Projeto Delfos'}
                 </span>
                 <h3 className="text-xl font-extrabold text-slate-900">
-                  {editingCase ? 'Editar Case Auditado' : 'Cadastrar Novo Case'}
+                  {editingCase ? 'Editor Completo do Projeto' : 'Cadastrar Novo Projeto'}
                 </h3>
               </div>
               <Button
@@ -559,16 +704,29 @@ export default function AdminCasesTab({
               onSubmit={handleSubmit}
               className="flex-1 overflow-y-auto space-y-4 p-6 sm:p-8 overscroll-contain"
             >
-              {/* Título & Slug */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">Título do Case *</label>
-                <Input
-                  value={titulo}
-                  onChange={(e) => handleTituloChange(e.target.value)}
-                  placeholder="Ex: Indra Sistemas e Engenharia"
-                  required
-                  className="rounded-xl"
-                />
+              {/* Título & Cliente */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Título do Projeto *</label>
+                  <Input
+                    value={titulo}
+                    onChange={(e) => handleTituloChange(e.target.value)}
+                    placeholder="Ex: Indra Sistemas e Engenharia"
+                    required
+                    className="rounded-xl"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Cliente *</label>
+                  <Input
+                    value={cliente}
+                    onChange={(e) => setCliente(e.target.value)}
+                    placeholder="Ex: Indra Sistemas"
+                    required
+                    className="rounded-xl"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -712,59 +870,200 @@ export default function AdminCasesTab({
                 </div>
               </div>
 
-              {/* Foto do Case: upload direto ou escolha na Biblioteca de Mídia */}
-              <div className="space-y-2 p-4 bg-frost rounded-2xl border border-slate-200/80">
-                <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <ImageIcon className="w-4 h-4 text-solar-600" />
-                  Foto do Case (upload ou Biblioteca de Mídia)
-                </label>
-                <p className="text-[10px] text-slate-500 leading-snug">
-                  SEO de imagens: nomeie o arquivo como instalacao-cliente-cidade.jpg antes de
-                  enviar (ex.: instalacao-cassul-erechim.jpg). A legenda e o texto alternativo da
-                  foto são gerados automaticamente no padrão: serviço de potência em bairro, cidade
-                  — cliente — resultado.
-                </p>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-midnight-950 file:text-white hover:file:bg-midnight-900 cursor-pointer"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setPickerOpen(true)}
-                    disabled={pickerLoadingId !== null}
-                    className="rounded-xl text-xs h-9 border-solar-400/60 text-solar-700 hover:bg-solar-50 shrink-0 w-full sm:w-auto"
-                    title="Escolher a capa do case entre as fotos já enviadas na Biblioteca de Mídia"
-                  >
-                    <FolderOpen className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-                    {pickerLoadingId ? 'Carregando foto...' : 'Usar foto da biblioteca'}
-                  </Button>
-                  {fotoPreview && (
-                    <div className="relative">
-                      <img
-                        src={fotoPreview}
-                        alt="Preview"
-                        className="w-20 h-14 object-cover rounded-xl border border-slate-300 shadow-xs"
-                      />
-                      <button
+              {/* Seção Fotos do Projeto — Vínculo direto Projeto ↔ Fotos */}
+              {editingCase ? (
+                <div className="space-y-3 p-4 sm:p-5 bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-2xl border border-slate-200">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
+                    <div>
+                      <label className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <ImageIcon className="w-4 h-4 text-solar-600" />
+                        Fotos do Projeto ({projectPhotos.length})
+                      </label>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        A primeira foto é a capa do projeto. A ordem abaixo define a galeria do
+                        modal público.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-midnight-950 text-white hover:bg-midnight-900 text-xs font-bold cursor-pointer transition-colors shadow-xs">
+                        <Upload className="w-3.5 h-3.5 text-solar-400" />
+                        <span>{uploadingDirectPhoto ? 'Enviando...' : 'Adicionar Foto'}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={uploadingDirectPhoto}
+                          onChange={handleDirectPhotoUpload}
+                          className="hidden"
+                        />
+                      </label>
+
+                      <Button
                         type="button"
-                        onClick={handleRemoverFoto}
-                        title="Remover foto do case"
-                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md hover:bg-red-700"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setPickerMode('galeria')
+                          setPickerOpen(true)
+                        }}
+                        className="rounded-xl text-xs h-8 border-solar-400/60 text-solar-700 hover:bg-solar-50"
                       >
-                        <X className="w-3 h-3" />
-                      </button>
+                        <FolderOpen className="w-3.5 h-3.5 mr-1" />
+                        Escolher da Biblioteca
+                      </Button>
+                    </div>
+                  </div>
+
+                  {loadingPhotos ? (
+                    <div className="p-6 text-center text-xs text-slate-500">
+                      <div className="w-5 h-5 border-2 border-solar-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                      Carregando fotos vinculadas...
+                    </div>
+                  ) : projectPhotos.length === 0 ? (
+                    <div className="p-6 text-center rounded-xl bg-white/80 border border-dashed border-slate-300">
+                      <ImageIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                      <p className="text-xs font-bold text-slate-700">
+                        Nenhuma foto vinculada diretamente
+                      </p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Adicione uma foto por upload ou escolha da Biblioteca de Mídia para compor a
+                        galeria pública.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                      {projectPhotos.map((photo, index) => {
+                        const isCapa = index === 0
+                        return (
+                          <div
+                            key={photo.id}
+                            className={`relative group bg-white rounded-xl border overflow-hidden transition-all shadow-xs ${
+                              isCapa ? 'ring-2 ring-solar-500 border-solar-400' : 'border-slate-200'
+                            }`}
+                          >
+                            <div className="aspect-[4/3] bg-slate-100 relative overflow-hidden">
+                              <img
+                                src={getMediaFileUrl(photo, 'media')}
+                                alt={photo.titulo || `Foto ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+
+                              {isCapa && (
+                                <div className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-full bg-solar-400 text-midnight-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                  <Sparkles className="w-2.5 h-2.5" />
+                                  Capa
+                                </div>
+                              )}
+
+                              <div className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-mono">
+                                #{index + 1}
+                              </div>
+                            </div>
+
+                            <div className="p-2 space-y-1">
+                              <p
+                                className="text-[11px] font-bold text-slate-800 truncate"
+                                title={photo.titulo}
+                              >
+                                {photo.titulo || 'Sem título'}
+                              </p>
+                              {photo.potencia && (
+                                <p className="text-[10px] text-slate-500 font-mono">
+                                  {photo.potencia} kWp
+                                </p>
+                              )}
+
+                              {/* Ações: subir, descer, excluir */}
+                              <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                                <div className="flex items-center gap-0.5">
+                                  <button
+                                    type="button"
+                                    disabled={index === 0}
+                                    onClick={() => handleMovePhoto(index, 'up')}
+                                    className="p-1 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                                    title="Mover para a esquerda / cima"
+                                  >
+                                    <ArrowUp className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={index === projectPhotos.length - 1}
+                                    onClick={() => handleMovePhoto(index, 'down')}
+                                    className="p-1 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent"
+                                    title="Mover para a direita / baixo"
+                                  >
+                                    <ArrowDown className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveProjectPhoto(photo.id)}
+                                  className="p-1 rounded text-red-500 hover:text-red-700 hover:bg-red-50"
+                                  title="Remover foto do projeto"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-500">
-                  Formatos aceitos: JPG, PNG, WEBP. Tamanho máximo: 10MB. A foto escolhida da
-                  biblioteca é copiada para o case ao salvar.
-                </p>
-              </div>
+              ) : (
+                /* Para novo projeto ainda não salvo: foto de capa inicial */
+                <div className="space-y-2 p-4 bg-frost rounded-2xl border border-slate-200/80">
+                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <ImageIcon className="w-4 h-4 text-solar-600" />
+                    Foto de Capa Inicial (opcional)
+                  </label>
+                  <p className="text-[10px] text-slate-500 leading-snug">
+                    Você pode subir a foto principal agora. Após salvar o projeto, você poderá
+                    adicionar mais fotos e ordenar a galeria.
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-midnight-950 file:text-white hover:file:bg-midnight-900 cursor-pointer"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setPickerMode('capa')
+                        setPickerOpen(true)
+                      }}
+                      disabled={pickerLoadingId !== null}
+                      className="rounded-xl text-xs h-9 border-solar-400/60 text-solar-700 hover:bg-solar-50 shrink-0 w-full sm:w-auto"
+                      title="Escolher a capa entre as fotos já enviadas na Biblioteca de Mídia"
+                    >
+                      <FolderOpen className="w-3.5 h-3.5 mr-1.5 shrink-0" />
+                      {pickerLoadingId ? 'Carregando foto...' : 'Usar foto da biblioteca'}
+                    </Button>
+                    {fotoPreview && (
+                      <div className="relative">
+                        <img
+                          src={fotoPreview}
+                          alt="Preview"
+                          className="w-20 h-14 object-cover rounded-xl border border-slate-300 shadow-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoverFoto}
+                          title="Remover foto"
+                          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md hover:bg-red-700"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Data Entrega, Status & Destaque */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
@@ -846,7 +1145,7 @@ export default function AdminCasesTab({
                   disabled={submitting}
                   className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-xl text-xs shadow-md"
                 >
-                  {submitting ? 'Salvando...' : editingCase ? 'Atualizar Case' : 'Criar Case'}
+                  {submitting ? 'Salvando...' : editingCase ? 'Atualizar Projeto' : 'Criar Projeto'}
                 </Button>
               </div>
             </form>
