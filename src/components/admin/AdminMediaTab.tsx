@@ -77,8 +77,6 @@ const GALERIA_VAZIA = {
   potencia: '',
   tipo_obra: '' as TipoObraGaleria | '',
   alt_texto: '',
-  obra_titulo: '',
-  obra_descricao: '',
   publicado_galeria: false,
   destaque_galeria: false,
 }
@@ -109,14 +107,13 @@ export default function AdminMediaTab({
   const filePickerRef = useRef<HTMLInputElement>(null)
 
   // Edit State & Modal
-  // Campos da galeria pública de obras
+  // Campos da galeria pública de projetos
   const [editGaleria, setEditGaleria] = useState(GALERIA_VAZIA)
 
   const [editingItem, setEditingItem] = useState<MediaRecord | null>(null)
   const [editTitulo, setEditTitulo] = useState('')
   const [editCategoria, setEditCategoria] = useState<MediaCategoria>('Geral')
   const [editDescricao, setEditDescricao] = useState('')
-  const [editDestinoSugerido, setEditDestinoSugerido] = useState('')
   const [editCaseId, setEditCaseId] = useState<string>('')
   const [editArquivoFile, setEditArquivoFile] = useState<File | null>(null)
   const [editPreview, setEditPreview] = useState<string | null>(null)
@@ -133,7 +130,6 @@ export default function AdminMediaTab({
   const [titulo, setTitulo] = useState('')
   const [categoria, setCategoria] = useState<MediaCategoria>('Geral')
   const [descricao, setDescricao] = useState('')
-  const [destinoSugerido, setDestinoSugerido] = useState('')
   const [arquivoFile, setArquivoFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
 
@@ -181,7 +177,6 @@ export default function AdminMediaTab({
     setTitulo('')
     setCategoria('Geral')
     setDescricao('')
-    setDestinoSugerido('')
     setArquivoFile(null)
     setPreview(null)
     setModalOpen(true)
@@ -192,7 +187,6 @@ export default function AdminMediaTab({
     setEditTitulo(item.titulo || '')
     setEditCategoria(item.categoria || 'Geral')
     setEditDescricao(item.descricao || '')
-    setEditDestinoSugerido(item.destino_sugerido || '')
     setEditArquivoFile(null)
     setEditPreview(null)
     // Carrega os dados já preenchidos da galeria (migração 0032 preencheu
@@ -204,8 +198,6 @@ export default function AdminMediaTab({
       potencia: item.potencia || '',
       tipo_obra: item.tipo_obra || '',
       alt_texto: item.alt_texto || '',
-      obra_titulo: item.obra_titulo || '',
-      obra_descricao: item.obra_descricao || '',
       publicado_galeria: Boolean(item.publicado_galeria),
       destaque_galeria: Boolean(item.destaque_galeria),
     })
@@ -254,7 +246,7 @@ export default function AdminMediaTab({
     ) {
       toast({
         variant: 'destructive',
-        title: 'Faltam dados da obra',
+        title: 'Faltam dados do projeto',
         description:
           'Para publicar na galeria, informe pelo menos a cidade e a potência. Sem elas a foto não aparece em Projetos Realizados (/projetos).',
       })
@@ -268,7 +260,6 @@ export default function AdminMediaTab({
         titulo: editTitulo.trim(),
         categoria: editCategoria,
         descricao: editDescricao.trim(),
-        destino_sugerido: editDestinoSugerido.trim(),
         case_id: editCaseId || '',
       }
       if (editArquivoFile) {
@@ -277,7 +268,7 @@ export default function AdminMediaTab({
 
       await updateMedia(editingItem.id, payload)
 
-      // 1b. Dados da obra / publicação da galeria
+      // 1b. Publicação na galeria — título e descrição únicos (os mesmos do card)
       await updateMediaGaleria(editingItem.id, {
         cidade: editGaleria.cidade,
         bairro: editGaleria.bairro,
@@ -285,8 +276,8 @@ export default function AdminMediaTab({
         potencia: editGaleria.potencia,
         tipo_obra: editGaleria.tipo_obra,
         alt_texto: editGaleria.alt_texto,
-        obra_titulo: editGaleria.obra_titulo,
-        obra_descricao: editGaleria.obra_descricao,
+        obra_titulo: editTitulo.trim(),
+        obra_descricao: editDescricao.trim(),
         publicado_galeria: editGaleria.publicado_galeria,
         destaque_galeria: editGaleria.destaque_galeria,
       })
@@ -323,12 +314,6 @@ export default function AdminMediaTab({
         // Tenta inferir nome amigável a partir do arquivo
         const formattedTitle = formatFilenameToTitle(file.name)
         setTitulo(formattedTitle)
-      }
-      if (!destinoSugerido) {
-        const matchCase = findMatchingCase(file.name, casesList)
-        if (matchCase) {
-          setDestinoSugerido(buildDestinoSugerido(matchCase))
-        }
       }
     }
   }
@@ -370,7 +355,6 @@ export default function AdminMediaTab({
         arquivo: arquivoFile,
         categoria,
         descricao: descricao.trim(),
-        destino_sugerido: destinoSugerido.trim(),
       }
 
       await createMedia(payload)
@@ -482,7 +466,7 @@ export default function AdminMediaTab({
       })
 
       toast({
-        title: 'Case criado em rascunho!',
+        title: 'Projeto criado em rascunho!',
         description: `"${derivado.titulo}" foi criado com esta foto como capa. Revise os dados e publique quando estiver pronto.`,
       })
       onRefresh()
@@ -490,9 +474,9 @@ export default function AdminMediaTab({
       console.error('Erro ao criar case a partir da mídia:', err)
       toast({
         variant: 'destructive',
-        title: 'Erro ao criar case',
+        title: 'Erro ao criar projeto',
         description:
-          (err as Error)?.message || 'Não foi possível criar o case a partir desta foto.',
+          (err as Error)?.message || 'Não foi possível criar o projeto a partir desta foto.',
       })
     } finally {
       setVirandoCaseId(null)
@@ -527,7 +511,7 @@ export default function AdminMediaTab({
             Acervo de Fotos para Reuso no Site
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Suba fotos reais de obras, usinas, baterias BESS e equipamentos uma única vez. Elas
+            Suba fotos reais de projetos, usinas, baterias BESS e equipamentos uma única vez. Elas
             ficam armazenadas com URL permanente e pronta para substituir os placeholders nas
             páginas de soluções e segmentos.
           </p>
@@ -588,7 +572,7 @@ export default function AdminMediaTab({
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por título, destino sugerido ou descrição..."
+            placeholder="Buscar por título, projeto ou descrição..."
             className="pl-9 h-10 rounded-xl bg-frost border-slate-200 text-xs sm:text-sm"
           />
         </div>
@@ -711,14 +695,16 @@ export default function AdminMediaTab({
                     disabled={virandoCaseId === item.id}
                     onClick={() => handleVirarCase(item)}
                     className="w-full text-[11px] h-8 px-2 bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-lg shadow-sm flex items-center justify-center gap-1"
-                    title="Criar um case novo em rascunho usando esta foto como capa (título e local vêm do nome do arquivo)"
+                    title="Criar um projeto novo em rascunho usando esta foto como capa (título e local vêm do nome do arquivo)"
                   >
                     {virandoCaseId === item.id ? (
                       <div className="w-3.5 h-3.5 border-2 border-midnight-900 border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <Award className="w-3.5 h-3.5" />
                     )}
-                    <span>{virandoCaseId === item.id ? 'Criando case...' : 'Virar case'}</span>
+                    <span>
+                      {virandoCaseId === item.id ? 'Criando projeto...' : 'Criar projeto'}
+                    </span>
                   </Button>
                   <div className="flex items-center justify-end gap-1">
                     <Button
@@ -796,53 +782,114 @@ export default function AdminMediaTab({
               </Button>
             </div>
 
-            <form
-              onSubmit={handleSaveEdit}
-              className="space-y-4 flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-5 sm:px-8"
-            >
-              {/* Preview e Troca de Arquivo */}
-              <div className="p-4 bg-frost rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
-                <div className="w-28 h-20 bg-slate-900 rounded-xl overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
-                  <img
-                    src={editPreview || getMediaFileUrl(editingItem, 'leve')}
-                    alt={editTitulo}
-                    className="w-full h-full object-cover"
-                  />
+            <form onSubmit={handleSaveEdit} className="flex-1 min-h-0 flex flex-col">
+              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-5 sm:px-8 space-y-4">
+                {/* Preview e Troca de Arquivo */}
+                <div className="p-4 bg-frost rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="w-28 h-20 bg-slate-900 rounded-xl overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
+                    <img
+                      src={editPreview || getMediaFileUrl(editingItem, 'leve')}
+                      alt={editTitulo}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 text-left space-y-1.5">
+                    <span className="text-xs font-bold text-slate-800 block">
+                      Substituir arquivo da foto (opcional)
+                    </span>
+                    <p className="text-[11px] text-slate-500">
+                      Arquivo atual:{' '}
+                      <span className="font-mono text-slate-700">{editingItem.arquivo}</span>
+                    </p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleEditFileChange}
+                      className="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 cursor-pointer"
+                    />
+                  </div>
                 </div>
-                <div className="flex-1 text-left space-y-1.5">
-                  <span className="text-xs font-bold text-slate-800 block">
-                    Substituir arquivo da foto (opcional)
+
+                {/* Topo: Projeto Vinculado + Publicar (definem a publicação na galeria) */}
+                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">
+                    Galeria pública de projetos
                   </span>
-                  <p className="text-[11px] text-slate-500">
-                    Arquivo atual:{' '}
-                    <span className="font-mono text-slate-700">{editingItem.arquivo}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-2">
+                    <div className="space-y-1 flex-1">
+                      <label className="text-[11px] font-bold text-slate-700">
+                        Projeto Vinculado
+                      </label>
+                      <select
+                        value={editCaseId}
+                        onChange={(e) => {
+                          const selectedId = e.target.value
+                          setEditCaseId(selectedId)
+                          if (selectedId) {
+                            const targetCase = casesList.find((c) => c.id === selectedId)
+                            if (targetCase) {
+                              // Se vinculou a projeto, preencher dados do card caso vazios
+                              const partesLocal = (targetCase.local || '').split(/[/-]/)
+                              const cid = partesLocal[0]?.trim() || ''
+                              const uf = partesLocal[1]?.trim() || 'RS'
+                              setEditGaleria((prev) => ({
+                                ...prev,
+                                publicado_galeria: true,
+                                cidade: prev.cidade || cid,
+                                uf: prev.uf || uf,
+                                potencia: prev.potencia || targetCase.potencia_capacidade || '',
+                              }))
+                            }
+                          }
+                        }}
+                        className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                      >
+                        <option value="">Nenhum / Não vinculado</option>
+                        {casesList.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.cliente
+                              ? `${c.cliente} (${c.potencia_capacidade || c.local || ''})`
+                              : c.titulo}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <label className="flex items-center gap-1.5 shrink-0 cursor-pointer sm:pb-2.5">
+                      <input
+                        type="checkbox"
+                        checked={editGaleria.publicado_galeria}
+                        onChange={(e) =>
+                          setEditGaleria((p) => ({ ...p, publicado_galeria: e.target.checked }))
+                        }
+                        className="w-4 h-4 rounded border-slate-300 text-emerald-600 cursor-pointer"
+                      />
+                      <span className="text-[11px] font-bold text-slate-700">Publicar</span>
+                    </label>
+                  </div>
+                  <p className="text-[11px] text-amber-900/80 leading-snug">
+                    A foto aparece em <strong>/projetos</strong> quando está{' '}
+                    <strong>Publicada</strong> e vinculada a um projeto no campo{' '}
+                    <strong>Projeto Vinculado</strong>.
                   </p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleEditFileChange}
-                    className="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 cursor-pointer"
-                  />
                 </div>
-              </div>
 
-              {/* Título */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">Título / Identificador *</label>
-                <Input
-                  value={editTitulo}
-                  onChange={(e) => setEditTitulo(e.target.value)}
-                  placeholder="Ex: Instalação usina de solo Erechim 300 kWp"
-                  required
-                  className="rounded-xl text-xs sm:text-sm"
-                />
-                <p className="text-[11px] text-slate-400">
-                  Nome amigável da foto. Evite nomes de clientes que não correspondam à obra real.
-                </p>
-              </div>
+                {/* Título (único — o mesmo do card) */}
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Título do card *</label>
+                  <Input
+                    value={editTitulo}
+                    onChange={(e) => setEditTitulo(e.target.value)}
+                    placeholder="Ex: Cassul Distribuidora — usina de 155 kWp"
+                    required
+                    className="rounded-xl text-xs sm:text-sm"
+                  />
+                  <p className="text-[11px] text-slate-400">
+                    Nome amigável da foto. Evite nomes de clientes que não correspondam ao projeto
+                    real.
+                  </p>
+                </div>
 
-              {/* Categoria e Case Vinculado */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Categoria */}
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-slate-700">Categoria</label>
                   <select
@@ -858,201 +905,96 @@ export default function AdminMediaTab({
                   </select>
                 </div>
 
+                {/* Descrição (única — a mesma do card) */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                    Projeto Vinculado (case_id)
-                  </label>
-                  <p className="text-[10px] text-amber-700 font-semibold">
-                    Define se a foto aparece na galeria pública de /projetos
+                  <label className="text-xs font-bold text-slate-700">Descrição do card</label>
+                  <textarea
+                    value={editDescricao}
+                    onChange={(e) => setEditDescricao(e.target.value)}
+                    rows={2}
+                    placeholder="Detalhes da foto: tipo de estrutura, módulos solares, ângulo..."
+                    className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                  />
+                  <p className="text-[10px] text-slate-500">
+                    Exibida no card da galeria de projetos, abaixo do título.
                   </p>
-                  <select
-                    value={editCaseId}
-                    onChange={(e) => {
-                      const selectedId = e.target.value
-                      setEditCaseId(selectedId)
-                      if (selectedId) {
-                        const targetCase = casesList.find((c) => c.id === selectedId)
-                        if (targetCase) {
-                          setEditDestinoSugerido(
-                            `Projeto ${targetCase.cliente || targetCase.titulo} / ${targetCase.setor || 'Solar'}`,
-                          )
-                          // Se vinculou a projeto, preencher dados da obra caso vazios
-                          const partesLocal = (targetCase.local || '').split(/[/-]/)
-                          const cid = partesLocal[0]?.trim() || ''
-                          const uf = partesLocal[1]?.trim() || 'RS'
-                          setEditGaleria((prev) => ({
-                            ...prev,
-                            publicado_galeria: true,
-                            cidade: prev.cidade || cid,
-                            uf: prev.uf || uf,
-                            potencia: prev.potencia || targetCase.potencia_capacidade || '',
-                          }))
-                        }
-                      }
-                    }}
-                    className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
-                  >
-                    <option value="">Nenhum / Não vinculado</option>
-                    {casesList.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.cliente
-                          ? `${c.cliente} (${c.potencia_capacidade || c.local || ''})`
-                          : c.titulo}
-                      </option>
-                    ))}
-                  </select>
                 </div>
-              </div>
 
-              {/* Destino Sugerido */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">
-                  Destino Sugerido / Onde Usar
-                </label>
-                <Input
-                  value={editDestinoSugerido}
-                  onChange={(e) => setEditDestinoSugerido(e.target.value)}
-                  placeholder="Ex: Case Cassul / Solução Solar / Comércio"
-                  className="rounded-xl text-xs"
-                />
-              </div>
-
-              {/* Descrição */}
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">Descrição / Legenda</label>
-                <textarea
-                  value={editDescricao}
-                  onChange={(e) => setEditDescricao(e.target.value)}
-                  rows={2}
-                  placeholder="Detalhes da foto: tipo de estrutura, módulos solares, ângulo..."
-                  className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
-                />
-              </div>
-
-              {/* ---- Galeria pública /projetos ---- */}
-              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 space-y-3">
-                <div className="flex items-start justify-between gap-3">
+                {/* Complementos do card (opcionais) */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">
-                      Galeria pública de obras
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
+                      Complementos do card (opcional)
                     </span>
-                    <p className="text-[11px] text-amber-900/80 leading-snug mt-0.5">
-                      A foto aparece em <strong>/projetos</strong> quando está{' '}
-                      <strong>Publicada</strong> e vinculada a um projeto no campo{' '}
-                      <strong>Projeto Vinculado</strong> (no topo do formulário). Cidade, potência e
-                      tipo de obra são os complementos exibidos no card da galeria.
+                    <p className="text-[11px] text-slate-500 leading-snug mt-0.5">
+                      Cidade e potência são obrigatórias para publicar; bairro, UF e tipo completam
+                      o card da galeria.
                     </p>
                   </div>
-                  <label className="flex items-center gap-1.5 shrink-0 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={editGaleria.publicado_galeria}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-slate-700">Cidade</label>
+                      <Input
+                        value={editGaleria.cidade}
+                        onChange={(e) => setEditGaleria((p) => ({ ...p, cidade: e.target.value }))}
+                        placeholder="Erechim"
+                        className="rounded-xl text-xs h-9"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-slate-700">UF</label>
+                      <Input
+                        value={editGaleria.uf}
+                        onChange={(e) => setEditGaleria((p) => ({ ...p, uf: e.target.value }))}
+                        placeholder="RS"
+                        maxLength={2}
+                        className="rounded-xl text-xs h-9"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-slate-700">Bairro</label>
+                      <Input
+                        value={editGaleria.bairro}
+                        onChange={(e) => setEditGaleria((p) => ({ ...p, bairro: e.target.value }))}
+                        placeholder="Fátima"
+                        className="rounded-xl text-xs h-9"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-slate-700">Potência</label>
+                      <Input
+                        value={editGaleria.potencia}
+                        onChange={(e) =>
+                          setEditGaleria((p) => ({ ...p, potencia: e.target.value }))
+                        }
+                        placeholder="155,0 kWp"
+                        className="rounded-xl text-xs h-9"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-700">Tipo de projeto</label>
+                    <select
+                      value={editGaleria.tipo_obra}
                       onChange={(e) =>
-                        setEditGaleria((p) => ({ ...p, publicado_galeria: e.target.checked }))
+                        setEditGaleria((p) => ({
+                          ...p,
+                          tipo_obra: e.target.value as TipoObraGaleria | '',
+                        }))
                       }
-                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 cursor-pointer"
-                    />
-                    <span className="text-[11px] font-bold text-slate-700">Publicar</span>
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">
-                      Nome da obra (aparece no card)
-                    </label>
-                    <Input
-                      value={editGaleria.obra_titulo}
-                      onChange={(e) =>
-                        setEditGaleria((p) => ({ ...p, obra_titulo: e.target.value }))
-                      }
-                      placeholder="Cassul Distribuidora"
-                      className="rounded-xl text-xs h-9"
-                    />
-                    <p className="text-[10px] text-slate-500">
-                      Deixe em branco que o site usa o nome do cliente do texto alternativo.
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">
-                      Descrição da obra (opcional)
-                    </label>
-                    <textarea
-                      value={editGaleria.obra_descricao}
-                      onChange={(e) =>
-                        setEditGaleria((p) => ({ ...p, obra_descricao: e.target.value }))
-                      }
-                      rows={2}
-                      placeholder="Cobertura metálica com 280 módulos, inversores string e monitoramento remoto."
-                      className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
-                    />
+                      className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                    >
+                      <option value="">Não informado</option>
+                      {TIPOS_OBRA.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">Cidade</label>
-                    <Input
-                      value={editGaleria.cidade}
-                      onChange={(e) => setEditGaleria((p) => ({ ...p, cidade: e.target.value }))}
-                      placeholder="Erechim"
-                      className="rounded-xl text-xs h-9"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">
-                      Bairro (opcional)
-                    </label>
-                    <Input
-                      value={editGaleria.bairro}
-                      onChange={(e) => setEditGaleria((p) => ({ ...p, bairro: e.target.value }))}
-                      placeholder="Fátima"
-                      className="rounded-xl text-xs h-9"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">UF</label>
-                    <Input
-                      value={editGaleria.uf}
-                      onChange={(e) => setEditGaleria((p) => ({ ...p, uf: e.target.value }))}
-                      placeholder="RS"
-                      maxLength={2}
-                      className="rounded-xl text-xs h-9"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-bold text-slate-700">Potência</label>
-                    <Input
-                      value={editGaleria.potencia}
-                      onChange={(e) => setEditGaleria((p) => ({ ...p, potencia: e.target.value }))}
-                      placeholder="155,0 kWp"
-                      className="rounded-xl text-xs h-9"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Tipo de obra</label>
-                  <select
-                    value={editGaleria.tipo_obra}
-                    onChange={(e) =>
-                      setEditGaleria((p) => ({
-                        ...p,
-                        tipo_obra: e.target.value as TipoObraGaleria | '',
-                      }))
-                    }
-                    className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
-                  >
-                    <option value="">Não informado</option>
-                    {TIPOS_OBRA.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
+                {/* Texto alternativo (SEO) */}
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700">
                     Texto alternativo da foto (SEO)
@@ -1066,13 +1008,13 @@ export default function AdminMediaTab({
                   />
                   <p className="text-[10px] text-slate-500">
                     Deixe em branco para o site gerar automaticamente a partir de cidade, potência e
-                    tipo de obra.
+                    tipo de projeto.
                   </p>
                 </div>
               </div>
 
-              {/* Ações */}
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+              {/* Ações — rodapé sempre visível */}
+              <div className="shrink-0 px-6 py-4 sm:px-8 border-t border-slate-100 bg-white flex items-center justify-end gap-3">
                 <Button
                   type="button"
                   variant="outline"
@@ -1475,31 +1417,19 @@ export default function AdminMediaTab({
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700">Categoria</label>
-                  <select
-                    value={categoria}
-                    onChange={(e) => setCategoria(e.target.value as MediaCategoria)}
-                    className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
-                  >
-                    {MEDIA_CATEGORIAS.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700">Destino Sugerido</label>
-                  <Input
-                    value={destinoSugerido}
-                    onChange={(e) => setDestinoSugerido(e.target.value)}
-                    placeholder="Ex: Página BESS, Segmento Agro"
-                    className="rounded-xl text-xs"
-                  />
-                </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700">Categoria</label>
+                <select
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value as MediaCategoria)}
+                  className="w-full h-10 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
+                >
+                  {MEDIA_CATEGORIAS.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Descrição */}
@@ -1509,7 +1439,7 @@ export default function AdminMediaTab({
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                   rows={2}
-                  placeholder="Detalhes da foto: ângulo, obra, equipamentos retratados..."
+                  placeholder="Detalhes da foto: ângulo, instalação, equipamentos retratados..."
                   className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
                 />
               </div>
