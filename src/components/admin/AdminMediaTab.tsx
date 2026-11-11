@@ -705,24 +705,22 @@ export default function AdminMediaTab({
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2">
+                <div className="p-3 border-t border-slate-100 bg-slate-50/50 flex flex-col gap-2">
                   <Button
-                    variant="ghost"
                     size="sm"
                     disabled={virandoCaseId === item.id}
                     onClick={() => handleVirarCase(item)}
-                    className="text-[11px] h-7 px-2 text-solar-700 hover:text-solar-800 hover:bg-solar-50 flex items-center gap-1"
+                    className="w-full text-[11px] h-8 px-2 bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold rounded-lg shadow-sm flex items-center justify-center gap-1"
                     title="Criar um case novo em rascunho usando esta foto como capa (título e local vêm do nome do arquivo)"
                   >
                     {virandoCaseId === item.id ? (
-                      <div className="w-3.5 h-3.5 border-2 border-solar-500 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-3.5 h-3.5 border-2 border-midnight-900 border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <Award className="w-3.5 h-3.5" />
                     )}
-                    <span>{virandoCaseId === item.id ? 'Criando...' : 'Virar case'}</span>
+                    <span>{virandoCaseId === item.id ? 'Criando case...' : 'Virar case'}</span>
                   </Button>
-
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-end gap-1">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -737,7 +735,6 @@ export default function AdminMediaTab({
                       )}
                       <span>{isCopied ? 'Copiado!' : 'URL'}</span>
                     </Button>
-
                     <Button
                       variant="ghost"
                       size="sm"
@@ -748,7 +745,6 @@ export default function AdminMediaTab({
                       <Edit2 className="w-3.5 h-3.5 text-slate-500" />
                       <span>Editar</span>
                     </Button>
-
                     {urlOriginal && (
                       <a
                         href={urlOriginal}
@@ -760,7 +756,6 @@ export default function AdminMediaTab({
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
-
                     <button
                       type="button"
                       disabled={deletingId === item.id}
@@ -780,26 +775,31 @@ export default function AdminMediaTab({
 
       {/* Modal Edição de Imagem */}
       {editingItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full my-6 overflow-hidden shadow-2xl border border-slate-100 space-y-6 p-6 sm:p-8 animate-fade-in-up">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-midnight-950/80 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] my-auto">
+            <div className="shrink-0 flex items-center justify-between gap-3 px-6 py-4 sm:px-8 border-b border-slate-100 bg-white">
+              <div className="min-w-0">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-solar-600 block">
                   Editar Imagem da Biblioteca
                 </span>
-                <h3 className="text-xl font-extrabold text-slate-900">Editar Detalhes da Imagem</h3>
+                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 truncate">
+                  Editar Detalhes da Imagem
+                </h3>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleCloseEdit}
-                className="text-slate-400 hover:text-slate-900"
+                className="text-slate-400 hover:text-slate-900 shrink-0"
               >
                 ✕
               </Button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className="space-y-4">
+            <form
+              onSubmit={handleSaveEdit}
+              className="space-y-4 flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 py-5 sm:px-8"
+            >
               {/* Preview e Troca de Arquivo */}
               <div className="p-4 bg-frost rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
                 <div className="w-28 h-20 bg-slate-900 rounded-xl overflow-hidden shrink-0 border border-slate-200 flex items-center justify-center">
@@ -859,9 +859,13 @@ export default function AdminMediaTab({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-700">
+                  <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
                     Projeto Vinculado (case_id)
                   </label>
+                  <p className="text-[10px] text-amber-700 font-semibold">
+                    Define se a foto aparece na galeria pública de /projetos
+                  </p>
                   <select
                     value={editCaseId}
                     onChange={(e) => {
@@ -934,9 +938,10 @@ export default function AdminMediaTab({
                       Galeria pública de obras
                     </span>
                     <p className="text-[11px] text-amber-900/80 leading-snug mt-0.5">
-                      Preencha cidade e potência para a foto aparecer em <strong>/projetos</strong>.
-                      Fotos com a mesma cidade, potência e tipo viram{' '}
-                      <strong>um único card da obra</strong>.
+                      A foto aparece em <strong>/projetos</strong> quando está{' '}
+                      <strong>Publicada</strong> e vinculada a um projeto no campo{' '}
+                      <strong>Projeto Vinculado</strong> (no topo do formulário). Cidade, potência e
+                      tipo de obra são os complementos exibidos no card da galeria.
                     </p>
                   </div>
                   <label className="flex items-center gap-1.5 shrink-0 cursor-pointer">
