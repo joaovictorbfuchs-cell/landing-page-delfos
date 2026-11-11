@@ -249,7 +249,7 @@ export default function AdminCasesTab({
         file.name,
         projectPhotos.length + 1,
       )
-      // Atualiza metadados complementares de obra se possível
+      // Atualiza metadados complementares de projeto se possível
       const partesLocal = (editingCase.local || local || '').split(/[/-]/)
       const cid = partesLocal[0]?.trim() || ''
       const uf = partesLocal[1]?.trim() || 'RS'
@@ -478,7 +478,7 @@ export default function AdminCasesTab({
             </span>
           </div>
           <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            Projetos Realizados e Obras da Delfos
+            Projetos Realizados da Delfos
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
             Projetos com status &ldquo;publicado&rdquo; são exibidos automaticamente na página
@@ -500,21 +500,23 @@ export default function AdminCasesTab({
         {loading ? (
           <div className="p-12 text-center text-slate-500">
             <div className="w-6 h-6 border-2 border-solar-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-            Carregando cases do banco de dados...
+            Carregando projetos do banco de dados...
           </div>
         ) : cases.length === 0 ? (
           <div className="p-12 text-center space-y-3">
             <Award className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">Nenhum case cadastrado no banco</h3>
+            <h3 className="text-base font-bold text-slate-800">
+              Nenhum projeto cadastrado no banco
+            </h3>
             <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Clique em "Novo Case" para adicionar seu primeiro projeto auditado com foto via
-              upload. O site exibe os cases padrão do acervo até novos serem cadastrados!
+              Clique em "Novo Projeto" para adicionar seu primeiro projeto com foto via upload. O
+              site exibe os projetos padrão do acervo até novos serem cadastrados!
             </p>
             <Button
               onClick={handleOpenCreate}
               className="bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-xs rounded-xl"
             >
-              Criar Primeiro Case
+              Criar Primeiro Projeto
             </Button>
           </div>
         ) : (

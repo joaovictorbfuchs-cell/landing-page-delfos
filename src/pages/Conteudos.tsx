@@ -295,7 +295,7 @@ export default function Conteudos() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                           <div className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-midnight-950/85 text-[10px] font-bold text-solar-300 border border-white/15 backdrop-blur-sm">
-                            Obra Delfos Solar
+                            Projeto Delfos Solar
                           </div>
                         </div>
                       )

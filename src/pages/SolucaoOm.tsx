@@ -166,7 +166,7 @@ export default function SolucaoOm() {
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
                   Diferente de empresas que somem após a instalação, a Delfos cuida da sua usina
-                  depois que a obra termina. Monitoramento contínuo, limpeza técnica e inspeção
+                  depois que o projeto termina. Monitoramento contínuo, limpeza técnica e inspeção
                   térmica por drone para garantir que a usina gere o máximo de economia no seu
                   bolso.
                 </p>

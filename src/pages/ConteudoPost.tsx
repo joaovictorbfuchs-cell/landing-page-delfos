@@ -489,7 +489,7 @@ export default function ConteudoPost() {
                 />
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-midnight-950/85 text-solar-300 text-xs font-bold border border-white/15 backdrop-blur-sm">
                   <Sun className="w-3.5 h-3.5 text-solar-400" />
-                  <span>Obra Real Delfos Solar</span>
+                  <span>Projeto Real Delfos Solar</span>
                 </div>
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-midnight-950/90 via-midnight-950/50 to-transparent p-4 sm:p-5 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                   <div>
@@ -510,7 +510,7 @@ export default function ConteudoPost() {
               <figcaption className="text-xs text-slate-500 mt-2.5 px-2 flex items-center justify-between">
                 <span>{fotoAlt}</span>
                 <span className="text-[11px] text-slate-400 font-medium">
-                  Acervo de Obras da Delfos Engenharia
+                  Acervo de Projetos da Delfos Engenharia
                 </span>
               </figcaption>
             </figure>

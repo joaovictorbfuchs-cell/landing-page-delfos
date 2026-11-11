@@ -30,7 +30,7 @@ import { cn } from '@/lib/utils'
 
 const BASE_URL = 'https://www.delfos.eng.br'
 
-/** Card de projeto: case publicado + as fotos da obra na biblioteca de mídia. */
+/** Card de projeto: case publicado + as fotos do projeto na biblioteca de mídia. */
 interface ProjetoCard {
   caseRecord: CaseRecord
   obra: ObraGaleria | null
@@ -54,7 +54,7 @@ function ufDoCase(local: string | undefined): string {
   return (partes[1] || '').trim()
 }
 
-/** Mesma potência (25,0 kWp == 25 kWp) e mesma cidade identificam a obra do case. */
+/** Mesma potência (25,0 kWp == 25 kWp) e mesma cidade identificam o projeto do case. */
 function mesmaObra(caseItem: CaseRecord, obra: ObraGaleria): boolean {
   const potCase = potenciaNumerica(caseItem.potencia_capacidade || '')
   const potObra = potenciaNumerica(obra.potencia || '')
@@ -62,12 +62,12 @@ function mesmaObra(caseItem: CaseRecord, obra: ObraGaleria): boolean {
   return cidadeDoCase(caseItem.local).toLowerCase() === (obra.cidade || '').toLowerCase()
 }
 
-/** Alt padronizado: tipo + potência + cidade — obra executada pela Delfos Engenharia. */
+/** Alt padronizado: tipo + potência + cidade — projeto executado pela Delfos Engenharia. */
 function altObra(tipo: string, potencia: string, local: string | undefined): string {
   const sujeito = tipo ? `${tipo} solar fotovoltaico` : 'Instalação solar fotovoltaica'
   const pot = potencia ? ` de ${potencia}` : ''
   const loc = local ? ` em ${local}` : ''
-  return `${sujeito}${pot}${loc} — obra executada pela Delfos Engenharia`
+  return `${sujeito}${pot}${loc} — projeto executado pela Delfos Engenharia`
 }
 
 export default function ProjetosRealizados() {
@@ -253,7 +253,7 @@ export default function ProjetosRealizados() {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
       '@id': `${BASE_URL}/projetos#galeria-imagens`,
-      name: 'Fotos das obras executadas pela Delfos Engenharia',
+      name: 'Fotos dos projetos executados pela Delfos Engenharia',
       numberOfItems: itens.length,
       itemListElement: itens.map((item, i) => ({
         '@type': 'ListItem',
@@ -268,8 +268,8 @@ export default function ProjetosRealizados() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <SeoMeta
-        title="Projetos Realizados | Obras e Cases da Delfos Energia Solar"
-        description="Projetos reais executados pela Delfos Engenharia: usinas solares fotovoltaicas, BESS, carregadores veiculares e O&M com fotos das obras, potência instalada, cidade e data de entrega."
+        title="Projetos Realizados | Delfos Energia Solar"
+        description="Projetos reais executados pela Delfos Engenharia: usinas solares fotovoltaicas, BESS, carregadores veiculares e O&M com fotos reais, potência instalada, cidade e data de entrega."
         canonicalPath="/projetos"
         ogType="website"
         schemaJsonLd={imagensSchema}
@@ -283,7 +283,7 @@ export default function ProjetosRealizados() {
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-amber-100/70 text-amber-950 border border-amber-200 mb-4 shadow-sm">
               <Images className="w-3.5 h-3.5" />
-              <span>Fotos reais de obras entregues</span>
+              <span>Fotos reais de projetos entregues</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-midnight-950 tracking-tight leading-tight mb-4">
@@ -291,21 +291,21 @@ export default function ProjetosRealizados() {
             </h1>
 
             <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-              Cada card é uma obra entregue pela nossa equipe, com potência instalada, localização e
-              fotos reais. Clique para navegar pela galeria de cada projeto.
+              Cada card é um projeto entregue pela nossa equipe, com potência instalada, localização
+              e fotos reais. Clique para navegar pela galeria de cada projeto.
             </p>
 
             {!carregando && projetos.length > 0 && (
               <p className="text-sm text-slate-500 mt-4">
                 <strong className="text-slate-800">{projetos.length}</strong>{' '}
                 {projetos.length === 1 ? 'projeto publicado' : 'projetos publicados'} ·{' '}
-                <strong className="text-slate-800">{totalFotos}</strong> fotos das obras
+                <strong className="text-slate-800">{totalFotos}</strong> fotos dos projetos
               </p>
             )}
           </div>
         </section>
 
-        {/* Grade de projetos (estética da galeria de obras) */}
+        {/* Grade de projetos (estética da galeria de projetos) */}
         <section className="px-4 sm:px-6 py-8 sm:py-10">
           <div className="max-w-6xl mx-auto">
             {carregando ? (
@@ -329,7 +329,7 @@ export default function ProjetosRealizados() {
                 <h2 className="text-lg font-bold text-slate-800 mb-2">Galeria em preparação</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   Estamos organizando as fotos dos projetos com cidade, potência e tipo de
-                  instalação. Fale com a nossa engenharia para conhecer obras na sua região.
+                  instalação. Fale com a nossa engenharia para conhecer projetos na sua região.
                 </p>
               </div>
             ) : (
@@ -551,7 +551,7 @@ export default function ProjetosRealizados() {
                   </div>
                   <div>
                     <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
-                      Tipo de obra
+                      Tipo de projeto
                     </span>
                     <strong className="text-slate-800">
                       {projetoAberto.obra?.tipo || projetoAberto.caseRecord.setor}
@@ -577,7 +577,7 @@ export default function ProjetosRealizados() {
 
                 <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Obra executada e comissionada pela equipe técnica da Delfos.</span>
+                  <span>Projeto executado e comissionado pela equipe técnica da Delfos.</span>
                 </div>
               </div>
             </div>
@@ -592,7 +592,7 @@ export default function ProjetosRealizados() {
                 }}
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-solar-400 hover:bg-solar-500 text-midnight-950 font-bold text-sm transition-colors cursor-pointer"
               >
-                Quero uma obra assim
+                Quero um projeto assim
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button

@@ -129,13 +129,13 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         numero: 'Q3',
         pergunta: 'Loja alugada ou ponto que posso trocar: como fazer solar?',
         respostaRapida:
-          'Sem instalar nada no local: a energia solar por assinatura. Você recebe créditos de uma usina da Delfos que abatem sua conta, com desconto garantido sobre a tarifa — economia imediata, sem investimento, sem obra e sem vínculo com o imóvel. Ao trocar de endereço, o benefício acompanha o CNPJ.',
+          'Sem instalar nada no local: a energia solar por assinatura. Você recebe créditos de uma usina da Delfos que abatem sua conta, com desconto garantido sobre a tarifa — economia imediata, sem investimento, sem reforma e sem vínculo com o imóvel. Ao trocar de endereço, o benefício acompanha o CNPJ.',
         detalheTecnico: [
           'O modelo é a autoconsumo remoto/consórcio da geração distribuída: a usina injeta na rede e os créditos são alocados à sua unidade consumidora. Pontos de atenção no contrato: percentual de desconto sobre a tarifa, prazo, reajuste, taxa de adesão e prazo de carência.',
           'É a solução padrão para franquias, clínicas, academias e varejo em shopping que buscam liquidez imediata.',
         ],
         ctaNota: 'Zero CAPEX e sem intervenção estrutural',
-        ctaTexto: 'Quero economia sem obra',
+        ctaTexto: 'Quero economia sem reforma',
         ctaHref: '/#contato',
       },
       {
@@ -266,7 +266,7 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         respostaRapida:
           'Depende do consumo agregado: sede, bombeamento, resfriamento do leite, secadores, cercas elétricas, freezer. Sistemas rurais vão de 10 kWp (sede + bombas pequenas) a centenas de kWp (grãos, suinocultura, avicultura). A fatura rural e o mapa de consumo dos equipamentos definem o projeto.',
         detalheTecnico: [
-          'Particularidades do rural: padrão de entrada geralmente mais robusto (trifásico), grandes extensões de cabo até os pontos de consumo (perda por queda de tensão a considerar), distância até a subestação da distribuidora e estruturas em solo — que dispensam obra no telhado e facilitam limpeza.',
+          'Particularidades do rural: padrão de entrada geralmente mais robusto (trifásico), grandes extensões de cabo até os pontos de consumo (perda por queda de tensão a considerar), distância até a subestação da distribuidora e estruturas em solo — que dispensam intervenção no telhado e facilitam limpeza.',
           'O enquadramento rural (subclasse da ANEEL) impacta tarifa e compensação; a análise regulatória faz parte do projeto.',
         ],
       },
@@ -322,7 +322,7 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         respostaRapida:
           'A usina no telhado do condomínio gera e os créditos abatem a conta das áreas comuns (bombas, elevadores, iluminação) — o uso mais direto, que reduz a cota do condômino. Para abater também as unidades individuais, o condomínio ou grupo de moradores pode instalar usina remota e alocar créditos às unidades.',
         detalheTecnico: [
-          'Dois modelos: (1) autoconsumo no local — geração abate as áreas comuns, decisão da assembleia, payback geralmente de 3 a 5 anos; (2) autoconsumo remoto — usina em área própria ou usina de assinatura com créditos alocados às unidades individuais ou ao condomínio, sem obra no prédio. A análise parte da conta de áreas comuns e do rateio atual.',
+          'Dois modelos: (1) autoconsumo no local — geração abate as áreas comuns, decisão da assembleia, payback geralmente de 3 a 5 anos; (2) autoconsumo remoto — usina em área própria ou usina de assinatura com créditos alocados às unidades individuais ou ao condomínio, sem intervenção no prédio. A análise parte da conta de áreas comuns e do rateio atual.',
           'O condomínio que gera valoriza o m² e reduz despesa recorrente — argumento forte na venda e locação de unidades.',
         ],
         ctaNota: 'Estudo para redução da cota condominial mensal',
@@ -373,7 +373,7 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         numero: 'Q5',
         pergunta: 'Quem decide e como aprovar o investimento na assembleia?',
         respostaRapida:
-          'A instalação de usina, BESS ou infraestrutura de recarga é obra em área comum: exige aprovação em assembleia conforme o quórum da convenção. O caminho eficiente: apresentar estudo técnico com economia projetada, payback e comparação de modelos (investimento próprio x assinatura) — números convencem mais que discurso.',
+          'A instalação de usina, BESS ou infraestrutura de recarga é intervenção em área comum: exige aprovação em assembleia conforme o quórum da convenção. O caminho eficiente: apresentar estudo técnico com economia projetada, payback e comparação de modelos (investimento próprio x assinatura) — números convencem mais que discurso.',
         detalheTecnico: [
           'Kit para a assembleia: estudo de viabilidade com a fatura atual, projeto preliminar, comparativo de modelos (CAPEX x assinatura de energia x PPP com operadora de recarga), análise jurídica do regulamento e cronograma.',
           'Modelos sem investimento (assinatura ou operadora que instala e cobra por uso) reduzem a barreira da aprovação — o condomínio aprova a operação, não a despesa. A Delfos prepara o material completo para a assembleia.',
@@ -497,9 +497,9 @@ export const FAQ_POR_SEGMENTO: Record<string, FaqSegmentoData> = {
         numero: 'Q3',
         pergunta: 'Quanto custa montar um eletroposto?',
         respostaRapida:
-          'Um posto AC simples (1-2 carregadores) sai a partir de dezenas de milhares de reais incluindo equipamento, obra elétrica e projeto. Um posto DC de alta potência pode passar de centenas de milhares, pela infraestrutura de conexão. O retorno depende do modelo: uso próprio da frota, venda de recarga, ou aluguel de ponto para operadoras.',
+          'Um posto AC simples (1-2 carregadores) sai a partir de dezenas de milhares de reais incluindo equipamento, infraestrutura elétrica e projeto. Um posto DC de alta potência pode passar de centenas de milhares, pela infraestrutura de conexão. O retorno depende do modelo: uso próprio da frota, venda de recarga, ou aluguel de ponto para operadoras.',
         detalheTecnico: [
-          'Composição de custo: carregador (maior item em DC), obra elétrica (transformador, cabos, proteções), projeto e licenças, e tecnologia de gestão (software de pagamento e monitoramento). Modelos de negócio: frota própria (economia x diesel/gasolina), venda de recarga (R$/kWh com margem), publicidade/serviços no ponto de espera, ou leasing para operadora de rede.',
+          'Composição de custo: carregador (maior item em DC), infraestrutura elétrica (transformador, cabos, proteções), projeto e licenças, e tecnologia de gestão (software de pagamento e monitoramento). Modelos de negócio: frota própria (economia x diesel/gasolina), venda de recarga (R$/kWh com margem), publicidade/serviços no ponto de espera, ou leasing para operadora de rede.',
           'O estudo de tráfego e a localização definem a viabilidade — eletroposto é negócio imobiliário antes de ser elétrico.',
         ],
         ctaNota: 'Estudo de payback e retorno por ponto de recarga',

@@ -225,14 +225,14 @@ export default function SolucaoSolar() {
                           'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg'
                         )
                       })()}
-                      alt="Obra real Delfos Engenharia — Cassul 155 kWp em Erechim/RS"
+                      alt="Projeto real Delfos Engenharia — Cassul 155 kWp em Erechim/RS"
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-midnight-950/80 via-transparent to-transparent pointer-events-none" />
                     <span className="absolute bottom-2.5 left-3 text-[11px] font-mono font-bold text-white bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/20">
-                      Obra Real: Cassul Distribuidora • 155 kWp
+                      Projeto Real: Cassul Distribuidora • 155 kWp
                     </span>
                   </div>
 
@@ -358,7 +358,7 @@ export default function SolucaoSolar() {
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
                     Sede operacional em <strong>Erechim/RS</strong>, com equipes de engenharia de
-                    campo e obras entregues em mais de 60 municípios gaúchos e catarinenses (RGE,
+                    campo e projetos entregues em mais de 60 municípios gaúchos e catarinenses (RGE,
                     CEEE e Cooperativas).
                   </p>
                 </div>
@@ -373,13 +373,13 @@ export default function SolucaoSolar() {
           </div>
         </section>
 
-        {/* GALERIA DE INSTALAÇÕES REAIS DE OBRAS DA DELFOS */}
+        {/* GALERIA DE INSTALAÇÕES REAIS DE PROJETOS DA DELFOS */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-solar-600 block mb-1">
-                  Evidência de Obras
+                  Evidência de Projetos
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                   Instalações reais da Delfos Engenharia no Sul

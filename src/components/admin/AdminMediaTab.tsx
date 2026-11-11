@@ -57,7 +57,7 @@ const MEDIA_CATEGORIAS: MediaCategoria[] = [
   'Equipe e Empresa',
 ]
 
-const TIPOS_OBRA: TipoObraGaleria[] = [
+const TIPOS_PROJETO: TipoObraGaleria[] = [
   'Telhado industrial',
   'Telhado comercial',
   'Telhado residencial',
@@ -414,7 +414,7 @@ export default function AdminMediaTab({
     })
   }
 
-  // "Virar case": cria um case novo (sempre em rascunho) já com a foto da
+  // "Criar projeto": cria um case novo (sempre em rascunho) já com a foto da
   // biblioteca como capa, título, cliente e local derivados do nome do arquivo
   // (padrão cliente_cidade.jpg), usando a mesma lógica de casamento do lote.
   const handleVirarCase = async (item: MediaRecord) => {
@@ -985,7 +985,7 @@ export default function AdminMediaTab({
                       className="w-full h-9 px-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-solar-400"
                     >
                       <option value="">Não informado</option>
-                      {TIPOS_OBRA.map((t) => (
+                      {TIPOS_PROJETO.map((t) => (
                         <option key={t} value={t}>
                           {t}
                         </option>

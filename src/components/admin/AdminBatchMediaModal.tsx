@@ -401,7 +401,7 @@ export default function AdminBatchMediaModal({
                   value={descricaoGeral}
                   onChange={(e) => setDescricaoGeral(e.target.value)}
                   disabled={isUploading}
-                  placeholder="Ex: Registro da obra de solo com inversores e módulos"
+                  placeholder="Ex: Registro do projeto de solo com inversores e módulos"
                   className="h-10 rounded-xl bg-white text-xs"
                 />
               </div>

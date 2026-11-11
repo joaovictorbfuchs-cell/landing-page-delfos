@@ -209,7 +209,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
           'Protegemos sistemas essenciais (PDVs, servidores, iluminação e compressores) para que o cliente nem perceba oscilações da rede elétrica externa.',
       },
       {
-        dor: 'Obras que atrapalham o atendimento diário e fluxo na loja.',
+        dor: 'Instalação que atrapalha o atendimento diário e fluxo na loja.',
         resposta: 'Cronograma executivo com montagem fora do horário comercial.',
         comoResolvemos:
           'Nossa equipe planeja o içamento de módulos e interligações elétricas nos períodos de menor movimento ou fins de semana, garantindo faturamento normal do estabelecimento.',
@@ -512,7 +512,7 @@ export const SEGMENTOS_CONFIG: Record<string, SegmentoInfo> = {
           'A infraestrutura base de barramento é rateada ou financiada pelo condomínio, enquanto a estação Wallbox e 100% da eletricidade consumida são pagas exclusivamente pelo proprietário do veículo.',
       },
       {
-        pergunta: 'O condomínio precisará fazer obras civis pesadas?',
+        pergunta: 'O condomínio precisará fazer intervenções civis pesadas?',
         resposta:
           'Geralmente não. Utilizamos eletrocalhas metálicas aparentes e barramentos blindados pelo teto da garagem, sem quebra de piso ou demolições.',
       },

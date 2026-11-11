@@ -525,7 +525,7 @@ export default function Admin() {
                     asChild
                     className="focus:bg-white/10 focus:text-white cursor-pointer"
                   >
-                    <Link to="/projetos">Cases & Projetos</Link>
+                    <Link to="/projetos">Projetos Realizados</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     asChild
@@ -668,10 +668,10 @@ export default function Admin() {
                   Acervo Histórico Delfos Engenharia
                 </span>
                 <h3 className="text-base font-extrabold text-white">
-                  Fotos Reais de Obras e Instalações (WordPress Delfos)
+                  Fotos Reais de Projetos e Instalações (WordPress Delfos)
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  Importa automaticamente fotos de obras (Cassul 155 kWp, Clanel 123 kWp,
+                  Importa automaticamente fotos de projetos (Cassul 155 kWp, Clanel 123 kWp,
                   Panificadora Garcia 112 kWp, Silo Erebango, etc.) para o banco de dados e vincula
                   aos respectivos cases.
                 </p>

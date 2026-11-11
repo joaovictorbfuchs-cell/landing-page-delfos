@@ -334,7 +334,7 @@ export default function AutorJoaoVictor() {
                     </div>
 
                     <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-slate-500 font-medium">Obra Delfos Solar</span>
+                      <span className="text-slate-500 font-medium">Projeto Delfos Solar</span>
                       <span className="text-solar-700 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
                         Ler artigo completo <ArrowRight className="w-3.5 h-3.5" />
                       </span>
