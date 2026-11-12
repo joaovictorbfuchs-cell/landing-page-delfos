@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import {
   FolderOpen,
   UploadCloud,
@@ -46,13 +46,17 @@ import {
 } from '@/services/content'
 import AdminBatchMediaModal from './AdminBatchMediaModal'
 import AdminAutoVinculoModal from './AdminAutoVinculoModal'
+import SeloVinculoMedia from './SeloVinculoMedia'
+import AdminMediaFiltroVinculo, { type FiltroVinculo } from './AdminMediaFiltroVinculo'
 import { comprimirImagem } from './imageCompress'
 import {
   formatFilenameToTitle,
   findMatchingCase,
   buildDestinoSugerido,
   classificarVinculoMedia,
+  statusVinculoMedia,
   type ItemVinculacaoPendente,
+  type StatusVinculoMedia,
 } from './mediaMatchUtils'
 import { fetchMediaAsFile, deriveCaseFromMedia, gerarSlugUnico } from './mediaCaseUtils'
 import type { CaseSetor, CaseSolucao } from '@/types/content'
@@ -96,6 +100,8 @@ interface AdminMediaTabProps {
   casesList?: CaseRecord[]
   loading: boolean
   onRefresh: () => void
+  /** Abre o editor de um projeto na aba Projetos (atalho pedido pelo dono) */
+  onAbrirEditorCase?: (caseId: string) => void
 }
 
 export default function AdminMediaTab({
@@ -103,6 +109,7 @@ export default function AdminMediaTab({
   casesList = [],
   loading,
   onRefresh,
+  onAbrirEditorCase,
 }: AdminMediaTabProps) {
   const { toast } = useToast()
   const [search, setSearch] = useState('')
@@ -140,6 +147,9 @@ export default function AdminMediaTab({
   const [vinculando, setVinculando] = useState(false)
   const [vincModalOpen, setVincModalOpen] = useState(false)
   const [itensRevisao, setItensRevisao] = useState<ItemVinculacaoPendente[]>([])
+
+  // Filtro rápido por status de vínculo (Todas / Sem vínculo / Rascunho / Publicadas)
+  const [filtroVinculo, setFiltroVinculo] = useState<FiltroVinculo>('todas')
 
   // Upload Form
   const [titulo, setTitulo] = useState('')
@@ -532,7 +542,7 @@ export default function AdminMediaTab({
       const solucao: CaseSolucao = 'Energia Solar'
       const slug = gerarSlugUnico(derivado.slugBase, casesList)
 
-      await createCase({
+      const caseCriado = await createCase({
         titulo: derivado.titulo,
         slug,
         cliente: derivado.cliente,
@@ -555,9 +565,24 @@ export default function AdminMediaTab({
         foto: file,
       })
 
-      toast({
+      // Aviso com atalho direto ao editor do projeto recém-criado
+      const { dismiss: fecharToast } = toast({
         title: 'Projeto criado em rascunho!',
         description: `"${derivado.titulo}" foi criado com esta foto como capa. Revise os dados e publique quando estiver pronto.`,
+        duration: 12000,
+        action: (
+          <button
+            type="button"
+            onClick={() => {
+              onAbrirEditorCase?.(caseCriado.id)
+              fecharToast()
+            }}
+            className="inline-flex shrink-0 items-center gap-1 h-9 px-3 rounded-lg bg-solar-400 hover:bg-solar-500 text-midnight-950 text-xs font-bold shadow-sm cursor-pointer whitespace-nowrap"
+          >
+            <Award className="w-3.5 h-3.5" />
+            <span>Abrir projeto</span>
+          </button>
+        ),
       })
       onRefresh()
     } catch (err: unknown) {
@@ -573,15 +598,45 @@ export default function AdminMediaTab({
     }
   }
 
+  // Status de vínculo calculado uma única vez por foto (selo + filtros rápidos)
+  const statusPorId = useMemo(() => {
+    const mapa = new Map<string, StatusVinculoMedia>()
+    mediaList.forEach((m) => mapa.set(m.id, statusVinculoMedia(m, casesList)))
+    return mapa
+  }, [mediaList, casesList])
+
+  // Contagem por filtro (com 'todas' incluída) para os chips do topo
+  const contagemFiltros = useMemo(() => {
+    const contagem: Partial<Record<FiltroVinculo, number>> = { todas: mediaList.length }
+    statusPorId.forEach((st) => (contagem[st] = (contagem[st] || 0) + 1))
+    return contagem
+  }, [mediaList, statusPorId])
+
+  // Abre o editor do projeto vinculado na aba Projetos (atalho do selo de status)
+  const handleAbrirProjetoDoSelo = (caseId: string) => {
+    if (!onAbrirEditorCase) return
+    if (!casesList.some((c) => c.id === caseId)) {
+      toast({
+        variant: 'destructive',
+        title: 'Projeto não encontrado',
+        description:
+          'O projeto vinculado a esta foto não existe mais. Use o modal de edição da foto para rever o vínculo.',
+      })
+      return
+    }
+    onAbrirEditorCase(caseId)
+  }
+
   const filteredMedia = mediaList.filter((m) => {
     const matchCat = filterCat === 'todos' || m.categoria === filterCat
+    const matchVinculo = filtroVinculo === 'todas' || statusPorId.get(m.id) === filtroVinculo
     const term = search.toLowerCase()
     const matchSearch =
       !term ||
       m.titulo.toLowerCase().includes(term) ||
       (m.descricao && m.descricao.toLowerCase().includes(term)) ||
       (m.destino_sugerido && m.destino_sugerido.toLowerCase().includes(term))
-    return matchCat && matchSearch
+    return matchCat && matchVinculo && matchSearch
   })
 
   return (
@@ -699,6 +754,15 @@ export default function AdminMediaTab({
         </div>
       </div>
 
+      {/* Filtros rápidos por status de vínculo */}
+      <div className="bg-white rounded-2xl p-3 border border-slate-200/80 shadow-sm flex items-center gap-2">
+        <AdminMediaFiltroVinculo
+          filtro={filtroVinculo}
+          onFiltroChange={setFiltroVinculo}
+          contagem={contagemFiltros}
+        />
+      </div>
+
       {/* Media Grid */}
       {loading ? (
         <div className="bg-white rounded-2xl p-12 text-center border border-slate-200/80 text-slate-500">
@@ -770,6 +834,12 @@ export default function AdminMediaTab({
                     <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-bold text-solar-300 border border-white/10 uppercase">
                       {item.categoria}
                     </span>
+                    <SeloVinculoMedia
+                      media={item}
+                      casesList={casesList}
+                      onAbrirProjeto={onAbrirEditorCase ? handleAbrirProjetoDoSelo : undefined}
+                      className="absolute bottom-2 left-2 shadow-sm backdrop-blur-[2px]"
+                    />
                   </div>
 
                   {/* Body */}

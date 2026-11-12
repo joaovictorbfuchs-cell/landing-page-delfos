@@ -71,6 +71,10 @@ interface AdminCasesTabProps {
   onRefresh: () => void
   /** Biblioteca de mídia para escolher foto do case sem reenviar arquivo (mobile) */
   mediaList?: MediaRecord[]
+  /** ID do case cujo editor deve abrir (atalho vindo da Biblioteca de Mídia) */
+  caseIdParaAbrir?: string | null
+  /** Chamado quando o editor solicitado foi aberto (para limpar o atalho no pai) */
+  onCaseEditorAberto?: () => void
 }
 
 export default function AdminCasesTab({
@@ -78,6 +82,8 @@ export default function AdminCasesTab({
   loading,
   onRefresh,
   mediaList = [],
+  caseIdParaAbrir = null,
+  onCaseEditorAberto,
 }: AdminCasesTabProps) {
   const { toast } = useToast()
   const [modalOpen, setModalOpen] = useState(false)
@@ -179,6 +185,16 @@ export default function AdminCasesTab({
     setModalOpen(true)
     carregarFotosDoProjeto(caseItem.id)
   }
+
+  // Atalho vindo da Biblioteca: abre o editor do projeto solicitado
+  // (clique no selo de status ou botão "Abrir projeto" do aviso de rascunho)
+  useEffect(() => {
+    if (!caseIdParaAbrir) return
+    const alvo = cases.find((c) => c.id === caseIdParaAbrir)
+    if (!alvo) return
+    handleOpenEdit(alvo)
+    onCaseEditorAberto?.()
+  }, [caseIdParaAbrir, cases])
 
   // Escolha de foto da biblioteca (modo capa OU modo vincular à galeria)
   const handleSelectMediaFoto = async (media: MediaRecord) => {

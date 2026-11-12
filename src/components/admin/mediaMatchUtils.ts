@@ -134,3 +134,25 @@ export interface ItemVinculacaoPendente {
   candidatos: CaseRecord[]
   motivo: string
 }
+
+/**
+ * Status de vínculo de UMA foto com um projeto:
+ * - 'publicado': case_id aponta para um projeto publicado (verde)
+ * - 'rascunho': case_id aponta para um projeto em rascunho (cinza)
+ * - 'sem-vinculo': sem case_id ou o projeto vinculado não existe mais (âmbar)
+ */
+export type StatusVinculoMedia = 'publicado' | 'rascunho' | 'sem-vinculo'
+
+/**
+ * Lê o status de vínculo da foto a partir do case_id e do status do projeto
+ * vinculado. Não altera nada: é só leitura, para selo e filtros da Biblioteca.
+ */
+export function statusVinculoMedia(
+  media: MediaRecord,
+  casesList: CaseRecord[],
+): StatusVinculoMedia {
+  if (!media.case_id) return 'sem-vinculo'
+  const vinculado = casesList.find((c) => c.id === media.case_id)
+  if (!vinculado) return 'sem-vinculo'
+  return vinculado.status === 'publicado' ? 'publicado' : 'rascunho'
+}

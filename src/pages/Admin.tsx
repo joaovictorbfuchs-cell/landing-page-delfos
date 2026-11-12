@@ -82,6 +82,9 @@ export default function Admin() {
   const [loadingMedia, setLoadingMedia] = useState(false)
   const [importingFotos, setImportingFotos] = useState(false)
 
+  // Editor de projeto solicitado por outra aba (selo da Biblioteca / botão Abrir projeto)
+  const [caseIdParaAbrir, setCaseIdParaAbrir] = useState<string | null>(null)
+
   const currentUser = getCurrentUser()
 
   useEffect(() => {
@@ -656,6 +659,8 @@ export default function Admin() {
             loading={loadingCases}
             onRefresh={fetchCases}
             mediaList={mediaList}
+            caseIdParaAbrir={caseIdParaAbrir}
+            onCaseEditorAberto={() => setCaseIdParaAbrir(null)}
           />
         )}
 
@@ -756,6 +761,7 @@ export default function Admin() {
               mediaList={mediaList}
               casesList={cases}
               loading={loadingMedia}
+              onAbrirEditorCase={setCaseIdParaAbrir}
               onRefresh={() => {
                 fetchMedia()
                 fetchCases()
