@@ -1,4 +1,4 @@
-import type { CaseRecord } from '@/types/content'
+import type { CaseRecord, MediaRecord } from '@/types/content'
 
 /**
  * Converte o nome de um arquivo em um título legível e amigável:
@@ -81,4 +81,56 @@ export function buildDestinoSugerido(caseItem?: CaseRecord): string {
   const setor = caseItem.setor || 'Solar'
   const potencia = caseItem.potencia_capacidade ? ` (${caseItem.potencia_capacidade})` : ''
   return `Case ${nome}${potencia} / ${setor}`
+}
+
+/** Quanto o nome do arquivo casou com o projeto: 'confiavel' | 'duvidoso' | 'nenhum'. */
+export type NivelMatch = 'confiavel' | 'duvidoso' | 'nenhum'
+
+/** Uma opção de vínculo apresentada no modal de revisão da vinculação automática. */
+export interface OpcaoVinculo {
+  case: CaseRecord
+  motivo: string
+}
+
+/**
+ * Devolve TODOS os projetos cujo cliente/título/slug casam com o nome do arquivo
+ * (identificador único de cliente: só é confiável quando bate exatamente um projeto).
+ */
+export function findMatchingCases(identifier: string, casesList: CaseRecord[]): CaseRecord[] {
+  if (!identifier || !casesList || casesList.length === 0) return []
+  const normId = normalizeString(identifier)
+  return casesList.filter((c) => {
+    const cNome = normalizeString(c.cliente || '')
+    const cTit = normalizeString(c.titulo || '')
+    const cSlug = normalizeString(c.slug || '')
+    const cLocal = normalizeString(c.local || '')
+    if (cNome && cNome.length >= 3 && normId.includes(cNome)) return true
+    if (cTit && cTit.length >= 4 && normId.includes(cTit)) return true
+    if (cSlug && cSlug.length >= 4 && normId.includes(cSlug)) return true
+    if (cLocal && cLocal.length >= 4 && normId.includes(cLocal)) return true
+    return false
+  })
+}
+
+/**
+ * Classifica o casamento de UMA foto com os projetos publicados:
+ * - confiável: exatamente um projeto casa com o nome do arquivo
+ * - duvidoso: mais de um projeto casa (ambiguidade) ou nenhum casa (sem sinal)
+ * Nunca sugere descarte: duvidoso significa "precisa de decisão humana".
+ */
+export function classificarVinculoMedia(
+  media: MediaRecord,
+  casesList: CaseRecord[],
+): { nivel: NivelMatch; candidatos: CaseRecord[] } {
+  const identifier = media.arquivo || media.titulo || ''
+  const candidatos = findMatchingCases(identifier, casesList)
+  if (candidatos.length === 1) return { nivel: 'confiavel', candidatos }
+  return { nivel: candidatos.length > 1 ? 'duvidoso' : 'nenhum', candidatos }
+}
+
+/** Itens para o modal de revisão: fotos sem projeto que casaram com algum projeto. */
+export interface ItemVinculacaoPendente {
+  media: MediaRecord
+  candidatos: CaseRecord[]
+  motivo: string
 }

@@ -12,6 +12,7 @@ import {
   Edit2,
   Image as ImageIcon,
   Sparkles,
+  Link2,
   AlertTriangle,
   ShieldCheck,
   RefreshCw,
@@ -40,10 +41,19 @@ import {
   createCase,
   simularLimpezaDuplicadas,
   executarLimpezaDuplicadas,
+  attachMediaToCase,
   type LimparDuplicadasResponse,
 } from '@/services/content'
 import AdminBatchMediaModal from './AdminBatchMediaModal'
-import { formatFilenameToTitle, findMatchingCase, buildDestinoSugerido } from './mediaMatchUtils'
+import AdminAutoVinculoModal from './AdminAutoVinculoModal'
+import { comprimirImagem } from './imageCompress'
+import {
+  formatFilenameToTitle,
+  findMatchingCase,
+  buildDestinoSugerido,
+  classificarVinculoMedia,
+  type ItemVinculacaoPendente,
+} from './mediaMatchUtils'
 import { fetchMediaAsFile, deriveCaseFromMedia, gerarSlugUnico } from './mediaCaseUtils'
 import type { CaseSetor, CaseSolucao } from '@/types/content'
 
@@ -125,6 +135,11 @@ export default function AdminMediaTab({
   const [executandoLimpeza, setExecutandoLimpeza] = useState(false)
   const [resultadoLimpeza, setResultadoLimpeza] = useState<LimparDuplicadasResponse | null>(null)
   const [abaDetalhes, setAbaDetalhes] = useState<'excluir' | 'revisar' | 'vinculados'>('excluir')
+
+  // Vinculação automática de fotos a projetos (pelo nome do arquivo)
+  const [vinculando, setVinculando] = useState(false)
+  const [vincModalOpen, setVincModalOpen] = useState(false)
+  const [itensRevisao, setItensRevisao] = useState<ItemVinculacaoPendente[]>([])
 
   // Upload Form
   const [titulo, setTitulo] = useState('')
@@ -217,11 +232,13 @@ export default function AdminMediaTab({
     setEditPreview(null)
   }
 
-  const handleEditFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEditFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setEditArquivoFile(file)
-      setEditPreview(URL.createObjectURL(file))
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const comprimido = await comprimirImagem(file)
+      setEditArquivoFile(comprimido)
+      setEditPreview(URL.createObjectURL(comprimido))
     }
   }
 
@@ -256,14 +273,19 @@ export default function AdminMediaTab({
     setSavingEdit(true)
     try {
       // 1. Atualizar registro em media com vínculo direto de case_id
+      let arquivoFinal = editArquivoFile
+      if (arquivoFinal) {
+        // Compressão automática (máx. 1600px, WebP) antes de enviar
+        arquivoFinal = await comprimirImagem(arquivoFinal)
+      }
       const payload: UpdateMediaPayload = {
         titulo: editTitulo.trim(),
         categoria: editCategoria,
         descricao: editDescricao.trim(),
         case_id: editCaseId || '',
       }
-      if (editArquivoFile) {
-        payload.arquivo = editArquivoFile
+      if (arquivoFinal) {
+        payload.arquivo = arquivoFinal
       }
 
       await updateMedia(editingItem.id, payload)
@@ -283,8 +305,8 @@ export default function AdminMediaTab({
       })
 
       // 2. Se o usuário vinculou ou trocou a imagem no case selecionado e forneceu novo arquivo
-      if (editCaseId && editArquivoFile) {
-        await updateCase(editCaseId, { foto: editArquivoFile })
+      if (editCaseId && arquivoFinal) {
+        await updateCase(editCaseId, { foto: arquivoFinal })
       }
 
       toast({
@@ -350,9 +372,11 @@ export default function AdminMediaTab({
 
     setSubmitting(true)
     try {
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const arquivoComprimido = await comprimirImagem(arquivoFile)
       const payload: CreateMediaPayload = {
         titulo: titulo.trim(),
-        arquivo: arquivoFile,
+        arquivo: arquivoComprimido,
         categoria,
         descricao: descricao.trim(),
       }
@@ -414,13 +438,79 @@ export default function AdminMediaTab({
     })
   }
 
+  // Vinculação automática: varre fotos sem projeto e vincula as confiáveis pelo
+  // nome do arquivo; duvidosas vão para o modal de revisão. NUNCA descarta mídia.
+  const handleVincularAutomatico = async () => {
+    setVinculando(true)
+    try {
+      const semVinculo = mediaList.filter((m) => !m.case_id)
+      const projetosPublicados = casesList.filter((c) => c.status === 'publicado')
+      const vinculadas: ItemVinculacaoPendente[] = []
+      const duvidosas: ItemVinculacaoPendente[] = []
+
+      for (const media of semVinculo) {
+        const { nivel, candidatos } = classificarVinculoMedia(media, projetosPublicados)
+        if (nivel === 'confiavel') {
+          const alvo = candidatos[0]
+          try {
+            await attachMediaToCase(media.id, alvo.id)
+            vinculadas.push({
+              media,
+              candidatos,
+              motivo: `Casou com "${alvo.cliente || alvo.titulo}" pelo nome do arquivo`,
+            })
+          } catch (err) {
+            console.warn(`Falha ao vincular mídia ${media.id}:`, err)
+            duvidosas.push({
+              media,
+              candidatos,
+              motivo: 'Falha ao salvar o vínculo — confirme manualmente abaixo',
+            })
+          }
+        } else if (candidatos.length > 1) {
+          duvidosas.push({
+            media,
+            candidatos,
+            motivo: 'Nome do arquivo casou com mais de um projeto — escolha o correto',
+          })
+        } else {
+          duvidosas.push({
+            media,
+            candidatos: [],
+            motivo: 'Nenhum projeto casou com o nome do arquivo — vincule manualmente ou ignore',
+          })
+        }
+      }
+
+      setItensRevisao(duvidosas)
+      setVincModalOpen(true)
+      if (vinculadas.length > 0) {
+        onRefresh()
+        toast({
+          title: `${vinculadas.length} ${vinculadas.length === 1 ? 'foto vinculada' : 'fotos vinculadas'} automaticamente`,
+          description:
+            'Os vínculos projeto↔foto foram criados. As fotos duvidosas estão aguardando sua revisão no modal.',
+        })
+      } else if (duvidosas.length === 0) {
+        toast({
+          title: 'Nada a vincular',
+          description: 'Todas as fotos já estão vinculadas a um projeto.',
+        })
+      }
+    } finally {
+      setVinculando(false)
+    }
+  }
+
   // "Criar projeto": cria um case novo (sempre em rascunho) já com a foto da
   // biblioteca como capa, título, cliente e local derivados do nome do arquivo
   // (padrão cliente_cidade.jpg), usando a mesma lógica de casamento do lote.
   const handleVirarCase = async (item: MediaRecord) => {
     setVirandoCaseId(item.id)
     try {
-      const file = await fetchMediaAsFile(item)
+      const original = await fetchMediaAsFile(item)
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const file = await comprimirImagem(original)
       if (!file) {
         toast({
           variant: 'destructive',
@@ -518,6 +608,21 @@ export default function AdminMediaTab({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button
+            type="button"
+            onClick={handleVincularAutomatico}
+            disabled={vinculando}
+            className="bg-midnight-800 hover:bg-midnight-900 text-white font-bold rounded-xl shadow-sm text-xs h-10 px-3.5 flex-1 sm:flex-initial flex items-center justify-center gap-1.5"
+            title="Vincula automaticamente as fotos soltas aos projetos publicados, pelo nome do arquivo"
+          >
+            {vinculando ? (
+              <RefreshCw className="w-4 h-4 animate-spin shrink-0" />
+            ) : (
+              <Link2 className="w-4 h-4 shrink-0" />
+            )}
+            <span>{vinculando ? 'Vinculando...' : 'Vincular fotos automaticamente'}</span>
+          </Button>
+
           <Button
             type="button"
             onClick={handleAbrirLimpeza}
@@ -1480,6 +1585,15 @@ export default function AdminMediaTab({
         onSuccessBatch={() => {
           onRefresh()
         }}
+      />
+
+      {/* Modal de revisão da vinculação automática */}
+      <AdminAutoVinculoModal
+        isOpen={vincModalOpen}
+        onClose={() => setVincModalOpen(false)}
+        itens={itensRevisao}
+        casesList={casesList}
+        onRefresh={onRefresh}
       />
     </div>
   )

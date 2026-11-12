@@ -46,6 +46,7 @@ import {
 } from '@/services/content'
 import MediaLibraryPicker from './MediaLibraryPicker'
 import { fetchMediaAsFile } from './mediaCaseUtils'
+import { comprimirImagem } from './imageCompress'
 
 const SETORES: CaseSetor[] = [
   'Residências',
@@ -207,7 +208,9 @@ export default function AdminCasesTab({
     // Modo capa legado/fallback
     setPickerLoadingId(media.id)
     try {
-      const file = await fetchMediaAsFile(media)
+      const original = await fetchMediaAsFile(media)
+      // Compressão automática (máx. 1600px, WebP) — fotos antigas podem ser grandes
+      const file = await comprimirImagem(original)
       if (!file) {
         toast({
           variant: 'destructive',
@@ -243,9 +246,11 @@ export default function AdminCasesTab({
 
     setUploadingDirectPhoto(true)
     try {
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const arquivoComprimido = await comprimirImagem(file)
       const newMedia = await uploadMediaToCase(
         editingCase.id,
-        file,
+        arquivoComprimido,
         file.name,
         projectPhotos.length + 1,
       )
@@ -350,11 +355,13 @@ export default function AdminCasesTab({
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setFotoFile(file)
-      setFotoPreview(URL.createObjectURL(file))
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const comprimido = await comprimirImagem(file)
+      setFotoFile(comprimido)
+      setFotoPreview(URL.createObjectURL(comprimido))
     }
   }
 

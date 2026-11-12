@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import type { MediaCategoria, CaseRecord, CreateMediaPayload } from '@/types/content'
 import { createMedia } from '@/services/content'
+import { comprimirImagem } from './imageCompress'
 import { formatFilenameToTitle, findMatchingCase, buildDestinoSugerido } from './mediaMatchUtils'
 
 export interface BatchItem {
@@ -172,9 +173,11 @@ export default function AdminBatchMediaModal({
   // Upload de um item individual com vínculo direto case_id quando confirmado/sugerido
   const uploadSingleItem = async (item: BatchItem): Promise<boolean> => {
     try {
+      // Compressão automática (máx. 1600px, WebP) antes de enviar
+      const arquivoComprimido = await comprimirImagem(item.file)
       const payload: CreateMediaPayload = {
         titulo: item.titulo.trim() || item.file.name,
-        arquivo: item.file,
+        arquivo: arquivoComprimido,
         categoria: categoriaLote,
         descricao: descricaoGeral.trim(),
         destino_sugerido: item.destinoSugerido.trim(),
