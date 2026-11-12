@@ -1,9 +1,9 @@
 import { MessageCircle, ArrowUpRight, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 export default function FinalCta() {
-  const whatsappUrl =
-    'https://wa.me/5554991292121?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20um%20especialista%20da%20Delfos%20Engenharia%20sobre%20energia%20solar!'
+  const linkWhatsapp = whatsappUrl(WHATSAPP_ORIGENS.home)
 
   return (
     <section className="relative py-20 bg-gradient-to-r from-midnight-950 via-midnight-900 to-midnight-950 text-white overflow-hidden border-t border-white/10">
@@ -28,7 +28,7 @@ export default function FinalCta() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href={whatsappUrl}
+            href={linkWhatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto"

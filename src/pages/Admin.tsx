@@ -54,6 +54,13 @@ import AdminMediaTab from '@/components/admin/AdminMediaTab'
 
 type AdminSection = 'leads' | 'posts' | 'cases' | 'media'
 
+// WhatsApp no /admin: mensagem de retorno ao lead, sempre preenchida.
+// (número do lead, não o número oficial — por isso fora do utilitário principal)
+function whatsappAdminLead(nomeLead: string, cleanPhone: string): string {
+  const msg = `Olá ${nomeLead}, aqui é da Delfos Engenharia de Erechim/RS sobre sua avaliação!`
+  return `https://wa.me/55${cleanPhone}?text=${encodeURIComponent(msg)}`
+}
+
 export default function Admin() {
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -946,9 +953,7 @@ export default function Admin() {
 
                   const cleanPhone = lead.telefone.replace(/\D/g, '')
                   const telUrl = `tel:${cleanPhone}`
-                  const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
-                    lead.nome,
-                  )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+                  const whatsappLink = whatsappAdminLead(lead.nome, cleanPhone)
 
                   const valorFinal = lead.valor_conta || lead.consumo_mensal
 
@@ -1105,9 +1110,7 @@ export default function Admin() {
                         })
 
                         const cleanPhone = lead.telefone.replace(/\D/g, '')
-                        const whatsappLink = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(
-                          lead.nome,
-                        )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia%20de%20Erechim/RS%20sobre%20sua%20avalia%C3%A7%C3%A3o!`
+                        const whatsappLink = whatsappAdminLead(lead.nome, cleanPhone)
 
                         const valorFinal = lead.valor_conta || lead.consumo_mensal
 
@@ -1379,9 +1382,10 @@ export default function Admin() {
               </Button>
 
               <a
-                href={`https://wa.me/55${selectedLeadModal.telefone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(
+                href={whatsappAdminLead(
                   selectedLeadModal.nome,
-                )}%2C%20aqui%20%C3%A9%20da%20Delfos%20Engenharia!`}
+                  selectedLeadModal.telefone.replace(/\D/g, ''),
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md"

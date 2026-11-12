@@ -10,6 +10,9 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import DelfosLogo from '@/components/DelfosLogo'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
+
+const linkWhatsapp = whatsappUrl(WHATSAPP_ORIGENS.rodape)
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -76,7 +79,7 @@ export default function Footer() {
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="https://wa.me/5554991292121"
+                href={linkWhatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp Delfos (54) 99129-2121"
@@ -223,7 +226,7 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
                 <a
-                  href="https://wa.me/5554991292121"
+                  href={linkWhatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-400 font-semibold transition-colors"

@@ -20,6 +20,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import { Button } from '@/components/ui/button'
 import CaseModal from '@/components/cases/CaseModal'
+import { whatsappUrl } from '@/lib/whatsapp'
 import { CASES_DATA, type CaseStudy } from '@/data/cases'
 import { listPublishedCases, getCaseImageUrl } from '@/services/content'
 import { SEGMENTOS_CONFIG, LISTA_SEGMENTOS_ORDEM, type SegmentoInfo } from '@/data/segmentos'
@@ -141,10 +142,11 @@ export default function SegmentoPageLayout({
   const IconeSegmento = seg.icone
   const isDark = seg.isDarkMode
 
-  // WhatsApp contextual com origem e CTA do segmento
-  const whatsappUrl = `https://wa.me/5554991292121?text=${encodeURIComponent(
-    `Olá! Estava na página de ${seg.nome} no site da Delfos e gostaria de: ${seg.ctaRecomendado}. (Origem: segmento-${seg.slug})`,
-  )}`
+  // WhatsApp contextual: saudação padrão + contexto do segmento (sem tags técnicas)
+  const linkWhatsapp = whatsappUrl(
+    `segmento ${seg.nome.toLowerCase()}`,
+    `Estava na página de ${seg.nome} no site e gostaria de: ${seg.ctaRecomendado}.`,
+  )
 
   // URL base do site (mesma regra do SeoMeta: env VITE_SITE_URL ou produção)
   const SITE_URL =
@@ -282,7 +284,7 @@ export default function SegmentoPageLayout({
                   </Button>
 
                   <a
-                    href={whatsappUrl}
+                    href={linkWhatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-bold text-white transition-all text-center"

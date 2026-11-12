@@ -27,6 +27,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 export default function SolucaoSolar() {
   const [contaSimulador, setContaSimulador] = useState<number>(1200)
@@ -186,7 +187,7 @@ export default function SolucaoSolar() {
                   </Button>
 
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20simular%20um%20projeto%20fotovoltaico%20com%20a%20engenharia%20da%20Delfos%20(Origem:%20solucao-solar)"
+                    href={whatsappUrl(WHATSAPP_ORIGENS.home)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs sm:text-sm font-bold text-white transition-all text-center"

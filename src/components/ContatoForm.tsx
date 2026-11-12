@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { createLead } from '@/services/leads'
 import { trackFormSubmit } from '@/lib/analytics'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 import type { TipoLigacao, PosseArea, JaPossuiSolar } from '@/types/leads'
 
 interface ContatoFormProps {
@@ -270,10 +271,11 @@ export default function ContatoForm({
 
   // Direct WhatsApp link post submission
   const directWhatsappUrl = submittedLeadData
-    ? `https://wa.me/5554991292121?text=${encodeURIComponent(
-        `Olá! Acabei de enviar o formulário no site da Delfos. Meu nome é ${submittedLeadData.nome} e tenho interesse em: ${submittedLeadData.necessidade}.`,
-      )}`
-    : 'https://wa.me/5554991292121'
+    ? whatsappUrl(
+        WHATSAPP_ORIGENS.formulario,
+        `Acabei de enviar o formulário no site. Meu nome é ${submittedLeadData.nome} e tenho interesse em: ${submittedLeadData.necessidade}.`,
+      )
+    : whatsappUrl(WHATSAPP_ORIGENS.formulario)
 
   return (
     <section
@@ -359,7 +361,7 @@ export default function ContatoForm({
                     Precisa de resposta urgente?
                   </span>
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1%2C%20preciso%20de%20atendimento%20urgente%20com%20um%20engenheiro%20da%20Delfos"
+                    href={whatsappUrl(WHATSAPP_ORIGENS.formulario)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-bold text-emerald-950 hover:underline"

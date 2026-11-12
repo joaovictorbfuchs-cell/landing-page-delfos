@@ -27,6 +27,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 import fotoInspecaoTermografica from '@/assets/image-789e8.png'
 
 export default function SolucaoOm() {
@@ -221,7 +222,7 @@ export default function SolucaoOm() {
 
                   {/* Canal WhatsApp direto */}
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20manuten%C3%A7%C3%A3o%20ou%20conhecer%20os%20planos%20de%20O%26M%20da%20Delfos%20(Origem:%20solucao-om)"
+                    href={whatsappUrl(WHATSAPP_ORIGENS.paginaOm)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors pt-1"

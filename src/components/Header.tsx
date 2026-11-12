@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import DelfosLogo from '@/components/DelfosLogo'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 interface HeaderProps {
   onSolicitarAvaliacao: () => void
@@ -497,7 +498,7 @@ export default function Header({ onSolicitarAvaliacao }: HeaderProps) {
               </Button>
 
               <a
-                href="https://wa.me/5554991292121?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20a%20engenharia%20da%20Delfos%20Solar"
+                href={whatsappUrl(WHATSAPP_ORIGENS.menuTopo)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 text-xs text-slate-300 font-medium py-2 hover:text-emerald-400"

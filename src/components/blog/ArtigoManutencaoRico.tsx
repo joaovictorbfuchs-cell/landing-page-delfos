@@ -26,6 +26,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import FormCapturaArtigo from '@/components/blog/FormCapturaArtigo'
 import { trackCtaClick, trackCalculatorUsed, trackWhatsappClick } from '@/lib/analytics'
+import { whatsappUrl, whatsappMensagem, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 interface ArtigoManutencaoRicoProps {
   onSolicitarDiagnostico: () => void
@@ -286,12 +287,9 @@ export default function ArtigoManutencaoRico({
   }, [totalChecks])
 
   const openWhatsAppArtigo = (origemCta: string) => {
-    const msg =
-      'Olá! Li o artigo sobre manutenção de placas solares e quero saber mais sobre o diagnóstico da minha usina.'
+    const msg = whatsappMensagem(WHATSAPP_ORIGENS.artigo)
     trackWhatsappClick(origemCta, msg)
-    const cleanPhone = '5554991292121'
-    const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
-    window.open(url, '_blank', 'noopener,noreferrer')
+    window.open(whatsappUrl(WHATSAPP_ORIGENS.artigo), '_blank', 'noopener,noreferrer')
   }
 
   const handleCtaIntermediario = (origemCta: string) => {

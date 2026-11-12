@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { MessageCircle, X, Bot, FileText, Phone, ArrowRight, Headphones } from 'lucide-react'
 import PlantaoWidgetFlutuante from '@/components/PlantaoWidgetFlutuante'
 import { trackWhatsappClick } from '@/lib/analytics'
+import { whatsappUrl, whatsappMensagem, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 interface AtendimentoFloatingProps {
   telefoneDisplay?: string
@@ -35,16 +36,11 @@ export default function AtendimentoFloating({
     return null
   }
 
-  // Número puro e link WhatsApp direto
-  const cleanPhone = numeroWhatsApp.replace(/\D/g, '')
-
-  // Se estiver no artigo de manutenção de placa solar, usa a mensagem pré-preenchida exata requerida
+  // Se estiver no artigo de manutenção de placa solar, usa a origem "artigo"; nas demais, "home"
   const isArtigoManutencao = pathname.includes('manutencao-de-placa-solar-perda-geracao')
-  const defaultWhatsAppMsg = isArtigoManutencao
-    ? 'Olá! Li o artigo sobre manutenção de placas solares e quero saber mais sobre o diagnóstico da minha usina.'
-    : 'Olá! Vim pelo site da Delfos Engenharia e gostaria de atendimento técnico.'
-
-  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(defaultWhatsAppMsg)}`
+  const origemWhatsApp = isArtigoManutencao ? WHATSAPP_ORIGENS.artigo : WHATSAPP_ORIGENS.home
+  const whatsappLink = whatsappUrl(origemWhatsApp)
+  const defaultWhatsAppMsg = whatsappMensagem(origemWhatsApp)
 
   // Opção 1: Abrir assistente de atendimento automático
   const handleOpenAssistant = () => {
@@ -59,7 +55,7 @@ export default function AtendimentoFloating({
       isArtigoManutencao ? 'floating_whatsapp_artigo_manutencao' : 'floating_whatsapp_menu',
       defaultWhatsAppMsg,
     )
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+    window.open(whatsappLink, '_blank', 'noopener,noreferrer')
   }
 
   // Opção 3: Rolar suavemente até o formulário da página atual

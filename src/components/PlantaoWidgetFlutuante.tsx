@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { streamAgentChat } from '@/lib/skipAi'
 import { createLead } from '@/services/leads'
+import { WHATSAPP_NUMERO, WHATSAPP_ORIGENS, whatsappMensagem, whatsappUrl } from '@/lib/whatsapp'
 
 interface MessageItem {
   id: string
@@ -30,7 +31,7 @@ interface MessageItem {
   attachmentName?: string
 }
 
-const WHATSAPP_NUMBER = '5554991292121'
+const WHATSAPP_NUMBER = WHATSAPP_NUMERO
 const WHATSAPP_DISPLAY = '(54) 99129-2121'
 
 // Mensagem inicial curta (apresentação como assistente virtual da Delfos + Pergunta 1)
@@ -143,11 +144,10 @@ export default function PlantaoWidgetFlutuante({
 
   // Gerador dinâmico do link WhatsApp com resumo completo
   const buildWhatsAppLink = () => {
-    const defaultText =
-      'Olá equipe Delfos! Estou na página de O&M e gostaria de atendimento técnico prioritário para usina solar.'
+    const defaultText = whatsappMensagem(WHATSAPP_ORIGENS.paginaOm)
 
     if (customWaMessage.trim()) {
-      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(customWaMessage.trim())}`
+      return whatsappUrl(WHATSAPP_ORIGENS.plantao, customWaMessage.trim())
     }
 
     const answersList: string[] = []
@@ -171,9 +171,12 @@ export default function PlantaoWidgetFlutuante({
       answersList.push(`• Informações adicionais: ${extraInfo.slice(-2).join(' | ')}`)
     }
 
+    // Saída: SEMPRE a saudação padrão; quando há resumo da triagem, ele é
+    // mantido como complemento logo após a saudação padrão (origem "plantão").
     let textToSend = defaultText
     if (answersList.length > 0) {
-      textToSend = `Olá equipe Delfos! Realizei a triagem no Plantão de O&M.\n\n*Resumo da solicitação:*\n${answersList.join('\n')}\n\nSolicito atendimento técnico com prioridade.`
+      const resumo = `Resumo da solicitação: ${answersList.join(' | ')}`
+      textToSend = whatsappMensagem(WHATSAPP_ORIGENS.plantao, resumo)
     }
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(textToSend)}`

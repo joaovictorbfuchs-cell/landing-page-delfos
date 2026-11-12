@@ -1,6 +1,7 @@
 import { ArrowRight, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { trackWhatsappClick } from '@/lib/analytics'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 interface MobileCtaBarProps {
   onSolicitarAvaliacao: () => void
@@ -8,13 +9,12 @@ interface MobileCtaBarProps {
 
 export default function MobileCtaBar({ onSolicitarAvaliacao }: MobileCtaBarProps) {
   // Real phone: (54) 99129-2121
-  const whatsappUrl =
-    'https://wa.me/5554991292121?text=Ol%C3%A1%2C%20gostaria%20de%20uma%20avalia%C3%A7%C3%A3o%20energ%C3%A9tica%20com%20a%20Delfos%20Engenharia%20(Barra%20Mobile)'
+  const linkWhatsapp = whatsappUrl(WHATSAPP_ORIGENS.barraMobile)
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-midnight-950/95 backdrop-blur-md border-t border-white/10 px-3.5 py-2 sm:px-4 sm:py-2.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] flex items-center gap-2.5 shadow-2xl">
       <a
-        href={whatsappUrl}
+        href={linkWhatsapp}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackWhatsappClick('mobile_bar', 'Avaliação energética (barra mobile)')}

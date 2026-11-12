@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { createLead } from '@/services/leads'
 import { trackFormSubmit, trackWhatsappClick } from '@/lib/analytics'
+import { whatsappUrl, whatsappMensagem, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 interface FormCapturaArtigoProps {
   origem?: string
@@ -101,15 +102,12 @@ export default function FormCapturaArtigo({
   }
 
   const handleOpenWhatsApp = () => {
-    trackWhatsappClick(
-      'sucesso_form_artigo',
-      'Olá! Acabei de enviar meus dados no artigo de manutenção e gostaria de adiantar o diagnóstico.',
+    const msg = whatsappMensagem(
+      WHATSAPP_ORIGENS.artigo,
+      `Acabei de preencher o formulário do artigo (usina de aprox. ${potenciaKwp || '8'} kWp) e gostaria de adiantar o diagnóstico.`,
     )
-    const phone = '5554991292121'
-    const msg = encodeURIComponent(
-      `Olá! Acabei de preencher o formulário no artigo sobre manutenção de placas solares (usina de aprox. ${potenciaKwp || '8'} kWp) e gostaria de falar com o engenheiro.`,
-    )
-    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank', 'noopener,noreferrer')
+    trackWhatsappClick('sucesso_form_artigo', msg)
+    window.open(whatsappUrl(WHATSAPP_ORIGENS.artigo, msg), '_blank', 'noopener,noreferrer')
   }
 
   if (isSuccess) {

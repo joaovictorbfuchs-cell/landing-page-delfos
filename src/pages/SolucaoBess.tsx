@@ -27,6 +27,7 @@ import MobileCtaBar from '@/components/MobileCtaBar'
 import SeoMeta from '@/components/SeoMeta'
 import NavegacaoSolucoes from '@/components/NavegacaoSolucoes'
 import { Button } from '@/components/ui/button'
+import { whatsappUrl, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
 
 export default function SolucaoBess() {
   const [activeTabDidatica, setActiveTabDidatica] = useState<'arbitragem' | 'backup' | 'shaving'>(
@@ -177,7 +178,7 @@ export default function SolucaoBess() {
                   </Button>
 
                   <a
-                    href="https://wa.me/5554991292121?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20de%20baterias%20de%20energia%20com%20a%20engenharia%20da%20Delfos%20(Origem:%20solucao-bess)"
+                    href={whatsappUrl(WHATSAPP_ORIGENS.home)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs sm:text-sm font-bold text-white transition-all text-center"
