@@ -47,6 +47,7 @@ import {
 import AdminBatchMediaModal from './AdminBatchMediaModal'
 import AdminAutoVinculoModal from './AdminAutoVinculoModal'
 import SeloVinculoMedia from './SeloVinculoMedia'
+import LimpezaMiniatura from './LimpezaMiniatura'
 import AdminMediaFiltroVinculo, { type FiltroVinculo } from './AdminMediaFiltroVinculo'
 import { comprimirImagem } from './imageCompress'
 import {
@@ -1382,7 +1383,7 @@ export default function AdminMediaTab({
                       </button>
                     </div>
 
-                    <div className="max-h-52 overflow-y-auto divide-y divide-slate-100 p-1">
+                    <div className="max-h-[28rem] overflow-y-auto divide-y divide-slate-100 p-1">
                       {abaDetalhes === 'excluir' &&
                         (resultadoLimpeza.detalhes.paraExcluir.length === 0 ? (
                           <div className="p-4 text-center text-slate-400 text-xs">
@@ -1394,7 +1395,12 @@ export default function AdminMediaTab({
                               key={item.id}
                               className="p-2.5 flex items-start justify-between gap-2 text-xs"
                             >
-                              <div className="min-w-0">
+                              <LimpezaMiniatura
+                                mediaId={item.id}
+                                arquivo={item.arquivo}
+                                titulo={item.titulo}
+                              />
+                              <div className="min-w-0 flex-1">
                                 <p className="font-semibold text-slate-800 truncate">
                                   {item.titulo}
                                 </p>
@@ -1423,7 +1429,12 @@ export default function AdminMediaTab({
                               key={item.id}
                               className="p-2.5 flex items-start justify-between gap-2 text-xs bg-amber-50/30"
                             >
-                              <div className="min-w-0">
+                              <LimpezaMiniatura
+                                mediaId={item.id}
+                                arquivo={item.arquivo}
+                                titulo={item.titulo}
+                              />
+                              <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5">
                                   <AlertTriangle className="w-3 h-3 text-amber-600 shrink-0" />
                                   <p className="font-semibold text-amber-950 truncate">
@@ -1452,7 +1463,12 @@ export default function AdminMediaTab({
                               key={item.id}
                               className="p-2.5 flex items-start justify-between gap-2 text-xs bg-emerald-50/30"
                             >
-                              <div className="min-w-0">
+                              <LimpezaMiniatura
+                                mediaId={item.id}
+                                arquivo={item.arquivo}
+                                titulo={item.titulo}
+                              />
+                              <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5">
                                   <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
                                   <p className="font-semibold text-emerald-950 truncate">
