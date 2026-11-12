@@ -198,15 +198,15 @@ export default function Hero({ onSolicitarAvaliacao }: HeroProps) {
           <div className="lg:col-span-7 flex flex-col gap-3.5 sm:gap-6">
             <div className="space-y-2 sm:space-y-4">
               <h1 className="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-                Da geração à operação{' '}
+                Soluções em energia que{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-solar-400 to-amber-200">
-                  da sua energia.
+                  pagam a sua conta.
                 </span>
               </h1>
 
               <p className="text-sm sm:text-lg text-slate-200/90 leading-snug sm:leading-relaxed max-w-2xl">
-                Economia real na conta de luz com a segurança de uma engenharia de ciclo completo:
-                equipe própria, homologação sem dor de cabeça e suporte contínuo.
+                Geração solar, baterias, recarga veicular e O&M — engenharia própria no Sul do
+                Brasil.
               </p>
             </div>
 

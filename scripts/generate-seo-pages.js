@@ -30,25 +30,25 @@ const BASE_URL =
 const ROTAS = [
   {
     path: '/solucoes/energia-solar',
-    title: 'Energia solar em Erechim e Sul do Brasil | Delfos Engenharia',
+    title: 'Energia Solar em Erechim e Região | Delfos Solar',
     description:
       'Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos conectados à rede ou com baterias, telhado e solo no RS.',
   },
   {
     path: '/solucoes/bess',
-    title: 'Baterias de Energia: BESS e Backup | Delfos',
+    title: 'Baterias e Armazenamento BESS | Delfos Solar',
     description:
       'Baterias (BESS) para empresas e indústrias: backup ininterrupto, corte de picos de consumo e economia no horário de ponta. Projeto e instalação no Sul do Brasil.',
   },
   {
     path: '/solucoes/om',
-    title: 'O&M e Manutenção de Usinas Solares | Delfos',
+    title: 'Manutenção de Usina Solar | Delfos Solar',
     description:
       'Planos de O&M, monitoramento e termografia por drone para recuperar até 25% da geração da sua usina solar. Atendemos usinas de terceiros no Sul do Brasil.',
   },
   {
     path: '/solucoes/carregadores',
-    title: 'Recarga Veicular para Condomínios e Empresas | Delfos',
+    title: 'Carregador para Carro Elétrico em Erechim | Delfos Solar',
     description:
       'Infraestrutura de recarga veicular com gestão inteligente de carga, sem trocar o transformador do prédio. Condomínios, empresas, frotas e eletropostos.',
   },

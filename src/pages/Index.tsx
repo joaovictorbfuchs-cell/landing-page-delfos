@@ -60,8 +60,8 @@ export default function Index() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Delfos Energia Solar — Da geração à operação da sua energia"
-        description="Integradora de engenharia gaúcha com 12 anos de atuação e nota 4.9 no Google. Simule sua economia e solicite avaliação técnica."
+        title="Energia Solar em Erechim e região | Delfos Solar"
+        description="Soluções em energia que pagam a sua conta. Energia solar, baterias, recarga veicular e O&M em Erechim e todo o Sul. Engenharia própria."
         canonicalPath="/"
         ogImage="/og-image.png"
       />

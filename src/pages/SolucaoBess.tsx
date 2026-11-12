@@ -101,7 +101,7 @@ export default function SolucaoBess() {
   return (
     <div className="min-h-screen flex flex-col bg-[#050A10] text-slate-100 antialiased selection:bg-emerald-500 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Baterias de Energia: BESS e Backup | Delfos"
+        title="Baterias e Armazenamento BESS | Delfos Solar"
         description="Baterias (BESS) para empresas e indústrias: backup ininterrupto, corte de picos e economia no horário de ponta. Projeto e instalação no Sul do Brasil."
         canonicalPath="/solucoes/bess"
         ogImage="/og-image.png"
@@ -141,18 +141,15 @@ export default function SolucaoBess() {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Baterias de energia:{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                    segurança e economia
-                  </span>{' '}
-                  para fugir da tarifa cara e zerar riscos de falta de luz.
+                  Baterias e Armazenamento de Energia
                 </h1>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  As baterias de energia{' '}
-                  <strong>não são um simples acessório do painel solar</strong>: são a central
-                  inteligente que garante economia no horário mais caro, autonomia ininterrupta para
-                  a sua operação e corte dos picos de consumo que encarecem a fatura.
+                  Segurança e economia para fugir da tarifa cara e zerar riscos de falta de luz. As
+                  baterias de energia <strong>não são um simples acessório do painel solar</strong>:
+                  são a central inteligente que garante economia no horário mais caro, autonomia
+                  ininterrupta para a sua operação e corte dos picos de consumo que encarecem a
+                  fatura.
                 </p>
 
                 {/* Bloco do problema resolvido */}

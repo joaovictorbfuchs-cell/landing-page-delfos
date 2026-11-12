@@ -118,7 +118,7 @@ export default function SolucaoOm() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-blue-600 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="O&M e Manutenção de Usinas Solares | Delfos"
+        title="Manutenção de Usina Solar | Delfos Solar"
         description="Planos de O&M, monitoramento e termografia por drone para recuperar até 25% da geração da sua usina solar. Atendemos usinas de terceiros no Sul do Brasil."
         canonicalPath="/solucoes/om"
         ogImage="/og-image.png"
@@ -158,18 +158,14 @@ export default function SolucaoOm() {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Manutenção e monitoramento:{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-sky-200 to-solar-300">
-                    recupere até 25% da geração
-                  </span>{' '}
-                  e proteja o retorno financeiro do seu ativo.
+                  Manutenção e Monitoramento de Usina Solar
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Diferente de empresas que somem após a instalação, a Delfos cuida da sua usina
-                  depois que o projeto termina. Monitoramento contínuo, limpeza técnica e inspeção
-                  térmica por drone para garantir que a usina gere o máximo de economia no seu
-                  bolso.
+                  Recupere até 25% da geração e proteja o retorno financeiro do seu ativo. Diferente
+                  de empresas que somem após a instalação, a Delfos cuida da sua usina depois que o
+                  projeto termina. Monitoramento contínuo, limpeza técnica e inspeção térmica por
+                  drone para garantir que a usina gere o máximo de economia no seu bolso.
                 </p>
 
                 {/* Bloco do problema resolvido */}
@@ -412,7 +408,7 @@ export default function SolucaoOm() {
                     <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-inner bg-slate-950 group">
                       <img
                         src={fotoInspecaoTermografica}
-                        alt="Inspeção termográfica real e foto RGB lado a lado de usina fotovoltaica de produtor rural com detecção de 4 módulos anômalos"
+                        alt="manutencao-usina-solar-erechim — Inspeção termográfica real e foto RGB lado a lado de usina fotovoltaica de produtor rural com detecção de 4 módulos anômalos"
                         loading="lazy"
                         className="w-full h-auto object-cover block select-none"
                       />

@@ -6,7 +6,7 @@ export default function Pilares() {
     {
       id: 'solar',
       numero: '01',
-      titulo: 'Energia solar',
+      titulo: 'Energia Solar',
       beneficio:
         'Redução de até 90% na conta de luz, com toda a papelada e a aprovação na concessionária resolvidas por nós.',
       icone: Sun,
@@ -20,7 +20,7 @@ export default function Pilares() {
     {
       id: 'bess',
       numero: '02',
-      titulo: 'Baterias de energia',
+      titulo: 'Baterias e Armazenamento de Energia (BESS)',
       beneficio: 'Energia de reserva quando falta luz, e mais economia nas horas de consumo alto.',
       icone: BatteryCharging,
       corIcone: 'bg-emerald-600 text-white shadow-emerald-600/20',
@@ -33,7 +33,7 @@ export default function Pilares() {
     {
       id: 'oem',
       numero: '03',
-      titulo: 'Manutenção e monitoramento',
+      titulo: 'Manutenção e Monitoramento de Usina Solar',
       beneficio:
         'Vistorias periódicas e atendimento rápido quando algo sair do normal — sua usina sempre gerando no máximo.',
       icone: Wrench,
@@ -47,7 +47,7 @@ export default function Pilares() {
     {
       id: 'carregadores',
       numero: '04',
-      titulo: 'Recarga veicular',
+      titulo: 'Carregador para Carro Elétrico',
       beneficio:
         'Carregue veículos sem estourar a rede elétrica do seu imóvel — para casas, condomínios e empresas.',
       icone: Car,
@@ -69,7 +69,7 @@ export default function Pilares() {
             Nossas soluções
           </div>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3 sm:mb-4">
-            Tudo para a sua energia, em um só lugar
+            Energia Solar em Erechim e Região
           </h2>
           <p className="text-sm sm:text-lg text-slate-600 leading-relaxed">
             Projeto, instalação e manutenção de energia solar, baterias e recarga veicular — com uma

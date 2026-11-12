@@ -110,7 +110,7 @@ export default function SolucaoSolar() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased selection:bg-solar-400 selection:text-midnight-950 pb-16 md:pb-0">
       <SeoMeta
-        title="Energia solar em Erechim e Sul do Brasil | Delfos Engenharia"
+        title="Energia Solar em Erechim e Região | Delfos Solar"
         description="Reduza até 90% da conta de energia com engenharia de ciclo completo da Delfos Solar. Mais de 3.000 projetos conectados à rede ou com baterias, telhado e solo no RS."
         canonicalPath="/solucoes/energia-solar"
         ogImage="/og-image.png"
@@ -150,18 +150,14 @@ export default function SolucaoSolar() {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Energia solar:{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-solar-300 via-amber-300 to-solar-400">
-                    engenharia de ponta a ponta
-                  </span>{' '}
-                  para zerar até 90% da sua conta.
+                  Energia Solar em Erechim e Região
                 </h1>
 
                 <p className="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Projetos conectados à rede ou com baterias desenvolvidos por engenheiros com
-                  registro no CREA-RS. Dimensionamento rigoroso com base na incidência de sol real
-                  do Sul do Brasil, aprovação ágil junto à distribuidora e máxima eficiência de
-                  geração.
+                  Engenharia de ponta a ponta para zerar até 90% da sua conta. Projetos conectados à
+                  rede ou com baterias desenvolvidos por engenheiros com registro no CREA-RS.
+                  Dimensionamento rigoroso com base na incidência de sol real do Sul do Brasil,
+                  aprovação ágil junto à distribuidora e máxima eficiência de geração.
                 </p>
 
                 {/* Destaque do Problema que Resolve */}
@@ -226,7 +222,7 @@ export default function SolucaoSolar() {
                           'https://www.delfos.eng.br/site/wp-content/uploads/2020/05/DJI_0120.jpg'
                         )
                       })()}
-                      alt="Projeto real Delfos Engenharia — Cassul 155 kWp em Erechim/RS"
+                      alt="energia-solar-erechim — Projeto real Delfos Engenharia: usina fotovoltaica de 155 kWp em telhado da Cassul Distribuidora, em Erechim/RS"
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

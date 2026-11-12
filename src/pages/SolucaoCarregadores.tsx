@@ -88,7 +88,7 @@ export default function SolucaoCarregadores() {
   return (
     <div className="min-h-screen flex flex-col bg-[#070A10] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       <SeoMeta
-        title="Recarga Veicular para Condomínios e Empresas | Delfos"
+        title="Carregador para Carro Elétrico em Erechim | Delfos Solar"
         description="Infraestrutura de recarga veicular com gestão inteligente de carga, sem trocar o transformador do prédio. Condomínios, empresas, frotas e eletropostos."
         canonicalPath="/solucoes/carregadores"
         ogImage="/og-image.png"
@@ -128,15 +128,12 @@ export default function SolucaoCarregadores() {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-white">
-                  Recarga veicular:{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-sky-300 to-solar-300">
-                    infraestrutura inteligente e segura
-                  </span>{' '}
-                  sem trocar o transformador do seu prédio.
+                  Carregador para Carro Elétrico
                 </h1>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  A eletrificação da frota gaúcha já começou. A Delfos projeta e executa toda a
+                  Infraestrutura inteligente e segura, sem trocar o transformador do seu prédio. A
+                  eletrificação da frota gaúcha já começou. A Delfos projeta e executa toda a
                   engenharia elétrica de recarga: o sistema mede o consumo de cada vaga e rateia
                   sozinho, com instalação conforme as normas de segurança brasileiras e aplicativo
                   de controle individual.
