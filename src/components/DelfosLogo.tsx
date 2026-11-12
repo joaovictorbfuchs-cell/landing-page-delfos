@@ -1,5 +1,6 @@
-// Importa diretamente o asset recortado e transparente derivado da imagem oficial anexada
-import officialLogoImg from '@/assets/delfos-logo-transparent.png'
+// Logo oficial servida de /public — arquivo verificado acessível publicamente em produção
+// (o import do asset em src/assets estava quebrando a exibição no site publicado)
+const officialLogoImg = '/delfos-logo.png'
 
 interface DelfosLogoProps {
   className?: string
