@@ -3,7 +3,32 @@ import { useLocation } from 'react-router-dom'
 import { MessageCircle, X, Bot, FileText, Phone, ArrowRight, Headphones } from 'lucide-react'
 import PlantaoWidgetFlutuante from '@/components/PlantaoWidgetFlutuante'
 import { trackWhatsappClick } from '@/lib/analytics'
-import { whatsappUrl, whatsappMensagem, WHATSAPP_ORIGENS } from '@/lib/whatsapp'
+import { whatsappUrl, whatsappMensagem, WHATSAPP_ORIGENS, OrigemContextual } from '@/lib/whatsapp'
+
+// Origem do WhatsApp flutuante por página (na fala do cliente, sem tags técnicas).
+// Rotas sem entrada caem na origem padrão "home".
+const ORIGEM_POR_ROTA: Record<string, OrigemContextual> = {
+  '/solucoes/energia-solar': 'solução energia solar',
+  '/energia-solar': 'solução energia solar',
+  '/solucoes/bess': 'solução baterias (BESS)',
+  '/baterias': 'solução baterias (BESS)',
+  '/solucoes/om': WHATSAPP_ORIGENS.paginaOm,
+  '/manutencao': WHATSAPP_ORIGENS.paginaOm,
+  '/solucoes/carregadores': 'solução carregadores',
+  '/recarga': 'solução carregadores',
+  '/projetos': 'página de projetos',
+  '/sobre': 'página sobre',
+  '/conteudos': 'página de conteúdos',
+  '/conteudos/autor/joao-victor-bagetti-fuchs': 'página de conteúdos',
+  '/faq': 'página de perguntas frequentes',
+  '/segmentos/residencias': 'segmento residências',
+  '/segmentos/comercio-servicos': 'segmento comércio e serviços',
+  '/segmentos/industria': 'segmento indústria',
+  '/segmentos/agronegocio': 'segmento agronegócio',
+  '/segmentos/condominios': 'segmento condomínios',
+  '/segmentos/investidores': 'segmento investidores',
+  '/segmentos/frotas-eletropostos': 'segmento frotas e eletropostos',
+}
 
 interface AtendimentoFloatingProps {
   telefoneDisplay?: string
@@ -36,9 +61,12 @@ export default function AtendimentoFloating({
     return null
   }
 
-  // Se estiver no artigo de manutenção de placa solar, usa a origem "artigo"; nas demais, "home"
+  // Origem do WhatsApp conforme a página aberta (sempre na fala do cliente):
+  // home → "home"; artigo → "artigo"; demais páginas → origem contextual do helper.
   const isArtigoManutencao = pathname.includes('manutencao-de-placa-solar-perda-geracao')
-  const origemWhatsApp = isArtigoManutencao ? WHATSAPP_ORIGENS.artigo : WHATSAPP_ORIGENS.home
+  const origemWhatsApp: OrigemContextual = isArtigoManutencao
+    ? WHATSAPP_ORIGENS.artigo
+    : ORIGEM_POR_ROTA[pathname] || WHATSAPP_ORIGENS.home
   const whatsappLink = whatsappUrl(origemWhatsApp)
   const defaultWhatsAppMsg = whatsappMensagem(origemWhatsApp)
 
