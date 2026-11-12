@@ -140,9 +140,6 @@ export default function AdminMediaTab({
       setSelecaoAtiva(true)
     }
   }
-  // Seleção é limitada às fotos visíveis pelos filtros atuais
-  const selecionadasVisiveis = selecionadas.filter((id) => filteredMedia.some((m) => m.id === id))
-
   // Edit State & Modal
   // Campos da galeria pública de projetos
   const [editGaleria, setEditGaleria] = useState(GALERIA_VAZIA)
@@ -818,6 +815,9 @@ export default function AdminMediaTab({
       (m.destino_sugerido && m.destino_sugerido.toLowerCase().includes(term))
     return matchCat && matchVinculo && matchSearch
   })
+
+  // Seleção é limitada às fotos visíveis pelos filtros atuais (depende de filteredMedia)
+  const selecionadasVisiveis = selecionadas.filter((id) => filteredMedia.some((m) => m.id === id))
 
   return (
     <div className="space-y-6">
