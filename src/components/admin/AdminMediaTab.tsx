@@ -9,6 +9,7 @@ import {
   Search,
   Filter,
   Check,
+  CheckSquare,
   Edit2,
   Image as ImageIcon,
   Sparkles,
@@ -124,6 +125,23 @@ export default function AdminMediaTab({
   const [virandoCaseId, setVirandoCaseId] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const filePickerRef = useRef<HTMLInputElement>(null)
+
+  // Modo de seleção múltipla: checkbox em cada card + ação "Criar projeto com selecionadas"
+  const [selecaoAtiva, setSelecaoAtiva] = useState(false)
+  const [selecionadas, setSelecionadas] = useState<string[]>([])
+  const toggleSelecao = (id: string) => {
+    setSelecionadas((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+  }
+  const toggleSelecaoAtiva = () => {
+    if (selecaoAtiva) {
+      setSelecaoAtiva(false)
+      setSelecionadas([])
+    } else {
+      setSelecaoAtiva(true)
+    }
+  }
+  // Seleção é limitada às fotos visíveis pelos filtros atuais
+  const selecionadasVisiveis = selecionadas.filter((id) => filteredMedia.some((m) => m.id === id))
 
   // Edit State & Modal
   // Campos da galeria pública de projetos
@@ -558,6 +576,122 @@ export default function AdminMediaTab({
     }
   }
 
+  /**
+   * Cria um projeto (case) em rascunho a partir de uma mídia da biblioteca —
+   * MESMA lógica do botão "Criar projeto" foto a foto: título, cliente e local
+   * derivados do nome do arquivo e casamento com projeto existente.
+   * Usada tanto pelo botão individual quanto pelo "Criar projeto com selecionadas".
+   */
+  const criarCaseDeMedia = async (item: MediaRecord): Promise<CaseRecord> => {
+    const original = await fetchMediaAsFile(item)
+    // Compressão automática (máx. 1600px, WebP) antes de enviar
+    const file = await comprimirImagem(original)
+    if (!file) {
+      throw new Error('Não foi possível obter o arquivo desta mídia.')
+    }
+
+    const derivado = deriveCaseFromMedia(item)
+    const matchCase = findMatchingCase(item.arquivo || item.titulo, casesList)
+    if (matchCase) {
+      derivado.cliente = matchCase.cliente || derivado.cliente
+      derivado.local = matchCase.local || derivado.local
+      derivado.titulo = matchCase.titulo || derivado.titulo
+    }
+
+    const setor: CaseSetor = 'Comércio e Serviços'
+    const solucao: CaseSolucao = 'Energia Solar'
+    const slug = gerarSlugUnico(derivado.slugBase, casesList)
+
+    const caseCriado = await createCase({
+      titulo: derivado.titulo,
+      slug,
+      cliente: derivado.cliente,
+      setor,
+      solucao,
+      local: derivado.local || 'Erechim / RS',
+      escopo: '',
+      descricao: '',
+      solucao_tecnica: '',
+      resultado: '',
+      resultado_valor: '',
+      resultado_label: '',
+      potencia_capacidade: '',
+      data_entrega: '',
+      // Case nasce em rascunho para o usuário revisar antes de publicar —
+      // nunca publicado automaticamente.
+      status: 'rascunho',
+      destaque: false,
+      is_exemplo: false,
+      foto: file,
+    })
+
+    // Capa criada: a mídia de origem vira capa oficial (case_id) e o restante
+    // das fotos selecionadas entra na galeria do projeto (ordem crescente).
+    await attachMediaToCase(item.id, caseCriado.id, 1)
+    const demais = selecionadas.filter((id) => id !== item.id)
+    for (let i = 0; i < demais.length; i++) {
+      await attachMediaToCase(demais[i], caseCriado.id, i + 2)
+    }
+
+    return caseCriado
+  }
+
+  /**
+   * Ação em lote "Criar projeto com selecionadas": cria UM único projeto em
+   * rascunho usando a MESMA lógica do "Criar projeto" individual — a primeira
+   * foto da seleção vira capa e as demais vão para a galeria dele.
+   */
+  const handleCriarCaseComSelecionadas = async () => {
+    if (selecionadas.length === 0) return
+    if (
+      !window.confirm(
+        `Criar 1 projeto em rascunho com as ${selecionadas.length} fotos selecionadas? A primeira vira capa e as demais entram na galeria.`,
+      )
+    ) {
+      return
+    }
+
+    const ordenadas = selecionadas
+      .map((id) => mediaList.find((m) => m.id === id))
+      .filter((m): m is MediaRecord => Boolean(m))
+
+    setVirandoCaseId('__lote__')
+    try {
+      const caseCriado = await criarCaseDeMedia(ordenadas[0])
+      const { dismiss: fecharToast } = toast({
+        title: 'Projeto criado em rascunho!',
+        description: `"${caseCriado.titulo}" foi criado com ${ordenadas.length} ${ordenadas.length === 1 ? 'foto' : 'fotos'} (a primeira como capa). Revise os dados e publique quando estiver pronto.`,
+        duration: 12000,
+        action: (
+          <button
+            type="button"
+            onClick={() => {
+              onAbrirEditorCase?.(caseCriado.id)
+              fecharToast()
+            }}
+            className="inline-flex shrink-0 items-center gap-1 h-9 px-3 rounded-lg bg-solar-400 hover:bg-solar-500 text-midnight-950 text-xs font-bold shadow-sm cursor-pointer whitespace-nowrap"
+          >
+            <Award className="w-3.5 h-3.5" />
+            <span>Abrir projeto</span>
+          </button>
+        ),
+      })
+      setSelecaoAtiva(false)
+      setSelecionadas([])
+      onRefresh()
+    } catch (err: unknown) {
+      console.error('Erro ao criar projeto com fotos selecionadas:', err)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao criar projeto',
+        description:
+          (err as Error)?.message || 'Não foi possível criar o projeto com as fotos selecionadas.',
+      })
+    } finally {
+      setVirandoCaseId(null)
+    }
+  }
+
   // "Criar projeto": cria um case novo (sempre em rascunho) já com a foto da
   // biblioteca como capa, título, cliente e local derivados do nome do arquivo
   // (padrão cliente_cidade.jpg), usando a mesma lógica de casamento do lote.
@@ -744,6 +878,21 @@ export default function AdminMediaTab({
             className="hidden"
           />
 
+          <Button
+            type="button"
+            variant="outline"
+            onClick={toggleSelecaoAtiva}
+            className={
+              selecaoAtiva
+                ? 'border-midnight-800 bg-midnight-900 text-white font-bold rounded-xl text-xs h-10 px-3.5 flex-1 sm:flex-initial flex items-center justify-center gap-1.5'
+                : 'border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs h-10 px-3.5 flex-1 sm:flex-initial flex items-center justify-center gap-1.5'
+            }
+            title="Ativa o modo de seleção para escolher várias fotos e criar um projeto com elas"
+          >
+            <CheckSquare className="w-4 h-4 shrink-0" />
+            <span>{selecaoAtiva ? 'Sair da seleção' : 'Selecionar'}</span>
+          </Button>
+
           <div className="flex items-center gap-1.5 flex-1 sm:flex-initial">
             <Button
               type="button"
@@ -809,6 +958,58 @@ export default function AdminMediaTab({
         />
       </div>
 
+      {/* Barra do modo de seleção (fixa no mobile) */}
+      {selecaoAtiva && (
+        <div className="sticky top-2 z-30 bg-midnight-950 rounded-2xl p-3 shadow-lg flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex-1 text-xs sm:text-sm text-white font-semibold pl-1">
+            {selecionadasVisiveis.length}{' '}
+            {selecionadasVisiveis.length === 1 ? 'foto selecionada' : 'fotos selecionadas'}
+            {selecionadas.length !== selecionadasVisiveis.length && (
+              <span className="text-slate-400 font-normal">
+                {' '}
+                ({selecionadas.length - selecionadasVisiveis.length} fora dos filtros)
+              </span>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setSelecionadas([])}
+              disabled={selecionadas.length === 0 || virandoCaseId !== null}
+              className="flex-1 sm:flex-initial h-11 sm:h-10 px-3.5 border-midnight-700 bg-transparent hover:bg-midnight-800 text-slate-200 text-xs font-semibold rounded-xl"
+            >
+              Limpar seleção
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setSelecaoAtiva(false)
+                setSelecionadas([])
+              }}
+              disabled={virandoCaseId !== null}
+              className="flex-1 sm:flex-initial h-11 sm:h-10 px-3.5 border-midnight-700 bg-transparent hover:bg-midnight-800 text-slate-200 text-xs font-semibold rounded-xl"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              onClick={handleCriarCaseComSelecionadas}
+              disabled={selecionadas.length === 0 || virandoCaseId !== null}
+              className="flex-1 sm:flex-initial h-11 sm:h-10 px-3.5 bg-solar-400 hover:bg-solar-500 text-midnight-950 text-xs font-bold rounded-xl shadow-sm flex items-center justify-center gap-1.5"
+            >
+              {virandoCaseId === '__lote__' ? (
+                <div className="w-4 h-4 border-2 border-midnight-900 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Award className="w-4 h-4 shrink-0" />
+              )}
+              <span>Criar projeto com selecionadas</span>
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Media Grid */}
       {loading ? (
         <div className="bg-white rounded-2xl p-12 text-center border border-slate-200/80 text-slate-500">
@@ -859,11 +1060,42 @@ export default function AdminMediaTab({
             return (
               <div
                 key={item.id}
-                className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between hover:border-solar-400 transition-all group"
+                className={
+                  'bg-white rounded-2xl border shadow-sm overflow-hidden flex flex-col justify-between transition-all group ' +
+                  (selecaoAtiva && selecionadas.includes(item.id)
+                    ? 'border-solar-500 ring-2 ring-solar-400/60 '
+                    : 'border-slate-200/90 hover:border-solar-400')
+                }
               >
                 <div>
                   {/* Image container - usa versão leve (900px) com fallback */}
                   <div className="relative aspect-video bg-slate-900 overflow-hidden">
+                    {selecaoAtiva && (
+                      <button
+                        type="button"
+                        onClick={() => toggleSelecao(item.id)}
+                        aria-label={
+                          selecionadas.includes(item.id)
+                            ? 'Desmarcar foto da seleção'
+                            : 'Marcar foto para seleção'
+                        }
+                        aria-pressed={selecionadas.includes(item.id)}
+                        className="absolute top-2 right-2 z-10 h-9 w-9 rounded-full bg-midnight-950/70 backdrop-blur-xs flex items-center justify-center cursor-pointer hover:bg-midnight-950/90 active:scale-95 transition-transform"
+                      >
+                        <span
+                          className={
+                            'flex h-6 w-6 items-center justify-center rounded-md border-2 transition-colors ' +
+                            (selecionadas.includes(item.id)
+                              ? 'border-solar-400 bg-solar-400'
+                              : 'border-white/80 bg-transparent')
+                          }
+                        >
+                          {selecionadas.includes(item.id) && (
+                            <Check className="w-4 h-4 text-midnight-950" strokeWidth={3.5} />
+                          )}
+                        </span>
+                      </button>
+                    )}
                     {urlLeve ? (
                       <img
                         src={urlLeve}
