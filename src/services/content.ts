@@ -612,6 +612,8 @@ export interface LimparDuplicadasResponse {
     paraRevisar: LimparDuplicadasItem[]
     vinculadosPulados: LimparDuplicadasItem[]
     falhas: Array<{ id: string; error: string }>
+    /** Ids enviados pelo usuário que eram protegidos e foram ignorados pelo backend */
+    protegidosIgnorados?: string[]
   }
   error?: string
 }
@@ -623,10 +625,14 @@ export async function simularLimpezaDuplicadas(): Promise<LimparDuplicadasRespon
   return res
 }
 
-export async function executarLimpezaDuplicadas(): Promise<LimparDuplicadasResponse> {
+export async function executarLimpezaDuplicadas(
+  idsExcluir?: string[],
+): Promise<LimparDuplicadasResponse> {
   const res = await pb.send<LimparDuplicadasResponse>('/backend/v1/limpar-duplicadas-media', {
     method: 'POST',
-    body: { confirmar: true },
+    // Sem idsExcluir: comportamento antigo (exclui tudo marcado pelo backend).
+    // Com idsExcluir: exclui exatamente a lista escolhida foto a foto no modal.
+    body: idsExcluir ? { confirmar: true, ids_excluir: idsExcluir } : { confirmar: true },
   })
   return res
 }

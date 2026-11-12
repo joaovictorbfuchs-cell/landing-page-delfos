@@ -48,6 +48,7 @@ import AdminBatchMediaModal from './AdminBatchMediaModal'
 import AdminAutoVinculoModal from './AdminAutoVinculoModal'
 import SeloVinculoMedia from './SeloVinculoMedia'
 import LimpezaMiniatura from './LimpezaMiniatura'
+import AcoesLimpezaItem, { type DecisaoLimpeza } from './AcoesLimpezaItem'
 import AdminMediaFiltroVinculo, { type FiltroVinculo } from './AdminMediaFiltroVinculo'
 import { comprimirImagem } from './imageCompress'
 import {
@@ -143,6 +144,14 @@ export default function AdminMediaTab({
   const [executandoLimpeza, setExecutandoLimpeza] = useState(false)
   const [resultadoLimpeza, setResultadoLimpeza] = useState<LimparDuplicadasResponse | null>(null)
   const [abaDetalhes, setAbaDetalhes] = useState<'excluir' | 'revisar' | 'vinculados'>('excluir')
+  // Decisões foto a foto dentro do modal: 'excluir' | 'manter' (por id de mídia)
+  const [decisoesLimpeza, setDecisoesLimpeza] = useState<Record<string, DecisaoLimpeza>>({})
+
+  // Contagem de decisões do dono (Revisar com decisão conta para o botão final)
+  const totalDecisoesApagar = useMemo(
+    () => Object.values(decisoesLimpeza).filter((d) => d === 'excluir').length,
+    [decisoesLimpeza],
+  )
 
   // Vinculação automática de fotos a projetos (pelo nome do arquivo)
   const [vinculando, setVinculando] = useState(false)
@@ -162,6 +171,7 @@ export default function AdminMediaTab({
   const handleAbrirLimpeza = async () => {
     setLimpezaModalOpen(true)
     setCarregandoLimpeza(true)
+    setDecisoesLimpeza({})
     try {
       const res = await simularLimpezaDuplicadas()
       setResultadoLimpeza(res)
@@ -177,11 +187,46 @@ export default function AdminMediaTab({
     }
   }
 
+  const handleDecidirItemLimpeza = (id: string, decisao: DecisaoLimpeza) => {
+    setDecisoesLimpeza((prev) => {
+      const atual = prev[id]
+      // Clicar de novo no mesmo botão desfaz a decisão daquela foto
+      if (atual === decisao) {
+        const { [id]: _removida, ...resto } = prev
+        return resto
+      }
+      return { ...prev, [id]: decisao }
+    })
+  }
+
   const handleConfirmarLimpeza = async () => {
+    if (!resultadoLimpeza) return
+    const idsMarcadosApagar = Object.entries(decisoesLimpeza)
+      .filter(([, decisao]) => decisao === 'excluir')
+      .map(([id]) => id)
+    const idsMarcadosManter = Object.entries(decisoesLimpeza)
+      .filter(([, decisao]) => decisao === 'manter')
+      .map(([id]) => id)
+
+    // Modo foto a foto: só quando o dono decidiu algo, envia exatamente essa lista
+    // para o backend; fotos sem decisão seguem o comportamento padrão.
+    const idsExcluir = idsMarcadosApagar.length
+      ? resultadoLimpeza.detalhes.paraExcluir
+          .concat(resultadoLimpeza.detalhes.paraRevisar)
+          .filter(
+            (item) => idsMarcadosManter.includes(item.id) || idsMarcadosApagar.includes(item.id),
+          )
+          .map((item) => item.id)
+          .filter((id) => !idsMarcadosManter.includes(id))
+          .concat(idsMarcadosApagar)
+      : undefined
+    const listaUnica = idsExcluir ? Array.from(new Set(idsExcluir)) : undefined
+
     setExecutandoLimpeza(true)
     try {
-      const res = await executarLimpezaDuplicadas()
+      const res = await executarLimpezaDuplicadas(listaUnica)
       setResultadoLimpeza(res)
+      setDecisoesLimpeza({})
       toast({
         title: 'Limpeza concluída com sucesso!',
         description: `${res.resumo.totalExcluidosEfetivamente} arquivos obsoletos/duplicados foram removidos da biblioteca.`,
@@ -1414,6 +1459,14 @@ export default function AdminMediaTab({
                               <span className="text-[10px] text-slate-400 shrink-0 font-mono">
                                 {item.created ? item.created.substring(0, 10) : ''}
                               </span>
+                              <AcoesLimpezaItem
+                                contexto="excluir"
+                                decisao={decisoesLimpeza[item.id]}
+                                disabled={executandoLimpeza}
+                                onDecidir={(novaDecisao) =>
+                                  handleDecidirItemLimpeza(item.id, novaDecisao)
+                                }
+                              />
                             </div>
                           ))
                         ))}
@@ -1448,6 +1501,14 @@ export default function AdminMediaTab({
                                   {item.motivo}
                                 </span>
                               </div>
+                              <AcoesLimpezaItem
+                                contexto="revisar"
+                                decisao={decisoesLimpeza[item.id]}
+                                disabled={executandoLimpeza}
+                                onDecidir={(novaDecisao) =>
+                                  handleDecidirItemLimpeza(item.id, novaDecisao)
+                                }
+                              />
                             </div>
                           ))
                         ))}
@@ -1522,7 +1583,8 @@ export default function AdminMediaTab({
                     <>
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>
-                        Confirmar e Excluir {resultadoLimpeza?.resumo.totalParaExcluir || 0}{' '}
+                        Confirmar e Excluir{' '}
+                        {(resultadoLimpeza?.resumo.totalParaExcluir || 0) + totalDecisoesApagar}{' '}
                         Duplicadas
                       </span>
                     </>

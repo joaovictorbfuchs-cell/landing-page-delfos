@@ -18,6 +18,13 @@
  *    que podem ser as únicas cópias dessas imagens — esses NÃO devem ser apagados diretamente:
  *    listar como "revisar antes de apagar" (status: 'revisar').
  * 4. Ao confirmar com confirm=true, exclui apenas os marcados para exclusão segura.
+ *
+ * Decisão por foto (comportamento opcional, não quebra o fluxo antigo):
+ * Se o body trouxer `ids_excluir` (array de ids de mídia), a exclusão é EXATAMENTE
+ * essa lista (fotos tiradas da exclusão pelo usuário ficam de fora; fotos da aba
+ * Revisar escolhidas para apagar entram). Mesmo assim, fotos vinculadas a cases,
+ * posts ou leads ("Protegidos") NUNCA são apagadas — ids protegidos enviados na
+ * lista são ignorados e devolvidos em `protegidosIgnorados`.
  */
 
 const processarDuplicadasMedia = (e) => {
@@ -215,13 +222,25 @@ const processarDuplicadasMedia = (e) => {
       }
     }
 
+    // Alvos da exclusão: toda a lista padrão OU exatamente a lista enviada pelo usuário.
+    const idsProtegidos = new Set(vinculadosPulados.map((v) => v.id))
+    const alvosExclusao = Array.isArray(body.ids_excluir)
+      ? paraExcluir.concat(paraRevisar).filter((item) => body.ids_excluir.indexOf(item.id) !== -1)
+      : paraExcluir
+
     // Se confirmou a exclusão, apagar os registros de `paraExcluir`
     const excluidosComSucesso = []
     const falhasExclusao = []
+    const protegidosIgnorados = []
 
     if (confirmarExclusao) {
-      for (let i = 0; i < paraExcluir.length; i++) {
-        const item = paraExcluir[i]
+      for (let i = 0; i < alvosExclusao.length; i++) {
+        const item = alvosExclusao[i]
+        // Garantia de segurança: fotos protegidas nunca são apagadas, nem por decisão individual.
+        if (idsProtegidos.has(item.id)) {
+          protegidosIgnorados.push(item.id)
+          continue
+        }
         try {
           const rec = $app.findRecordById('media', item.id)
           $app.delete(rec)
@@ -234,7 +253,7 @@ const processarDuplicadasMedia = (e) => {
 
     const totalAtual = mediaRecords.length
     const totalAposExclusao =
-      totalAtual - (confirmarExclusao ? excluidosComSucesso.length : paraExcluir.length)
+      totalAtual - (confirmarExclusao ? excluidosComSucesso.length : alvosExclusao.length)
 
     return e.json(200, {
       sucesso: true,
@@ -254,6 +273,7 @@ const processarDuplicadasMedia = (e) => {
         paraRevisar: paraRevisar,
         vinculadosPulados: vinculadosPulados,
         falhas: falhasExclusao,
+        protegidosIgnorados: protegidosIgnorados,
       },
     })
   } catch (err) {
